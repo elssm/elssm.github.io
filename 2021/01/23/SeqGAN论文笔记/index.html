@@ -7,7 +7,7 @@
 
 <html class="theme-next mist use-motion" lang="zh-Hans">
 <head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
@@ -132,7 +132,7 @@
 <meta property="og:description" content="SeqGAN: Sequence GenerativeAdversarial Nets with Policy Gradient论文地址：https://arxiv.org/abs/1609.05473  代码地址：https://github.com/LantaoYu/SeqGAN （Tensorflow） ​                    https://github.com/sura">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2021/01/23/SeqGAN论文笔记/1.png">
-<meta property="og:updated_time" content="2021-01-23T15:02:37.074Z">
+<meta property="og:updated_time" content="2021-01-23T15:45:44.130Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SeqGAN论文笔记">
 <meta name="twitter:description" content="SeqGAN: Sequence GenerativeAdversarial Nets with Policy Gradient论文地址：https://arxiv.org/abs/1609.05473  代码地址：https://github.com/LantaoYu/SeqGAN （Tensorflow） ​                    https://github.com/sura">
@@ -172,7 +172,7 @@
 
 
 
-  <title>SeqGAN论文笔记 | ELSSM</title>
+  <title>SeqGAN论文笔记 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -191,7 +191,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -408,7 +408,8 @@ G_\theta(y_t|Y_{1:t-1})</script><p>网络结构</p>
 <p>右边是GAN的训练步骤二，根据D网络回传的判别概率通过增强学习更新G网络，这里的G网络用的LSTM。</p>
 </li>
 </ul>
-<p>$lim_{1\to+\infty}P(|\frac{1}{n}\sum_i^nX_i-\mu|&lt;\epsilon)=1, i=1,…,n$$ </p>
+<script type="math/tex; mode=display">lim_{1\to+\infty}P(|\frac{1}{n}\sum_i^nX_i-\mu|<\epsilon)=1, i=1,...,n</script><script type="math/tex; mode=display">lim_{1\to+\infty}P(|\frac{1}{n}\sum_i^nX_i-\mu|<\epsilon)=1, i=1,...,n</script><script type="math/tex; mode=display">G_\theta(y_t|Y_{1:t-1})</script><script type="math/tex; mode=display">
+G_\theta(y_t|Y_{1:t-1})</script><p>Afsfaff</p>
 
       
     </div>
@@ -808,7 +809,7 @@ G_\theta(y_t|Y_{1:t-1})</script><p>网络结构</p>
         }
       });
     </script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
