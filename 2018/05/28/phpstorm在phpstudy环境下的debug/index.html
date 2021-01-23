@@ -130,24 +130,24 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="-环境说明phpstudy的环境为apache+php php版本：5.3.29 -配置xdebug因为phpstudy已经集成了xdebug扩展，所以我们只需要打开扩展并对php.ini文件进行修改即可。  打开xdebug扩展，在phpstudy主页选择其他选项菜单   修改php.ini配置 打开php5.3版本下的php.ini文件，并添加如下信息 1234567xdebug.collec">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/1.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/2.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/3.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/4.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/5.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/6.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/7.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/8.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/9.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/10.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/11.jpg">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/12.png">
-<meta property="og:image" content="/28/phpstorm在phpstudy环境下的debug/13.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/1.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/2.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/3.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/4.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/5.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/6.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/7.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/8.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/9.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/10.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/11.jpg">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/12.png">
+<meta property="og:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/13.png">
 <meta property="og:updated_time" content="2018-05-28T15:39:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="phpstorm在phpstudy环境下的debug">
 <meta name="twitter:description" content="-环境说明phpstudy的环境为apache+php php版本：5.3.29 -配置xdebug因为phpstudy已经集成了xdebug扩展，所以我们只需要打开扩展并对php.ini文件进行修改即可。  打开xdebug扩展，在phpstudy主页选择其他选项菜单   修改php.ini配置 打开php5.3版本下的php.ini文件，并添加如下信息 1234567xdebug.collec">
-<meta name="twitter:image" content="/28/phpstorm在phpstudy环境下的debug/1.png">
+<meta name="twitter:image" content="/2018/05/28/phpstorm在phpstudy环境下的debug/1.png">
 
 
 
@@ -382,45 +382,45 @@
 <h3 id="配置xdebug"><a href="#配置xdebug" class="headerlink" title="-配置xdebug"></a>-配置xdebug</h3><p>因为phpstudy已经集成了xdebug扩展，所以我们只需要打开扩展并对php.ini文件进行修改即可。</p>
 <ul>
 <li><p>打开xdebug扩展，在phpstudy主页选择其他选项菜单</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/1.png" alt="1"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/1.png" alt="1"></p>
 </li>
 <li><p>修改php.ini配置</p>
 <p>打开php5.3版本下的php.ini文件，并添加如下信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xdebug.collect_params=1</span><br><span class="line">xdebug.collect_return=1</span><br><span class="line">xdebug.remote_enable = 1</span><br><span class="line">xdebug.remote_handler = &quot;dbgp&quot;</span><br><span class="line">xdebug.idekey = PHPSTORM</span><br><span class="line">xdebug.remote_host = &quot;127.0.0.1&quot;</span><br><span class="line">xdebug.remote_port = 9000</span><br></pre></td></tr></table></figure>
 <p>此时我们在php5.3所在版本的文件夹下输入php -m命令，会发现在Zend Modules下多了Xdebug</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/2.png" alt="2"></p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/3.png" alt="3"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/2.png" alt="2"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/3.png" alt="3"></p>
 </li>
 <li><p>此时查看phpinfo信息会发现有了xdebug配置</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/4.png" alt="4"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/4.png" alt="4"></p>
 </li>
 </ul>
 <h3 id="配置Xdebug-helper"><a href="#配置Xdebug-helper" class="headerlink" title="-配置Xdebug helper"></a>-配置Xdebug helper</h3><p>打开xdebug helper后，将IDE key设为phpstorm，并将localhost和127.0.0.1添加在Domain filter中</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/5.png" alt="5"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/5.png" alt="5"></p>
 <h3 id="配置phpstorm"><a href="#配置phpstorm" class="headerlink" title="-配置phpstorm"></a>-配置phpstorm</h3><ul>
 <li><p>首先进入file–&gt;settings配置php环境，这里的php版本尽量与phpstudy中的php版本相同，配置如下</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/6.png" alt="6"></p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/7.png" alt="7"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/6.png" alt="6"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/7.png" alt="7"></p>
 </li>
 <li><p>配置Debug，注意Debug port要和前面设置的php.ini中的端口相同</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/8.png" alt="8"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/8.png" alt="8"></p>
 </li>
 <li><p>配置DBGp Proxy</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/9.png" alt="9"></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/9.png" alt="9"></p>
 </li>
 <li><p>配置Servers，name的名称可以随便起，Debugger选择Xdebug</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/10.png" alt></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/10.png" alt></p>
 </li>
 </ul>
 <h3 id="调试"><a href="#调试" class="headerlink" title="-调试"></a>-调试</h3><ul>
 <li><p>在phpstorm中打开监听连接</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/11.jpg" alt></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/11.jpg" alt></p>
 </li>
 <li><p>断点打好之后，在浏览器中开启xdebug</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/12.png" alt></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/12.png" alt></p>
 </li>
 <li><p>phpstorm中将会输出信息</p>
-<p><img src="/28/phpstorm在phpstudy环境下的debug/13.png" alt></p>
+<p><img src="/2018/05/28/phpstorm在phpstudy环境下的debug/13.png" alt></p>
 </li>
 </ul>
 

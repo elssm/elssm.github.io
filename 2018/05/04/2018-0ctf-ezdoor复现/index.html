@@ -131,13 +131,13 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="写在前面之前在做0ctf的时候就看了这一道php代码审计题目，当时没做出来，好在github上有源码，决定在服务器下搭建一下环境过一遍这道题，顺便学习学习有关php的一些知识。 ​  环境搭建我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。启动docker1service docker start 将题目源码拉到本地，使用git clone命令1git c">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="/04/2018-0ctf-ezdoor复现/1.png">
-<meta property="og:image" content="/04/2018-0ctf-ezdoor复现/2.png">
+<meta property="og:image" content="/2018/05/04/2018-0ctf-ezdoor复现/1.png">
+<meta property="og:image" content="/2018/05/04/2018-0ctf-ezdoor复现/2.png">
 <meta property="og:updated_time" content="2018-05-07T12:19:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2018 0ctf ezdoor题目复现">
 <meta name="twitter:description" content="写在前面之前在做0ctf的时候就看了这一道php代码审计题目，当时没做出来，好在github上有源码，决定在服务器下搭建一下环境过一遍这道题，顺便学习学习有关php的一些知识。 ​  环境搭建我使用的是ubuntu系统，首先要安装docker，docker的安装大家可以自行百度。启动docker1service docker start 将题目源码拉到本地，使用git clone命令1git c">
-<meta name="twitter:image" content="/04/2018-0ctf-ezdoor复现/1.png">
+<meta name="twitter:image" content="/2018/05/04/2018-0ctf-ezdoor复现/1.png">
 
 
 
@@ -404,12 +404,12 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    var_dump(scandir(<span class="string">'/var/www/html/'</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>上传后查看<a href="http://192.168.1.188/index.php?action=shell" target="_blank" rel="noopener">http://192.168.1.188/index.php?action=shell</a></p>
 <p>得到以下信息</p>
-<p><img src="/04/2018-0ctf-ezdoor复现/1.png" alt></p>
+<p><img src="/2018/05/04/2018-0ctf-ezdoor复现/1.png" alt></p>
 <p>获取flag下的文件</p>
 <p>通过构造index.php</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    print_r(file_get_contents(<span class="string">'/var/www/html/flag/93f4c28c0cf0b07dfd7012dca2cb868cc0228cad'</span>))</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>得到flag.php.ini,输出信息如下</p>
-<p><img src="/04/2018-0ctf-ezdoor复现/2.png" alt></p>
+<p><img src="/2018/05/04/2018-0ctf-ezdoor复现/2.png" alt></p>
 <p>因为OPcache文件是以”OPcache.”开头的，但是发现上面输出信息中opcache后缺少”.”，因此将上述信息保存为本地文件，并命名为flag.php.ini，利用winhex对文件进行修复</p>
 </li>
 <li><h3 id="opcode反编译"><a href="#opcode反编译" class="headerlink" title="opcode反编译"></a>opcode反编译</h3><p>工具链接</p>
