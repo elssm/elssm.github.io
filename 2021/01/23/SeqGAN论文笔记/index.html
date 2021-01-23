@@ -132,7 +132,7 @@
 <meta property="og:description" content="SeqGAN: Sequence GenerativeAdversarial Nets with Policy Gradient论文地址：https://arxiv.org/abs/1609.05473  代码地址：https://github.com/LantaoYu/SeqGAN （Tensorflow） ​                    https://github.com/sura">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2021/01/23/SeqGAN论文笔记/1.png">
-<meta property="og:updated_time" content="2021-01-23T14:31:05.999Z">
+<meta property="og:updated_time" content="2021-01-23T15:02:37.074Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SeqGAN论文笔记">
 <meta name="twitter:description" content="SeqGAN: Sequence GenerativeAdversarial Nets with Policy Gradient论文地址：https://arxiv.org/abs/1609.05473  代码地址：https://github.com/LantaoYu/SeqGAN （Tensorflow） ​                    https://github.com/sura">
@@ -400,11 +400,15 @@
 <li><p>SeqGAN</p>
 <p>基于RL的生成器对GAN进行扩展，解决序列生成问题</p>
 <p>鉴别器通过蒙特卡洛方法在每次结束时提供一个奖励信号，生成器使用估计的总体奖励选择动作并学习策略。</p>
-<p>policy的模型是：<br>$$<br>G_\theta(y_t|Y_{1:t-1})<br>$$<br>网络结构</p>
+<p>policy的模型是：</p>
+<script type="math/tex; mode=display">
+G_\theta(y_t|Y_{1:t-1})</script><p>网络结构</p>
 <p><img src="/2021/01/23/SeqGAN论文笔记/1.png" alt="1"></p>
-<p>左边</p>
+<p>左边是GAN的训练步骤一，根据真实样本和伪造样本训练判别器D网络，这里的D网络用的CNN实现。</p>
+<p>右边是GAN的训练步骤二，根据D网络回传的判别概率通过增强学习更新G网络，这里的G网络用的LSTM。</p>
 </li>
 </ul>
+<p>$lim_{1\to+\infty}P(|\frac{1}{n}\sum_i^nX_i-\mu|&lt;\epsilon)=1, i=1,…,n$$ </p>
 
       
     </div>
@@ -785,6 +789,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
