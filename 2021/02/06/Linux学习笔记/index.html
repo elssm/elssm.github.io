@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-06T04:42:58.657Z">
+<meta property="og:updated_time" content="2021-02-07T04:22:15.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux学习笔记">
 <meta name="twitter:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
@@ -383,24 +383,251 @@
 </li>
 <li><h4 id="关机重启命令"><a href="#关机重启命令" class="headerlink" title="关机重启命令"></a>关机重启命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">shutdown #关机重启操作</span><br><span class="line">shutdown [选项] 时间</span><br><span class="line">	-c : 取消 </span><br><span class="line">	-h : 关机</span><br><span class="line">	-r : 重启</span><br><span class="line"></span><br><span class="line">其他重启命令</span><br><span class="line">reboot</span><br><span class="line">init 6</span><br><span class="line"></span><br><span class="line">其他关机命令</span><br><span class="line">halt</span><br><span class="line">poweroff</span><br><span class="line">init 0</span><br><span class="line"></span><br><span class="line">系统运行级别</span><br><span class="line">	0		关机</span><br><span class="line">	1		单用户</span><br><span class="line">	2		不完全多用户，不含NFS服务</span><br><span class="line">	3		完全多用户</span><br><span class="line">	4		未分配</span><br><span class="line">	5		图形界面</span><br><span class="line">	6		重启</span><br><span class="line">	</span><br><span class="line">logout #退出登录命令</span><br></pre></td></tr></table></figure>
 </li>
-<li><h4 id="文本编辑器"><a href="#文本编辑器" class="headerlink" title="文本编辑器"></a>文本编辑器</h4><p>插入命令</p>
-<p>| 命令 | 作用                 |<br>| —— | —————————— |<br>| a    | 在光标所在字符后插入 |<br>| A    | 在光标所在行尾插入   |<br>| i    | 在光标所在字符前插入 |<br>| I    | 在光标所在行行首插入 |<br>| o    | 在光标下插入新行     |<br>| O    | 在光标上插入新行     |</p>
-<p>定位命令</p>
-<p>| 命令       | 作用                     |<br>| ————— | ———————————— |<br>| : set nu   | 设置行号                 |<br>| : set nonu | 取消行号                 |<br>| gg<br>G  | 到第一行<br>到最后一行 |<br>| nG         | 到第n行                  |<br>| : n        | 到第n行                  |<br>| $          | 移动至行尾               |<br>| 0          | 移动至行首               |</p>
-<p>删除命令</p>
-<p>| 命令     | 作用                         |<br>| ———— | —————————————— |<br>| x        | 删除光标所在处字符           |<br>| nx       | 删除光标所在处后n个字符      |<br>| dd       | 删除光标所在行，ndd删除n行   |<br>| dG       | 删除光标所在行到文件末尾内容 |<br>| D        | 删除光标所在处到行尾内容     |<br>| : nl,n2d | 删除指定范围的行             |</p>
-<p>复制和剪切命令</p>
-<p>| 命令 | 作用                         |<br>| —— | —————————————— |<br>| yy   | 复制当前行                   |<br>| nyy  | 复制当前行以下n行            |<br>| dd   | 剪切当前行                   |<br>| ndd  | 剪切当前行以下n行            |<br>| p、P | 粘贴在当前光标所在行下或行上 |</p>
-<p>替换和取消命令</p>
-<p>| 命令 | 作用                                |<br>| —— | —————————————————- |<br>| r    | 取代光标所在处字符                  |<br>| R    | 从光标所在处开始替换字符，按Esc结束 |<br>| u    | 取消上一步操作                      |</p>
-<p>搜索和搜索替换命令</p>
-<p>| 命令               | 作用                                         |<br>| ————————— | —————————————————————— |<br>| /string            | 搜索指定字符串<br>搜索时忽略大小写 :set ic |<br>| n                  | 搜索指定字符串的下一个出现位置               |<br>| : %s/old/new/g     | 全文替换指定字符串                           |<br>| : n1,n2s/old/new/g | 在一定范围内替换指定字符串                   |</p>
-<p>保存和退出命令</p>
-<p>| 命令            | 作用                                     |<br>| ———————- | ———————————————————— |<br>| : w             | 保存修改                                 |<br>| :w new_filename | 另存为指定文件                           |<br>| : wq            | 保存修改并退出                           |<br>| ZZ              | 快捷键，保存修改并退出                   |<br>| : q!            | 不保存修改退出                           |<br>| : wq!           | 保存修改并退出（文件所有者及root可使用） |</p>
-<p>定制快捷键：map 快捷键 触发命令</p>
-<p>导入命令执行结果：r ！命令</p>
-<p>替换：ab test test123</p>
-</li>
+<li><h4 id="文本编辑器"><a href="#文本编辑器" class="headerlink" title="文本编辑器"></a>文本编辑器</h4></li>
+</ul>
+<p>  插入命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a</td>
+<td>在光标所在字符后插入</td>
+</tr>
+<tr>
+<td style="text-align:center">A</td>
+<td>在光标所在行尾插入</td>
+</tr>
+<tr>
+<td style="text-align:center">i</td>
+<td>在光标所在字符前插入</td>
+</tr>
+<tr>
+<td style="text-align:center">I</td>
+<td>在光标所在行行首插入</td>
+</tr>
+<tr>
+<td style="text-align:center">o</td>
+<td>在光标下插入新行</td>
+</tr>
+<tr>
+<td style="text-align:center">O</td>
+<td>在光标上插入新行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  定位命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>: set nu</td>
+<td>设置行号</td>
+</tr>
+<tr>
+<td>: set nonu</td>
+<td>取消行号</td>
+</tr>
+<tr>
+<td>gg<br>G</td>
+<td>到第一行<br>到最后一行</td>
+</tr>
+<tr>
+<td>nG</td>
+<td>到第n行</td>
+</tr>
+<tr>
+<td>: n</td>
+<td>到第n行</td>
+</tr>
+<tr>
+<td>$</td>
+<td>移动至行尾</td>
+</tr>
+<tr>
+<td>0</td>
+<td>移动至行首</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  删除命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>删除光标所在处字符</td>
+</tr>
+<tr>
+<td>nx</td>
+<td>删除光标所在处后n个字符</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>删除光标所在行，ndd删除n行</td>
+</tr>
+<tr>
+<td>dG</td>
+<td>删除光标所在行到文件末尾内容</td>
+</tr>
+<tr>
+<td>D</td>
+<td>删除光标所在处到行尾内容</td>
+</tr>
+<tr>
+<td>: nl,n2d</td>
+<td>删除指定范围的行</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  复制和剪切命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yy</td>
+<td>复制当前行</td>
+</tr>
+<tr>
+<td>nyy</td>
+<td>复制当前行以下n行</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>剪切当前行</td>
+</tr>
+<tr>
+<td>ndd</td>
+<td>剪切当前行以下n行</td>
+</tr>
+<tr>
+<td>p、P</td>
+<td>粘贴在当前光标所在行下或行上</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  替换和取消命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r</td>
+<td>取代光标所在处字符</td>
+</tr>
+<tr>
+<td>R</td>
+<td>从光标所在处开始替换字符，按Esc结束</td>
+</tr>
+<tr>
+<td>u</td>
+<td>取消上一步操作</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  搜索和搜索替换命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/string</td>
+<td>搜索指定字符串<br>搜索时忽略大小写 :set ic</td>
+</tr>
+<tr>
+<td>n</td>
+<td>搜索指定字符串的下一个出现位置</td>
+</tr>
+<tr>
+<td>: %s/old/new/g</td>
+<td>全文替换指定字符串</td>
+</tr>
+<tr>
+<td>: n1,n2s/old/new/g</td>
+<td>在一定范围内替换指定字符串</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  保存和退出命令</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>: w</td>
+<td>保存修改</td>
+</tr>
+<tr>
+<td>:w new_filename</td>
+<td>另存为指定文件</td>
+</tr>
+<tr>
+<td>: wq</td>
+<td>保存修改并退出</td>
+</tr>
+<tr>
+<td>ZZ</td>
+<td>快捷键，保存修改并退出</td>
+</tr>
+<tr>
+<td>: q!</td>
+<td>不保存修改退出</td>
+</tr>
+<tr>
+<td>: wq!</td>
+<td>保存修改并退出（文件所有者及root可使用）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  定制快捷键：map 快捷键 触发命令</p>
+<p>  导入命令执行结果：r ！命令</p>
+<p>  替换：ab test test123</p>
+<ul>
 <li><h4 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h4><p>软件包分类</p>
 <ul>
 <li>源码包</li>
@@ -487,6 +714,34 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">groupadd [选项] 组名 #添加用户组</span><br><span class="line">	-g GID	指定组ID</span><br><span class="line">	</span><br><span class="line">groupmod [选项] 组名 #修改用户组</span><br><span class="line">	-g GID	修改组ID</span><br><span class="line">	-n 新组名 修改组名</span><br><span class="line">	</span><br><span class="line">groupdel 组名	#删除用户组</span><br><span class="line"></span><br><span class="line">gpasswd [选项] 组名 #把用户添加入组或从组中删除</span><br><span class="line">	-a 用户名 : 把用户加入组</span><br><span class="line">	-d 用户名 : 把用户从组中删除</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Item</th>
+<th style="text-align:right">Value</th>
+<th style="text-align:center">Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Computer</td>
+<td style="text-align:right">1600 USD</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:left">Phone</td>
+<td style="text-align:right">12 USD</td>
+<td style="text-align:center">12</td>
+</tr>
+<tr>
+<td style="text-align:left">Pipe</td>
+<td style="text-align:right">1 USD</td>
+<td style="text-align:center">234</td>
+</tr>
+</tbody>
+</table>
+</div>
 
       
     </div>
