@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-07T04:27:36.127Z">
+<meta property="og:updated_time" content="2021-02-07T12:36:57.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux学习笔记">
 <meta name="twitter:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
@@ -712,6 +712,63 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">su</span><br><span class="line"></span><br><span class="line">su [选项] 用户名</span><br><span class="line">	- : 选项只使用“-”代表连带用户的环境变量一起切换</span><br><span class="line">	-c命令 : 仅执行一次命令，而不切换用户身份</span><br></pre></td></tr></table></figure>
 <p>用户和用户组管理</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">groupadd [选项] 组名 #添加用户组</span><br><span class="line">	-g GID	指定组ID</span><br><span class="line">	</span><br><span class="line">groupmod [选项] 组名 #修改用户组</span><br><span class="line">	-g GID	修改组ID</span><br><span class="line">	-n 新组名 修改组名</span><br><span class="line">	</span><br><span class="line">groupdel 组名	#删除用户组</span><br><span class="line"></span><br><span class="line">gpasswd [选项] 组名 #把用户添加入组或从组中删除</span><br><span class="line">	-a 用户名 : 把用户加入组</span><br><span class="line">	-d 用户名 : 把用户从组中删除</span><br></pre></td></tr></table></figure>
+<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><p>ACL权限：解决身份不足</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">查看ACL命令</span><br><span class="line"></span><br><span class="line">getfacl 文件名	#查看acl权限</span><br><span class="line"></span><br><span class="line">setfacl 选项 文件名	#设定ACL权限的命令</span><br><span class="line">	-m	设定ACL权限</span><br><span class="line">	-x	删除指定的ACL权限</span><br><span class="line">	-b	删除所有的ACL权限</span><br><span class="line">	-d	设定默认ACL权限</span><br><span class="line">	-k	删除默认ACL权限</span><br><span class="line">	-R	递归设定ACL权限 </span><br><span class="line">	</span><br><span class="line">setfcal -x u:用户名 文件名	#删除指定用户的ACL权限</span><br><span class="line">setfacl -x g:组名	文件名		#删除指定用户组的ACL权限</span><br><span class="line">setfacl	-m u:用户名:权限 -R 文件名	#递归ACL权限</span><br><span class="line">setfacl	-m d:u:用户名:权限 文件名	#默认ACL权限</span><br></pre></td></tr></table></figure>
+<p>最大有效权限mask：mask是用来指定最大有效权限的，如果我给用户赋予了ACL权限，是需要和mask的权限“相与”才能得到用户的真正权限。</p>
+<p>递归ACL权限：递归是父目录在设定ACL权限时，所有的子文件和子目录也会拥有相同的ACL权限</p>
+<p>默认ACL权限：默认ACL权限的作用时如果给父目录设定了默认ACL权限，那么父目录中所有新建的子文件都会继承父目录的ACL权限</p>
+<p>文件特殊权限</p>
+<ul>
+<li><p>SetUID的功能</p>
+<ul>
+<li>只有可以执行的二进制程序才能设定SUID权限</li>
+<li>命令执行者要对该程序拥有x（执行）权限</li>
+<li>命令执行者在执行该程序时获得该程序文件属主的身份</li>
+<li>SetUID权限只在该程序执行过程中有效</li>
+</ul>
+</li>
+<li><p>设定SetUID的方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 4755 文件名	#4代表SUID</span><br><span class="line">chmod	u+s	文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>SetGID针对目录的作用</p>
+<ul>
+<li>普通用户必须对此目录拥有r和x权限，才能进入此目录</li>
+<li>普通用户在此目录中的有效组会变成此目录的属组</li>
+<li>若普通用户对此目录拥有w权限时，新建的文件的默认属组是这个目录的属组</li>
+</ul>
+</li>
+<li><p>SetGID针对文件的作用</p>
+<ul>
+<li>只有可执行的二进制程序才能设置SGID权限</li>
+<li>命令执行者要对该程序拥有x（执行）权限</li>
+<li>命令执行在执行程序的时候，组身份升级为该程序文件的属组</li>
+<li>SetGID权限同样只在该程序执行过程中有效，也就是说组身份改变只在程序执行过程中有效</li>
+</ul>
+</li>
+<li><p>设定SetGID的方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 2755 文件名	#2代表SGID</span><br><span class="line">chmod	g+s	文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>SBIT粘着位作用</p>
+<ul>
+<li>粘着位目前只对目录有效</li>
+<li>普通用户对该目录拥有w和x权限， 即普通用户可以在此目录拥有写入权限</li>
+<li>如果没有粘着位，因为普通用户拥有w权限，所以可以删除此目录下所有文件，包括其他用户建立的文件，一旦赋予了粘着位。除了root可以删除所有文件，普通用户就算拥有w权限，也只能删除自己建立的文件，但是不能删除其他用户建立的文件</li>
+</ul>
+</li>
+<li><p>设置和取消粘着位</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">设置粘着位</span><br><span class="line">  chmod 1755 目录名</span><br><span class="line">  chmod	o+t	目录名</span><br><span class="line"></span><br><span class="line">取消粘着位</span><br><span class="line">  chmod 777 目录名</span><br><span class="line">  chmod	o-t	目录名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>文件系统属性权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">chattr</span><br><span class="line">	chattr [+-=] [选项] 文件或目录名</span><br><span class="line">		+: 增加权限</span><br><span class="line">		-: 删除权限</span><br><span class="line">		=: 等于某权限</span><br><span class="line">	选项</span><br><span class="line">		i: 如果对文件设置i属性，那么不允许对文件进行删除、改名，也不能添加和修改数据，如果对目录设置i属性，那么只能修改目录下文件的数据，但不允许建立和删除文件</span><br><span class="line">		a: 如果对文件设置a属性，那么只能在文件中增加数据，但是不能删除也不能修改数据，如果对目录设置a属性，那么只允许在目录中建立和修改文件，但是不允许删除</span><br><span class="line">		</span><br><span class="line">lasttr 选项 文件名	#查看文件系统属性</span><br><span class="line">	-a 显示所有文件和目录</span><br><span class="line">	-d 若目标是目录，仅列出目录本身的属性，而不是子文件的</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>系统命令权限</p>
+<p>sudo权限</p>
+<ul>
+<li>root把本来只能超级用户执行的命令赋予普通用户执行</li>
+<li>sudo的操作对象是系统命令</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 
@@ -819,7 +876,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">Caoyifan</p>
-              <p class="site-description motion-element" itemprop="description">web漏洞 代码审计 xss</p>
+              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -891,7 +948,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件处理命令"><span class="nav-number">1.</span> <span class="nav-text">文件处理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理命令"><span class="nav-number">2.</span> <span class="nav-text">权限管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件搜索命令"><span class="nav-number">3.</span> <span class="nav-text">文件搜索命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#帮助命令"><span class="nav-number">4.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令"><span class="nav-number">5.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压命令"><span class="nav-number">6.</span> <span class="nav-text">压缩解压命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络命令"><span class="nav-number">7.</span> <span class="nav-text">网络命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关机重启命令"><span class="nav-number">8.</span> <span class="nav-text">关机重启命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本编辑器"><span class="nav-number">9.</span> <span class="nav-text">文本编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件包管理"><span class="nav-number">10.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用yum命令"><span class="nav-number">11.</span> <span class="nav-text">常用yum命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户和用户组管理"><span class="nav-number">12.</span> <span class="nav-text">用户和用户组管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令-1"><span class="nav-number">13.</span> <span class="nav-text">用户管理命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件处理命令"><span class="nav-number">1.</span> <span class="nav-text">文件处理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理命令"><span class="nav-number">2.</span> <span class="nav-text">权限管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件搜索命令"><span class="nav-number">3.</span> <span class="nav-text">文件搜索命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#帮助命令"><span class="nav-number">4.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令"><span class="nav-number">5.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压命令"><span class="nav-number">6.</span> <span class="nav-text">压缩解压命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络命令"><span class="nav-number">7.</span> <span class="nav-text">网络命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关机重启命令"><span class="nav-number">8.</span> <span class="nav-text">关机重启命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本编辑器"><span class="nav-number">9.</span> <span class="nav-text">文本编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件包管理"><span class="nav-number">10.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用yum命令"><span class="nav-number">11.</span> <span class="nav-text">常用yum命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户和用户组管理"><span class="nav-number">12.</span> <span class="nav-text">用户和用户组管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令-1"><span class="nav-number">13.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">14.</span> <span class="nav-text">权限管理</span></a></li></ol></div>
             
 
           </div>
