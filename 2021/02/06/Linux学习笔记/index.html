@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-07T12:36:57.503Z">
+<meta property="og:updated_time" content="2021-02-19T12:50:10.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux学习笔记">
 <meta name="twitter:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
@@ -770,7 +770,144 @@
 </li>
 </ul>
 </li>
+<li><h4 id="文件系统常用命令"><a href="#文件系统常用命令" class="headerlink" title="文件系统常用命令"></a>文件系统常用命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">df [选项] [挂载点]	#文件系统查看命令</span><br><span class="line">	-a	显示所有的文件系统信息，包括特殊文件系统，如/proc、/sysfs</span><br><span class="line">	-h	使用习惯单位显示容量，如KB，MB或GB等</span><br><span class="line">	-T	显示文件系统类型</span><br><span class="line">	-m	以MB为单位显示容量</span><br><span class="line">	-k	以KB为单位显示容量</span><br><span class="line">	</span><br><span class="line">du [选项] [目录或文件名]	#统计目录或文件大小</span><br><span class="line">	-a	显示每个子文件的磁盘占用量，默认只统计子目录的磁盘占用量</span><br><span class="line">	-h	使用习惯单位显示容量，如KB，MB或GB等</span><br><span class="line">	-s	统计总占用量，而不列出子目录和子文件的占用量</span><br><span class="line">	</span><br><span class="line">fsck [选项] 分区设备文件名	#文件系统修复命令</span><br><span class="line">	-a	不用显示用户提示，自动修复文件系统</span><br><span class="line">	-y	自动修复，和-a作用一致，不过有些文件系统只支持-y</span><br><span class="line">	</span><br><span class="line">dumpe2fs 分区设备文件名	#显示磁盘状态命令</span><br><span class="line"></span><br><span class="line">mount	[-l]	#查询系统中已经挂载的设备，-l会显示卷标名称</span><br><span class="line">mount -a	#依据配置文件/etc/fstab的内容，自动挂载</span><br><span class="line"></span><br><span class="line">挂载命令格式</span><br><span class="line">mount [-t 文件系统][-L 卷标名] [-o 特殊选项] 设备文件名 挂载点</span><br><span class="line">	-t 文件系统：加入文件系统类型来指定挂载的类型，可以ext3 ext4、iso9660等文件系统</span><br><span class="line">	-L 卷标名：挂载指定卷标的分区，而不是安装设备文件名挂载</span><br><span class="line">	-o 特殊选项：可以指定挂载的额外选项</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+<ul>
+<li><h4 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h4><p>shell是一个命令行解释器，它为用户提供了一个向Linux内核发送请求以便运行程序的界面系统级程序，用户可以用Shell来启动、挂起、停止甚至是编写一些程序。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo 输出命令</span><br><span class="line">echo [选项] [输出内容]</span><br><span class="line">	-e	支持反斜线控制的字符转换</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><h4 id="Bash基本功能"><a href="#Bash基本功能" class="headerlink" title="Bash基本功能"></a>Bash基本功能</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history [选项] [历史命令保存文件] #历史命令</span><br><span class="line">	-c	清空历史命令</span><br><span class="line">	-w	把缓存中的历史命令写入历史命令保存文件~/.bash_history</span><br><span class="line">	</span><br><span class="line">alias #查询命令别名</span><br><span class="line">alias 别名='原命令' #设定命令别名</span><br><span class="line">unalias 别名 #删除别名</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>  输出重定向</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>符号</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标准输出</td>
+<td>命令 &gt; 文件</td>
+<td>以覆盖的方式把命令的正确输出输出到指定的文件或设备当中</td>
+</tr>
+<tr>
+<td>重定向</td>
+<td>命令 &gt;&gt; 文件</td>
+<td>以追加的方式把命令的正确输出输出到指定的文件或设备当中</td>
+</tr>
+<tr>
+<td>标准错误输出</td>
+<td>错误命令 2&gt; 文件</td>
+<td>以覆盖的方式，把命令的错误输出输出到指定的文件或设备当中</td>
+</tr>
+<tr>
+<td>重定向</td>
+<td>错误命令 2&gt;&gt; 文件</td>
+<td>以追加的方式，把命令的错误输出输出到指定的文件或设备当中</td>
+</tr>
+<tr>
+<td>正确输出</td>
+<td>命令 &gt; 文件 2&gt;&amp;1</td>
+<td>以覆盖的方式，把正确输出和错误输出都保存到同一个文件当中</td>
+</tr>
+<tr>
+<td>和</td>
+<td>命令 &gt;&gt; 文件 2&gt;&amp;1</td>
+<td>以追加的方式，把正确输出和错误输出都保存到同一个文件当中</td>
+</tr>
+<tr>
+<td>错误输出</td>
+<td>命令 &amp;&gt; 文件</td>
+<td>以覆盖的方式，把正确输出和错误输出都保存到同一个文件当中</td>
+</tr>
+<tr>
+<td>同时保存</td>
+<td>命令 &amp;&gt;&gt; 文件</td>
+<td>以追加的方式，把正确输出和错误输出都保存到同一个文件当中</td>
+</tr>
+<tr>
+<td></td>
+<td>命令 &gt;&gt; 文件1 2&gt;&gt; 文件2</td>
+<td>把正确的输出追加到文件1中，把错误的输出追加到文件2中</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  输入重定向</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wc [选项] [文件名]</span><br><span class="line">	-c	统计字节数</span><br><span class="line">	-w	统计单词数</span><br><span class="line">	-l	统计行数</span><br></pre></td></tr></table></figure>
+<p>  多命令顺序执行</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>多命令执行符</th>
+<th>格式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>;</td>
+<td>命令1; 命令2;</td>
+<td>多个命令顺序执行，命令之间没有任何逻辑联系</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>命令1&amp;&amp;命令2</td>
+<td>逻辑与<br>当命令1正确执行，则命令2才会执行<br>当命令1执行不正确，则命令2不会执行</td>
+</tr>
+<tr>
+<td>｜｜</td>
+<td>命令1｜｜命令2</td>
+<td>逻辑或<br>当命令1执行不正确，则命令2才会执行<br>当命令1执行正确，则命令2不会执行</td>
+</tr>
+</tbody>
+</table>
+</div>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dd if=输入文件 of=输出文件 bs=字节数 count=个数</span><br><span class="line">	if=输入文件	指定源文件或源设备</span><br><span class="line">	of=输出文件	指定目标文件或目标设备</span><br><span class="line">	bs=字节数	 指定一次输入/输出多少字节，即把这些字节看作一个数据块</span><br><span class="line">	count=个数	指定输入/输出多少个数据块</span><br><span class="line"></span><br><span class="line">example：</span><br><span class="line">	date ; dd if=/dev/zero of=/root/testfile bs=1k count=100000 ; date</span><br></pre></td></tr></table></figure>
+<p>  管道符</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">命令1 | 命令2 #命令1的正确输出作为命令2的操作对象</span><br><span class="line">	ll -a /etc/ | more</span><br><span class="line">	netstat -an | grep 'ESTABLISHED'</span><br><span class="line">	</span><br><span class="line">grep [选项] “搜索内容” 文件名</span><br><span class="line">	-i	忽略大小写</span><br><span class="line">	-n	输出行号</span><br><span class="line">	-v	反向查找</span><br><span class="line">	--color=auto	搜索出的关键字用颜色显示</span><br></pre></td></tr></table></figure>
+<p>  通配符</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>？</td>
+<td>匹配一个任意字符</td>
+</tr>
+<tr>
+<td>*</td>
+<td>匹配0个或任意多个任意字符，也就是可以匹配任何内容</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>匹配中括号中任意一个字符，例如：[abc]代表一定匹配一个字符，或者是a,或者是b,或者是c</td>
+</tr>
+<tr>
+<td>[-]</td>
+<td>匹配中括号中任意一个字符，例如[a-z]代表匹配一个小写字母</td>
+</tr>
+<tr>
+<td>[ ^ ]</td>
+<td>逻辑非，表示匹配不是中括号内的一个字符，例如[ ^0-9 ]表示匹配一个不是数字的字符</td>
+</tr>
+</tbody>
+</table>
+</div>
 
       
     </div>
@@ -948,7 +1085,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件处理命令"><span class="nav-number">1.</span> <span class="nav-text">文件处理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理命令"><span class="nav-number">2.</span> <span class="nav-text">权限管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件搜索命令"><span class="nav-number">3.</span> <span class="nav-text">文件搜索命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#帮助命令"><span class="nav-number">4.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令"><span class="nav-number">5.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压命令"><span class="nav-number">6.</span> <span class="nav-text">压缩解压命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络命令"><span class="nav-number">7.</span> <span class="nav-text">网络命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关机重启命令"><span class="nav-number">8.</span> <span class="nav-text">关机重启命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本编辑器"><span class="nav-number">9.</span> <span class="nav-text">文本编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件包管理"><span class="nav-number">10.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用yum命令"><span class="nav-number">11.</span> <span class="nav-text">常用yum命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户和用户组管理"><span class="nav-number">12.</span> <span class="nav-text">用户和用户组管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令-1"><span class="nav-number">13.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">14.</span> <span class="nav-text">权限管理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件处理命令"><span class="nav-number">1.</span> <span class="nav-text">文件处理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理命令"><span class="nav-number">2.</span> <span class="nav-text">权限管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件搜索命令"><span class="nav-number">3.</span> <span class="nav-text">文件搜索命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#帮助命令"><span class="nav-number">4.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令"><span class="nav-number">5.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压命令"><span class="nav-number">6.</span> <span class="nav-text">压缩解压命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络命令"><span class="nav-number">7.</span> <span class="nav-text">网络命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关机重启命令"><span class="nav-number">8.</span> <span class="nav-text">关机重启命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本编辑器"><span class="nav-number">9.</span> <span class="nav-text">文本编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件包管理"><span class="nav-number">10.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用yum命令"><span class="nav-number">11.</span> <span class="nav-text">常用yum命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户和用户组管理"><span class="nav-number">12.</span> <span class="nav-text">用户和用户组管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令-1"><span class="nav-number">13.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">14.</span> <span class="nav-text">权限管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统常用命令"><span class="nav-number">15.</span> <span class="nav-text">文件系统常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">16.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bash基本功能"><span class="nav-number">17.</span> <span class="nav-text">Bash基本功能</span></a></li></ol></div>
             
 
           </div>
