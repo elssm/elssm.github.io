@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-19T12:50:10.615Z">
+<meta property="og:updated_time" content="2021-02-25T07:37:04.308Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux学习笔记">
 <meta name="twitter:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
@@ -908,6 +908,87 @@
 </tbody>
 </table>
 </div>
+<ul>
+<li><h4 id="Bash变量"><a href="#Bash变量" class="headerlink" title="Bash变量"></a>Bash变量</h4></li>
+</ul>
+<p>  位置参数变量</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>位置参数变量</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$n</td>
+<td>n为数字,$0代表命令本身,$1-$9代表第一到第九个参数，十以上的参数需要用大括号包含如${10}</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>这个变量代表命令行中所有的参数，$*把所有的参数看成一个整体</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>这个变量也代表命令行中所有的参数，不过$@把每个参数区分对待</td>
+</tr>
+<tr>
+<td>$#</td>
+<td>这个变量代表命令行中所有参数的个数</td>
+</tr>
+</tbody>
+</table>
+</div>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">num1=$1</span><br><span class="line">num2=$2</span><br><span class="line">sum=$(($num1+$num2))</span><br><span class="line">echo $sum</span><br></pre></td></tr></table></figure>
+<p>  预定义变量</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>预定义变量</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$?</td>
+<td>最后一次执行的命令的返回状态。如果这个变量的值为0，证明上一个命令正确执行，如果这个变量的值为非0，则证明上一个命令执行不正确。</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>当前进程的进程号（PID）</td>
+</tr>
+<tr>
+<td>$!</td>
+<td>后台运行的最后一个进程的进程号（PID）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>  接收键盘输入</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">read [选项] [变量名]</span><br><span class="line">	-p 提示信息：在等待read输入时，输出提示信息</span><br><span class="line">	-t 秒数：read命令回一致等待用户输入，使用此选项可以指定等待时间</span><br><span class="line">	-n 字符数：read命令只接受指定的字符数，就会执行</span><br><span class="line">	-s： 隐藏输入的数据，适用于机密信息的输入</span><br></pre></td></tr></table></figure>
+<p>  declare声明变量类型</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">declare [+/-][选项] 变量名</span><br><span class="line">	-：给变量设定类型属性</span><br><span class="line">	+：取消变量的类型属性</span><br><span class="line">	-i：将变量声明为整数型</span><br><span class="line">	-x：将变量声明为环境变量</span><br><span class="line">	-p：显示指定变量的被声明的类型</span><br></pre></td></tr></table></figure>
+<p>  三种数值运算举例</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a=1</span><br><span class="line">b=2</span><br><span class="line"></span><br><span class="line">declare -i c=$a+$b</span><br><span class="line">echo $c</span><br><span class="line"></span><br><span class="line">d=$(expr $a + $b)	#‘+’左右两侧必须要有空格</span><br><span class="line">echo $d </span><br><span class="line"></span><br><span class="line">f=$(($a+$b))</span><br><span class="line">echo $f</span><br></pre></td></tr></table></figure>
+<ul>
+<li><h4 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h4><p>环境变量配置文件中主要是定义对系统的操作环境生效的系统默认环境变量，比如<code>PATH</code>、<code>HISTSIZE</code>、<code>PS1</code>、<code>HOSTNAME</code>等默认环境变量</p>
+<p><code>/etc/profile</code></p>
+<p><code>/etc/profile.d/*.sh</code></p>
+<p><code>~/.bash_profile</code></p>
+<p><code>~/.bashrc</code></p>
+<p><code>/etc/bashrc</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source命令</span><br><span class="line">source 配置文件 或 .配置文件</span><br></pre></td></tr></table></figure>
+<p>注销时生效的环境变量配置文件：<code>~/.bash_logout</code></p>
+<p>其他配置文件：<code>~bash_history</code></p>
+</li>
+<li><h4 id="正则表达式与通配符"><a href="#正则表达式与通配符" class="headerlink" title="正则表达式与通配符"></a>正则表达式与通配符</h4><p>正则表达式用来在文件中匹配符合条件的字符串，正则时包含匹配。grep、awk、sed等命令可以支持正则表达式</p>
+<p>通配符用来匹配符合条件的文件名，通配符是完全匹配。ls、find、cp这些命令不支持正则表达式，所以只能使用shell自己的通配符来进行匹配了</p>
+<p>基础正则表达式</p>
+<p>| 元字符     | 作用                                           |<br>| ————— | ——————————————————————— |<br>| *          | 前一个字符匹配0次或任意多次                    |<br>| .          | 匹配除了换行符外任意一个字符                   |<br>| ^          | 匹配行首，例如：^hello会匹配以hello开头的行    |<br>| $          | 匹配行尾，例如：hello&amp;会匹配以hello结尾的行    |<br>| []         | 匹配中括号中指定的任意一个字符，只匹配一个字符 |<br>| <sup><a href="#fn_" id="reffn_"></a></sup>        | 匹配除中括号的字符以外的任意一个字符           |<br>| \          | 转义符                                         |<br>| \\\{n\\}   | 表示其前面的字符恰好出现n次                    |<br>| \\\{n,\\}  | 表示其前面的字符出现不小于n次                  |<br>| \\\{n,m\\} | 表示其前面的字符至少出现n次，最多出现m次       |</p>
+</li>
+</ul>
 
       
     </div>
@@ -1085,7 +1166,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件处理命令"><span class="nav-number">1.</span> <span class="nav-text">文件处理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理命令"><span class="nav-number">2.</span> <span class="nav-text">权限管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件搜索命令"><span class="nav-number">3.</span> <span class="nav-text">文件搜索命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#帮助命令"><span class="nav-number">4.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令"><span class="nav-number">5.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压命令"><span class="nav-number">6.</span> <span class="nav-text">压缩解压命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络命令"><span class="nav-number">7.</span> <span class="nav-text">网络命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关机重启命令"><span class="nav-number">8.</span> <span class="nav-text">关机重启命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本编辑器"><span class="nav-number">9.</span> <span class="nav-text">文本编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件包管理"><span class="nav-number">10.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用yum命令"><span class="nav-number">11.</span> <span class="nav-text">常用yum命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户和用户组管理"><span class="nav-number">12.</span> <span class="nav-text">用户和用户组管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令-1"><span class="nav-number">13.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">14.</span> <span class="nav-text">权限管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统常用命令"><span class="nav-number">15.</span> <span class="nav-text">文件系统常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">16.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bash基本功能"><span class="nav-number">17.</span> <span class="nav-text">Bash基本功能</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件处理命令"><span class="nav-number">1.</span> <span class="nav-text">文件处理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理命令"><span class="nav-number">2.</span> <span class="nav-text">权限管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件搜索命令"><span class="nav-number">3.</span> <span class="nav-text">文件搜索命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#帮助命令"><span class="nav-number">4.</span> <span class="nav-text">帮助命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令"><span class="nav-number">5.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压命令"><span class="nav-number">6.</span> <span class="nav-text">压缩解压命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络命令"><span class="nav-number">7.</span> <span class="nav-text">网络命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关机重启命令"><span class="nav-number">8.</span> <span class="nav-text">关机重启命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本编辑器"><span class="nav-number">9.</span> <span class="nav-text">文本编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件包管理"><span class="nav-number">10.</span> <span class="nav-text">软件包管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用yum命令"><span class="nav-number">11.</span> <span class="nav-text">常用yum命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户和用户组管理"><span class="nav-number">12.</span> <span class="nav-text">用户和用户组管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户管理命令-1"><span class="nav-number">13.</span> <span class="nav-text">用户管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限管理"><span class="nav-number">14.</span> <span class="nav-text">权限管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统常用命令"><span class="nav-number">15.</span> <span class="nav-text">文件系统常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">16.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bash基本功能"><span class="nav-number">17.</span> <span class="nav-text">Bash基本功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bash变量"><span class="nav-number">18.</span> <span class="nav-text">Bash变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#环境变量配置"><span class="nav-number">19.</span> <span class="nav-text">环境变量配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正则表达式与通配符"><span class="nav-number">20.</span> <span class="nav-text">正则表达式与通配符</span></a></li></ol></div>
             
 
           </div>
