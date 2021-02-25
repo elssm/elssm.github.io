@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-25T07:37:04.308Z">
+<meta property="og:updated_time" content="2021-02-25T07:56:01.972Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux学习笔记">
 <meta name="twitter:description" content="文件处理命令123456ls-a 显示所有文件，包括隐藏文件-l 详细信息显示-d 查看目录属性-i 查询文件号-h 文件大小显示更直观 123456789#文件类型f 文件d 目录l 软链接#文件权限r 读w 写x 执行 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748">
@@ -624,9 +624,7 @@
 </tbody>
 </table>
 </div>
-<p>  定制快捷键：map 快捷键 触发命令</p>
-<p>  导入命令执行结果：r ！命令</p>
-<p>  替换：ab test test123</p>
+<p>  定制快捷键：map 快捷键 触发命令<br>  导入命令执行结果：r ！命令<br>  替换：ab test test123</p>
 <ul>
 <li><h4 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h4><p>软件包分类</p>
 <ul>
@@ -659,8 +657,7 @@
 </ul>
 <p>RPM包命名规则</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">httpd-2.2.15-15.el6.centos.1.i686.rpm</span><br><span class="line"></span><br><span class="line">httpd						#软件包名</span><br><span class="line">2.2.15					#软件版本</span><br><span class="line">15							#软件发布的次数</span><br><span class="line">el6.centos			#适合的Linux平台</span><br><span class="line">i686						#适合的硬件平台</span><br><span class="line">rpm							#rpm包扩展名</span><br></pre></td></tr></table></figure>
-<p>包全名：操作的包是没有安装的软件包时，使用包全名，而且要注意路径。</p>
-<p>包名：操作已经安装的软件包时，使用包名。是搜索<code>/var/lib/rpm</code>中的数据库。</p>
+<p>包全名：操作的包是没有安装的软件包时，使用包全名，而且要注意路径。<br>包名：操作已经安装的软件包时，使用包名。是搜索<code>/var/lib/rpm</code>中的数据库。</p>
 <p>RPM安装</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh 包全名</span><br><span class="line">	-i（install）		安装</span><br><span class="line">	-v（verbose）		显示详细信息</span><br><span class="line">	-h（hash）			显示进度</span><br><span class="line">	-nodeps				 不显示依赖性</span><br></pre></td></tr></table></figure>
 <p>RPM卸载</p>
@@ -669,17 +666,14 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">rpm -q 包名	#查询包是否安装</span><br><span class="line">	-q 查询 </span><br><span class="line">rpm -qa		 #查询所有已经安装的RPM包 </span><br><span class="line">	-a 所有</span><br><span class="line">rpm -qi 包名 #查询软件包详细信息</span><br><span class="line">	-i 查询软件信息</span><br><span class="line">	-p 查询未安装包信息</span><br><span class="line">rpm -ql 包名 #查询包中文件安装位置</span><br><span class="line">	-l 列表</span><br><span class="line">	-p 查询未安装包信息</span><br><span class="line">rpm -qf 系统文件名 #查询系统文件属于哪个RPM包</span><br><span class="line">	-f 查询系统文件属于哪个文件包</span><br><span class="line">rpm -qR 包名 #查询软件包的依赖性</span><br><span class="line">	-R 查询软件包的依赖性</span><br><span class="line">	-p 查询未安装包信息 </span><br><span class="line">rpm -V 已安装的包名 #RPM包校验</span><br><span class="line">	-V 校验指定RPM包中的文件</span><br><span class="line">rpm2cpio 包全名 ｜ cpio -idv .文件绝对路径 #RPM包中文件提取</span><br><span class="line">	-i : copy-in模式，还原</span><br><span class="line">	-d : 还原时自动新建目录</span><br><span class="line">	-v : 显示还原过程</span><br></pre></td></tr></table></figure>
 </li>
 <li><h4 id="常用yum命令"><a href="#常用yum命令" class="headerlink" title="常用yum命令"></a>常用yum命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">yum list #查询所有可用软件包列表</span><br><span class="line">yum search #搜索服务器上所有和关键字相关的包</span><br><span class="line">yum -y install 包名</span><br><span class="line">	install 安装</span><br><span class="line">	-y 自动回答yes</span><br><span class="line">yum -y updata 包名 </span><br><span class="line">	updata 升级</span><br><span class="line">	-y 自动回答yes</span><br><span class="line">yum -y remove 包名</span><br><span class="line">	remove 卸载</span><br><span class="line">	-y 自动回答yes</span><br><span class="line">yum grouplist #列出所有可用的软件组列表</span><br><span class="line">yum groupinstall 软件组名 #安装指定软件组，组名可以由grouplist查询出来</span><br><span class="line">yum groupremove 软件组名 #卸载指定软件组</span><br></pre></td></tr></table></figure>
-<p>RPM包安装的服务可以使用系统服务管理命令（service）来管理</p>
-<p>源码包安装的服务则不能被服务管理命令管理，因为没有安装到默认路径中，所以只能用绝对路径进行服务的管理</p>
+<p>RPM包安装的服务可以使用系统服务管理命令（service）来管理<br>源码包安装的服务则不能被服务管理命令管理，因为没有安装到默认路径中，所以只能用绝对路径进行服务的管理</p>
 </li>
 <li><h4 id="用户和用户组管理"><a href="#用户和用户组管理" class="headerlink" title="用户和用户组管理"></a>用户和用户组管理</h4><ul>
 <li>越是对服务器安全性要求高的服务器，越需要建立合理的用户权限等级制度和服务器操作规范</li>
 <li>在Linux中主要是通过用户配置文件来查看和修改用户信息</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/etc/passwd #用户信息文件</span><br><span class="line"></span><br><span class="line">  第1字段：用户名称</span><br><span class="line">  第2字段：密码标志</span><br><span class="line">  第3字段：UID（用户ID）</span><br><span class="line">    0：超级用户</span><br><span class="line">    1-499：系统用户（伪用户）</span><br><span class="line">    500-65535：普通用户</span><br><span class="line">  第4字段：GID（用户初始组ID）</span><br><span class="line">  第5字段：用户说明</span><br><span class="line">  第6字段：家目录</span><br><span class="line">    普通用户：/home/用户名/</span><br><span class="line">    超级用户：/root/</span><br><span class="line">  第7字段：登录之后的shell</span><br></pre></td></tr></table></figure>
-<p>初始组：指用户一登录就立刻拥有这个用户组的相关权限，每个用户的初始组只能有一个，一般就是和这个用户的用户名相同的组名作为这个用户的初始组</p>
-<p>附加组：指用户可以加入多个其他的用户组，并拥有这些组的权限，附加组可以有多个</p>
-<p>Shell：shell就是Linux的命令解释器，在<code>/etc/passwd</code>当中，除了标准shell是<code>/bin/bash</code>之外，还可以写如<code>/sbin/nologin</code></p>
+<p>初始组：指用户一登录就立刻拥有这个用户组的相关权限，每个用户的初始组只能有一个，一般就是和这个用户的用户名相同的组名作为这个用户的初始组<br>附加组：指用户可以加入多个其他的用户组，并拥有这些组的权限，附加组可以有多个<br>Shell：shell就是Linux的命令解释器，在<code>/etc/passwd</code>当中，除了标准shell是<code>/bin/bash</code>之外，还可以写如<code>/sbin/nologin</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/etc/shadow #影子文件</span><br><span class="line"></span><br><span class="line">  第1字段：用户名</span><br><span class="line">  第2字段：加密密码</span><br><span class="line">    加密算法升级为SHA512散列加密算法</span><br><span class="line">    如果密码位是“!!”或“*”代表没有密码，不能登录</span><br><span class="line">  第3字段：密码最后一次修改日期</span><br><span class="line">  第4字段：两次密码的修改间隔时间（和第3字段相比）</span><br><span class="line">  第5字段：密码有效期（和第3字段相比）</span><br><span class="line">  第6字段：密码修改到期前的警告天数（和第5字段相比）</span><br><span class="line">  第7字段：密码过期后的宽限天数（和第5字段相比）</span><br><span class="line">    0：代表密码过期后立即失效</span><br><span class="line">    -1:代表密码永远不会失效</span><br><span class="line">  第8字段：账号失效时间</span><br><span class="line">    要用时间戳表示</span><br><span class="line">  第9字段：保留</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/etc/group #组信息文件</span><br><span class="line"></span><br><span class="line">  第1字段：组名</span><br><span class="line">  第2字段：组密码标志</span><br><span class="line">  第3字段：GID</span><br><span class="line">  第4字段：组中附加用户</span><br><span class="line">  </span><br><span class="line">/etc/gshadow #组密码文件</span><br><span class="line"></span><br><span class="line">	第1字段：组名</span><br><span class="line">  第2字段：组密码</span><br><span class="line">  第3字段：组管理员用户名</span><br><span class="line">  第4字段：组中附加用户</span><br></pre></td></tr></table></figure>
 <p>用户管理相关文件</p>
@@ -714,67 +708,87 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">groupadd [选项] 组名 #添加用户组</span><br><span class="line">	-g GID	指定组ID</span><br><span class="line">	</span><br><span class="line">groupmod [选项] 组名 #修改用户组</span><br><span class="line">	-g GID	修改组ID</span><br><span class="line">	-n 新组名 修改组名</span><br><span class="line">	</span><br><span class="line">groupdel 组名	#删除用户组</span><br><span class="line"></span><br><span class="line">gpasswd [选项] 组名 #把用户添加入组或从组中删除</span><br><span class="line">	-a 用户名 : 把用户加入组</span><br><span class="line">	-d 用户名 : 把用户从组中删除</span><br></pre></td></tr></table></figure>
 <h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><p>ACL权限：解决身份不足</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">查看ACL命令</span><br><span class="line"></span><br><span class="line">getfacl 文件名	#查看acl权限</span><br><span class="line"></span><br><span class="line">setfacl 选项 文件名	#设定ACL权限的命令</span><br><span class="line">	-m	设定ACL权限</span><br><span class="line">	-x	删除指定的ACL权限</span><br><span class="line">	-b	删除所有的ACL权限</span><br><span class="line">	-d	设定默认ACL权限</span><br><span class="line">	-k	删除默认ACL权限</span><br><span class="line">	-R	递归设定ACL权限 </span><br><span class="line">	</span><br><span class="line">setfcal -x u:用户名 文件名	#删除指定用户的ACL权限</span><br><span class="line">setfacl -x g:组名	文件名		#删除指定用户组的ACL权限</span><br><span class="line">setfacl	-m u:用户名:权限 -R 文件名	#递归ACL权限</span><br><span class="line">setfacl	-m d:u:用户名:权限 文件名	#默认ACL权限</span><br></pre></td></tr></table></figure>
-<p>最大有效权限mask：mask是用来指定最大有效权限的，如果我给用户赋予了ACL权限，是需要和mask的权限“相与”才能得到用户的真正权限。</p>
-<p>递归ACL权限：递归是父目录在设定ACL权限时，所有的子文件和子目录也会拥有相同的ACL权限</p>
-<p>默认ACL权限：默认ACL权限的作用时如果给父目录设定了默认ACL权限，那么父目录中所有新建的子文件都会继承父目录的ACL权限</p>
+<p>最大有效权限mask：mask是用来指定最大有效权限的，如果我给用户赋予了ACL权限，是需要和mask的权限“相与”才能得到用户的真正权限。<br>递归ACL权限：递归是父目录在设定ACL权限时，所有的子文件和子目录也会拥有相同的ACL权限<br>默认ACL权限：默认ACL权限的作用时如果给父目录设定了默认ACL权限，那么父目录中所有新建的子文件都会继承父目录的ACL权限</p>
 <p>文件特殊权限</p>
 <ul>
 <li><p>SetUID的功能</p>
 <ul>
 <li>只有可以执行的二进制程序才能设定SUID权限</li>
-<li>命令执行者要对该程序拥有x（执行）权限</li>
+</ul>
+</li>
+<li><p>命令执行者要对该程序拥有x（执行）权限</p>
+<ul>
 <li>命令执行者在执行该程序时获得该程序文件属主的身份</li>
 <li>SetUID权限只在该程序执行过程中有效</li>
 </ul>
 </li>
 <li><p>设定SetUID的方法</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 4755 文件名	#4代表SUID</span><br><span class="line">chmod	u+s	文件名</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 4755 文件名	#4代表SUID</span><br><span class="line">  chmod	u+s	文件名</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+</li>
+</ul>
+<ul>
 <li><p>SetGID针对目录的作用</p>
 <ul>
 <li>普通用户必须对此目录拥有r和x权限，才能进入此目录</li>
-<li>普通用户在此目录中的有效组会变成此目录的属组</li>
+</ul>
+</li>
+<li><p>普通用户在此目录中的有效组会变成此目录的属组</p>
+<ul>
 <li>若普通用户对此目录拥有w权限时，新建的文件的默认属组是这个目录的属组</li>
 </ul>
 </li>
 <li><p>SetGID针对文件的作用</p>
 <ul>
 <li>只有可执行的二进制程序才能设置SGID权限</li>
-<li>命令执行者要对该程序拥有x（执行）权限</li>
+</ul>
+</li>
+<li><p>命令执行者要对该程序拥有x（执行）权限</p>
+<ul>
 <li>命令执行在执行程序的时候，组身份升级为该程序文件的属组</li>
 <li>SetGID权限同样只在该程序执行过程中有效，也就是说组身份改变只在程序执行过程中有效</li>
 </ul>
 </li>
 <li><p>设定SetGID的方法</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 2755 文件名	#2代表SGID</span><br><span class="line">chmod	g+s	文件名</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 2755 文件名	#2代表SGID</span><br><span class="line">  chmod	g+s	文件名</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<ul>
 <li><p>SBIT粘着位作用</p>
 <ul>
 <li>粘着位目前只对目录有效</li>
-<li>普通用户对该目录拥有w和x权限， 即普通用户可以在此目录拥有写入权限</li>
+</ul>
+</li>
+<li><p>普通用户对该目录拥有w和x权限， 即普通用户可以在此目录拥有写入权限</p>
+<ul>
 <li>如果没有粘着位，因为普通用户拥有w权限，所以可以删除此目录下所有文件，包括其他用户建立的文件，一旦赋予了粘着位。除了root可以删除所有文件，普通用户就算拥有w权限，也只能删除自己建立的文件，但是不能删除其他用户建立的文件</li>
 </ul>
 </li>
 <li><p>设置和取消粘着位</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">设置粘着位</span><br><span class="line">  chmod 1755 目录名</span><br><span class="line">  chmod	o+t	目录名</span><br><span class="line"></span><br><span class="line">取消粘着位</span><br><span class="line">  chmod 777 目录名</span><br><span class="line">  chmod	o-t	目录名</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">设置粘着位</span><br><span class="line">    chmod 1755 目录名</span><br><span class="line">    chmod	o+t	目录名</span><br><span class="line">  </span><br><span class="line">  取消粘着位</span><br><span class="line">    chmod 777 目录名</span><br><span class="line">    chmod	o-t	目录名</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<ul>
 <li><p>文件系统属性权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">chattr</span><br><span class="line">	chattr [+-=] [选项] 文件或目录名</span><br><span class="line">		+: 增加权限</span><br><span class="line">		-: 删除权限</span><br><span class="line">		=: 等于某权限</span><br><span class="line">	选项</span><br><span class="line">		i: 如果对文件设置i属性，那么不允许对文件进行删除、改名，也不能添加和修改数据，如果对目录设置i属性，那么只能修改目录下文件的数据，但不允许建立和删除文件</span><br><span class="line">		a: 如果对文件设置a属性，那么只能在文件中增加数据，但是不能删除也不能修改数据，如果对目录设置a属性，那么只允许在目录中建立和修改文件，但是不允许删除</span><br><span class="line">		</span><br><span class="line">lasttr 选项 文件名	#查看文件系统属性</span><br><span class="line">	-a 显示所有文件和目录</span><br><span class="line">	-d 若目标是目录，仅列出目录本身的属性，而不是子文件的</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">chattr</span><br><span class="line">  	chattr [+-=] [选项] 文件或目录名</span><br><span class="line">  		+: 增加权限</span><br><span class="line">  		-: 删除权限</span><br><span class="line">  		=: 等于某权限</span><br><span class="line">  	选项</span><br><span class="line">  		i: 如果对文件设置i属性，那么不允许对文件进行删除、改名，也不能添加和修改数据，如果对目录设置i属性，那么只能修改目录下文件的数据，但不允许建立和删除文件</span><br><span class="line">  		a: 如果对文件设置a属性，那么只能在文件中增加数据，但是不能删除也不能修改数据，如果对目录设置a属性，那么只允许在目录中建立和修改文件，但是不允许删除</span><br><span class="line">  		</span><br><span class="line">  lasttr 选项 文件名	#查看文件系统属性</span><br><span class="line">  	-a 显示所有文件和目录</span><br><span class="line">  	-d 若目标是目录，仅列出目录本身的属性，而不是子文件的</span><br></pre></td></tr></table></figure>
 </li>
+</ul>
+<ul>
 <li><p>系统命令权限</p>
 <p>sudo权限</p>
 <ul>
 <li>root把本来只能超级用户执行的命令赋予普通用户执行</li>
+</ul>
+</li>
 <li>sudo的操作对象是系统命令</li>
 </ul>
-</li>
-</ul>
-</li>
+<ul>
 <li><h4 id="文件系统常用命令"><a href="#文件系统常用命令" class="headerlink" title="文件系统常用命令"></a>文件系统常用命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">df [选项] [挂载点]	#文件系统查看命令</span><br><span class="line">	-a	显示所有的文件系统信息，包括特殊文件系统，如/proc、/sysfs</span><br><span class="line">	-h	使用习惯单位显示容量，如KB，MB或GB等</span><br><span class="line">	-T	显示文件系统类型</span><br><span class="line">	-m	以MB为单位显示容量</span><br><span class="line">	-k	以KB为单位显示容量</span><br><span class="line">	</span><br><span class="line">du [选项] [目录或文件名]	#统计目录或文件大小</span><br><span class="line">	-a	显示每个子文件的磁盘占用量，默认只统计子目录的磁盘占用量</span><br><span class="line">	-h	使用习惯单位显示容量，如KB，MB或GB等</span><br><span class="line">	-s	统计总占用量，而不列出子目录和子文件的占用量</span><br><span class="line">	</span><br><span class="line">fsck [选项] 分区设备文件名	#文件系统修复命令</span><br><span class="line">	-a	不用显示用户提示，自动修复文件系统</span><br><span class="line">	-y	自动修复，和-a作用一致，不过有些文件系统只支持-y</span><br><span class="line">	</span><br><span class="line">dumpe2fs 分区设备文件名	#显示磁盘状态命令</span><br><span class="line"></span><br><span class="line">mount	[-l]	#查询系统中已经挂载的设备，-l会显示卷标名称</span><br><span class="line">mount -a	#依据配置文件/etc/fstab的内容，自动挂载</span><br><span class="line"></span><br><span class="line">挂载命令格式</span><br><span class="line">mount [-t 文件系统][-L 卷标名] [-o 特殊选项] 设备文件名 挂载点</span><br><span class="line">	-t 文件系统：加入文件系统类型来指定挂载的类型，可以ext3 ext4、iso9660等文件系统</span><br><span class="line">	-L 卷标名：挂载指定卷标的分区，而不是安装设备文件名挂载</span><br><span class="line">	-o 特殊选项：可以指定挂载的额外选项</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <ul>
-<li><h4 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h4><p>shell是一个命令行解释器，它为用户提供了一个向Linux内核发送请求以便运行程序的界面系统级程序，用户可以用Shell来启动、挂起、停止甚至是编写一些程序。</p>
+<li><h4 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h4><p>shell是一个命令行解释器，它为用户提供了一个向Linux内核发送请求以便运行程序的界面系统级程序,用户可以用Shell来启动、挂起、停止甚至是编写一些程序。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo 输出命令</span><br><span class="line">echo [选项] [输出内容]</span><br><span class="line">	-e	支持反斜线控制的字符转换</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -973,22 +987,66 @@
 <p>  三种数值运算举例</p>
   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a=1</span><br><span class="line">b=2</span><br><span class="line"></span><br><span class="line">declare -i c=$a+$b</span><br><span class="line">echo $c</span><br><span class="line"></span><br><span class="line">d=$(expr $a + $b)	#‘+’左右两侧必须要有空格</span><br><span class="line">echo $d </span><br><span class="line"></span><br><span class="line">f=$(($a+$b))</span><br><span class="line">echo $f</span><br></pre></td></tr></table></figure>
 <ul>
-<li><h4 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h4><p>环境变量配置文件中主要是定义对系统的操作环境生效的系统默认环境变量，比如<code>PATH</code>、<code>HISTSIZE</code>、<code>PS1</code>、<code>HOSTNAME</code>等默认环境变量</p>
-<p><code>/etc/profile</code></p>
-<p><code>/etc/profile.d/*.sh</code></p>
-<p><code>~/.bash_profile</code></p>
-<p><code>~/.bashrc</code></p>
-<p><code>/etc/bashrc</code></p>
+<li><h4 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h4><p>环境变量配置文件中主要是定义对系统的操作环境生效的系统默认环境变量，比如<br><code>PATH</code>、<code>HISTSIZE</code>、<code>PS1</code>、<code>HOSTNAME</code>等默认环境变量<br><code>/etc/profile</code><br><code>/etc/profile.d/*.sh</code><br><code>`~/.bash_profile</code><br><code>~/.bashrc</code><br><code>/etc/bashrc</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source命令</span><br><span class="line">source 配置文件 或 .配置文件</span><br></pre></td></tr></table></figure>
-<p>注销时生效的环境变量配置文件：<code>~/.bash_logout</code></p>
-<p>其他配置文件：<code>~bash_history</code></p>
+<p>注销时生效的环境变量配置文件：<code>~/.bash_logout</code><br>其他配置文件：<code>~bash_history</code></p>
 </li>
-<li><h4 id="正则表达式与通配符"><a href="#正则表达式与通配符" class="headerlink" title="正则表达式与通配符"></a>正则表达式与通配符</h4><p>正则表达式用来在文件中匹配符合条件的字符串，正则时包含匹配。grep、awk、sed等命令可以支持正则表达式</p>
-<p>通配符用来匹配符合条件的文件名，通配符是完全匹配。ls、find、cp这些命令不支持正则表达式，所以只能使用shell自己的通配符来进行匹配了</p>
+<li><h4 id="正则表达式与通配符"><a href="#正则表达式与通配符" class="headerlink" title="正则表达式与通配符"></a>正则表达式与通配符</h4><p>正则表达式用来在文件中匹配符合条件的字符串，正则时包含匹配。grep、awk、sed等命令可以支持正则表达式<br>通配符用来匹配符合条件的文件名，通配符是完全匹配。ls、find、cp这些命令不支持正则表达式，所以只能使用shell自己的通配符来进行匹配了</p>
 <p>基础正则表达式</p>
-<p>| 元字符     | 作用                                           |<br>| ————— | ——————————————————————— |<br>| *          | 前一个字符匹配0次或任意多次                    |<br>| .          | 匹配除了换行符外任意一个字符                   |<br>| ^          | 匹配行首，例如：^hello会匹配以hello开头的行    |<br>| $          | 匹配行尾，例如：hello&amp;会匹配以hello结尾的行    |<br>| []         | 匹配中括号中指定的任意一个字符，只匹配一个字符 |<br>| <sup><a href="#fn_" id="reffn_"></a></sup>        | 匹配除中括号的字符以外的任意一个字符           |<br>| \          | 转义符                                         |<br>| \\\{n\\}   | 表示其前面的字符恰好出现n次                    |<br>| \\\{n,\\}  | 表示其前面的字符出现不小于n次                  |<br>| \\\{n,m\\} | 表示其前面的字符至少出现n次，最多出现m次       |</p>
 </li>
 </ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>元字符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>前一个字符匹配0次或任意多次</td>
+</tr>
+<tr>
+<td>.</td>
+<td>匹配除了换行符外任意一个字符</td>
+</tr>
+<tr>
+<td>^</td>
+<td>匹配行首，例如：^hello会匹配以hello开头的行</td>
+</tr>
+<tr>
+<td>$</td>
+<td>匹配行尾，例如：hello&amp;会匹配以hello结尾的行</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>匹配中括号中指定的任意一个字符，只匹配一个字符</td>
+</tr>
+<tr>
+<td><sup><a href="#fn_" id="reffn_"></a></sup></td>
+<td>匹配除中括号的字符以外的任意一个字符</td>
+</tr>
+<tr>
+<td>\</td>
+<td>转义符</td>
+</tr>
+<tr>
+<td>\{n\}</td>
+<td>表示其前面的字符恰好出现n次</td>
+</tr>
+<tr>
+<td>\{n,\}</td>
+<td>表示其前面的字符出现不小于n次</td>
+</tr>
+<tr>
+<td>\{n,m\}</td>
+<td>表示其前面的字符至少出现n次，最多出现m次</td>
+</tr>
+</tbody>
+</table>
+</div>
 
       
     </div>
