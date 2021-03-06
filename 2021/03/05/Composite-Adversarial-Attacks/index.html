@@ -139,7 +139,8 @@
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/6.png">
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/7.png">
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/8.png">
-<meta property="og:updated_time" content="2021-03-06T13:05:25.548Z">
+<meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/9.png">
+<meta property="og:updated_time" content="2021-03-06T13:28:25.486Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Composite Adversarial Attacks">
 <meta name="twitter:description" content="论文地址：https://arxiv.org/pdf/2012.05434.pdf代码地址：https://github.com/vtddggg/CAA What is adversarial attack？对抗攻击是指通过对输入添加微小的扰动使得分类器分类错误，一般对用于深度学习的网络的攻击算法最为常见，对抗攻击的应用场景包括CV和NLP等。例如，通过对图片添加精心准备的扰动噪声使得分类器出错，">
@@ -432,7 +433,9 @@
 <p><strong>数据配置</strong>：对于CIFAR-10，我们在一个小的子集上搜索最佳策略，该子集包含从训练集中随机选择的4000个示例。测试集中总共使用了10000个示例来评估搜索的策略。对于ImageNet，由于整个验证集比较大，因此作者随机从训练数据库和册书数据库中分别选取1000张图像进行策略搜索和1000张图像进行评估。对于Bird&amp;Bicycle数据集，使用所有250个测试图像评估，以及1000个随机选择的训练图像进行攻击策略搜索。<br><strong>实验总结</strong>：调查了4个案例 1）BestAttack，在候选池中寻找最佳单个攻击者。2）EnsAttack，搜索多个攻击者的集合。3）$CAA_{dic}$，直接搜索给定数据集的CAA策略。4）$CAA_{sub}$，通过攻击对抗性训练模型作为替代进行搜索，并转移到其他模型或任务中。<br>为了研究在黑盒和白盒环境下CAA的可转移性，后续又对不同策略搜索算法和攻击策略长度N的影响进行了研究。分析了非目标攻击和目标攻击搜索策略的区别。</p>
 <p>表2给出了4种变量基于$l_\infty$的攻击结果。这些攻击都是在CIFAR-10数据集上实现的</p>
 <p><img src="/2021/03/05/Composite-Adversarial-Attacks/8.png" alt="8"></p>
-<p>这些攻击者梯度评估的总次数（复杂度）都大于1000，</p>
+<p>这些攻击者梯度评估的总次数（复杂度）都大于1000，相比之下，$CAA_{sub}$具有更低的复杂度（800），并且以更高的错误率打破了模型。这也表明了即使是替代攻击策略也可能具有较高的时间效率和可靠性。</p>
+<p>同样的，在ImageNet数据集上，CAA取得了更大的进步。特别的，$CAA_{sub}$攻击$l_\infty$对抗训练模型的准确率达到38.30%，比最新技术提高了2%左右。这意味着CAA更适合攻击复杂的分类任务。ImageNet分类有更多的类别和更大的图像输入大小。同样我们发现由基础攻击者生成的对抗示例在ImageNet上更加多样化。对于这样一个复杂的任务，攻击策略设计有更多的空间。<br>对于无限制攻击选择Bird&amp;Bicycle基准。并使用排行榜上排名前两名的防御模型LLR和TRADESv2进行评估。</p>
+<p><img src="/2021/03/05/Composite-Adversarial-Attacks/9.png" alt="9"></p>
 
       
     </div>
