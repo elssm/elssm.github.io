@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="入门机器学习的最简单案例就是对MNIST手写数据集的识别。本篇文章将会通过Pytorch框架完成对MNIST手写数据集识别。首先我们来简单了解一下MNIST。 What is MNIST？MNIST数据集是一个有名的手写数字数据集，该数据集包含60000个用于训练的示例和10000个用于测试的示例，这些数字已经经过尺寸标准化并位于图像中心，图像的固定大小是28*28像素，值为0到9。 Pytorc">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MNIST数据集识别(Pytorch)">
+<meta property="og:url" content="elssm.github.io/2021/03/11/MNIST数据集识别-Pytorch/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="入门机器学习的最简单案例就是对MNIST手写数据集的识别。本篇文章将会通过Pytorch框架完成对MNIST手写数据集识别。首先我们来简单了解一下MNIST。 What is MNIST？MNIST数据集是一个有名的手写数字数据集，该数据集包含60000个用于训练的示例和10000个用于测试的示例，这些数字已经经过尺寸标准化并位于图像中心，图像的固定大小是28*28像素，值为0到9。 Pytorc">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/03/11/MNIST数据集识别-Pytorch/1.png">
+<meta property="og:image" content="/2021/03/11/MNIST数据集识别-Pytorch/2.png">
+<meta property="og:updated_time" content="2021-03-11T03:13:52.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MNIST数据集识别(Pytorch)">
+<meta name="twitter:description" content="入门机器学习的最简单案例就是对MNIST手写数据集的识别。本篇文章将会通过Pytorch框架完成对MNIST手写数据集识别。首先我们来简单了解一下MNIST。 What is MNIST？MNIST数据集是一个有名的手写数字数据集，该数据集包含60000个用于训练的示例和10000个用于测试的示例，这些数字已经经过尺寸标准化并位于图像中心，图像的固定大小是28*28像素，值为0到9。 Pytorc">
+<meta name="twitter:image" content="/2021/03/11/MNIST数据集识别-Pytorch/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/03/11/MNIST数据集识别-Pytorch/">
+
+
+
+
+
+  <title>MNIST数据集识别(Pytorch) | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/11/MNIST数据集识别-Pytorch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MNIST数据集识别(Pytorch)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-11T10:11:37+08:00">
+                2021-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>入门机器学习的最简单案例就是对MNIST手写数据集的识别。本篇文章将会通过Pytorch框架完成对MNIST手写数据集识别。首先我们来简单了解一下MNIST。</p>
+<h4 id="What-is-MNIST？"><a href="#What-is-MNIST？" class="headerlink" title="What is MNIST？"></a>What is MNIST？</h4><p>MNIST数据集是一个有名的手写数字数据集，该数据集包含60000个用于训练的示例和10000个用于测试的示例，这些数字已经经过尺寸标准化并位于图像中心，图像的固定大小是28*28像素，值为0到9。</p>
+<h4 id="Pytorch识别MNIST"><a href="#Pytorch识别MNIST" class="headerlink" title="Pytorch识别MNIST"></a>Pytorch识别MNIST</h4><p>今天我们将通过Pytorch实现对MNIST的识别。对于Pytorch的安装这里不做介绍。</p>
+<h4 id="版本说明"><a href="#版本说明" class="headerlink" title="版本说明"></a>版本说明</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python==3.8</span><br><span class="line">torch==1.7.0</span><br></pre></td></tr></table></figure>
+<p>本次代码利用pycharm进行编写，环境使用为<code>anaconda3</code>，使用cpu进行训练。</p>
+<ul>
+<li><h5 id="模块的导入"><a href="#模块的导入" class="headerlink" title="模块的导入"></a>模块的导入</h5><p>在使用Pytorch之前，我们要导入相关模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets,transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br></pre></td></tr></table></figure>
+<p>其中，<code>datasets</code>用来导入MNIST数据集，<code>transforms</code>用于图像的转换处理，<code>DataLoader</code>用于加载数据集，<code>optim</code>用来加载优化器。</p>
+</li>
+<li><h5 id="参数定义"><a href="#参数定义" class="headerlink" title="参数定义"></a>参数定义</h5><p>在数据集识别中我们要定义比较多的参数和超参数，因为数据集比较大，如果一次训练太多的数据，效果不会很好，因此我们通常对数据集的训练数据进行分批训练，还有就是我们一般对一个数据集的所有数据不止训练一轮次，例如MNIST数据集，我们对它的60000张训练数据会进行多个轮次的训练，这样会产生更好的训练效果。具体定义如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">16</span> <span class="comment">#批次大小，一次训练16张数据</span></span><br><span class="line">epochs = <span class="number">5</span> <span class="comment">#对于60000张训练数据进行5轮训练</span></span><br><span class="line">transforms = transforms.Compose([</span><br><span class="line">    transforms.ToTensor(), <span class="comment">#将图片转换为张量</span></span><br><span class="line">    transforms.Normalize((<span class="number">0.1307</span>,),(<span class="number">0.3081</span>,)) <span class="comment">#进行归一化处理，参数默认使用官网给定值</span></span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="数据集加载"><a href="#数据集加载" class="headerlink" title="数据集加载"></a>数据集加载</h5><p>定义好参数之后我们开始对数据集进行加载，利用<code>torchvision</code>中的<code>datasets</code>模块就可以导入MNIST数据集。之后再利用<code>DataLoader</code>对数据集进行加载即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">train_set = datasets.MNIST(<span class="string">"data"</span>,train=<span class="literal">True</span>,download=<span class="literal">True</span>,transform=transforms)</span><br><span class="line">test_set = datasets.MNIST(<span class="string">"data"</span>,train=<span class="literal">False</span>,download=<span class="literal">True</span>,transform=transforms)</span><br><span class="line">train_loader = DataLoader(train_set,batch_size=batch_size,shuffle=<span class="literal">True</span>)</span><br><span class="line">test_loader = DataLoader(test_set,batch_size=batch_size,shuffle=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>因为MNIST中分为训练数据和测试数据，因此我们需要进行两次导入和加载。其中<code>datasets.MNIST</code>的第一个参数是数据集导入的路径，这里使用<code>&quot;data&quot;</code>直接将数据集导入代码同级目录下，如果没有data目录会自动创建，在训练数据集的导入中，第二个参数<code>train</code>要设置为True，而在测试数据集中因为不需要进行训练，所以设置为False即可。后面的<code>transform</code>参数就是对图像进行一个处理，例如转换成张量和进行归一化处理，在<code>DataLoader</code>的参数中，<code>batch_size</code>就是每次训练的个数，<code>shuffle</code>参数的含义就是在每次训练的个数中进行一个随机打乱。这也算是处理过拟合现象的一种方式。</p>
+</li>
+<li><h5 id="模型的定义"><a href="#模型的定义" class="headerlink" title="模型的定义"></a>模型的定义</h5><p>在对数据集加载完成之后，我们开始定义自己的网络模型。我们使用了两个卷积层，之后使用了两个全连接层。在激活函数的选择上，我们使用relu作为激活函数，之后我们进行了一个2*2的池化操作，再对图像进行了一个拉平操作，最后我们采用<code>log_softmax</code>函数进行输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Net,self).__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">1</span>,<span class="number">10</span>,<span class="number">5</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(<span class="number">10</span>,<span class="number">20</span>,<span class="number">3</span>)</span><br><span class="line">        self.fc1 = nn.Linear(<span class="number">20</span>*<span class="number">10</span>*<span class="number">10</span>,<span class="number">500</span>)</span><br><span class="line">        self.fc2 = nn.Linear(<span class="number">500</span>,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self,x)</span>:</span></span><br><span class="line">        input_size = x.size(<span class="number">0</span>) <span class="comment">#获取batch_size</span></span><br><span class="line">        x = self.conv1(x) <span class="comment">#卷积</span></span><br><span class="line">        x = F.relu(x) <span class="comment">#激活</span></span><br><span class="line">        x = F.max_pool2d(x,<span class="number">2</span>,<span class="number">2</span>) <span class="comment">#池化</span></span><br><span class="line">        x = self.conv2(x)</span><br><span class="line">        x = F.relu(x)  <span class="comment"># 激活</span></span><br><span class="line">        x = x.view(input_size,<span class="number">-1</span>) <span class="comment">#拉平</span></span><br><span class="line">        x = self.fc1(x)</span><br><span class="line">        x = F.relu(x)</span><br><span class="line">        x = self.fc2(x)</span><br><span class="line">        output = F.log_softmax(x,dim=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="模型的使用"><a href="#模型的使用" class="headerlink" title="模型的使用"></a>模型的使用</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = Net()</span><br><span class="line">optimizer = optim.Adam(model.parameters())</span><br></pre></td></tr></table></figure>
+<p>第一行代码我们实例化了一个模型，第二行代码我们利用<code>optim</code>选择合适的优化器，这里我们使用了Adam优化器，你也可以根据需求采用其他优化器例如SGD。</p>
+</li>
+<li><h5 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_model</span><span class="params">(model, train_loader,optimizer ,epoch)</span>:</span></span><br><span class="line">    <span class="comment">#模型训练</span></span><br><span class="line">    model.train()</span><br><span class="line">    <span class="keyword">for</span> batch_index,(data,target) <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">        <span class="comment">#梯度初始化为0</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        <span class="comment">#预测</span></span><br><span class="line">        output = model(data)</span><br><span class="line">        <span class="comment">#计算损失</span></span><br><span class="line">        loss = F.cross_entropy(output,target)</span><br><span class="line">        <span class="comment">#反向传播</span></span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        <span class="keyword">if</span> batch_index % <span class="number">600</span> == <span class="number">0</span>: <span class="comment">#每训练600次进行一次输出</span></span><br><span class="line">            print(<span class="string">"Train Epoch : &#123;&#125; \t Loss : &#123;:.6f&#125;"</span>.format(epoch,loss.item()))</span><br></pre></td></tr></table></figure>
+<p>在这里我们定义了一个训练函数，参数传递了定义的模型、训练的数据、优化器和训练轮次。在第二行代码中<code>model.train</code>的含义是在训练过程中采用Dropout和Normalization。这样有助于优化训练。之后我们对训练数据中的data和target进行提取。target相当于数据的标签。接下来我们对优化器的梯度进行初始化，如果不进行初始化梯度累加就会影响训练效果。计算损失这里采用交叉熵损失。接下来就是很重要的一步，进行反向传播。最后使用<code>optimizer.step()</code>对模型进行更新。</p>
+</li>
+<li><h5 id="测试集验证"><a href="#测试集验证" class="headerlink" title="测试集验证"></a>测试集验证</h5><p>测试集的验证和训练集差不多，不同的地方是在训练之前采用<code>model.eval()</code>，eval和train的区别在于，eval是不采用Dropout和Normalization。第二点就是在测试的时候不用计算梯度也不用进行反向传播。具体代码实现如下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_model</span><span class="params">(model,test_loader)</span>:</span></span><br><span class="line">    <span class="comment">#模型验证</span></span><br><span class="line">    model.eval()</span><br><span class="line">    <span class="comment">#正确率</span></span><br><span class="line">    correct = <span class="number">0.0</span></span><br><span class="line">    <span class="comment">#测试损失</span></span><br><span class="line">    test_loss = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():<span class="comment">#不会计算梯度也不会进行反向传播</span></span><br><span class="line">        <span class="keyword">for</span> data,target <span class="keyword">in</span> test_loader:</span><br><span class="line">            <span class="comment"># data,target = data.to(device),target.to(device)</span></span><br><span class="line">            <span class="comment">#测试数据</span></span><br><span class="line">            output = model(data)</span><br><span class="line">            <span class="comment">#计算测试损失</span></span><br><span class="line">            test_loss+=F.cross_entropy(output,target).item()</span><br><span class="line">            <span class="comment">#找到概率值最大的下标</span></span><br><span class="line">            pred = output.max(<span class="number">1</span>,keepdim=<span class="literal">True</span>)[<span class="number">1</span>] <span class="comment">#值 索引</span></span><br><span class="line">            <span class="comment">#pred = torch.max(output,dim=1)</span></span><br><span class="line">            <span class="comment">#pred = output.argmax(dim=1)</span></span><br><span class="line">            <span class="comment">#累计正确率</span></span><br><span class="line">            correct += pred.eq(target.view_as(pred)).sum().item()</span><br><span class="line">        test_loss /= len(test_loader.dataset)</span><br><span class="line">        print(<span class="string">"Test ---- Average loss : &#123;:.4f&#125;,Accuracy : &#123;:.3f&#125;\n"</span>.format(test_loss,<span class="number">100.0</span>*correct/len(test_loader.dataset)))</span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="训练和测试结果展示"><a href="#训练和测试结果展示" class="headerlink" title="训练和测试结果展示"></a>训练和测试结果展示</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1</span>,epochs+<span class="number">1</span>): <span class="comment">#进行5轮次训练</span></span><br><span class="line">    train_model(model,train_loader,optimizer,epoch)</span><br><span class="line">    test_model(model,test_loader)</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/11/MNIST数据集识别-Pytorch/1.png" alt="1"></p>
+<p><img src="/2021/03/11/MNIST数据集识别-Pytorch/2.png" alt="2"></p>
+<p>从图中我们可以看到训练效果并不随着训练轮次的增加而变得更好，在本次训练中，训练轮次为4的时候，准确率最高，达到了99.03%</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/10/Leetcode-Hot100-Python/" rel="next" title="Leetcode Hot100(Python)">
+                <i class="fa fa-chevron-left"></i> Leetcode Hot100(Python)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-MNIST？"><span class="nav-number">1.</span> <span class="nav-text">What is MNIST？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pytorch识别MNIST"><span class="nav-number">2.</span> <span class="nav-text">Pytorch识别MNIST</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本说明"><span class="nav-number">3.</span> <span class="nav-text">版本说明</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#模块的导入"><span class="nav-number">3.1.</span> <span class="nav-text">模块的导入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#参数定义"><span class="nav-number">3.2.</span> <span class="nav-text">参数定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据集加载"><span class="nav-number">3.3.</span> <span class="nav-text">数据集加载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型的定义"><span class="nav-number">3.4.</span> <span class="nav-text">模型的定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型的使用"><span class="nav-number">3.5.</span> <span class="nav-text">模型的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型训练"><span class="nav-number">3.6.</span> <span class="nav-text">模型训练</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试集验证"><span class="nav-number">3.7.</span> <span class="nav-text">测试集验证</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#训练和测试结果展示"><span class="nav-number">3.8.</span> <span class="nav-text">训练和测试结果展示</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

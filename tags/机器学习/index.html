@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="ctf,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -123,18 +123,16 @@
 
 
 
-<meta name="description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
-<meta name="keywords" content="ctf">
-<meta property="og:type" content="article">
-<meta property="og:title" content="sunshine CTF web writeup">
-<meta property="og:url" content="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/index.html">
+<meta name="description" content="web安全 机器学习 GAN">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ELSSM">
+<meta property="og:url" content="elssm.github.io/tags/机器学习/index.html">
 <meta property="og:site_name" content="ELSSM">
-<meta property="og:description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta property="og:description" content="web安全 机器学习 GAN">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-08T11:34:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sunshine CTF web writeup">
-<meta name="twitter:description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta name="twitter:title" content="ELSSM">
+<meta name="twitter:description" content="web安全 机器学习 GAN">
 
 
 
@@ -164,13 +162,13 @@
 
 
 
-  <link rel="canonical" href="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/">
+  <link rel="canonical" href="elssm.github.io/tags/机器学习/">
 
 
 
 
 
-  <title>sunshine CTF web writeup | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>标签: 机器学习 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -189,7 +187,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,162 +281,52 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>机器学习<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Caoyifan">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ELSSM">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">sunshine CTF web writeup</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2021/03/11/MNIST数据集识别-Pytorch/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">MNIST数据集识别(Pytorch)</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T18:50:09+08:00">
-                2018-04-08
-              </time>
-            
+            </a>
+        
+      </h2>
 
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2021-03-11T10:11:37+08:00" content="2021-03-11">
+          03-11
+        </time>
+      </div>
 
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <ul>
-<li><h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。</p>
-<p>?hello=);print_r(file(“./flag.php”));//  即可得到flag</p>
-<p>​</p>
-</li>
-<li><h2 id="Marceau"><a href="#Marceau" class="headerlink" title="Marceau"></a>Marceau</h2><p>抓包注意header下的Accept一行</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br></pre></td></tr></table></figure>
-<h5 id="将其中的text-html修改为text-php，得到flag"><a href="#将其中的text-html修改为text-php，得到flag" class="headerlink" title="将其中的text/html修改为text/php，得到flag"></a>将其中的text/html修改为text/php，得到flag</h5><p>​</p>
-</li>
-<li><h2 id="Home-Sweet-Home"><a href="#Home-Sweet-Home" class="headerlink" title="Home Sweet Home"></a>Home Sweet Home</h2><p>抓包直接添加信息 x-forward-for: 127.0.0.1，forward后直接在页面看到flag</p>
-</li>
-</ul>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/ctf/" rel="tag"># ctf</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/04/08/读《代码审计》的一些笔记/" rel="next" title="读《代码审计》的一些笔记">
-                <i class="fa fa-chevron-left"></i> 读《代码审计》的一些笔记
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/14/DDCTF-writeup/" rel="prev" title="DDCTF writeup">
-                DDCTF writeup <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -446,10 +334,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -470,17 +354,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -547,22 +422,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">1.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Marceau"><span class="nav-number">2.</span> <span class="nav-text">Marceau</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将其中的text-html修改为text-php，得到flag"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">将其中的text/html修改为text/php，得到flag</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Home-Sweet-Home"><span class="nav-number">3.</span> <span class="nav-text">Home Sweet Home</span></a></li></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -699,15 +558,11 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
@@ -760,6 +615,26 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
