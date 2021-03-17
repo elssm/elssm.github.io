@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="代码,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言用Go语言简单实现一个网络聊天室，首先创建一个chatroom的文件夹，在文件夹下创建chatroom.go文件。 建立tcp socket连接1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950package mainimport (	&quot;fmt&quot;	&quot;net&quot;)//">
+<meta name="keywords" content="代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go实现聊天室">
+<meta property="og:url" content="elssm.github.io/2021/03/17/Go实现聊天室/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="前言用Go语言简单实现一个网络聊天室，首先创建一个chatroom的文件夹，在文件夹下创建chatroom.go文件。 建立tcp socket连接1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950package mainimport (	&quot;fmt&quot;	&quot;net&quot;)//">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/1.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/2.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/3.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/4.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/5.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/7.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/6.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/8.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/9.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/10.png">
+<meta property="og:image" content="/2021/03/17/Go实现聊天室/11.png">
+<meta property="og:updated_time" content="2021-03-17T14:45:44.805Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go实现聊天室">
+<meta name="twitter:description" content="前言用Go语言简单实现一个网络聊天室，首先创建一个chatroom的文件夹，在文件夹下创建chatroom.go文件。 建立tcp socket连接1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950package mainimport (	&quot;fmt&quot;	&quot;net&quot;)//">
+<meta name="twitter:image" content="/2021/03/17/Go实现聊天室/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/03/17/Go实现聊天室/">
+
+
+
+
+
+  <title>Go实现聊天室 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/17/Go实现聊天室/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Go实现聊天室</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-17T19:17:00+08:00">
+                2021-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>用Go语言简单实现一个网络聊天室，首先创建一个chatroom的文件夹，在文件夹下创建<code>chatroom.go</code>文件。</p>
+<h4 id="建立tcp-socket连接"><a href="#建立tcp-socket连接" class="headerlink" title="建立tcp socket连接"></a>建立tcp socket连接</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//将所有代码写在一个文件中，不做代码整理</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//创建服务器</span></span><br><span class="line">	listener,err := net.Listen(<span class="string">"tcp"</span>,<span class="string">":8080"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"net.Listen err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"服务器启动成功!"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"=======&gt;主go程监听中..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//监听</span></span><br><span class="line">		conn, err := listener.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"listener.Accept err"</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//建立连接</span></span><br><span class="line">		fmt.Println(<span class="string">"建立连接成功！"</span>)</span><br><span class="line">		<span class="comment">//启动处理业务的go程</span></span><br><span class="line">		<span class="keyword">go</span> handler(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//处理具体业务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler</span><span class="params">(conn net.Conn)</span></span>  &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"启动业务..."</span>)</span><br><span class="line">		<span class="comment">//TODO //代表这里以后再实现</span></span><br><span class="line">		buf :=<span class="built_in">make</span>([]<span class="keyword">byte</span>,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//读取客户端发送过来的数据</span></span><br><span class="line">		cnt,err := conn.Read(buf)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"conn.Read err:"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(<span class="string">"服务器接受客户端发送过来的数据为："</span>,<span class="keyword">string</span>(buf[:cnt<span class="number">-1</span>]),<span class="string">",cnt: "</span>,cnt)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动程序</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> run chatroom.<span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/17/Go实现聊天室/1.png" alt="1"></p>
+<p>nc连接</p>
+<p><img src="/2021/03/17/Go实现聊天室/2.png" alt="2"></p>
+<p><img src="/2021/03/17/Go实现聊天室/3.png" alt="3"></p>
+<h4 id="数据流分析"><a href="#数据流分析" class="headerlink" title="数据流分析"></a>数据流分析</h4><p>我们程序中有一个主go程，负责监听。客户端以一种数据流的形式建立连接，这个时候服务器就会启动一个<code>handler()</code> go程，在<code>handler()</code> go程中可以接受来自客户端发送的消息。这个时候服务器就应该把消息告诉所有人，因此我们应该在<code>handler()</code>中创建一个通道，它要将消息写入到公共通道message中，这个时候会有另外一个go程，它负责监听message，当message中有数据时，它会将数据发送给所有的用户。对于user用户的创建我们需要在<code>handler()</code>中实现，并将user添加到map中，每个用户都有一个自己的msg管道，当需要发送消息给所有用户的时候，go程会遍历用户map，并将消息写入每个用户的管道中。这个时候，每个用户的管道里都会有来自公共管道的message。之后我们再启动一个go程。每个用户都会拥有这个go程，负责将用户自己的msg回写给终端。</p>
+<h4 id="定义User和map结构"><a href="#定义User和map结构" class="headerlink" title="定义User和map结构"></a>定义User和map结构</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	id <span class="keyword">string</span></span><br><span class="line">	msg <span class="keyword">chan</span> <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个全局的map结构，用于保存所有的用户</span></span><br><span class="line"><span class="keyword">var</span> allUsers = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]User)</span><br></pre></td></tr></table></figure>
+<p>在handler中调用</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//客户端与服务器建立连接的时候，会有ip和port，因此将port当成user id</span></span><br><span class="line"><span class="comment">//创建user</span></span><br><span class="line">clientAddr := conn.RemoteAddr().String()</span><br><span class="line"><span class="comment">//fmt.Println("chiientAddr: ",clientAddr[10:])</span></span><br><span class="line">newUser := User&#123;</span><br><span class="line">  name: <span class="string">"虎扑JR"</span>+clientAddr[<span class="number">10</span>:],<span class="comment">//可以修改，会提供rename命令修改</span></span><br><span class="line">  id: clientAddr, <span class="comment">//id不会修改，作为map中的key</span></span><br><span class="line">  msg: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>),<span class="comment">//注意要make空间，否则无法写数据</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//添加user到map结构</span></span><br><span class="line">allUsers[newUser.id] = newUser</span><br></pre></td></tr></table></figure>
+<h4 id="定义message通道"><a href="#定义message通道" class="headerlink" title="定义message通道"></a>定义message通道</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个message全局通道，用接收任何人发送过来的消息</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="创建监听广播go程函数"><a href="#创建监听广播go程函数" class="headerlink" title="创建监听广播go程函数"></a>创建监听广播go程函数</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向所有的用户广播消息，启动一个全局唯一的go程</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">broadcast</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"广播go程启动成功..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//1.从message中读取数据</span></span><br><span class="line">	info := &lt;- message</span><br><span class="line">	<span class="comment">//2.将数据写入到每一个用户的msg管道中</span></span><br><span class="line">	<span class="keyword">for</span> _,user := <span class="keyword">range</span> allUsers &#123;</span><br><span class="line">		user.msg &lt;- info</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动广播go程</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启动全局唯一的go程，负责监听message通道，写给所有的用户</span></span><br><span class="line"><span class="keyword">go</span> broadcast()</span><br></pre></td></tr></table></figure>
+<p>写入上线数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向message写入数据，当前用户上线的消息，用于通知所有人</span></span><br><span class="line">loginInfo := fmt.Sprintf(<span class="string">"[%s]:[%s] ===&gt; 上线了login！！"</span>,newUser.id,newUser.name)</span><br><span class="line">message &lt;- loginInfo</span><br></pre></td></tr></table></figure>
+<p>当前完整代码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//将所有代码写在一个文件中，不做代码整理</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	id <span class="keyword">string</span></span><br><span class="line">	msg <span class="keyword">chan</span> <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个全局的map结构，用于保存所有的用户</span></span><br><span class="line"><span class="keyword">var</span> allUsers = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]User)</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个message全局通道，用接收任何人发送过来的消息</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//创建服务器</span></span><br><span class="line">	listener,err := net.Listen(<span class="string">"tcp"</span>,<span class="string">":8080"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"net.Listen err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//启动全局唯一的go程，负责监听message通道，写给所有的用户</span></span><br><span class="line">	<span class="keyword">go</span> broadcast()</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"服务器启动成功!"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"=======&gt;主go程监听中..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//监听</span></span><br><span class="line">		conn, err := listener.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"listener.Accept err"</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//建立连接</span></span><br><span class="line">		fmt.Println(<span class="string">"建立连接成功！"</span>)</span><br><span class="line">		<span class="comment">//启动处理业务的go程</span></span><br><span class="line">		<span class="keyword">go</span> handler(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//处理具体业务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler</span><span class="params">(conn net.Conn)</span></span>  &#123;</span><br><span class="line">	</span><br><span class="line">		fmt.Println(<span class="string">"启动业务..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//客户端与服务器建立连接的时候，会有ip和port，因此将port当成user id</span></span><br><span class="line">		<span class="comment">//创建user</span></span><br><span class="line">		clientAddr := conn.RemoteAddr().String()</span><br><span class="line">		<span class="comment">//fmt.Println("chiientAddr: ",clientAddr[10:])</span></span><br><span class="line">		newUser := User&#123;</span><br><span class="line">			name: <span class="string">"虎扑JR"</span>+clientAddr[<span class="number">10</span>:],<span class="comment">//可以修改，会提供rename命令修改</span></span><br><span class="line">			id: clientAddr, <span class="comment">//id不会修改，作为map中的key</span></span><br><span class="line">			msg: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>),<span class="comment">//注意要make空间，否则无法写数据</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//添加user到map结构</span></span><br><span class="line">		allUsers[newUser.id] = newUser</span><br><span class="line"></span><br><span class="line">		<span class="comment">//向message写入数据，当前用户上线的消息，用于通知所有人</span></span><br><span class="line">		loginInfo := fmt.Sprintf(<span class="string">"[%s]:[%s] ===&gt; 上线了login！！"</span>,newUser.id,newUser.name)</span><br><span class="line">		message &lt;- loginInfo</span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">		buf :=<span class="built_in">make</span>([]<span class="keyword">byte</span>,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//读取客户端发送过来的数据</span></span><br><span class="line">		cnt,err := conn.Read(buf)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"conn.Read err:"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(<span class="string">"服务器接受客户端发送过来的数据为："</span>,<span class="keyword">string</span>(buf[:cnt<span class="number">-1</span>]),<span class="string">",cnt: "</span>,cnt)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//向所有的用户广播消息，启动一个全局唯一的go程</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">broadcast</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"广播go程启动成功..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//1.从message中读取数据</span></span><br><span class="line">		info := &lt;-message</span><br><span class="line">		fmt.Println(<span class="string">"message接收到的消息："</span>, info)</span><br><span class="line">		<span class="comment">//2.将数据写入到每一个用户的msg管道中</span></span><br><span class="line">		<span class="keyword">for</span> _, user := <span class="keyword">range</span> allUsers &#123;</span><br><span class="line">			<span class="comment">//如果msg是非缓冲的，那么会在这里阻塞</span></span><br><span class="line">			user.msg &lt;- info</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/17/Go实现聊天室/4.png" alt="4"></p>
+<p><img src="/2021/03/17/Go实现聊天室/5.png" alt="5"></p>
+<h4 id="User监听通道go程"><a href="#User监听通道go程" class="headerlink" title="User监听通道go程"></a>User监听通道go程</h4><p>每个用户应该还有一个用来监听自己msg管道的go程，负责将数据返回给客户端。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//每个用户应该还有一个用来监听自己msg管道的go程，负责将数据返回给客户端。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">writeBackToClient</span><span class="params">(user *User,conn net.Conn)</span></span>  &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"user ： %s的go程正在监听自己的msg管道\n"</span>,user.name)</span><br><span class="line">	<span class="keyword">for</span> data := <span class="keyword">range</span> user.msg &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"user:%s写回给客户端的数据为:%s\n"</span>,user.name,data)</span><br><span class="line">		_,_ = conn.Write([]<span class="keyword">byte</span>(data+<span class="string">"\n"</span>))</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当前完整代码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//将所有代码写在一个文件中，不做代码整理</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	id <span class="keyword">string</span></span><br><span class="line">	msg <span class="keyword">chan</span> <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个全局的map结构，用于保存所有的用户</span></span><br><span class="line"><span class="keyword">var</span> allUsers = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]User)</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个message全局通道，用接收任何人发送过来的消息</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//创建服务器</span></span><br><span class="line">	listener,err := net.Listen(<span class="string">"tcp"</span>,<span class="string">":8080"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"net.Listen err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//启动全局唯一的go程，负责监听message通道，写给所有的用户</span></span><br><span class="line">	<span class="keyword">go</span> broadcast()</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"服务器启动成功!"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"=======&gt;主go程监听中..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//监听</span></span><br><span class="line">		conn, err := listener.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"listener.Accept err"</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//建立连接</span></span><br><span class="line">		fmt.Println(<span class="string">"建立连接成功！"</span>)</span><br><span class="line">		<span class="comment">//启动处理业务的go程</span></span><br><span class="line">		<span class="keyword">go</span> handler(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//处理具体业务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler</span><span class="params">(conn net.Conn)</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">		fmt.Println(<span class="string">"启动业务..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//客户端与服务器建立连接的时候，会有ip和port，因此将port当成user id</span></span><br><span class="line">		<span class="comment">//创建user</span></span><br><span class="line">		clientAddr := conn.RemoteAddr().String()</span><br><span class="line">		<span class="comment">//fmt.Println("chiientAddr: ",clientAddr[10:])</span></span><br><span class="line">		newUser := User&#123;</span><br><span class="line">			name: <span class="string">"虎扑JR"</span>+clientAddr[<span class="number">10</span>:],<span class="comment">//可以修改，会提供rename命令修改</span></span><br><span class="line">			id: clientAddr, <span class="comment">//id不会修改，作为map中的key</span></span><br><span class="line">			msg: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>),<span class="comment">//注意要make空间，否则无法写数据</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//添加user到map结构</span></span><br><span class="line">		allUsers[newUser.id] = newUser</span><br><span class="line"></span><br><span class="line">		<span class="comment">//启动go程，负责将msg数据返回给客户端</span></span><br><span class="line">		<span class="keyword">go</span> writeBackToClient(&amp;newUser,conn)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//向message写入数据，当前用户上线的消息，用于通知所有人</span></span><br><span class="line">		loginInfo := fmt.Sprintf(<span class="string">"[%s]:[%s] ===&gt; 上线了login！！"</span>,newUser.id,newUser.name)</span><br><span class="line">		message &lt;- loginInfo</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="comment">//具体业务逻辑</span></span><br><span class="line">		buf :=<span class="built_in">make</span>([]<span class="keyword">byte</span>,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//读取客户端发送过来的数据</span></span><br><span class="line">		cnt,err := conn.Read(buf)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"conn.Read err:"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(<span class="string">"服务器接受客户端发送过来的数据为："</span>,<span class="keyword">string</span>(buf[:cnt<span class="number">-1</span>]),<span class="string">",cnt: "</span>,cnt)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//向所有的用户广播消息，启动一个全局唯一的go程</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">broadcast</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"广播go程启动成功..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//1.从message中读取数据</span></span><br><span class="line">		info := &lt;-message</span><br><span class="line">		fmt.Println(<span class="string">"message接收到的消息："</span>, info)</span><br><span class="line">		<span class="comment">//2.将数据写入到每一个用户的msg管道中</span></span><br><span class="line">		<span class="keyword">for</span> _, user := <span class="keyword">range</span> allUsers &#123;</span><br><span class="line">			<span class="comment">//如果msg是非缓冲的，那么会在这里阻塞</span></span><br><span class="line">			user.msg &lt;- info</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//每个用户应该还有一个用来监听自己msg管道的go程，负责将数据返回给客户端。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">writeBackToClient</span><span class="params">(user *User,conn net.Conn)</span></span>  &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"user ： %s的go程正在监听自己的msg管道\n"</span>,user.name)</span><br><span class="line">	<span class="keyword">for</span> data := <span class="keyword">range</span> user.msg &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"user:%s写回给客户端的数据为:%s\n"</span>,user.name,data)</span><br><span class="line">		_,_ = conn.Write([]<span class="keyword">byte</span>(data+<span class="string">"\n"</span>))</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/17/Go实现聊天室/7.png" alt="7"></p>
+<p><img src="/2021/03/17/Go实现聊天室/6.png" alt="6"></p>
+<h4 id="增加功能"><a href="#增加功能" class="headerlink" title="增加功能"></a>增加功能</h4><h5 id="查询用户"><a href="#查询用户" class="headerlink" title="查询用户"></a>查询用户</h5><p>查询命令：who 将当前所有登陆的用户，展示出来，id，name返回给当前用户</p>
+<p>在handler中处理业务逻辑</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.查询当前所有的用户 who</span></span><br><span class="line">		<span class="comment">//判断接受的数据是不是who ==&gt; 长度&amp;字符串</span></span><br><span class="line">		userInput := <span class="keyword">string</span>(buf[:cnt<span class="number">-1</span>]) <span class="comment">//这是用户输入的数据，最后一个是回车，去掉回车</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(userInput)==<span class="number">3</span> &amp;&amp; userInput == <span class="string">"who"</span> &#123;</span><br><span class="line">			<span class="comment">//遍历allUsers这个map：（key: userid value：user本身）</span></span><br><span class="line">			fmt.Println(<span class="string">"用户即将查询所有用户信息！"</span>)</span><br><span class="line"></span><br><span class="line">			<span class="comment">//这个切片包含所有的用户信息</span></span><br><span class="line">			<span class="keyword">var</span> userInfos []<span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> _,user := <span class="keyword">range</span> allUsers &#123;</span><br><span class="line">				userInfo := fmt.Sprintf(<span class="string">"userid:%s,username:%s"</span>,user.id,user.name)</span><br><span class="line">				userInfos = <span class="built_in">append</span>(userInfos,userInfo )</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//最终写到管道中，一定是一个字符串</span></span><br><span class="line">			r := strings.Join(userInfos,<span class="string">"\n"</span>)</span><br><span class="line">			<span class="comment">//将数据返回给查询的客户端</span></span><br><span class="line">			newUser.msg &lt;- r</span><br><span class="line">		&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//如果用户输入的不是命令，只是普通的聊天信息，那么只需要写入到广播通道中，由其他的go程进行常规转发</span></span><br><span class="line">			message &lt;- userInput</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/17/Go实现聊天室/8.png" alt="8"></p>
+<h5 id="重命名"><a href="#重命名" class="headerlink" title="重命名"></a>重命名</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">len</span>(userInput) &gt;<span class="number">9</span> &amp;&amp; userInput[:<span class="number">7</span>]==<span class="string">"\\rename"</span> &#123;</span><br><span class="line">			<span class="comment">//规则：rename|ddd</span></span><br><span class="line">			<span class="comment">//读取数据判断长度，判断字符是rename</span></span><br><span class="line">			<span class="comment">//使用|分割，获取|后面的内容，作为名字</span></span><br><span class="line">			<span class="comment">//更新用户名字 newUser.name = ddd</span></span><br><span class="line">			newUser.name = strings.Split(userInput,<span class="string">"|"</span>)[<span class="number">1</span>]</span><br><span class="line">			allUsers[newUser.id] = newUser <span class="comment">//更新map中的user</span></span><br><span class="line">			<span class="comment">//通知客户端，更新成功</span></span><br><span class="line">			newUser.msg &lt;- <span class="string">"rename successfully!"</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/17/Go实现聊天室/9.png" alt="9"></p>
+<h5 id="主动退出"><a href="#主动退出" class="headerlink" title="主动退出"></a>主动退出</h5><p>从map中删除，对应的conn要close</p>
+<p>每个用户都有自己的watch go程，负责监听退出信号</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启动一个go程，负责监听退出信号，触发后进行清理工作：delete map，close conn都在这里处理</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(user *User,conn net.Conn,isQuit &lt;- <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"启动监听退出信号的go程..."</span>)</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">"watch go程退出！"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;- isQuit:</span><br><span class="line">			logoutInfo := fmt.Sprintf(<span class="string">"%s exit already!"</span>,user.name)</span><br><span class="line">			fmt.Println(<span class="string">"删除当前用户："</span>,user.name)</span><br><span class="line">			<span class="built_in">delete</span>(allUsers,user.id)</span><br><span class="line">			message &lt;- logoutInfo</span><br><span class="line">			conn.Close()</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在handler函数中定义isQuit</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个退出信号，用户监听client退出</span></span><br><span class="line">		<span class="keyword">var</span> isQuit = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br></pre></td></tr></table></figure>
+<p>在handler中启动go watch，同时传入相应信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启动go程，负责监听退出信号</span></span><br><span class="line">		<span class="keyword">go</span> watch(&amp;newUser,conn,isQuit)</span><br></pre></td></tr></table></figure>
+<p>在<code>conn.Read(buf)</code>之后，通过读取的cnt判断用户退出，如果是ctrl+c主动退出，则触发isQuit</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> cnt == <span class="number">0</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"客户端主动关闭ctrl+c，准备退出！"</span>)</span><br><span class="line">			<span class="comment">//map删除用户，conn close</span></span><br><span class="line">			<span class="comment">//服务器还可以主动的退出</span></span><br><span class="line">			<span class="comment">//在这里不进行真正的退出动作，而是发送一个退出信号，统一做退出处理，可以使用新的管道做信号传递</span></span><br><span class="line">			isQuit &lt;- <span class="literal">true</span></span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/17/Go实现聊天室/10.png" alt="10"></p>
+<p><img src="/2021/03/17/Go实现聊天室/11.png" alt="11"></p>
+<h5 id="超时退出"><a href="#超时退出" class="headerlink" title="超时退出"></a>超时退出</h5><p>使用定时器来进行超时管理。如果60s内没有发送任何数据，那么直接将这个连接关闭掉</p>
+<p>更新watch函数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//启动一个go程，负责监听退出信号，触发后进行清理工作：delete map，close conn都在这里处理</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(user *User,conn net.Conn,isQuit &lt;- <span class="keyword">chan</span> <span class="keyword">bool</span>,restTimer &lt;-<span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"启动监听退出信号的go程..."</span>)</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">"watch go程退出！"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;- isQuit:</span><br><span class="line">			logoutInfo := fmt.Sprintf(<span class="string">"%s exit already!\n"</span>,user.name)</span><br><span class="line">			fmt.Println(<span class="string">"删除当前用户："</span>,user.name)</span><br><span class="line">			<span class="built_in">delete</span>(allUsers,user.id)</span><br><span class="line">			message &lt;- logoutInfo</span><br><span class="line">			conn.Close()</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">case</span> &lt;- time.After(<span class="number">10</span>*time.Second):</span><br><span class="line">			logoutInfo := fmt.Sprintf(<span class="string">"%s timeout exit already!\n"</span>,user.name)</span><br><span class="line">			fmt.Println(<span class="string">"删除当前用户："</span>,user.name)</span><br><span class="line">			<span class="built_in">delete</span>(allUsers,user.id)</span><br><span class="line">			message &lt;- logoutInfo</span><br><span class="line">			conn.Close()</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">case</span> &lt;- restTimer:</span><br><span class="line">			fmt.Printf(<span class="string">"连接%s 重置计数器！\n"</span>,user.name)</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建并传入restTimer</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个用于重置计数器的管道，用于告知watch函数，当前用户正在输入</span></span><br><span class="line"><span class="keyword">var</span> restTimer = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line"><span class="comment">//启动go程，负责监听退出信号</span></span><br><span class="line"><span class="keyword">go</span> watch(&amp;newUser,conn,isQuit,restTimer)</span><br></pre></td></tr></table></figure>
+<p>只要有数据写入，每次写入数据之后都要设置restTimer</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">restTimer &lt;- <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="聊天室完整代码"><a href="#聊天室完整代码" class="headerlink" title="聊天室完整代码"></a>聊天室完整代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//将所有代码写在一个文件中，不做代码整理</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	id <span class="keyword">string</span></span><br><span class="line">	msg <span class="keyword">chan</span> <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建一个全局的map结构，用于保存所有的用户</span></span><br><span class="line"><span class="keyword">var</span> allUsers = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]User)</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义一个message全局通道，用接收任何人发送过来的消息</span></span><br><span class="line"><span class="keyword">var</span> message = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//创建服务器</span></span><br><span class="line">	listener,err := net.Listen(<span class="string">"tcp"</span>,<span class="string">":8080"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"net.Listen err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//启动全局唯一的go程，负责监听message通道，写给所有的用户</span></span><br><span class="line">	<span class="keyword">go</span> broadcast()</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"服务器启动成功!"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"=======&gt;主go程监听中..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//监听</span></span><br><span class="line">		conn, err := listener.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"listener.Accept err"</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//建立连接</span></span><br><span class="line">		fmt.Println(<span class="string">"建立连接成功！"</span>)</span><br><span class="line">		<span class="comment">//启动处理业务的go程</span></span><br><span class="line">		<span class="keyword">go</span> handler(conn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//处理具体业务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler</span><span class="params">(conn net.Conn)</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">		fmt.Println(<span class="string">"启动业务..."</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//客户端与服务器建立连接的时候，会有ip和port，因此将port当成user id</span></span><br><span class="line">		<span class="comment">//创建user</span></span><br><span class="line">		clientAddr := conn.RemoteAddr().String()</span><br><span class="line">		<span class="comment">//fmt.Println("chiientAddr: ",clientAddr[10:])</span></span><br><span class="line">		newUser := User&#123;</span><br><span class="line">			name: <span class="string">"虎扑JR"</span>+clientAddr[<span class="number">10</span>:],<span class="comment">//可以修改，会提供rename命令修改</span></span><br><span class="line">			id: clientAddr, <span class="comment">//id不会修改，作为map中的key</span></span><br><span class="line">			msg: <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>,<span class="number">10</span>),<span class="comment">//注意要make空间，否则无法写数据</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//添加user到map结构</span></span><br><span class="line">		allUsers[newUser.id] = newUser</span><br><span class="line"></span><br><span class="line">		<span class="comment">//定义一个退出信号，用户监听client退出</span></span><br><span class="line">		<span class="keyword">var</span> isQuit = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">		<span class="comment">//创建一个用于重置计数器的管道，用于告知watch函数，当前用户正在输入</span></span><br><span class="line">		<span class="keyword">var</span> restTimer = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">		<span class="comment">//启动go程，负责监听退出信号</span></span><br><span class="line">		<span class="keyword">go</span> watch(&amp;newUser,conn,isQuit,restTimer)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//启动go程，负责将msg数据返回给客户端</span></span><br><span class="line">		<span class="keyword">go</span> writeBackToClient(&amp;newUser,conn)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//向message写入数据，当前用户上线的消息，用于通知所有人</span></span><br><span class="line">		loginInfo := fmt.Sprintf(<span class="string">"[%s]:[%s] ===&gt; 上线了login！！\n"</span>,newUser.id,newUser.name)</span><br><span class="line">		message &lt;- loginInfo</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="comment">//具体业务逻辑</span></span><br><span class="line">		buf :=<span class="built_in">make</span>([]<span class="keyword">byte</span>,<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//读取客户端发送过来的数据</span></span><br><span class="line">		cnt,err := conn.Read(buf)</span><br><span class="line">		<span class="keyword">if</span> cnt == <span class="number">0</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"客户端主动关闭ctrl+c，准备退出！"</span>)</span><br><span class="line">			<span class="comment">//map删除用户，conn close</span></span><br><span class="line">			<span class="comment">//服务器还可以主动的退出</span></span><br><span class="line">			<span class="comment">//在这里不进行真正的退出动作，而是发送一个退出信号，统一做退出处理，可以使用新的管道做信号传递</span></span><br><span class="line">			isQuit &lt;- <span class="literal">true</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"conn.Read err:"</span>,err,<span class="string">",cnt:"</span>,cnt)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(<span class="string">"服务器接受客户端发送过来的数据为："</span>,<span class="keyword">string</span>(buf[:cnt<span class="number">-1</span>]),<span class="string">",cnt: "</span>,cnt)</span><br><span class="line"></span><br><span class="line">		<span class="comment">//业务逻辑处理 开始-----------</span></span><br><span class="line">		<span class="comment">//1.查询当前所有的用户 who</span></span><br><span class="line">		<span class="comment">//判断接受的数据是不是who ==&gt; 长度&amp;字符串</span></span><br><span class="line">		userInput := <span class="keyword">string</span>(buf[:cnt<span class="number">-1</span>]) <span class="comment">//这是用户输入的数据，最后一个是回车，去掉回车</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(userInput)==<span class="number">4</span> &amp;&amp; userInput == <span class="string">"\\who"</span> &#123;</span><br><span class="line">			<span class="comment">//遍历allUsers这个map：（key: userid value：user本身）</span></span><br><span class="line">			fmt.Println(<span class="string">"用户即将查询所有用户信息！"</span>)</span><br><span class="line"></span><br><span class="line">			<span class="comment">//这个切片包含所有的用户信息</span></span><br><span class="line">			<span class="keyword">var</span> userInfos []<span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> _,user := <span class="keyword">range</span> allUsers &#123;</span><br><span class="line">				userInfo := fmt.Sprintf(<span class="string">"userid:%s,username:%s"</span>,user.id,user.name)</span><br><span class="line">				userInfos = <span class="built_in">append</span>(userInfos,userInfo )</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//最终写到管道中，一定是一个字符串</span></span><br><span class="line">			r := strings.Join(userInfos,<span class="string">"\n"</span>) <span class="comment">//连接数字切片，生成字符串</span></span><br><span class="line">			<span class="comment">//将数据返回给查询的客户端</span></span><br><span class="line">			newUser.msg &lt;- r</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">len</span>(userInput) &gt;<span class="number">9</span> &amp;&amp; userInput[:<span class="number">7</span>]==<span class="string">"\\rename"</span> &#123;</span><br><span class="line">			<span class="comment">//规则：rename|ddd</span></span><br><span class="line">			<span class="comment">//读取数据判断长度，判断字符是rename</span></span><br><span class="line">			<span class="comment">//使用|分割，获取|后面的内容，作为名字</span></span><br><span class="line">			<span class="comment">//更新用户名字 newUser.name = ddd</span></span><br><span class="line">			newUser.name = strings.Split(userInput,<span class="string">"|"</span>)[<span class="number">1</span>]</span><br><span class="line">			allUsers[newUser.id] = newUser <span class="comment">//更新map中的user</span></span><br><span class="line">			<span class="comment">//通知客户端，更新成功</span></span><br><span class="line">			newUser.msg &lt;- <span class="string">"rename successfully!"</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">//如果用户输入的不是命令，只是普通的聊天信息，那么只需要写入到广播通道中，由其他的go程进行常规转发</span></span><br><span class="line">			message &lt;- userInput</span><br><span class="line">		&#125;</span><br><span class="line">		restTimer &lt;- <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//业务逻辑处理 结束-----------</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//向所有的用户广播消息，启动一个全局唯一的go程</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">broadcast</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"广播go程启动成功..."</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//1.从message中读取数据</span></span><br><span class="line">		info := &lt;-message</span><br><span class="line">		fmt.Println(<span class="string">"message接收到的消息："</span>, info)</span><br><span class="line">		<span class="comment">//2.将数据写入到每一个用户的msg管道中</span></span><br><span class="line">		<span class="keyword">for</span> _, user := <span class="keyword">range</span> allUsers &#123;</span><br><span class="line">			<span class="comment">//如果msg是非缓冲的，那么会在这里阻塞</span></span><br><span class="line">			user.msg &lt;- info</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//每个用户应该还有一个用来监听自己msg管道的go程，负责将数据返回给客户端。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">writeBackToClient</span><span class="params">(user *User,conn net.Conn)</span></span>  &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"user ： %s的go程正在监听自己的msg管道\n"</span>,user.name)</span><br><span class="line">	<span class="keyword">for</span> data := <span class="keyword">range</span> user.msg &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"user:%s写回给客户端的数据为:%s\n"</span>,user.name,data)</span><br><span class="line">		_,_ = conn.Write([]<span class="keyword">byte</span>(data+<span class="string">"\n"</span>))</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//启动一个go程，负责监听退出信号，触发后进行清理工作：delete map，close conn都在这里处理</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(user *User,conn net.Conn,isQuit &lt;- <span class="keyword">chan</span> <span class="keyword">bool</span>,restTimer &lt;-<span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span>  &#123;</span><br><span class="line">	fmt.Println(<span class="string">"启动监听退出信号的go程..."</span>)</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">"watch go程退出！"</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;- isQuit:</span><br><span class="line">			logoutInfo := fmt.Sprintf(<span class="string">"%s exit already!\n"</span>,user.name)</span><br><span class="line">			fmt.Println(<span class="string">"删除当前用户："</span>,user.name)</span><br><span class="line">			<span class="built_in">delete</span>(allUsers,user.id)</span><br><span class="line">			message &lt;- logoutInfo</span><br><span class="line">			conn.Close()</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">case</span> &lt;- time.After(<span class="number">10</span>*time.Second):</span><br><span class="line">			logoutInfo := fmt.Sprintf(<span class="string">"%s timeout exit already!\n"</span>,user.name)</span><br><span class="line">			fmt.Println(<span class="string">"删除当前用户："</span>,user.name)</span><br><span class="line">			<span class="built_in">delete</span>(allUsers,user.id)</span><br><span class="line">			message &lt;- logoutInfo</span><br><span class="line">			conn.Close()</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">case</span> &lt;- restTimer:</span><br><span class="line">			fmt.Printf(<span class="string">"连接%s 重置计数器！\n"</span>,user.name)</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/代码/" rel="tag"># 代码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/15/利用FGSM攻击MNIST数据集-Pytorch/" rel="next" title="利用FGSM攻击MNIST数据集(Pytorch)">
+                <i class="fa fa-chevron-left"></i> 利用FGSM攻击MNIST数据集(Pytorch)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建立tcp-socket连接"><span class="nav-number">2.</span> <span class="nav-text">建立tcp socket连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据流分析"><span class="nav-number">3.</span> <span class="nav-text">数据流分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义User和map结构"><span class="nav-number">4.</span> <span class="nav-text">定义User和map结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义message通道"><span class="nav-number">5.</span> <span class="nav-text">定义message通道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建监听广播go程函数"><span class="nav-number">6.</span> <span class="nav-text">创建监听广播go程函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User监听通道go程"><span class="nav-number">7.</span> <span class="nav-text">User监听通道go程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#增加功能"><span class="nav-number">8.</span> <span class="nav-text">增加功能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查询用户"><span class="nav-number">8.1.</span> <span class="nav-text">查询用户</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重命名"><span class="nav-number">8.2.</span> <span class="nav-text">重命名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#主动退出"><span class="nav-number">8.3.</span> <span class="nav-text">主动退出</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#超时退出"><span class="nav-number">8.4.</span> <span class="nav-text">超时退出</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聊天室完整代码"><span class="nav-number">9.</span> <span class="nav-text">聊天室完整代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
