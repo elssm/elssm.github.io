@@ -126,19 +126,19 @@
 <meta name="description" content="前言今天用go语言简单实现kafka发送文件示例。 kafla和zookeeper搭建安装kafka之前首先要安装zookeeper。本次安装是在Mac os下实现，使用homebrew进行安装 安装zookeeper1brew install zookeeper 安装kafka1brew install kafka 启动zookeeper1sh zookeeper-server-start /u">
 <meta name="keywords" content="代码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sarama向kafka发送消息实战">
-<meta property="og:url" content="elssm.github.io/2021/03/21/sarama向kafka发送消息实战/index.html">
+<meta property="og:title" content="Go语言实现向kafka中发送数据">
+<meta property="og:url" content="elssm.github.io/2021/03/21/Go语言实现向kafka中发送数据/index.html">
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="前言今天用go语言简单实现kafka发送文件示例。 kafla和zookeeper搭建安装kafka之前首先要安装zookeeper。本次安装是在Mac os下实现，使用homebrew进行安装 安装zookeeper1brew install zookeeper 安装kafka1brew install kafka 启动zookeeper1sh zookeeper-server-start /u">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="/2021/03/21/sarama向kafka发送消息实战/1.png">
-<meta property="og:image" content="/2021/03/21/sarama向kafka发送消息实战/2.png">
-<meta property="og:image" content="/2021/03/21/sarama向kafka发送消息实战/3.png">
-<meta property="og:updated_time" content="2021-03-21T10:15:32.436Z">
+<meta property="og:image" content="/2021/03/21/Go语言实现向kafka中发送数据/1.png">
+<meta property="og:image" content="/2021/03/21/Go语言实现向kafka中发送数据/2.png">
+<meta property="og:image" content="/2021/03/21/Go语言实现向kafka中发送数据/3.png">
+<meta property="og:updated_time" content="2021-03-21T12:44:46.531Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sarama向kafka发送消息实战">
+<meta name="twitter:title" content="Go语言实现向kafka中发送数据">
 <meta name="twitter:description" content="前言今天用go语言简单实现kafka发送文件示例。 kafla和zookeeper搭建安装kafka之前首先要安装zookeeper。本次安装是在Mac os下实现，使用homebrew进行安装 安装zookeeper1brew install zookeeper 安装kafka1brew install kafka 启动zookeeper1sh zookeeper-server-start /u">
-<meta name="twitter:image" content="/2021/03/21/sarama向kafka发送消息实战/1.png">
+<meta name="twitter:image" content="/2021/03/21/Go语言实现向kafka中发送数据/1.png">
 
 
 
@@ -168,13 +168,13 @@
 
 
 
-  <link rel="canonical" href="elssm.github.io/2021/03/21/sarama向kafka发送消息实战/">
+  <link rel="canonical" href="elssm.github.io/2021/03/21/Go语言实现向kafka中发送数据/">
 
 
 
 
 
-  <title>sarama向kafka发送消息实战 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Go语言实现向kafka中发送数据 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -301,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/21/sarama向kafka发送消息实战/">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/21/Go语言实现向kafka中发送数据/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Caoyifan">
@@ -318,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sarama向kafka发送消息实战</h1>
+          <h1 class="post-title" itemprop="name headline">Go语言实现向kafka中发送数据</h1>
         
 
         <div class="post-meta">
@@ -388,11 +388,11 @@
 <p>此时就需要用go mod引入这些包 require github.com/gin-gonic/gin@latest ，从而可以解决import获取不了包的问题。运行命令如下</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init gin</span><br><span class="line"><span class="keyword">go</span> mod edit -require github.com/gin-gonic/gin@latest</span><br></pre></td></tr></table></figure>
 <p>成功打包之后执行命令</p>
-<p><img src="/2021/03/21/sarama向kafka发送消息实战/1.png" alt="1"></p>
+<p><img src="/2021/03/21/Go语言实现向kafka中发送数据/1.png" alt="1"></p>
 <h4 id="查看kafka日志"><a href="#查看kafka日志" class="headerlink" title="查看kafka日志"></a>查看kafka日志</h4><p>kafka日志文件在<code>/usr/local/var/lib/</code>目录下的<code>kafka-logs</code>中。<code>kafka-logs</code>文件夹下有一个<code>shopping-0</code>文件夹，这个就是我们在代码里设置的Topic，里面有四个文件，<code>.log</code>结尾的就是我们的日志文件。</p>
-<p><img src="/2021/03/21/sarama向kafka发送消息实战/2.png" alt="2"></p>
+<p><img src="/2021/03/21/Go语言实现向kafka中发送数据/2.png" alt="2"></p>
 <h4 id="消费者打印日志"><a href="#消费者打印日志" class="headerlink" title="消费者打印日志"></a>消费者打印日志</h4><h5 id="启动消费者"><a href="#启动消费者" class="headerlink" title="启动消费者"></a>启动消费者</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh kafka-console-consumer --bootstrap-server localhost:<span class="number">9092</span> --topic shopping --from-beginning</span><br></pre></td></tr></table></figure>
-<h5 id="打印日志"><a href="#打印日志" class="headerlink" title="打印日志"></a>打印日志</h5><p><img src="/2021/03/21/sarama向kafka发送消息实战/3.png" alt="3"></p>
+<h5 id="打印日志"><a href="#打印日志" class="headerlink" title="打印日志"></a>打印日志</h5><p><img src="/2021/03/21/Go语言实现向kafka中发送数据/3.png" alt="3"></p>
 
       
     </div>
