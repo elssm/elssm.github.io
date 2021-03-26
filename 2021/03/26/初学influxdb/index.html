@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言influxDB官网：https://www.influxdata.com/ 正如官网所介绍，influxDB是一个开源的时序型数据库。使用Go语言编写。主要用来查询和存储时序型数据。和Mysql和Nosql不同的是，influxDB被广泛用于存储系统的监控数据。并且可以配合一些图形化界面例如Grafana进行图形化展示。 与MYSQL的基础概念对比     概念 MYSQL influxDB">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初学influxdb">
+<meta property="og:url" content="elssm.github.io/2021/03/26/初学influxdb/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="前言influxDB官网：https://www.influxdata.com/ 正如官网所介绍，influxDB是一个开源的时序型数据库。使用Go语言编写。主要用来查询和存储时序型数据。和Mysql和Nosql不同的是，influxDB被广泛用于存储系统的监控数据。并且可以配合一些图形化界面例如Grafana进行图形化展示。 与MYSQL的基础概念对比     概念 MYSQL influxDB">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/03/26/初学influxdb/1.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/2.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/3.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/4.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/5.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/7.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/8.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/9.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/10.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/11.png">
+<meta property="og:image" content="/2021/03/26/初学influxdb/12.png">
+<meta property="og:updated_time" content="2021-03-26T01:24:48.371Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初学influxdb">
+<meta name="twitter:description" content="前言influxDB官网：https://www.influxdata.com/ 正如官网所介绍，influxDB是一个开源的时序型数据库。使用Go语言编写。主要用来查询和存储时序型数据。和Mysql和Nosql不同的是，influxDB被广泛用于存储系统的监控数据。并且可以配合一些图形化界面例如Grafana进行图形化展示。 与MYSQL的基础概念对比     概念 MYSQL influxDB">
+<meta name="twitter:image" content="/2021/03/26/初学influxdb/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/03/26/初学influxdb/">
+
+
+
+
+
+  <title>初学influxdb | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/26/初学influxdb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">初学influxdb</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-26T08:35:45+08:00">
+                2021-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>influxDB官网：<a href="https://www.influxdata.com/" target="_blank" rel="noopener">https://www.influxdata.com/</a></p>
+<p>正如官网所介绍，influxDB是一个开源的时序型数据库。使用Go语言编写。主要用来查询和存储时序型数据。和Mysql和Nosql不同的是，influxDB被广泛用于存储系统的监控数据。并且可以配合一些图形化界面例如Grafana进行图形化展示。</p>
+<p>与MYSQL的基础概念对比</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>MYSQL</th>
+<th>influxDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据库</td>
+<td>database</td>
+<td>database</td>
+</tr>
+<tr>
+<td>表</td>
+<td>table</td>
+<td>measurement</td>
+</tr>
+<tr>
+<td>列</td>
+<td>column</td>
+<td>tag</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="下载安装influxDB"><a href="#下载安装influxDB" class="headerlink" title="下载安装influxDB"></a>下载安装influxDB</h4><p>目前官网的influxDB版本是V2版本，我本人下载的是V1版本，版本号为<code>1.8.3</code><br><a href="http://66-ai.com/download/influxdb/influxdb-1.8.3_darwin_amd64.tar.gz" target="_blank" rel="noopener">mac版influxdb下载</a><br>下载好之后对文件进行解压</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf influxdb-1.7.11_darwin_amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压之后进入文件夹<code>/usr/bin</code>下启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./influxd</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/1.png" alt="1"></p>
+<p>启动客户端</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./influx</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/2.png" alt="2"></p>
+<p>influxDB操作和mysql相似。通过查询数据表发现里面只存在一个默认数据库<code>_internal</code></p>
+<p><img src="/2021/03/26/初学influxdb/3.png" alt="3"></p>
+<h4 id="gopsutil学习"><a href="#gopsutil学习" class="headerlink" title="gopsutil学习"></a>gopsutil学习</h4><p>gopsutil是一个查询系统性能数据的模块，通过go语言实现。通过安装gopsutil模块就可以实现对本机的一些参数进行查询。<br>小试牛刀</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get github.com/shirou/gopsutil</span><br></pre></td></tr></table></figure>
+<p>模块导入</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"github.com/shirou/gopsutil/cpu"</span></span><br><span class="line">	<span class="string">"github.com/shirou/gopsutil/disk"</span></span><br><span class="line">	<span class="string">"github.com/shirou/gopsutil/host"</span></span><br><span class="line">	<span class="string">"github.com/shirou/gopsutil/load"</span></span><br><span class="line">	<span class="string">"github.com/shirou/gopsutil/mem"</span></span><br><span class="line">	<span class="string">"github.com/shirou/gopsutil/net"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>查询cpu信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getCpuInfo</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	cpuInfos,err := cpu.Info()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"get cpu info failed,err:%v\n"</span>,err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _,ci := <span class="keyword">range</span> cpuInfos &#123;</span><br><span class="line">		fmt.Println(ci)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/4.png" alt="4"></p>
+<p>查询cpu负载</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getLoad</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	info,err := load.Avg()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"load.Avg() failed,err:%v\n"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(info)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/5.png" alt="5"></p>
+<p>查询内存信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getHostInfo</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	info,_ := host.Info()</span><br><span class="line">	fmt.Printf(<span class="string">"host info:%v uptime:%v boottime:%v\n"</span>,info,info.Uptime,info.BootTime)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/7.png" alt="7"></p>
+<p>查询磁盘信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getDiskInfo</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//获取所有分区信息</span></span><br><span class="line">	parts,err := disk.Partitions(<span class="literal">true</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"get disk Partitions failed,err:%v\n"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(parts)</span><br><span class="line">	<span class="keyword">for</span> _,part := <span class="keyword">range</span> parts &#123;</span><br><span class="line">		partInfo,err := disk.Usage(part.Mountpoint)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"get part stat failed,err:%v\n"</span>,err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(partInfo)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//磁盘IO</span></span><br><span class="line">	ioStat,_ := disk.IOCounters()</span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> ioStat &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"%v:%v\n"</span>,k,v)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/8.png" alt="8"></p>
+<p>查询网络信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getNetInfo</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	netIOs,err := net.IOCounters(<span class="literal">true</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"get net io counters failed,err:%v\n"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _,netIO := <span class="keyword">range</span> netIOs &#123;</span><br><span class="line">		fmt.Println(netIO)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/9.png" alt="9"></p>
+<h4 id="Go操作influxDB"><a href="#Go操作influxDB" class="headerlink" title="Go操作influxDB"></a>Go操作influxDB</h4><p>安装influxdb V1版本的模块</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get github.com/influxdata/influxdb1-client/v2</span><br></pre></td></tr></table></figure>
+<p>模块导入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	client &quot;github.com/influxdata/influxdb1-client/v2&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>连接influxdb，V1版本端口默认为8086，V2版本端口默认为9999，用户名默认为admin，密码默认为空</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">connInflux</span><span class="params">()</span> <span class="title">client</span>.<span class="title">Client</span></span> &#123;</span><br><span class="line">	cli,err := client.NewHTTPClient(client.HTTPConfig&#123;</span><br><span class="line">		Addr: <span class="string">"http://127.0.0.1:8086"</span>,</span><br><span class="line">		Username: <span class="string">"admin"</span>,</span><br><span class="line">		Password: <span class="string">""</span>,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"conn err = "</span>,err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> cli</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询操作</p>
+<p>这里我们查询的是<code>test</code>数据库。因此我们需要在数据库中手动创建一个<code>test</code>数据库。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">queryDB</span><span class="params">(cli client.Client,cmd <span class="keyword">string</span>)</span> <span class="params">(res []client.Result,err error)</span></span> &#123;</span><br><span class="line">   q := client.Query&#123;</span><br><span class="line">      Command: cmd,</span><br><span class="line">      Database: <span class="string">"test"</span>,</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> response,err := cli.Query(q); err==<span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> response.Error() != <span class="literal">nil</span>&#123;</span><br><span class="line">         fmt.Println(<span class="string">"response error"</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      res = response.Results</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> res,err</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> res,<span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/26/初学influxdb/10.png" alt="10"></p>
+<p>写入数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">writesPoints</span><span class="params">(cli client.Client)</span></span> &#123;</span><br><span class="line">	bp, err := client.NewBatchPoints(client.BatchPointsConfig&#123;</span><br><span class="line">		Database:  <span class="string">"test"</span>,</span><br><span class="line">		Precision: <span class="string">"s"</span>, <span class="comment">//精度，默认ns</span></span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	tags := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;<span class="string">"cpu"</span>: <span class="string">"ih-cpu"</span>&#125;</span><br><span class="line">	fields := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;&#123;</span><br><span class="line">		<span class="string">"idle"</span>:   <span class="number">201.1</span>,</span><br><span class="line">		<span class="string">"system"</span>: <span class="number">43.3</span>,</span><br><span class="line">		<span class="string">"user"</span>:   <span class="number">86.6</span>,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	pt, err := client.NewPoint(<span class="string">"cpu_usage"</span>, tags, fields, time.Now())</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	bp.AddPoint(pt)</span><br><span class="line">	err = cli.Write(bp)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(<span class="string">"insert success"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写入数据成功</p>
+<p><img src="/2021/03/26/初学influxdb/11.png" alt="11"></p>
+<h4 id="influxDB客户端查询"><a href="#influxDB客户端查询" class="headerlink" title="influxDB客户端查询"></a>influxDB客户端查询</h4><p><img src="/2021/03/26/初学influxdb/12.png" alt="12"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/22/Docker-Kubernetes学习/" rel="next" title="Docker&Kubernetes学习">
+                <i class="fa fa-chevron-left"></i> Docker&Kubernetes学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载安装influxDB"><span class="nav-number">2.</span> <span class="nav-text">下载安装influxDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gopsutil学习"><span class="nav-number">3.</span> <span class="nav-text">gopsutil学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go操作influxDB"><span class="nav-number">4.</span> <span class="nav-text">Go操作influxDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#influxDB客户端查询"><span class="nav-number">5.</span> <span class="nav-text">influxDB客户端查询</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
