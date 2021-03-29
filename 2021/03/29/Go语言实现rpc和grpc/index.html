@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="代码,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RPC介绍RPC（Remote Procedure Call）是一种远程调用协议，能够使应用像调用本地方法一样调用远程的过程或服务。可以应用在分布式服务、分布式计算、远程调用等场景。 Go实现rpc-server1234567891011121314151617181920212223242526272829303132333435363738394041424344package mainimp">
+<meta name="keywords" content="代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言实现rpc和grpc">
+<meta property="og:url" content="elssm.github.io/2021/03/29/Go语言实现rpc和grpc/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="RPC介绍RPC（Remote Procedure Call）是一种远程调用协议，能够使应用像调用本地方法一样调用远程的过程或服务。可以应用在分布式服务、分布式计算、远程调用等场景。 Go实现rpc-server1234567891011121314151617181920212223242526272829303132333435363738394041424344package mainimp">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/03/29/Go语言实现rpc和grpc/1.png">
+<meta property="og:image" content="/2021/03/29/Go语言实现rpc和grpc/2.png">
+<meta property="og:updated_time" content="2021-03-29T10:15:36.030Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go语言实现rpc和grpc">
+<meta name="twitter:description" content="RPC介绍RPC（Remote Procedure Call）是一种远程调用协议，能够使应用像调用本地方法一样调用远程的过程或服务。可以应用在分布式服务、分布式计算、远程调用等场景。 Go实现rpc-server1234567891011121314151617181920212223242526272829303132333435363738394041424344package mainimp">
+<meta name="twitter:image" content="/2021/03/29/Go语言实现rpc和grpc/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/03/29/Go语言实现rpc和grpc/">
+
+
+
+
+
+  <title>Go语言实现rpc和grpc | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/29/Go语言实现rpc和grpc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Go语言实现rpc和grpc</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-29T11:03:17+08:00">
+                2021-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="RPC介绍"><a href="#RPC介绍" class="headerlink" title="RPC介绍"></a>RPC介绍</h4><p>RPC（Remote Procedure Call）是一种远程调用协议，能够使应用像调用本地方法一样调用远程的过程或服务。可以应用在分布式服务、分布式计算、远程调用等场景。</p>
+<h4 id="Go实现rpc-server"><a href="#Go实现rpc-server" class="headerlink" title="Go实现rpc-server"></a>Go实现rpc-server</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"net"</span></span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> World <span class="keyword">struct</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *World)</span> <span class="title">HelloWorld</span> <span class="params">(name <span class="keyword">string</span>,resp *<span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	*resp = name + <span class="string">" 你好!"</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//注册rpc服务</span></span><br><span class="line">	err := rpc.RegisterName(<span class="string">"hello"</span>,<span class="built_in">new</span>(World))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"注册rpc服务失败！,err"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//设置监听</span></span><br><span class="line">	listener,err := net.Listen(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:8800"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"net.Listen err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> listener.Close()</span><br><span class="line">	fmt.Println(<span class="string">"开始监听...."</span>)</span><br><span class="line">	<span class="comment">//建立链接</span></span><br><span class="line">	conn,err := listener.Accept()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"Accept() err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> conn.Close()</span><br><span class="line">	fmt.Println(<span class="string">"链接成功..."</span>)</span><br><span class="line">	<span class="comment">//绑定服务</span></span><br><span class="line">	rpc.ServeConn(conn)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先我们要实定义类对象并绑定一个类方法。在<code>server</code>中的<code>main</code>函数中第一步需要实现的是注册RPC服务，绑定对象方法。<code>RegisterName</code>函数的第一个参数是服务名，是一个字符串类型。第二个参数对应rpc对象。方法必须是导出的，必须有两个参数，方法第二个参数必须是指针。方法只有一个error接口类型的返回值。第二步是设置监听，这里我们使用<code>net.listen</code>监听本地tcp下的<code>8800</code>端口。第三步是建立链接，使用<code>Accept</code>会返回一个用于通信的connect。最后绑定服务即可。这里注意对于listener和conn在使用完后一定要close。</p>
+<h4 id="Go实现rpc-client"><a href="#Go实现rpc-client" class="headerlink" title="Go实现rpc-client"></a>Go实现rpc-client</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"net/rpc"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main01</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="comment">//用rpc链接服务器</span></span><br><span class="line">	conn,err := rpc.Dial(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:8800"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"Dial err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> conn.Close()</span><br><span class="line">	<span class="comment">//调用远程函数</span></span><br><span class="line">	<span class="keyword">var</span> reply <span class="keyword">string</span> </span><br><span class="line">	err = conn.Call(<span class="string">"hello.HelloWorld"</span>,<span class="string">"elssm"</span>,&amp;reply)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"Call err:"</span>,err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(reply)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>client</code>端第一步先通过<code>Dial</code>链接服务器。链接成功之后通过<code>Call</code>调用远程函数，对于<code>Call</code>的第一个参数是服务名.方法名，第二个是传入参数，第三个是接收参数，因为在server端类方法的第二个参数是指针类型。所以这里<code>Call</code>的第三个参数要传地址用于接收函数返回值。</p>
+<h4 id="Json-rpc"><a href="#Json-rpc" class="headerlink" title="Json-rpc"></a>Json-rpc</h4><p>使用<code>nc -l 127.0.0.1 8800</code>充当服务器发起通信产生乱码</p>
+<p><img src="/2021/03/29/Go语言实现rpc和grpc/1.png" alt="1"></p>
+<p>这是因为rpc使用了go语言特有的数据序列化gob，其他编程语言不能解析。因此我们可以使用通用的序列化，反序列化例如json、protobuf来解决。</p>
+<p>修改上面<code>client</code>端的链接服务器代码如下即可</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn,err := jsonrpc.Dial(<span class="string">"tcp"</span>,<span class="string">"127.0.0.1:8800"</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/29/Go语言实现rpc和grpc/2.png" alt="2"></p>
+<h4 id="RPC封装"><a href="#RPC封装" class="headerlink" title="RPC封装"></a>RPC封装</h4><h5 id="服务端封装"><a href="#服务端封装" class="headerlink" title="服务端封装"></a>服务端封装</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建接口，在接口中定义方法原型</span></span><br><span class="line"><span class="keyword">type</span> MyInterface <span class="keyword">interface</span> &#123;</span><br><span class="line">	HelloWorld(<span class="keyword">string</span>,*<span class="keyword">string</span>) error</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//封装注册服务方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterService</span><span class="params">(i MyInterface)</span></span>  &#123;</span><br><span class="line">	rpc.RegisterName(<span class="string">"hello"</span>,i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="客户端封装"><a href="#客户端封装" class="headerlink" title="客户端封装"></a>客户端封装</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义类</span></span><br><span class="line"><span class="keyword">type</span> Myclient <span class="keyword">struct</span> &#123;</span><br><span class="line">	c *rpc.Client</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化客户端</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InitClient</span><span class="params">(addr <span class="keyword">string</span>)</span> <span class="title">Myclient</span></span> &#123;</span><br><span class="line">	conn,_:= jsonrpc.Dial(<span class="string">"tcp"</span>,addr)</span><br><span class="line">	<span class="keyword">return</span> Myclient&#123;c:conn&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//绑定类方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *Myclient)</span> <span class="title">HelloWorld</span><span class="params">(a <span class="keyword">string</span>,b *<span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> this.c.Call(<span class="string">"hello.HelloWorld"</span>,a,b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="protobuf"><a href="#protobuf" class="headerlink" title="protobuf"></a>protobuf</h4><p>protobuf是Google开发出来的一个语言无关、平台无关的数据序列化工具，在rpc或tcp通信等很多场景都可以使用。通俗来讲，如果客户端和服务端使用的是不同的语言，那么在服务端定义一个数据结构，通过protobuf转化为字节流，再传送到客户端解码，就可以得到对应的数据结构。如果实现rpc我们可以使用json进行序列化。如果使用protobuf做序列化就需要使用gRPC。</p>
+<p>protobuf语法：<a href="https://www.bookstack.cn/read/topgoer/abb9896b6124ea54.md" target="_blank" rel="noopener">https://www.bookstack.cn/read/topgoer/abb9896b6124ea54.md</a></p>
+<h5 id="安装protobuf"><a href="#安装protobuf" class="headerlink" title="安装protobuf"></a>安装protobuf</h5><p>macos使用brew进行安装protobuf编译器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install protobuf</span><br></pre></td></tr></table></figure>
+<h5 id="protobuf编写"><a href="#protobuf编写" class="headerlink" title="protobuf编写"></a>protobuf编写</h5><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//默认是proto2</span></span><br><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定所在包名</span></span><br><span class="line"><span class="keyword">package</span> pb;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Week</span> </span>&#123;</span><br><span class="line">  Monday = <span class="number">0</span>;</span><br><span class="line">  Turesday = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义消息体</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int32</span> age = <span class="number">1</span>;</span><br><span class="line">  <span class="built_in">string</span> name = <span class="number">2</span>;</span><br><span class="line">  People p = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">repeated</span> <span class="built_in">int32</span> score = <span class="number">4</span>; <span class="comment">//数组</span></span><br><span class="line">  <span class="comment">//枚举</span></span><br><span class="line">  Week w = <span class="number">5</span>;</span><br><span class="line">  <span class="comment">//联合体</span></span><br><span class="line">  <span class="keyword">oneof</span> data &#123;</span><br><span class="line">    <span class="built_in">string</span> teacher = <span class="number">6</span>;</span><br><span class="line">    <span class="built_in">string</span> class = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//消息体可以嵌套</span></span><br><span class="line"><span class="class"><span class="keyword">message</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int32</span> weight = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="编译protobuf"><a href="#编译protobuf" class="headerlink" title="编译protobuf"></a>编译protobuf</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --go_out=./ *.proto</span><br></pre></td></tr></table></figure>
+<h4 id="gRPC简介"><a href="#gRPC简介" class="headerlink" title="gRPC简介"></a>gRPC简介</h4><p>官方中文文档：<a href="http://doc.oschina.net/grpc?t=58008" target="_blank" rel="noopener">http://doc.oschina.net/grpc?t=58008</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/代码/" rel="tag"># 代码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/26/初学influxdb/" rel="next" title="初学influxdb">
+                <i class="fa fa-chevron-left"></i> 初学influxdb
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#RPC介绍"><span class="nav-number">1.</span> <span class="nav-text">RPC介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go实现rpc-server"><span class="nav-number">2.</span> <span class="nav-text">Go实现rpc-server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go实现rpc-client"><span class="nav-number">3.</span> <span class="nav-text">Go实现rpc-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Json-rpc"><span class="nav-number">4.</span> <span class="nav-text">Json-rpc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RPC封装"><span class="nav-number">5.</span> <span class="nav-text">RPC封装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#服务端封装"><span class="nav-number">5.1.</span> <span class="nav-text">服务端封装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#客户端封装"><span class="nav-number">5.2.</span> <span class="nav-text">客户端封装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protobuf"><span class="nav-number">6.</span> <span class="nav-text">protobuf</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装protobuf"><span class="nav-number">6.1.</span> <span class="nav-text">安装protobuf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#protobuf编写"><span class="nav-number">6.2.</span> <span class="nav-text">protobuf编写</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编译protobuf"><span class="nav-number">6.3.</span> <span class="nav-text">编译protobuf</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gRPC简介"><span class="nav-number">7.</span> <span class="nav-text">gRPC简介</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
