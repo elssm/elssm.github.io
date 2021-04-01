@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Generating Adversarial Examples with Adversarial Networks论文链接：https://arxiv.org/abs/1801.02610代码链接：https://github.com/mathcbc/advGAN_pytorch 简介为了更有效地生成感知真实的对抗性样本，本文提出一种基于GAN的方式来产生对抗样本。 1.训练一个产生扰动的前馈网络">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AdvGAN学习">
+<meta property="og:url" content="elssm.github.io/2021/04/01/AdvGAN学习/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="Generating Adversarial Examples with Adversarial Networks论文链接：https://arxiv.org/abs/1801.02610代码链接：https://github.com/mathcbc/advGAN_pytorch 简介为了更有效地生成感知真实的对抗性样本，本文提出一种基于GAN的方式来产生对抗样本。 1.训练一个产生扰动的前馈网络">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/1.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/2.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/3.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/4.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/5.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/6.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/7.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/8.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/10.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/11.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/12.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/13.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/14.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/15.png">
+<meta property="og:image" content="/2021/04/01/AdvGAN学习/16.png">
+<meta property="og:updated_time" content="2021-04-01T05:27:40.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AdvGAN学习">
+<meta name="twitter:description" content="Generating Adversarial Examples with Adversarial Networks论文链接：https://arxiv.org/abs/1801.02610代码链接：https://github.com/mathcbc/advGAN_pytorch 简介为了更有效地生成感知真实的对抗性样本，本文提出一种基于GAN的方式来产生对抗样本。 1.训练一个产生扰动的前馈网络">
+<meta name="twitter:image" content="/2021/04/01/AdvGAN学习/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/04/01/AdvGAN学习/">
+
+
+
+
+
+  <title>AdvGAN学习 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">安全小白</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/04/01/AdvGAN学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AdvGAN学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-01T09:35:04+08:00">
+                2021-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Generating-Adversarial-Examples-with-Adversarial-Networks"><a href="#Generating-Adversarial-Examples-with-Adversarial-Networks" class="headerlink" title="Generating Adversarial Examples with Adversarial Networks"></a>Generating Adversarial Examples with Adversarial Networks</h4><p><strong>论文链接：</strong><a href="https://arxiv.org/abs/1801.02610" target="_blank" rel="noopener">https://arxiv.org/abs/</a><a href="https://arxiv.org/abs/1801.02610" target="_blank" rel="noopener">1801.02610</a><br><strong>代码链接：</strong><a href="https://github.com/mathcbc/advGAN_pytorch" target="_blank" rel="noopener">https://github.com/mathcbc/advGAN_pytorch</a></p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>为了更有效地生成感知真实的对抗性样本，本文提出一种基于GAN的方式来产生对抗样本。</p>
+<p>1.训练一个产生扰动的前馈网络来产生不同的对抗性样本。</p>
+<p>2.训练一判别网络来确保生成的样本是真实的。</p>
+<p>3.应用了GAN网络在半白盒和黑盒设置中产生对抗性样本。</p>
+<p>4.借助了CGAN的思想利用相似的范例生成高质量的图片。</p>
+<h4 id="主要贡献"><a href="#主要贡献" class="headerlink" title="主要贡献"></a>主要贡献</h4><ul>
+<li>训练了一个条件对抗性网络，直接生成对抗性实例，不仅可以生成感知逼真的实例，对不同目标模型的攻击成功率最高，而且生成过程更高效。</li>
+<li>证明了AdvGAN可以通过训练一个提取的模型来攻击黑盒模型。我们提出用查询信息动态训练提取的模型，实现高黑盒攻击成功率和有针对性的黑盒攻击。</li>
+<li>使用最先进的防御方法来抵御对抗性示例，并表明AdvGAN在当前防御下实现了更高的攻击成功率。</li>
+</ul>
+<h4 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h4><p>回顾了之前的一些对抗性例子和生成对抗网络。总结来看，对抗样本的生成方式无非是以下三种。</p>
+<ul>
+<li>基于梯度的生成方式（FGSM和PGD）</li>
+<li>基于优化的生成方式（CW和JSMA）</li>
+<li>基于GAN的生成方式</li>
+</ul>
+<p>作者提出了基于梯度和基于优化方式产生对抗样本的一些局限性。对于基于梯度来讲，在白盒攻击下攻击者需要完全清楚模型的参数。对于基于优化来讲，存在优化过程慢，只能优化每个特定实例的扰动等问题。相比之下，使用GAN来生成对抗样本，能够在不同防御下实现更高的攻击成功率。</p>
+<h4 id="AdvGAN框架"><a href="#AdvGAN框架" class="headerlink" title="AdvGAN框架"></a>AdvGAN框架</h4><p><img src="/2021/04/01/AdvGAN学习/1.png" alt="1"></p>
+<p>AdvGAN的整体框架如上图所示，主要包含三个部分。一个生成器G，一个判别器D和一个目标攻击网络模型f。从左边开始分析，生成器G会接受一张原始图像输入x，通过生成器G之后会生成一个微小的扰动G(x)，接着扰动实例x+G(x)会被分别送入判别器D和目标攻击网络模型f，判别器的任务是分辨生成数据和原始数据，判别器的作用是引导生成数据与原始类别数据不可区分。在目标攻击网络模型f中，扰动实例x+G(x)会作为输入参数，为了欺骗学习模型，作者先进行了白盒攻击，在白盒攻击下经过f输出对抗损失，对抗损失表示预测类别和要攻击到其错误分类类别的距离或者是与真实类别标签相反的距离。</p>
+<p>其中在2014年Goodfellow提出的对抗损失可以被定义如下：</p>
+<p><img src="/2021/04/01/AdvGAN学习/2.png" alt="2"></p>
+<p>在这里判别器D的目标是分辨带有扰动的数据x+G(x)和原始数据x，其中真实数据是从真实类别中被采样的，目的是为了使得生成的数据尽可能的接近原始数据。</p>
+<p>目标攻击网络模型f的损失被定义如下：</p>
+<p><img src="/2021/04/01/AdvGAN学习/3.png" alt="3"></p>
+<p>其中t是目标标签，$l_f$表示损失函数，在文中使用的是交叉熵损失来训练原始模型f。$L^f_{adv}$损失函数引导带有扰动的图像被错误分类成目标类别t。</p>
+<p>为了限制扰动的大小，作者在L2 norm的基础上加了一个hinge loss，损失被定义如下：</p>
+<p><img src="/2021/04/01/AdvGAN学习/4.png" alt="4"></p>
+<p>这里c代表一个用户所定义的最大边界，可以稳定GAN的训练。</p>
+<p>最终目标函数被表示为：</p>
+<p><img src="/2021/04/01/AdvGAN学习/5.png" alt="5"></p>
+<p>其中$\alpha$和$\beta$用来控制每个损失函数之间的相对重要程度$L^f_{adv}$用来生成对抗样本，$L_{GAN}$是为了使带有扰动的数据与原始数据相似，$L_{hinge}$用来限制perturbation的大小。</p>
+<h4 id="生成对抗网络进行黑盒攻击"><a href="#生成对抗网络进行黑盒攻击" class="headerlink" title="生成对抗网络进行黑盒攻击"></a>生成对抗网络进行黑盒攻击</h4><h5 id="静态蒸馏"><a href="#静态蒸馏" class="headerlink" title="静态蒸馏"></a>静态蒸馏</h5><p>对于黑盒攻击，我们假设攻击者对于训练数据和需要攻击的模型没有先验知识。在我们进行的实验中，因为我们假设攻击者对于训练数据和模型没有先验知识，因此我们随机选取与原始训练数据不相交的图像数据去进行模型蒸馏。为了实现黑盒攻击，我们首先基于黑盒模型b的输出构建了一个蒸馏网络f。一旦我们获得了经过蒸馏的网络f，我们就会执行与白盒设置中描述的相同的攻击策略。蒸馏网络目标函数定义如下：</p>
+<p><img src="/2021/04/01/AdvGAN学习/6.png" alt="6"></p>
+<p>其中f(x)和b(x)分别表示蒸馏模型和黑盒模型的输出，H表示交叉熵损失函数，通过使用所有的训练图像去优化上面的目标函数，我们可以获得效果接近于黑盒模型b的蒸馏模型f。然后我们可以在这个蒸馏网络上进行我们的攻击策略。</p>
+<p>不同于训练判别器D，在训练判别器D的过程中，我们只使用来自原始类别的真实数据去引导生成的对抗样本实例尽可能地接近它的原始类别。在这里我们训练蒸馏模型使用的是来自所有类别的全部数据。</p>
+<h5 id="动态蒸馏"><a href="#动态蒸馏" class="headerlink" title="动态蒸馏"></a>动态蒸馏</h5><p>仅仅用所有原始的训练数据训练经过提炼的模型是不够的，因为我们不清楚黑盒和经过提炼的模型在生成的对抗样本上的表现有多接近，而这些样本在之前的训练集中没有出现过。在这里作者提出一种代替最小化方法去动态查询和联合训练蒸馏模型f和生成器G 。在每一次迭代中执行下面两个步骤：</p>
+<p><img src="/2021/04/01/AdvGAN学习/7.png" alt="7"></p>
+<p>1.对于给定的蒸馏网络$f_{i-1}$更新$G_i$：根据白盒攻击的算法步骤，利用前一个蒸馏网络$f_{i-1}$去训练生成器和判别器，初始化$G_i$的权重为$G_{i-1}$的权重，$G_i,D_i=arg\underset{G}{min}\underset{D}{max}L^{f_{i-1}}_{adv}+\alpha L_{GAN}+\beta L_{hinge}$</p>
+<p>2.对于给定的生成器$G_{i-1}$更新$f_i$：首先我们使用$f_{i-1}$的权重初始化$f_i$的权重，然后对于给定的从$G_i$生成的对抗样本x+G(x)，蒸馏模型$f_i$会根据最新的在黑盒模型上对抗样本的查询结果和原始数据进行参数更新。$f_i=arg\underset{f}{min}E_xH(f(x),b(x))+E_xH(f(x+G_i(x)),b(x+G_i(x)))$这里我们使用原始图像x和生成的对抗样本x+$sG_i(x)$去更新蒸馏网络。</p>
+<h4 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h4><p>这一章节，我们首先评估AdvGAN在半白盒和黑盒情景下对于MNIST和CIFAR-10的效果。我们也在ImageNet上进行的半白盒攻击的测试。接着我们应用AdvGAN在不同的目标模型上生成对抗样本和在目前最好的防御方法下测试其攻击成功率，结果显示我们的方法与其他目前存在的方法相比能实现更高的攻击成功率。为了保证比较的公平性，我们利用各种攻击方法生成的对抗样本都是在相同的无穷范式的约束下（在MNIST是0.3，在CIFAR-10是8）。大致来看，AdvGAN对比其他白盒攻击和黑盒攻击的方法体现出了几点优势。</p>
+<p><img src="/2021/04/01/AdvGAN学习/8.png" alt="8"></p>
+<p>就计算效率来讲，AdvGAN执行速度更快甚至比高效的FGSM方法快，即使AdvGAN需要额外的训练时间去训练生成器。我们这里对比的所有攻击策略除了基于迁移性攻击策略，其他都可以进行目标攻击。除此之外，FGSM和基于优化的方法只能进行白盒攻击，但是AdvGAN可以在半白盒的情景下进行攻击。</p>
+<h5 id="实验细节"><a href="#实验细节" class="headerlink" title="实验细节"></a>实验细节</h5><p>采用与image-to-image转换文献类似的生成器和鉴别器结构，采用C&amp;W方法中提出的损失函数作为损失函数。在黑盒攻击的情景下表示蒸馏网络。我们设置信度为0，优化方法使用Adam，批大小为128，学习率为0.001。对于生成式对抗网络的学习，我们使用最小平方目标函数，因为它有更好更稳定的结果。</p>
+<h5 id="半白盒攻击下的AdvGAN"><a href="#半白盒攻击下的AdvGAN" class="headerlink" title="半白盒攻击下的AdvGAN"></a>半白盒攻击下的AdvGAN</h5><p>我们用不同的模型结构来评估AdvGAN在MNIST和CIFAR-10数据集上的表现。我们首先应用AdvGAN来执行针对MNIST的不同模型的半白盒攻击。可以看出AdvGAN能够生成对抗实例以高攻击成功率攻击所有模型。我们还从相同的原始实例x生成对抗样本，攻击到其他不同的类别，在MNIST的半白盒情景中，我们可以看到生成的不同模型的对抗样本看起来与原始图像十分接近。此外，我们还分析了基于不同损失函数的MNIST攻击成功率。在相同的perturbation下，如果我们把上面定义的完整的损失函数代替成Baluja和Fischer使用的损失函数，攻击成功率为86.2%。如果把损失函数替代为$L=L_{hinge}+L^f_{adv}$，攻击成功率为91.1%，AdvGAN的成功率为98.3%。</p>
+<p><img src="/2021/04/01/AdvGAN学习/10.png" alt="10"></p>
+<h5 id="黑盒攻击下的AdvGAN"><a href="#黑盒攻击下的AdvGAN" class="headerlink" title="黑盒攻击下的AdvGAN"></a>黑盒攻击下的AdvGAN</h5><p>黑盒攻击基于动态蒸馏策略，构造一个本地模型去蒸馏我们需要攻击的模型f。我们选择模型C作为我们本地模型的架构。注意的是我们随机选取与原始训练数据不同的图像实例子集去训练本地模型。我们假设攻击者对于训练数据和模型没有任何的先验了解。通过动态蒸馏策略，由AdvGAN产生的对抗样本实现了在MNIST数据集上超过90%的攻击成功率和在CIFAR-10上超过80%的攻击成功率。与此同时静态蒸馏在两个数据集上分别达到了30%和10%的攻击成功率。<br>我们使用AdvGAN在MNIST上生成能被错误分类到特定类别的对抗样本。通过对比生成的对抗样本和原图，我们可以看到对抗样本可以实现和原图一样高的视觉质量。特别地，原始图像被对抗噪声强调的部分暗含着视觉现实的操作。图3显示了在CIFAR-10上产生的对抗样本结果。这些对抗样本实例和原始图像相比具有照片的真实性。</p>
+<p><img src="/2021/04/01/AdvGAN学习/11.png" alt="11"></p>
+<h5 id="在防御算法下的攻击效果"><a href="#在防御算法下的攻击效果" class="headerlink" title="在防御算法下的攻击效果"></a>在防御算法下的攻击效果</h5><p>AdvGAN尝试生成隐含在真实数据分布中的对抗样本实例，它与其他攻击策略相比能在本质上产生更加真实的对抗扰动。因此AdvGAN有更高的概率能产生能抵抗不同防御方法的对抗样本。在</p>
+<h5 id="威胁模型"><a href="#威胁模型" class="headerlink" title="威胁模型"></a>威胁模型</h5><p>大多数现在的防御策略在它们受到攻击时，并不表现得那么鲁棒。这里我们考虑一个较弱的威胁模型，当对手不知道防御方法，并直接尝试攻击原始的学习模型，这也是C&amp;W分析的第一个威胁模型。在这种场景下，假设攻击者依然能够成功地攻击模型，这表明攻击策略是具有鲁棒性的。在这种场景下，我们首先应用不同的攻击算法在不知道被攻击的模型使用了什么防御算法的前提下，去产生对抗样本。然后我们使用不同的防御机制直接对这些产生的对抗样本进行防御。</p>
+<h5 id="半白盒攻击"><a href="#半白盒攻击" class="headerlink" title="半白盒攻击"></a>半白盒攻击</h5><p>在半白盒攻击下，攻击者对模型结构和参数能进行白盒式访问。我们将图1中的f替换成我们的威胁模型A,B,C。我们分别使用标准的FGSM对抗训练，集成对抗训练，迭代对抗训练这三种对抗训练算法去针对不同的模型架构去训练防御模型。我们通过攻击这些防御模型来评估攻击的有效性。我们的实验结果显示使用AdvGAN生成的对抗样本的攻击成功率比FGSM和Opt都高。如下图表3所示：</p>
+<p><img src="/2021/04/01/AdvGAN学习/12.png" alt="12"></p>
+<h5 id="黑盒攻击"><a href="#黑盒攻击" class="headerlink" title="黑盒攻击"></a>黑盒攻击</h5><p>对于AdvGAN，我们使用模型B作为黑盒攻击的模型，训练一个蒸馏模型进行黑盒攻击，攻击成功率在表4。</p>
+<p><img src="/2021/04/01/AdvGAN学习/13.png" alt="13"></p>
+<p>我们采用基于迁移性进行攻击的FGSM和Opt。我们使用FGSM和Opt在MNIST上攻击模型A，然后我们使用这些对抗样本去攻击模型B，显示对应分类的正确率。我们可以看到由AdvGAN生成的对抗样本的攻击成功率始终比其他攻击方法的高。对于CIFAR-10数据集，我们使用ResNet作为黑盒攻击模型，并且训练一个蒸馏模型对它进行黑盒攻击。为了与基于优化的黑盒攻击方法和FGSM进行对比，我们使用对Wide ResNet进行攻击生成的对抗样本在ResNet上测试。另外我们使用AdvGAN在MNIST挑战上，在表5上显示了几乎所有的标准攻击方法，其中AdvGAN实现了88.93%的攻击成功率在白盒攻击下。在与已经发表的黑盒攻击算法对比，AdvGAN实现了92.76%的攻击成功率，超过了所有其他在挑战中提交的最好的攻击策略。</p>
+<p><img src="/2021/04/01/AdvGAN学习/14.png" alt="14"></p>
+<p>在图4中，我们展示了随机挑选的由AdvGAN生成的原始图像数据和对抗样本。</p>
+<p><img src="/2021/04/01/AdvGAN学习/15.png" alt="15"></p>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>提出了一种基于生成式对抗网络的网络架构AdvGAN去生成对抗样本。在我们的网络架构中，前馈的生成器一旦训练完成，我们可以高效地生成对抗扰动。这种对抗样本在半白盒攻击和黑盒攻击下都能达到很高的成功率。另外，当我们使用AdvGAN去针对不同的未知防御方法的被攻击模型生成对抗样本时，生成的对抗样本可以保持高分辨率和高的视觉质量。能以高的攻击率成功攻击目前最好的防御方法。这个属性让AdvGAN成为有保障的提高对抗训练的途径。</p>
+<h4 id="复现代码分析"><a href="#复现代码分析" class="headerlink" title="复现代码分析"></a>复现代码分析</h4><p>复现代码链接：<a href="https://github.com/mathcbc/advGAN_pytorch" target="_blank" rel="noopener">https://github.com/mathcbc/advGAN_pytorch</a></p>
+<h5 id="training-the-target-model"><a href="#training-the-target-model" class="headerlink" title="training the target model"></a>training the target model</h5><p><code>train_target_model.py</code>的代码结构如下</p>
+<p><img src="/2021/04/01/AdvGAN学习/16.png" alt="16"></p>
+<p>模型定义在<code>model.py</code>文件中。模型采用了四个卷积层和三个全连接层。在<code>forward</code>函数中采用relu激活函数和池化操作并开启了dropout。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MNIST_target_net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(MNIST_target_net, self).__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">1</span>, <span class="number">32</span>, kernel_size=<span class="number">3</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(<span class="number">32</span>, <span class="number">32</span>, kernel_size=<span class="number">3</span>)</span><br><span class="line">        self.conv3 = nn.Conv2d(<span class="number">32</span>, <span class="number">64</span>, kernel_size=<span class="number">3</span>)</span><br><span class="line">        self.conv4 = nn.Conv2d(<span class="number">64</span>, <span class="number">64</span>, kernel_size=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">        self.fc1 = nn.Linear(<span class="number">64</span>*<span class="number">4</span>*<span class="number">4</span>, <span class="number">200</span>)</span><br><span class="line">        self.fc2 = nn.Linear(<span class="number">200</span>, <span class="number">200</span>)</span><br><span class="line">        self.logits = nn.Linear(<span class="number">200</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        x = F.relu(self.conv1(x))</span><br><span class="line">        x = F.relu(self.conv2(x))</span><br><span class="line">        x = F.max_pool2d(x, <span class="number">2</span>)</span><br><span class="line">        x = F.relu(self.conv3(x))</span><br><span class="line">        x = F.relu(self.conv4(x))</span><br><span class="line">        x = F.max_pool2d(x, <span class="number">2</span>)</span><br><span class="line">        x = x.view(<span class="number">-1</span>, <span class="number">64</span>*<span class="number">4</span>*<span class="number">4</span>)</span><br><span class="line">        x = F.relu(self.fc1(x))</span><br><span class="line">        x = F.dropout(x, <span class="number">0.5</span>)</span><br><span class="line">        x = F.relu(self.fc2(x))</span><br><span class="line">        x = self.logits(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/29/Go语言实现rpc和grpc/" rel="next" title="Go语言实现rpc和grpc">
+                <i class="fa fa-chevron-left"></i> Go语言实现rpc和grpc
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Caoyifan</p>
+              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Generating-Adversarial-Examples-with-Adversarial-Networks"><span class="nav-number">1.</span> <span class="nav-text">Generating Adversarial Examples with Adversarial Networks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主要贡献"><span class="nav-number">3.</span> <span class="nav-text">主要贡献</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关工作"><span class="nav-number">4.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AdvGAN框架"><span class="nav-number">5.</span> <span class="nav-text">AdvGAN框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成对抗网络进行黑盒攻击"><span class="nav-number">6.</span> <span class="nav-text">生成对抗网络进行黑盒攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#静态蒸馏"><span class="nav-number">6.1.</span> <span class="nav-text">静态蒸馏</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态蒸馏"><span class="nav-number">6.2.</span> <span class="nav-text">动态蒸馏</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验结果"><span class="nav-number">7.</span> <span class="nav-text">实验结果</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实验细节"><span class="nav-number">7.1.</span> <span class="nav-text">实验细节</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#半白盒攻击下的AdvGAN"><span class="nav-number">7.2.</span> <span class="nav-text">半白盒攻击下的AdvGAN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#黑盒攻击下的AdvGAN"><span class="nav-number">7.3.</span> <span class="nav-text">黑盒攻击下的AdvGAN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在防御算法下的攻击效果"><span class="nav-number">7.4.</span> <span class="nav-text">在防御算法下的攻击效果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#威胁模型"><span class="nav-number">7.5.</span> <span class="nav-text">威胁模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#半白盒攻击"><span class="nav-number">7.6.</span> <span class="nav-text">半白盒攻击</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#黑盒攻击"><span class="nav-number">7.7.</span> <span class="nav-text">黑盒攻击</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结论"><span class="nav-number">8.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复现代码分析"><span class="nav-number">9.</span> <span class="nav-text">复现代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#training-the-target-model"><span class="nav-number">9.1.</span> <span class="nav-text">training the target model</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
