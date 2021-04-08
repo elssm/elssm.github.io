@@ -132,7 +132,7 @@
 <meta property="og:description" content="区块链产生 密码朋克：通过匿名性来保护隐私安全 不可篡改文件记录：加时间戳到文件内容中，证实数据真实存在 数字现金  发展历史 2009年，比特币诞生1.0 2014年，以太坊诞生2.0 2018年中期，EOS主网上线3.0 Fabric  区块链场景概念 数字货币：可以与现金流进行等价交换，拥有现有现金流的属性和功能 ICO：众筹 电子钱包：在电商购物中的支付工具  什么是区块链 区块链是一种集">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2021/04/02/区块链笔记/1.png">
-<meta property="og:updated_time" content="2021-04-04T05:40:48.871Z">
+<meta property="og:updated_time" content="2021-04-06T09:18:08.297Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区块链笔记">
 <meta name="twitter:description" content="区块链产生 密码朋克：通过匿名性来保护隐私安全 不可篡改文件记录：加时间戳到文件内容中，证实数据真实存在 数字现金  发展历史 2009年，比特币诞生1.0 2014年，以太坊诞生2.0 2018年中期，EOS主网上线3.0 Fabric  区块链场景概念 数字货币：可以与现金流进行等价交换，拥有现有现金流的属性和功能 ICO：众筹 电子钱包：在电商购物中的支付工具  什么是区块链 区块链是一种集">
@@ -613,6 +613,32 @@
 <li>联盟链代表，与公链最大的区别在于不发行虚拟货币。</li>
 <li>目标：实现一个通过权限管理区块链的底层基础框架。</li>
 </ul>
+<h4 id="比特币交易原理"><a href="#比特币交易原理" class="headerlink" title="比特币交易原理"></a>比特币交易原理</h4><ul>
+<li><p>传统的web交易</p>
+<p>账户<br>余额<br>参与者<br>货币</p>
+</li>
+<li><p>基本概念</p>
+<ul>
+<li>比特币系统中的交易没有余额的概念，它使用的是UTXO交易模型，在传统交易过程中所说的交易余额实际上指的是一个比特币钱包地址的UTXO集合</li>
+</ul>
+</li>
+<li><p>交易组成</p>
+<ul>
+<li>在比特币中，交易主要由输入，输出，ID，交易时间组成</li>
+</ul>
+</li>
+<li><p>UTXO交易模型</p>
+<ul>
+<li>比特币专有的交易模型</li>
+<li>在比特币中，交易实际上就是不但查找指定钱包地址的UTXO集合，然后进行修改的过程</li>
+<li>UTXO是比特币交易中最基本的单元，是不可拆分的</li>
+</ul>
+</li>
+<li><p>交易过程</p>
+<p>coinbase：挖矿奖励的比特币，没有发送者，由系统提供，所以不包含input</p>
+<p>普通转账：正常的转账交易，有发送者参与，所以包含input</p>
+</li>
+</ul>
 <h4 id="Go语言区块链简单实现"><a href="#Go语言区块链简单实现" class="headerlink" title="Go语言区块链简单实现"></a>Go语言区块链简单实现</h4><p>创建一个<code>Block.go</code>文件，定义一个最基本的区块结构,这个结构包含了区块最基本的一些东西。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Block <span class="keyword">struct</span> &#123;</span><br><span class="line">	TimeStamp <span class="keyword">int64</span> <span class="comment">//区块时间戳</span></span><br><span class="line">	Hash []<span class="keyword">byte</span> <span class="comment">//当前区块哈希</span></span><br><span class="line">	PrevBlochHash []<span class="keyword">byte</span> <span class="comment">//前区块哈希</span></span><br><span class="line">	Height <span class="keyword">int64</span> <span class="comment">//区块高度</span></span><br><span class="line">	Data []<span class="keyword">byte</span> <span class="comment">//交易数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接着实现一个建立区块的函数,这个函数就是对区块结构进行一些初始化。对于区块的hash我们单独实现一个方法。</p>
@@ -808,7 +834,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链产生"><span class="nav-number">1.</span> <span class="nav-text">区块链产生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发展历史"><span class="nav-number">2.</span> <span class="nav-text">发展历史</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链场景概念"><span class="nav-number">3.</span> <span class="nav-text">区块链场景概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是区块链"><span class="nav-number">4.</span> <span class="nav-text">什么是区块链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链特点"><span class="nav-number">5.</span> <span class="nav-text">区块链特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链加密货币特点"><span class="nav-number">6.</span> <span class="nav-text">区块链加密货币特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链核心技术"><span class="nav-number">7.</span> <span class="nav-text">区块链核心技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链核心概念"><span class="nav-number">8.</span> <span class="nav-text">区块链核心概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链的分类"><span class="nav-number">9.</span> <span class="nav-text">区块链的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链架构特点"><span class="nav-number">10.</span> <span class="nav-text">区块链架构特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用分析"><span class="nav-number">11.</span> <span class="nav-text">应用分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以太坊"><span class="nav-number">12.</span> <span class="nav-text">以太坊</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EOS"><span class="nav-number">13.</span> <span class="nav-text">EOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fabric-联盟链"><span class="nav-number">14.</span> <span class="nav-text">Fabric(联盟链)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go语言区块链简单实现"><span class="nav-number">15.</span> <span class="nav-text">Go语言区块链简单实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链产生"><span class="nav-number">1.</span> <span class="nav-text">区块链产生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发展历史"><span class="nav-number">2.</span> <span class="nav-text">发展历史</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链场景概念"><span class="nav-number">3.</span> <span class="nav-text">区块链场景概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是区块链"><span class="nav-number">4.</span> <span class="nav-text">什么是区块链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链特点"><span class="nav-number">5.</span> <span class="nav-text">区块链特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链加密货币特点"><span class="nav-number">6.</span> <span class="nav-text">区块链加密货币特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链核心技术"><span class="nav-number">7.</span> <span class="nav-text">区块链核心技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链核心概念"><span class="nav-number">8.</span> <span class="nav-text">区块链核心概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链的分类"><span class="nav-number">9.</span> <span class="nav-text">区块链的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区块链架构特点"><span class="nav-number">10.</span> <span class="nav-text">区块链架构特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用分析"><span class="nav-number">11.</span> <span class="nav-text">应用分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以太坊"><span class="nav-number">12.</span> <span class="nav-text">以太坊</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EOS"><span class="nav-number">13.</span> <span class="nav-text">EOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fabric-联盟链"><span class="nav-number">14.</span> <span class="nav-text">Fabric(联盟链)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比特币交易原理"><span class="nav-number">15.</span> <span class="nav-text">比特币交易原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go语言区块链简单实现"><span class="nav-number">16.</span> <span class="nav-text">Go语言区块链简单实现</span></a></li></ol></div>
             
 
           </div>
