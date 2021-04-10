@@ -142,7 +142,7 @@
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/9.png">
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/10.png">
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/11.png">
-<meta property="og:updated_time" content="2021-03-29T09:24:57.336Z">
+<meta property="og:updated_time" content="2021-04-10T12:23:38.324Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Composite Adversarial Attacks">
 <meta name="twitter:description" content="论文地址：https://arxiv.org/pdf/2012.05434.pdf代码地址：https://github.com/vtddggg/CAA What is adversarial attack？对抗攻击是指通过对输入添加微小的扰动使得分类器分类错误，一般对用于深度学习的网络的攻击算法最为常见，对抗攻击的应用场景包括CV和NLP等。例如，通过对图片添加精心准备的扰动噪声使得分类器出错，">
@@ -382,7 +382,7 @@
 <p>文中作者设计了一个搜索空间，将攻击策略表示为一个攻击序列，即：前一个攻击者的输出被用作后续攻击者的初始化输入。采用NSGA-II多目标遗传算法寻找复杂度最小的最强攻击策略。</p>
 <h4 id="What-is-NSGA-II？"><a href="#What-is-NSGA-II？" class="headerlink" title="What is NSGA-II？"></a>What is NSGA-II？</h4><p>NSGA-II是目前最流行的多目标遗传算法之一，它降低了非劣排序遗传算法的复杂性，具有运算速度快，解集的收敛性好的优点，成为其他多目标优化算法性能的基准。<br>NSGA-II就是在第一代非支配排序遗传算法的基础上改进而来，其改进主要是针对如上所述的三个方面：</p>
 <ul>
-<li>提出了快速非非支配排序算法，一方面降低了计算的复杂度，另一方面它将父代种群跟子代种群进行合并，使得下一代的种群从双倍的空间中进行选取，从而保留了最为优秀的所有个体</li>
+<li>提出了快速非支配排序算法，一方面降低了计算的复杂度，另一方面它将父代种群跟子代种群进行合并，使得下一代的种群从双倍的空间中进行选取，从而保留了最为优秀的所有个体</li>
 <li>引进精英策略，保证某些优良的种群个体在进化过程中不会被丢弃，从而提高了优化结果的精度</li>
 <li>采用拥挤度和拥挤度比较算子，不但克服了NSGA中需要人为指定共享参数的缺陷，而且将其作为种群中个体间的比较标准，使得准Pareto域中的个体能均匀地扩展到整个Pareto域，保证了种群的多样性。</li>
 </ul>
@@ -418,7 +418,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cleverhans:https://github.com/cleverhans-lab/cleverhans</span><br><span class="line">foolbox:https://github.com/bethgelab/foolbox</span><br><span class="line">advertorch:https://github.com/BorealisAI/advertorch</span><br></pre></td></tr></table></figure>
 <h4 id="The-necessity-of-CAA"><a href="#The-necessity-of-CAA" class="headerlink" title="The necessity of CAA"></a>The necessity of CAA</h4><p>然而，即使开发了设计良好的工具箱，攻击一个模型仍然需要大量的用户体验或手动调整攻击的超参数，特别是当我们不知道目标模型的防御机制时，这种依赖用户的特性也使得对抗性攻击的工具化变得困难。另一方面，手动选择攻击者有一定的倾向性和次优性。这可能引起对模型安全性的错误评估。为了实现更全面，更强的攻击，我们首先提出了通过从一组攻击算法中搜索有效的攻击策略来实现自动化攻击过程。我们将这个过程称为复合对抗攻击(CAA)</p>
 <p><img src="/2021/03/05/Composite-Adversarial-Attacks/1.png" alt="1"></p>
-<p>上图是CIFAR-10对抗训练模式下CAA与其他攻击者的比较，其中CAA-n代表CAA攻击有几次重启，从上图可以发现CAA只需要少量的梯度评估就能获得最佳的攻击性能。<br>为了演示CAA的关键思想，图2中给出了一个示例。假设有两种可能的攻击方式，空间攻击和FGSM攻击，目标是选择其中一个或多个来组成一个更强的攻击策略。在图2(b)中，最简单的方法是选择最佳的单次攻击作为最终策略。然而，单个攻击者总是不够强大和一般化。一个更好的解决方案是找到多个攻击者，然后通过不断选择能够成功为模型提供工具的最佳输出来集成它们(如图2(c))，虽然这样可以获得较高的攻击成功率，但集成攻击只提供输出级的聚合，没有考虑不同攻击机制之间的互补性。<br>在我们的复合对抗攻击中，我们将攻击策略定义为攻击者的串行连接，其中前一个攻击者的输出作为后继攻击者的初始化输入。在图2（d）中，两个攻击者可以生成四种可能的排列。通过使用搜索算法来寻找最佳排列，我们证明了FGSM攻击跟踪空间攻击的错误率比它们的集合高出26%。</p>
+<p>上图是CIFAR-10对抗训练模式下CAA与其他攻击者的比较，其中CAA-n代表CAA攻击有几次重启，从上图可以发现CAA只需要少量的梯度评估就能获得最佳的攻击性能。<br>为了演示CAA的关键思想，图2中给出了一个示例。假设有两种可能的攻击方式，空间攻击和FGSM攻击，目标是选择其中一个或多个来组成一个更强的攻击策略。在图2(b)中，最简单的方法是选择最佳的单次攻击作为最终策略。然而，单个攻击者总是不够强大和一般化。一个更好的解决方案是找到多个攻击者，然后通过不断选择能够成功为模型提供工具的最佳输出来集成它们(如图2(c))，虽然这样可以获得较高的攻击成功率，但集成攻击只提供输出级的聚合，没有考虑不同攻击机制之间的互补性。<br>在我们的复合对抗攻击中，我们将攻击策略定义为攻击者的串行连接，其中前一个攻击者的输出作为后继攻击者的初始化输入。在图2（d）中，两个攻击者可以生成四种可能的排列。通过使用搜索算法来寻找最佳排列，我们发现空间攻击之后的FGSM攻击错误率比他们整体可以高出26%。</p>
 <p><img src="/2021/03/05/Composite-Adversarial-Attacks/2.png" alt="2"></p>
 <p>该策略的优点在于两个方面：1）通过引入身份攻击，CAA模型可以表示任意一种攻击。集合攻击也可以用CAA的策略集合来表示，因此，CAA是更为广义的公式。2） 一个强大的攻击可以通过渐进的步骤产生，早期的研究发现，一些接近决策边界的起始点比原始种子更适合于优化攻击。类似地，在CAA中，我们使用前面的攻击者创建一个距离原始种子足够远、距离边界足够近的示例。这样，随后的攻击更容易找到一个更强的对抗实例。<br>具体来说，CAA是通过一个包含多个选择和攻击顺序的搜索空间来实现操作。对于每一个攻击操作都有两个超参数，幅值$\epsilon$和迭代步骤t，采用NSGA-II遗传算法去寻找能够突破目标模型最好的攻击策略，具有最高的准确率和最低的复杂度。大量实验表明，CAA在两个用例中取得了很好的改进：1）CAA可以直接应用于感兴趣的目标模型上，以找到最佳攻击策略$CAA_{dic}$ 2）学习策略可以在不同的任务下保持较高的成功率转移到攻击多模型体系结构$CAA_{sub}$。我们对最近提出的11种关于L无穷、L2和无限制设置的防御机制的$CAA_{dic}$和$CAA_{sub}$进行了评估。结果表明，复合对抗攻击(CAA)在白盒场景中达到了很好的效果，大大降低了攻击时间开销。</p>
 <h4 id="Preliminaries-and-Related-work"><a href="#Preliminaries-and-Related-work" class="headerlink" title="Preliminaries and Related work"></a>Preliminaries and Related work</h4><p><strong>符号定义</strong>：具体请看文章定义。<br><strong>常规对抗性实例</strong>：常规的对抗性例子是具有有限数量级的扰动，这通常是通过将扰动限定在某个范围内来实现的，有许多改进版本的FGSM使用基于动量的多步优化，或扰动的随机初始化。基于L2范式的攻击（如DDNL2和C&amp;W）。基于L1的攻击者保证扰动的稀疏性，如EAD。但是，L1攻击在实际攻击设置中并不常用。因此，文章没有实现在L1限制下的CAA<br><strong>无限制对抗实例</strong>：无限制对抗性实例是一种新型的不受范数有界小扰动限制的对抗性实例。在这种情况下，攻击者可能会在不更改语义的情况下显著更改输入。首先介绍了无限制对抗的概念，并提出了一个两人无限制攻防对抗的例子。近年来，有许多研究利用生成模型或空间变换来构造这种更强的无限制攻击。在本文中，我们还实现了最大搜索空间（总共19次攻击）的无限制CAA。我们发现，即使应用非常简单的基本攻击者来形成搜索空间，我们的CAA搜索的策略在不受限制的设置下仍然产生令人惊讶的攻击能力。<br><strong>自动机器学习</strong>：我们的方法受到自动机器学习及其子方向（如神经结构搜索（NAS）和超参数优化（HPO））的最新进展的启发。其中，搜索算法用于算法选择、特征预处理步骤和超参数的自动提取。另一个类似的方向是自动增强，它自动搜索改进的数据增强策略。这些自动化技术不仅使人们摆脱了繁琐的算法微调过程，而且大大提高了学习系统的效果和效率。在本文中，我们采用了AutoML中的一些搜索技术，证明了搜索更好的算法和参数也有助于对抗性攻击。<br>有关<strong>AutoML</strong>相关知识可移步这篇文章：<a href="https://zhuanlan.zhihu.com/p/112148211" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/112148211</a></p>
