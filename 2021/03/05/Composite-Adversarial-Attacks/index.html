@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,7 +84,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -142,7 +142,7 @@
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/9.png">
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/10.png">
 <meta property="og:image" content="/2021/03/05/Composite-Adversarial-Attacks/11.png">
-<meta property="og:updated_time" content="2021-04-10T12:23:38.324Z">
+<meta property="og:updated_time" content="2021-04-12T06:38:31.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Composite Adversarial Attacks">
 <meta name="twitter:description" content="论文地址：https://arxiv.org/pdf/2012.05434.pdf代码地址：https://github.com/vtddggg/CAA What is adversarial attack？对抗攻击是指通过对输入添加微小的扰动使得分类器分类错误，一般对用于深度学习的网络的攻击算法最为常见，对抗攻击的应用场景包括CV和NLP等。例如，通过对图片添加精心准备的扰动噪声使得分类器出错，">
@@ -154,7 +154,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -217,7 +217,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">安全小白</p>
+        <p class="site-subtitle"></p>
       
   </div>
 
@@ -312,7 +312,7 @@
     <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/03/05/Composite-Adversarial-Attacks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Caoyifan">
+      <meta itemprop="name" content="Cyf">
       <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
     </span>
@@ -428,7 +428,7 @@
 <h4 id="搜索目标"><a href="#搜索目标" class="headerlink" title="搜索目标"></a>搜索目标</h4><p>之前的工作通常以攻击成功率(ASR)或鲁棒准确率(RA)作为设计算法的目标。然而，这些目标都可以通过花费更多的时间来实现。例如通过随机重启或者多目标方式以获得更高的成功率，这样也就牺牲了运行效率。从而使得算法变得非常慢，甚至比一些黑盒攻击还要耗时。CAA强调一个好的并且强大的攻击者应该是有效且高效的，为了达到这个目标，作者设计了最小化两个术语的目标：强大的准确性和复杂性。第一个术语RA是目标模型在生成的对抗性例子上的准确性，这也反映了攻击者的实力。对于第二项复杂度，使用梯度评价的个数作为复杂度度量，对于普通攻击算法，梯度评估次数表示攻击算法在攻击过程中计算目标模型梯度的次数，一般等于优化步骤t。因此我们可以将总体目标函数表示为：<br><img src="/2021/03/05/Composite-Adversarial-Attacks/4.png" alt="4"><br>其中s(x)代表输入x后攻击策略的输出。N代表攻击策略的长度。$\alpha$是一个权衡攻击强度和复杂性的系数。之后可以应用一个搜索算法，通过最小化目标，从数千种可能的策略中找到最优的的攻击策略。</p>
 <h4 id="搜索空间"><a href="#搜索空间" class="headerlink" title="搜索空间"></a>搜索空间</h4><p>搜索空间被分为两个部分 1）寻找攻击操作的选择和命令。2）寻找每一次攻击操作的幅值$\epsilon$和步数t。对于由N个基础攻击操作组成的攻击策略。攻击操作搜索形成了一个$||A||^N$可能性的问题空间。此外，每个操作也与他们的幅值和步数有关。我们将幅值$\epsilon$和步数t的范围大小离散为8个值(均匀间距)，这样就可以将复合对抗攻击搜索简化为一个离散优化问题。最后，整个搜索空间的总大小为$(8<em>8</em>||A||)^N$<br>在这篇文章中，将策略空间分为三种类型：$S_{l_\infty},S_{l_2}和S_{unrestricted}$,分别在$S_{l_\infty}和S_{l_2}$上实现了6种$S_{l_\infty}$攻击和6种$S_{l_2}$攻击。在不受限制的情况下使用了更大的搜索空间实现了19种攻击算法。此外，所有的$S_{l_\infty},S_{l_2}和S_{unrestricted}$都采用身份攻击来表示身份操作，攻击策略在各搜索空间的输出可视化如图4所示：</p>
 <p><img src="/2021/03/05/Composite-Adversarial-Attacks/5.png" alt="5"></p>
-<h4 id="搜索策略"><a href="#搜索策略" class="headerlink" title="搜索策略"></a>搜索策略</h4><p>搜索策略在寻找最好的攻击策略中起到了很重要的作用，在我们的问题设置中，搜索空间的规模相对较小，而且策略评估的成本比起其他任务（如NAS）要低很多，有关NAS的介绍请移步这篇文章，在此不做过多介绍。<br>一篇NAS的介绍：<a href="https://zhuanlan.zhihu.com/p/45133026" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/45133026</a><br>这样就允许我们使用一些高性能的搜索算法，作者比较了三种广泛使用的方法，即：贝叶斯优化，强化学习和NSGA-II遗传算法。虽然贝叶斯优化和强化学习在自动学习领域被广泛认为是有效的，但在解决文章中的这个问题上，一是它们更加耗时，二是收敛的比较缓慢。相比之下，NSGA-II更快，因为在搜索期间不需要额外的模型优化过程。它只需要几次迭代的种群更新就可以快速地找到最优解。<br>具体来说，NSGA-II需要维护所有可能策略的有限集合和策略评估函数，NSGA-II算法通过三个步骤来搜索潜在攻击策略的空间。一个人口初始化步骤，使用随机策略生成人口$P_0$,一个包括攻击策略的交叉和变异的探索步骤，一种利用被评估策略的整个历史中隐藏的游泳知识并找到最优策略的开发步骤。整个过程如下图算法所示：</p>
+<h4 id="搜索策略"><a href="#搜索策略" class="headerlink" title="搜索策略"></a>搜索策略</h4><p>搜索策略在寻找最好的攻击策略中起到了很重要的作用，在我们的问题设置中，搜索空间的规模相对较小，而且策略评估的成本比起其他任务（如NAS）要低很多，有关NAS的介绍请移步这篇文章，在此不做过多介绍。<br>一篇NAS的介绍：<a href="https://zhuanlan.zhihu.com/p/45133026" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/45133026</a><br>这样就允许我们使用一些高性能的搜索算法，作者比较了三种广泛使用的方法，即：贝叶斯优化，强化学习和NSGA-II遗传算法。虽然贝叶斯优化和强化学习在自动学习领域被广泛认为是有效的，但在解决文章中的这个问题上，一是它们更加耗时，二是收敛的比较缓慢。相比之下，NSGA-II更快，因为在搜索期间不需要额外的模型优化过程。它只需要几次迭代的种群更新就可以快速地找到最优解。<br>具体来说，NSGA-II需要维护所有可能策略的有限集合和策略评估函数，NSGA-II算法通过三个步骤来搜索潜在攻击策略的空间。一个人口初始化步骤，使用随机策略生成人口$P_0$,一个包括攻击策略的交叉和变异的探索步骤，一种利用被评估策略的整个历史中隐藏的知识并找到最优策略的开发步骤。整个过程如下图算法所示：</p>
 <p><img src="/2021/03/05/Composite-Adversarial-Attacks/6.png" alt="6"></p>
 <h4 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h4><p>为了验证CAA的性能，在11个开源防御模型上对$S_{l_\infty},S_{l_2}和S_{unrestricted}$上的搜索攻击策略进行了评估。在CIFAR-10和ImageNet数据集上进行了$l_\infty和l_2$攻击实验。对Bird&amp;Bicycle数据集进行了无限制攻击。将鲁棒精确度记录为测量值，与最近排名前10位的攻击者进行比较，在实现过程中，取策略的所有中间结果并将其集合位相似的结果。<br>CAA的候选池包括32个攻击行为，其中有六个$l_\infty$攻击，六个$l_2$攻击，十九个无限制攻击和最后的身份攻击。具体实现的攻击算法总结如下图所示：</p>
 <p><img src="/2021/03/05/Composite-Adversarial-Attacks/7.png" alt="7"></p>
@@ -552,8 +552,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">Caoyifan</p>
-              <p class="site-description motion-element" itemprop="description">web安全 机器学习 GAN</p>
+              <p class="site-author-name" itemprop="name">Cyf</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -649,7 +649,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Caoyifan</span>
+  <span class="author" itemprop="copyrightHolder">Cyf</span>
 
   
 </div>
@@ -659,7 +659,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
 
 
 
@@ -773,6 +773,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
