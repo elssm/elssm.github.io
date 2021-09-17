@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="Shell命令解释器，根据舒服的命令执行相应命令 查看当前系统下有哪些shell 1cat /etc/shells 查看当前系统正在使用的shell 1echo $SHELL 常见shell 1234567/bin/bash（就是linux的默认的shell）/bin/csh（已经被/bin/tcsh所取代）/bin/dash/bin/ksh（Kornshell由AT&amp;amp;T Bell lab">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-09-16T06:31:08.008Z">
+<meta property="og:updated_time" content="2021-09-17T03:08:52.911Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux系统编程">
 <meta name="twitter:description" content="Shell命令解释器，根据舒服的命令执行相应命令 查看当前系统下有哪些shell 1cat /etc/shells 查看当前系统正在使用的shell 1echo $SHELL 常见shell 1234567/bin/bash（就是linux的默认的shell）/bin/csh（已经被/bin/tcsh所取代）/bin/dash/bin/ksh（Kornshell由AT&amp;amp;T Bell lab">
@@ -404,6 +404,9 @@
 <p>软链接：为保证软链接可以任意搬移，创建时务必对源文件使用绝对路径</p>
 <p>硬链接：操作系统给每一个文件赋予唯一的inode，当有相同inode的文件存在时，彼此同步。删除时，只将硬链接计数减一。减为0时，inode被释放。</p>
 <h4 id="find"><a href="#find" class="headerlink" title="find"></a>find</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-type 按文件类型搜索</span><br><span class="line">-name 按文件名搜索</span><br><span class="line">-maxdepth 指定搜索深度</span><br><span class="line">-size 按文件大小搜索，单位：k、M、G</span><br><span class="line">-atime、mtime、ctime</span><br><span class="line">-exec 将find搜索的结果集执行某一指定命令</span><br><span class="line">-ok 以交互式的方式将find搜索的结果集执行某一指定命令</span><br><span class="line">-xargs 将find搜索的结果集执行某一指定命令，当结果集数量过大时，可以分片映射</span><br></pre></td></tr></table></figure>
+<h4 id="压缩解压缩"><a href="#压缩解压缩" class="headerlink" title="压缩解压缩"></a>压缩解压缩</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">压缩</span><br><span class="line">tar -zcvf 要生成的压缩包名 压缩材料</span><br><span class="line">	tar zcvf test.tar.gz file1 dir2 使用gzip方式压缩</span><br><span class="line">	tar jcvf test.tar.gz file1 dir2 使用bzip2方式压缩</span><br><span class="line">	</span><br><span class="line">解压</span><br><span class="line">  tar xcvf test.tar.gz 使用gzip方式解压</span><br><span class="line">	tar xcvf test.tar.gz 使用bzip2方式解压</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rar</span><br><span class="line"></span><br><span class="line">rar a -r newdir dir 打包：将dir压缩成newdir.dir</span><br><span class="line">unrar x newdir.rar 解包：把newdir.rar解压缩到当前目录</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zip</span><br><span class="line"></span><br><span class="line">zip -r dir.zip dir 打包</span><br><span class="line">zip dir.zip 解压</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -587,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">1.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主键功能"><span class="nav-number">2.</span> <span class="nav-text">主键功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类Unix系统目录"><span class="nav-number">3.</span> <span class="nav-text">类Unix系统目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux系统文件类型"><span class="nav-number">4.</span> <span class="nav-text">Linux系统文件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#find"><span class="nav-number">5.</span> <span class="nav-text">find</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">1.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主键功能"><span class="nav-number">2.</span> <span class="nav-text">主键功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类Unix系统目录"><span class="nav-number">3.</span> <span class="nav-text">类Unix系统目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux系统文件类型"><span class="nav-number">4.</span> <span class="nav-text">Linux系统文件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#find"><span class="nav-number">5.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压缩"><span class="nav-number">6.</span> <span class="nav-text">压缩解压缩</span></a></li></ol></div>
             
 
           </div>
