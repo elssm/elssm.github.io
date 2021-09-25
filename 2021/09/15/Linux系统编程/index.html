@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="Shell命令解释器，根据舒服的命令执行相应命令 查看当前系统下有哪些shell 1cat /etc/shells 查看当前系统正在使用的shell 1echo $SHELL 常见shell 1234567/bin/bash（就是linux的默认的shell）/bin/csh（已经被/bin/tcsh所取代）/bin/dash/bin/ksh（Kornshell由AT&amp;amp;T Bell lab">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-09-22T02:05:07.822Z">
+<meta property="og:updated_time" content="2021-09-25T07:15:09.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux系统编程">
 <meta name="twitter:description" content="Shell命令解释器，根据舒服的命令执行相应命令 查看当前系统下有哪些shell 1cat /etc/shells 查看当前系统正在使用的shell 1echo $SHELL 常见shell 1234567/bin/bash（就是linux的默认的shell）/bin/csh（已经被/bin/tcsh所取代）/bin/dash/bin/ksh（Kornshell由AT&amp;amp;T Bell lab">
@@ -422,6 +422,24 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gcc -c test.c -o test.o</span><br><span class="line">ar rcs lib库名.a test.o</span><br><span class="line"></span><br><span class="line">编译静态库到可执行文件中</span><br><span class="line">gcc test.c lib库名.a -o test</span><br></pre></td></tr></table></figure>
 <p>动态库制作步骤</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">gcc -c test.c -o test.o -fPIC</span><br><span class="line">gcc -shared -o lib库名.so test.o</span><br><span class="line">编写可执行程序时，指定所使用的动态库。-l：指定库名 -L：指定库路径</span><br><span class="line">gcc test.c -o a.out -l 库名 -L ./lib</span><br><span class="line">运行可执行程序</span><br><span class="line">./a.out（执行出错）</span><br><span class="line">	原因</span><br><span class="line">		链接器：工作于链接阶段，工作时需要-l和-L</span><br><span class="line">		动态链接器：工作于程序运行阶段，工作时需要提供动态库所在目录位置</span><br><span class="line">		通过环境变量：export LD_LIBRARY_PATH=动态库路径（临时生效，终端重启后环境变量失效）</span><br><span class="line">		1.永久生效：写入终端配置文件 vim ~/.bashrc</span><br><span class="line">		2.拷贝自定义动态库到 /lib(标准C库所在目录位置)</span><br><span class="line">		3.配置文件法</span><br><span class="line">			1.sudo vi /etc/ld.so.conf</span><br><span class="line">			2.写入动态库绝对路径 保存</span><br><span class="line">			3.sudo ldconfig -v 使配置文件生效</span><br><span class="line">			4.执行./a.out  使用ldd a.out 查看</span><br></pre></td></tr></table></figure>
+<h4 id="GDB调试"><a href="#GDB调试" class="headerlink" title="GDB调试"></a>GDB调试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-g 使用该参数编译可执行文件，得到调试表</span><br><span class="line">gdb a.out</span><br><span class="line">list: list/l 列出源码，根据源码指定行号设置断点</span><br><span class="line">b: b 20 在20行位置设置断点</span><br><span class="line">run/r: 运行程序</span><br><span class="line">n/next: 下一条指令（会越过函数）</span><br><span class="line">s/step: 下一条指令（会进入函数）</span><br><span class="line">p/print: p i 查看i变量的值 </span><br><span class="line">continue: 继续执行断点后续指令</span><br><span class="line">quit: 推出gdb当前调试</span><br></pre></td></tr></table></figure>
+<p>其他指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">run: 使用run查找段错误出现位置</span><br><span class="line">finish: 结束当前函数调用</span><br><span class="line">set args: 设置main函数命令行参数</span><br><span class="line">run 字符串1 字符串2 ...: 设置main函数命令行参数</span><br><span class="line">info b: 查看断点信息表</span><br><span class="line">b 20 if i=5: 设置条件断点</span><br><span class="line">ptype: 查看变量类型</span><br><span class="line">bt: 列出当前程序正存活着的栈帧</span><br><span class="line">frame: 根据栈帧编号，切换栈帧</span><br><span class="line">display: 设置跟踪变量</span><br></pre></td></tr></table></figure>
+<h4 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h4><p>命名：Makefile / makefile</p>
+<ul>
+<li><p>1个规则</p>
+<p>目标：依赖条件</p>
+<ul>
+<li>（一个tab缩进）命令</li>
+</ul>
+<p>目标的时间必须晚于依赖条件的时间，否则，更新目标</p>
+<p>依赖条件如果不存在，找寻新的规则去产生依赖</p>
+</li>
+<li><p>2个函数</p>
+</li>
+<li><p>3个自动变量</p>
+</li>
+</ul>
 
       
     </div>
@@ -605,7 +623,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">1.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主键功能"><span class="nav-number">2.</span> <span class="nav-text">主键功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类Unix系统目录"><span class="nav-number">3.</span> <span class="nav-text">类Unix系统目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux系统文件类型"><span class="nav-number">4.</span> <span class="nav-text">Linux系统文件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#find"><span class="nav-number">5.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压缩"><span class="nav-number">6.</span> <span class="nav-text">压缩解压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim基础操作"><span class="nav-number">7.</span> <span class="nav-text">vim基础操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GCC编译"><span class="nav-number">8.</span> <span class="nav-text">GCC编译</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Shell"><span class="nav-number">1.</span> <span class="nav-text">Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主键功能"><span class="nav-number">2.</span> <span class="nav-text">主键功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类Unix系统目录"><span class="nav-number">3.</span> <span class="nav-text">类Unix系统目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux系统文件类型"><span class="nav-number">4.</span> <span class="nav-text">Linux系统文件类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#find"><span class="nav-number">5.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩解压缩"><span class="nav-number">6.</span> <span class="nav-text">压缩解压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vim基础操作"><span class="nav-number">7.</span> <span class="nav-text">vim基础操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GCC编译"><span class="nav-number">8.</span> <span class="nav-text">GCC编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GDB调试"><span class="nav-number">9.</span> <span class="nav-text">GDB调试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#makefile"><span class="nav-number">10.</span> <span class="nav-text">makefile</span></a></li></ol></div>
             
 
           </div>

@@ -135,7 +135,7 @@
 <meta property="og:image" content="/2021/09/23/JavaScript原型链污染攻击/2.webp">
 <meta property="og:image" content="/2021/09/23/JavaScript原型链污染攻击/3.png">
 <meta property="og:image" content="/2021/09/23/JavaScript原型链污染攻击/4.png">
-<meta property="og:updated_time" content="2021-09-23T12:14:46.570Z">
+<meta property="og:updated_time" content="2021-09-24T01:35:54.822Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript原型链污染攻击">
 <meta name="twitter:description" content="JavaScript原型在JavaScript中，原型也是一个对象，通过原型可以实现对象的属性继承，JavaScript的对象中都包含了一个[[Prototype]]内部属性，这个属性所对应的就是该对象的原型。[[Prototype]]作为对象的内部属性，是不能被直接访问的，所以为了方便的查看一个对象的原型，Firefox和Chrome提供了__proto__这个非标准的访问器。每个对象拥有一个原">
@@ -405,6 +405,13 @@
 <li>所有的函数都有一个<code>prototype</code>属性（也叫显式属性，是一个普通的对象）</li>
 <li>当试图得到一个对象属性时，如果这个对象本身不存在这个属性，会从它的构造函数的<code>prototype</code>属性中去寻找</li>
 </ul>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul>
+<li><a href="https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html" target="_blank" rel="noopener">https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html</a></li>
+<li><a href="https://www.freebuf.com/articles/web/275619.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/275619.html</a></li>
+<li><a href="https://www.cnblogs.com/wilber2013/p/4924309.html" target="_blank" rel="noopener">https://www.cnblogs.com/wilber2013/p/4924309.html</a></li>
+<li><a href="https://segmentfault.com/a/1190000021232132" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021232132</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain</a></li>
+</ul>
 
       
     </div>
@@ -584,7 +591,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript原型"><span class="nav-number">1.</span> <span class="nav-text">JavaScript原型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prototype属性"><span class="nav-number">2.</span> <span class="nav-text">prototype属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proto属性"><span class="nav-number">3.</span> <span class="nav-text">proto属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constructor-NaN"><span class="nav-number">4.</span> <span class="nav-text">constructor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原型链污染"><span class="nav-number">5.</span> <span class="nav-text">原型链污染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何利用"><span class="nav-number">6.</span> <span class="nav-text">如何利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何防御"><span class="nav-number">7.</span> <span class="nav-text">如何防御</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS原型小结"><span class="nav-number">8.</span> <span class="nav-text">JS原型小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript原型"><span class="nav-number">1.</span> <span class="nav-text">JavaScript原型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prototype属性"><span class="nav-number">2.</span> <span class="nav-text">prototype属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proto属性"><span class="nav-number">3.</span> <span class="nav-text">proto属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constructor-NaN"><span class="nav-number">4.</span> <span class="nav-text">constructor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原型链污染"><span class="nav-number">5.</span> <span class="nav-text">原型链污染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何利用"><span class="nav-number">6.</span> <span class="nav-text">如何利用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何防御"><span class="nav-number">7.</span> <span class="nav-text">如何防御</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JS原型小结"><span class="nav-number">8.</span> <span class="nav-text">JS原型小结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
