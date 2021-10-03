@@ -132,10 +132,17 @@
 <meta property="og:description" content="容器隔离机制 Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等) Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）  DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/1.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/5.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/6.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/7.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/9.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/8.png">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/2.png">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/3.png">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/4.png">
-<meta property="og:updated_time" content="2021-09-28T01:48:13.884Z">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/10.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/11.png">
+<meta property="og:updated_time" content="2021-10-03T09:38:40.642Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker&amp;Kubernetes学习">
 <meta name="twitter:description" content="容器隔离机制 Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等) Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）  DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装">
@@ -380,6 +387,39 @@
 <li>容器：Docker容器通常是一个Linux容器，它基于Docker镜像被创建，一个运行中的容器是一个运行在Docker主机上的进程，但它和主机，以及所有运行在主机上的其他进程都是隔离的，这些进程也是资源受限的，意味着它只能访问和使用分配给它的资源。</li>
 </ul>
 <h5 id="构建、分发和运行Docker镜像"><a href="#构建、分发和运行Docker镜像" class="headerlink" title="构建、分发和运行Docker镜像"></a>构建、分发和运行Docker镜像</h5><p><img src="/2021/03/22/Docker-Kubernetes学习/1.png" alt="1"></p>
+<h5 id="Docker-Hello-world"><a href="#Docker-Hello-world" class="headerlink" title="Docker Hello-world"></a>Docker Hello-world</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker search "hello-world"	#搜索一个名为 hello-world的镜像</span><br><span class="line">docker pull hello-world 	#拉取镜像</span><br><span class="line">docker run hello-world #运行镜像</span><br></pre></td></tr></table></figure>
+<h5 id="Docker搭建应用"><a href="#Docker搭建应用" class="headerlink" title="Docker搭建应用"></a>Docker搭建应用</h5><p>应用包含一个名为<code>app.js</code>的文件，代码如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http =  <span class="built_in">require</span> (<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> os = <span class="built_in">require</span> (<span class="string">'os'</span>);</span><br><span class="line"><span class="built_in">console</span>.log (<span class="string">"Kubia server starting ... "</span>);</span><br><span class="line"><span class="keyword">var</span> handler =<span class="function"><span class="keyword">function</span>(<span class="params">request, response</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log (<span class="string">"Received request from "</span> + request.connection.remoteAddress);</span><br><span class="line">	response.writeHead(<span class="number">200</span>);</span><br><span class="line">	response.end(<span class="string">"You've hit "</span> + os.hostname() + <span class="string">"\n"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> www = http.createServer(handler); </span><br><span class="line">www.listen(<span class="number">8080</span>);</span><br></pre></td></tr></table></figure>
+<p>为镜像创建Dockerfile，在<code>app.js</code>同目录下，创建一个Dockerfile文件，内容如下</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">7</span> <span class="comment">#构建所基于的基础镜像</span></span><br><span class="line"><span class="keyword">ADD</span> app.js /app.js #把app.js文件从本地文件夹添加到镜像的根目录，保持app.js这个文件名</span><br><span class="line"><span class="keyword">ENTRYPOINT</span> ["node","app.js"] #当镜像被运行时所需要被执行的命令</span><br></pre></td></tr></table></figure>
+<p>构建容器镜像，以下命令告诉Docker需要基于当前目录构建一个叫kubia的镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t kubia .</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/5.png" alt="5"></p>
+<p>基于Dockerfile构建一个新的容器镜像具体流程如下图所示</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/6.png" alt="6"></p>
+<p>运行容器镜像，下面这条命令告知Docker基于kubia镜像创建一个叫kubia- container的新容器，这个容器与命令行分离，意味着在后台运行，本机上的8080端口会被映射到容器内的8080端口，所以可以通过<code>localhost:8080</code>来访问这个应用，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name kubia-container -p 8080:8080 -d kubia</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/7.png" alt="7"></p>
+<p>访问应用，发现应用把<code>934fe4c0ca9c</code>作为主机名返回，这个十六进制数就是Docker容器的ID</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> curl localhost:8080</span><br><span class="line">You've hit 934fe4c0ca9c</span><br></pre></td></tr></table></figure>
+<p>假如说这个时候我们删除了一个容器id想要恢复的话可以使用docker start命令</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/9.png" alt="9"></p>
+<p>在已有的容器内部运行shell</p>
+<p>这条命令会在已有的kubia-container容器内部运行bash，bash进行会和主容器进程拥有相同的命名空间，这样可以从内部探索容器。</p>
+<ul>
+<li>-i，确保标准输入流保待开放。需要在 shell 中输入命令。</li>
+<li>-t，分配 一 个伪终端(TTY)。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it kubia-container bash</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/8.png" alt="8"></p>
+<p>停止容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop kubia-container</span><br></pre></td></tr></table></figure>
+<p>删除容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm kubia-container</span><br></pre></td></tr></table></figure>
+<p>向镜像仓库推送镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker tag kubia xxx/kubia #xxx是自己的Docker Hub ID</span><br><span class="line">docker push xxx/kubia #向Docker Hub推送镜像</span><br></pre></td></tr></table></figure>
+<p>在不同机器上运行镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8080:8080 -d xxx/kubia</span><br></pre></td></tr></table></figure>
 <h5 id="Docker进阶"><a href="#Docker进阶" class="headerlink" title="Docker进阶"></a>Docker进阶</h5><ul>
 <li><p>Docker容器数据卷</p>
 <p>需求：容器的持久化和同步操作，容器间也是可以数据共享的</p>
@@ -486,6 +526,10 @@
 <p><img src="/2021/03/22/Docker-Kubernetes学习/3.png" alt="3"></p>
 <h5 id="Kubernetes运行应用"><a href="#Kubernetes运行应用" class="headerlink" title="Kubernetes运行应用"></a>Kubernetes运行应用</h5><p><img src="/2021/03/22/Docker-Kubernetes学习/4.png" alt="4"></p>
 <p>如上图所示，在应用描述符中列出了四个容器，并将这些容器分成了3组，这些集合被称为pod，其中前两个pod只包含了一个容器，最后一个包含两个，意味着这两个容器都需要协作运行，每个pod旁边的数字表示需要并行运行的每个pod的副本数量，在向 Kubernetes 提交描述符之后，它将 把每个 pod的指定副本数量调度到可用的工作节点上。 节点上的 Kubelets将告知 Docker 从镜像仓库中拉取 容器镜像井运 行容器 。</p>
+<h5 id="安装kubernetes"><a href="#安装kubernetes" class="headerlink" title="安装kubernetes"></a>安装kubernetes</h5><p>这里我使用的是Docker for Mac，具体安装方法可以参考下面链接</p>
+<p><a href="https://developer.aliyun.com/article/508460" target="_blank" rel="noopener">https://developer.aliyun.com/article/508460</a></p>
+<p>安装完成之后验证Kubernetes是否安装成功</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/10.png" alt="10"></p>
 <h5 id="Kubernetes的优势"><a href="#Kubernetes的优势" class="headerlink" title="Kubernetes的优势"></a>Kubernetes的优势</h5><ul>
 <li><p>简化应用程序部署</p>
 </li>
@@ -493,10 +537,9 @@
 </li>
 <li><p>健康检查和自修复</p>
 </li>
-<li><p>自动扩容</p>
-</li>
-<li><p>组件说明</p>
-<ul>
+<li>自动扩容</li>
+</ul>
+<h5 id="Kubernetes组件说明"><a href="#Kubernetes组件说明" class="headerlink" title="Kubernetes组件说明"></a>Kubernetes组件说明</h5><ul>
 <li>APISERVER：所有服务访问统一接口</li>
 <li>ControllerManager：维护副本期望数据</li>
 <li>Scheduler：负责介绍任务，选择合适的节点进行分配任务</li>
@@ -510,8 +553,30 @@
 <li>PROMETHEUS：提供K8S集群的监控能力</li>
 <li>ELK：提供K8S集群日志统一分析接入平台</li>
 </ul>
-</li>
-<li><p>Pod概念</p>
+<h5 id="pod的介绍"><a href="#pod的介绍" class="headerlink" title="pod的介绍"></a>pod的介绍</h5><p>一个pod是一组紧密相关的容器，它们总是一起运行在同一个工作节点上，以 及同一个 Linux 命名空间中。每个 pod就像一个独立的逻辑机器，拥有自己的 IP、 主机名、进程等，运行一个独立的应用程序 。应用程序可以是单个进程，运行在单个容器中，也可以是一个主应用进程或者其他支持进程，每个进程都在自己的容器中运行 。一 个pod的所有容器都运行在同一个逻辑机器上，而其他 pod 中的容器， 即使运行在同一个工作节点上，也会出现在不同的节点上 。</p>
+<p>如下图所示是容器、pod以及物理工作节点之间的关系。从图上我们可以看出，每个pod都有自己的IP，并包含一个或多个容器，每个容器都运行一个应用进程，pod分布在不同的工作节点上。</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/11.png" alt="11"></p>
+<p>部署一个Node.js应用，可以使用<code>kubectl run</code>命令，该命令可以创建所有必要的组件而无需 ISON 或YAML文件，这样的话，我们就不需要深入了解每 个组件对象的结构。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % kubectl run kubia --image=luksa/kubia --port=8080</span><br><span class="line">pod/kubia created</span><br></pre></td></tr></table></figure>
+<ul>
+<li>—image=luksa/kubia显示的是指定要运行的容器镜像</li>
+<li>--port=8080选项告诉Kubernetes应用正在监昕 8080端口</li>
+</ul>
+<p>列出pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % kubectl get pods</span><br><span class="line">NAME    READY   STATUS    RESTARTS   AGE</span><br><span class="line">kubia   1/1     Running   0          8s</span><br></pre></td></tr></table></figure>
+<p>在Kubernetes中运行容器镜像所必需的步骤</p>
+<ul>
+<li>构建镜像并将其推送到Docker Hub</li>
+<li>当运行kubectl命令时，它通过向 Kubernetes API服务器发送一个REST HTTP请求，在集群中创建一个新的 ReplicationController对象 。 然后，ReplicationController创建了一个新的pod，调度器将其调度到一个工作节点上。Kubelet看到pod被调度到节点上，就告知 Docker 从镜像中心中拉取指定的镜像，因为本地没有该镜像。下载镜像后，Docker创建并运行容器。</li>
+</ul>
+<p>创建一个服务对象</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % kubectl expose pod kubia --type=LoadBalancer --name kubia-http</span><br><span class="line">service/kubia-http exposed</span><br></pre></td></tr></table></figure>
+<p>列出服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % kubectl get services</span><br><span class="line">NAME         TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE</span><br><span class="line">kubernetes   ClusterIP      10.96.0.1        &lt;none&gt;        443/TCP          41m</span><br><span class="line">kubia-http   LoadBalancer   10.110.166.212   localhost     8080:32054/TCP   14s</span><br></pre></td></tr></table></figure>
+<p>这里我们会发现应用将pod名称作为它的主机名。因为每个pod都像一个独立的机器，具有自己的IP地址和主机名，尽管应用程序运行在工作节点的操作系统中，但对应用程序来说，它似乎是在一个独立的机器上运行，而这台机器本身就是应用程序的专用机器，没有其他的进程一同运行。</p>
+<p>访问本地<code>8080</code>端口向pod发送请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % curl localhost:8080</span><br><span class="line">You've hit kubia</span><br></pre></td></tr></table></figure>
+<p>Pod概念</p>
 <ul>
 <li><p>自主式Pod</p>
 </li>
@@ -535,8 +600,6 @@
 </ul>
 <p>Job：负责批处理任务，即仅执行一次的任务，它保证批处理任务的一个或多个Pod成功结束</p>
 <p>Cron Job：管理基于时间的Job，即在给定时间点只运行一次，周期性地在给定时间点运行</p>
-</li>
-</ul>
 </li>
 </ul>
 
@@ -722,7 +785,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#容器隔离机制"><span class="nav-number">1.</span> <span class="nav-text">容器隔离机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker"><span class="nav-number">2.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker的概念"><span class="nav-number">2.1.</span> <span class="nav-text">Docker的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#构建、分发和运行Docker镜像"><span class="nav-number">2.2.</span> <span class="nav-text">构建、分发和运行Docker镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker进阶"><span class="nav-number">2.3.</span> <span class="nav-text">Docker进阶</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubernetes"><span class="nav-number"></span> <span class="nav-text">Kubernetes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#发展历程"><span class="nav-number">0.1.</span> <span class="nav-text">发展历程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源管理器"><span class="nav-number">0.2.</span> <span class="nav-text">资源管理器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes简介"><span class="nav-number">0.3.</span> <span class="nav-text">Kubernetes简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes核心功能"><span class="nav-number">0.4.</span> <span class="nav-text">Kubernetes核心功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes集群架构"><span class="nav-number">0.5.</span> <span class="nav-text">Kubernetes集群架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes运行应用"><span class="nav-number">0.6.</span> <span class="nav-text">Kubernetes运行应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes的优势"><span class="nav-number">0.7.</span> <span class="nav-text">Kubernetes的优势</span></a></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#容器隔离机制"><span class="nav-number">1.</span> <span class="nav-text">容器隔离机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker"><span class="nav-number">2.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker的概念"><span class="nav-number">2.1.</span> <span class="nav-text">Docker的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#构建、分发和运行Docker镜像"><span class="nav-number">2.2.</span> <span class="nav-text">构建、分发和运行Docker镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Hello-world"><span class="nav-number">2.3.</span> <span class="nav-text">Docker Hello-world</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker搭建应用"><span class="nav-number">2.4.</span> <span class="nav-text">Docker搭建应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker进阶"><span class="nav-number">2.5.</span> <span class="nav-text">Docker进阶</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubernetes"><span class="nav-number"></span> <span class="nav-text">Kubernetes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#发展历程"><span class="nav-number">0.1.</span> <span class="nav-text">发展历程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源管理器"><span class="nav-number">0.2.</span> <span class="nav-text">资源管理器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes简介"><span class="nav-number">0.3.</span> <span class="nav-text">Kubernetes简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes核心功能"><span class="nav-number">0.4.</span> <span class="nav-text">Kubernetes核心功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes集群架构"><span class="nav-number">0.5.</span> <span class="nav-text">Kubernetes集群架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes运行应用"><span class="nav-number">0.6.</span> <span class="nav-text">Kubernetes运行应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装kubernetes"><span class="nav-number">0.7.</span> <span class="nav-text">安装kubernetes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes的优势"><span class="nav-number">0.8.</span> <span class="nav-text">Kubernetes的优势</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes组件说明"><span class="nav-number">0.9.</span> <span class="nav-text">Kubernetes组件说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pod的介绍"><span class="nav-number">0.10.</span> <span class="nav-text">pod的介绍</span></a></li></ol></li></div>
             
 
           </div>
