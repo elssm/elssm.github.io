@@ -123,13 +123,13 @@
 
 
 
-<meta name="description" content="容器隔离机制 Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等) Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）  DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装">
+<meta name="description" content="DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装的操作系统所有可用的文件。  镜像：Docker镜像里包含了你打包的应用程序及其所依赖的环境，它包含应用程序可用的文件系统和其他元数据，如镜像运行时的可执行文件路径。 镜像仓库：Docker镜像仓">
 <meta name="keywords" content="学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker&amp;Kubernetes学习">
 <meta property="og:url" content="elssm.github.io/2021/03/22/Docker-Kubernetes学习/index.html">
 <meta property="og:site_name" content="ELSSM">
-<meta property="og:description" content="容器隔离机制 Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等) Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）  DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装">
+<meta property="og:description" content="DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装的操作系统所有可用的文件。  镜像：Docker镜像里包含了你打包的应用程序及其所依赖的环境，它包含应用程序可用的文件系统和其他元数据，如镜像运行时的可执行文件路径。 镜像仓库：Docker镜像仓">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/1.png">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/5.png">
@@ -143,10 +143,16 @@
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/10.png">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/11.png">
 <meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/12.png">
-<meta property="og:updated_time" content="2021-10-05T12:05:04.886Z">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/13.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/14.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/15.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/16.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/17.png">
+<meta property="og:image" content="/2021/03/22/Docker-Kubernetes学习/18.png">
+<meta property="og:updated_time" content="2021-10-06T08:01:09.820Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker&amp;Kubernetes学习">
-<meta name="twitter:description" content="容器隔离机制 Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等) Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）  DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装">
+<meta name="twitter:description" content="DockerDocker的概念Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装的操作系统所有可用的文件。  镜像：Docker镜像里包含了你打包的应用程序及其所依赖的环境，它包含应用程序可用的文件系统和其他元数据，如镜像运行时的可执行文件路径。 镜像仓库：Docker镜像仓">
 <meta name="twitter:image" content="/2021/03/22/Docker-Kubernetes学习/1.png">
 
 
@@ -377,15 +383,32 @@
       
 
       
-        <h4 id="容器隔离机制"><a href="#容器隔离机制" class="headerlink" title="容器隔离机制"></a>容器隔离机制</h4><ul>
-<li>Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等)</li>
-<li>Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）</li>
-</ul>
-<h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><h5 id="Docker的概念"><a href="#Docker的概念" class="headerlink" title="Docker的概念"></a>Docker的概念</h5><p>Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装的操作系统所有可用的文件。</p>
+        <h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><h5 id="Docker的概念"><a href="#Docker的概念" class="headerlink" title="Docker的概念"></a>Docker的概念</h5><p>Docker 是 一个打包、 分发和运行应用程序的平台。 它允许将你 的应用程序和应用程序所依赖的整个环境打包在一起。 这既可以是一些应用程序需 要的库， 也可以是一个被安装的操作系统所有可用的文件。</p>
 <ul>
 <li>镜像：Docker镜像里包含了你打包的应用程序及其所依赖的环境，它包含应用程序可用的文件系统和其他元数据，如镜像运行时的可执行文件路径。</li>
 <li>镜像仓库：Docker镜像仓库用于存放Docker镜像，以及促进不同人和不同电脑之间共享这些镜像。</li>
 <li>容器：Docker容器通常是一个Linux容器，它基于Docker镜像被创建，一个运行中的容器是一个运行在Docker主机上的进程，但它和主机，以及所有运行在主机上的其他进程都是隔离的，这些进程也是资源受限的，意味着它只能访问和使用分配给它的资源。</li>
+</ul>
+<h5 id="容器隔离机制"><a href="#容器隔离机制" class="headerlink" title="容器隔离机制"></a>容器隔离机制</h5><ul>
+<li>Linux命名空间，它使每个进程只看到自己的系统视图(文件、进程、网络接口、主机名等)</li>
+<li>Linux控制组（cgroups）：它限制了进程能使用的资源量（CPU、内存、网络带宽等）</li>
+</ul>
+<h5 id="Docker核心组件"><a href="#Docker核心组件" class="headerlink" title="Docker核心组件"></a>Docker核心组件</h5><ul>
+<li>Docker客户端和服务器，也称为Docker引擎</li>
+<li>Docker镜像</li>
+<li>Registry</li>
+<li>Docker容器</li>
+</ul>
+<h5 id="Docker技术组件"><a href="#Docker技术组件" class="headerlink" title="Docker技术组件"></a>Docker技术组件</h5><ul>
+<li>一个原生的Linux容器格式，Docker中称为libcontainer</li>
+<li>Linux内核的命名空间（namespace），用于隔离文件系统、进程和网络</li>
+<li>文件系统隔离：每个容器都有自己的root文件系统</li>
+<li>进程隔离：每个容器都运行在自己的进程环境中</li>
+<li>网络隔离：容器间的虚拟网络接口和IP地址都是分开的</li>
+<li>资源隔离和分组：使用cgroups将CPU和内存之类的资源独立分配给每个Docker容器</li>
+<li>写时复制：文件系统都是通过写时复制创建的，这就意味着文件系统时分层的、快速的、而且占用的磁盘空间更小</li>
+<li>日志：容器产生的STDOUT、STDERR和STDIN这些IO流都会被收集并计入日志，用来进行日志分析和故障拍错</li>
+<li>交互式shell：用户可以创建一个伪tty终端，将其连接到STDIN，为容器提供一个交互式的shell</li>
 </ul>
 <h5 id="构建、分发和运行Docker镜像"><a href="#构建、分发和运行Docker镜像" class="headerlink" title="构建、分发和运行Docker镜像"></a>构建、分发和运行Docker镜像</h5><p><img src="/2021/03/22/Docker-Kubernetes学习/1.png" alt="1"></p>
 <h5 id="Docker-Hello-world"><a href="#Docker-Hello-world" class="headerlink" title="Docker Hello-world"></a>Docker Hello-world</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker search "hello-world"	#搜索一个名为 hello-world的镜像</span><br><span class="line">docker pull hello-world 	#拉取镜像</span><br><span class="line">docker run hello-world #运行镜像</span><br></pre></td></tr></table></figure>
@@ -624,6 +647,59 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % curl localhost:8888 </span><br><span class="line">You've hit kubia-manual</span><br></pre></td></tr></table></figure>
 <p>下图描述了使用<code>kubectl port-forward</code>和<code>curl</code>时的简单视图</p>
 <p><img src="/2021/03/22/Docker-Kubernetes学习/12.png" alt="12"></p>
+<h6 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h6><p>标签是一种简单却功能强大的Kubernetes特性，不仅可以组织pod, 也可以组织所有其他的Kubernetes资源。详细来讲，标签是可以附加到资源的任意键值对，用以选择具有该确切标签的资源(这是通过标答选择器完成的 )。只要标签的key在资源内是唯一的，一个资源便可以拥有多个标签。通常在我们创建资源时就会将标签附加到资源上，但之后我们也可以再添加其他标签，或者修改现有标签的值，而无需重新创建资源。</p>
+<p>例如在微服务中，通过给pod添加标签，可以得到一个更组织化的系统。此时每个pod都标有两个标签</p>
+<ul>
+<li>app：指定pod属于哪个应用、组件或微服务</li>
+<li>rel：显示在pod中运行的应用程序版本是stable、beta还是canary</li>
+</ul>
+<p>如下图所示，显示了使用pod标签组织微服务架构中的pod</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/13.png" alt="13"></p>
+<h6 id="创建pod时指定标签"><a href="#创建pod时指定标签" class="headerlink" title="创建pod时指定标签"></a>创建pod时指定标签</h6><p>首先创建一个名为<code>kubia-manual-with-labels.yaml</code>的文件</p>
+<p>代码如下，其中两个标签被附加到pod上</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span> </span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span>				</span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubia-manual-v2</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">creation_method:</span> <span class="string">manual</span></span><br><span class="line">    <span class="attr">env:</span> <span class="string">prod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">luksa/kubia</span> </span><br><span class="line">    <span class="attr">name:</span> <span class="string">kubia</span>        </span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8080</span>   </span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+<p>接下来创建该pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f kubia-manual-with-labels.yaml</span><br></pre></td></tr></table></figure>
+<p>使用<code>--show-labels</code>查看标签</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods --show-labels</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/14.png" alt="14"></p>
+<p>如果你只对某些标签感兴趣， 可以使用 -L 选项指定它们并将它们分别显示在 自己的列中， 而不是列出所有标签。 接下来我们再次列出所有 pod, 并将附加到 pod名为<code>kubia-manual-v2</code>上的两个标签的列展示如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -L creation_method,env</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/15.png" alt="15"></p>
+<h6 id="修改现有pod的标签"><a href="#修改现有pod的标签" class="headerlink" title="修改现有pod的标签"></a>修改现有pod的标签</h6><p>标签也可以在现有 pod 上进行添加和修改。由于pod名为<code>kubia-manual</code>也是手动创建的 所以我们可以为其添加 <code>creation_method=manual</code>标签</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label pod kubia-manual creation_method=manual</span><br></pre></td></tr></table></figure>
+<p>更改现有标签的值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label pod kubia-manual-v2 env=debug --overwrite</span><br></pre></td></tr></table></figure>
+<p>再次列出pod以查看更新后的标签</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/16.png" alt="16"></p>
+<h6 id="使用标签选择器列出pod"><a href="#使用标签选择器列出pod" class="headerlink" title="使用标签选择器列出pod"></a>使用标签选择器列出pod</h6><p>列出标签<code>creation_method</code>的值为manual的pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -l creation_method=manual</span><br></pre></td></tr></table></figure>
+<p>列出包含env标签的所有pod 无论其值如何</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -l env</span><br></pre></td></tr></table></figure>
+<p>列出没有env标签的pod</p>
+<p>注意这里要使用单引号来包含<code>!env</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -l '!env'</span><br></pre></td></tr></table></figure>
+<h6 id="发现其他命名空间及其pod"><a href="#发现其他命名空间及其pod" class="headerlink" title="发现其他命名空间及其pod"></a>发现其他命名空间及其pod</h6><p>列出集群中所有的命名空间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get ns</span><br></pre></td></tr></table></figure>
+<p>这里需要声明的是，到目前为止，我们只在<code>default</code>命名空间中进行操作，当使用<code>kubecel get</code>命令列出资源时，我们从未明确指定命名空间，因此kubectl总是默认为default命名空间</p>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/17.png" alt="17"></p>
+<p>列出指定命名空间的pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod --namespace kube-system</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/03/22/Docker-Kubernetes学习/18.png" alt="18"></p>
+<h6 id="创建一个命名空间"><a href="#创建一个命名空间" class="headerlink" title="创建一个命名空间"></a>创建一个命名空间</h6><p>我们还是使用YAML文件来创建一个命名空间</p>
+<p>创建一个名为<code>custom-namespace.yaml</code>的文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Namespace</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">custom-namespace</span></span><br></pre></td></tr></table></figure>
+<p>使用create命令创建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f custom-namespace.yaml</span><br></pre></td></tr></table></figure>
+<p>如果想要在刚创建的命名 空 间中创建资源，可以选择在<code>metadata</code>字段中添加 一个 <code>namespace : custom-namespace</code> 属性，也可以在使用<code>kubectl create</code> 命令创建资源时指定命名空间 :</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f kubia-manual.yaml -n custom-namespace</span><br></pre></td></tr></table></figure>
+<p>这个时候我们就得到了两个同名的pod(kubia-manual)，其中一个在<code>default</code>命名空间中，一个在<code>custom-namespace</code>中</p>
+<h6 id="删除pod"><a href="#删除pod" class="headerlink" title="删除pod"></a>删除pod</h6><p>按照名称删除pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pod kubia-manual</span><br></pre></td></tr></table></figure>
+<p>使用标签选择器删除pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pod -l creation_method=manual</span><br></pre></td></tr></table></figure>
+<p>通过删除整个命名空间来删除pod</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete ns custom-namespace</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -807,7 +883,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#容器隔离机制"><span class="nav-number">1.</span> <span class="nav-text">容器隔离机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker"><span class="nav-number">2.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker的概念"><span class="nav-number">2.1.</span> <span class="nav-text">Docker的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#构建、分发和运行Docker镜像"><span class="nav-number">2.2.</span> <span class="nav-text">构建、分发和运行Docker镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Hello-world"><span class="nav-number">2.3.</span> <span class="nav-text">Docker Hello-world</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker搭建应用"><span class="nav-number">2.4.</span> <span class="nav-text">Docker搭建应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker进阶"><span class="nav-number">2.5.</span> <span class="nav-text">Docker进阶</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes"><span class="nav-number">3.</span> <span class="nav-text">Kubernetes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#发展历程"><span class="nav-number">3.1.</span> <span class="nav-text">发展历程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源管理器"><span class="nav-number">3.2.</span> <span class="nav-text">资源管理器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes简介"><span class="nav-number">3.3.</span> <span class="nav-text">Kubernetes简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes核心功能"><span class="nav-number">3.4.</span> <span class="nav-text">Kubernetes核心功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes集群架构"><span class="nav-number">3.5.</span> <span class="nav-text">Kubernetes集群架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes运行应用"><span class="nav-number">3.6.</span> <span class="nav-text">Kubernetes运行应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装kubernetes"><span class="nav-number">3.7.</span> <span class="nav-text">安装kubernetes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes的优势"><span class="nav-number">3.8.</span> <span class="nav-text">Kubernetes的优势</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes组件说明"><span class="nav-number">3.9.</span> <span class="nav-text">Kubernetes组件说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pod的介绍"><span class="nav-number">3.10.</span> <span class="nav-text">pod的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#列出pod"><span class="nav-number">3.10.1.</span> <span class="nav-text">列出pod</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建一个服务对象"><span class="nav-number">3.10.2.</span> <span class="nav-text">创建一个服务对象</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#列出服务"><span class="nav-number">3.10.3.</span> <span class="nav-text">列出服务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Pod概念"><span class="nav-number">3.10.4.</span> <span class="nav-text">Pod概念</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#以YAML或JSON描述文件创建pod"><span class="nav-number">3.10.5.</span> <span class="nav-text">以YAML或JSON描述文件创建pod</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#利用kubectl-logs命令获取pod日志"><span class="nav-number">3.10.6.</span> <span class="nav-text">利用kubectl logs命令获取pod日志</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向pod发送请求"><span class="nav-number">3.10.7.</span> <span class="nav-text">向pod发送请求</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker"><span class="nav-number">1.</span> <span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker的概念"><span class="nav-number">1.1.</span> <span class="nav-text">Docker的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#容器隔离机制"><span class="nav-number">1.2.</span> <span class="nav-text">容器隔离机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker核心组件"><span class="nav-number">1.3.</span> <span class="nav-text">Docker核心组件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker技术组件"><span class="nav-number">1.4.</span> <span class="nav-text">Docker技术组件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#构建、分发和运行Docker镜像"><span class="nav-number">1.5.</span> <span class="nav-text">构建、分发和运行Docker镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Hello-world"><span class="nav-number">1.6.</span> <span class="nav-text">Docker Hello-world</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker搭建应用"><span class="nav-number">1.7.</span> <span class="nav-text">Docker搭建应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker进阶"><span class="nav-number">1.8.</span> <span class="nav-text">Docker进阶</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes"><span class="nav-number">2.</span> <span class="nav-text">Kubernetes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#发展历程"><span class="nav-number">2.1.</span> <span class="nav-text">发展历程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#资源管理器"><span class="nav-number">2.2.</span> <span class="nav-text">资源管理器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes简介"><span class="nav-number">2.3.</span> <span class="nav-text">Kubernetes简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes核心功能"><span class="nav-number">2.4.</span> <span class="nav-text">Kubernetes核心功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes集群架构"><span class="nav-number">2.5.</span> <span class="nav-text">Kubernetes集群架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes运行应用"><span class="nav-number">2.6.</span> <span class="nav-text">Kubernetes运行应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装kubernetes"><span class="nav-number">2.7.</span> <span class="nav-text">安装kubernetes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes的优势"><span class="nav-number">2.8.</span> <span class="nav-text">Kubernetes的优势</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Kubernetes组件说明"><span class="nav-number">2.9.</span> <span class="nav-text">Kubernetes组件说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pod的介绍"><span class="nav-number">2.10.</span> <span class="nav-text">pod的介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#列出pod"><span class="nav-number">2.10.1.</span> <span class="nav-text">列出pod</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建一个服务对象"><span class="nav-number">2.10.2.</span> <span class="nav-text">创建一个服务对象</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#列出服务"><span class="nav-number">2.10.3.</span> <span class="nav-text">列出服务</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Pod概念"><span class="nav-number">2.10.4.</span> <span class="nav-text">Pod概念</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#以YAML或JSON描述文件创建pod"><span class="nav-number">2.10.5.</span> <span class="nav-text">以YAML或JSON描述文件创建pod</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#利用kubectl-logs命令获取pod日志"><span class="nav-number">2.10.6.</span> <span class="nav-text">利用kubectl logs命令获取pod日志</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#向pod发送请求"><span class="nav-number">2.10.7.</span> <span class="nav-text">向pod发送请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#标签"><span class="nav-number">2.10.8.</span> <span class="nav-text">标签</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建pod时指定标签"><span class="nav-number">2.10.9.</span> <span class="nav-text">创建pod时指定标签</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改现有pod的标签"><span class="nav-number">2.10.10.</span> <span class="nav-text">修改现有pod的标签</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用标签选择器列出pod"><span class="nav-number">2.10.11.</span> <span class="nav-text">使用标签选择器列出pod</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#发现其他命名空间及其pod"><span class="nav-number">2.10.12.</span> <span class="nav-text">发现其他命名空间及其pod</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建一个命名空间"><span class="nav-number">2.10.13.</span> <span class="nav-text">创建一个命名空间</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除pod"><span class="nav-number">2.10.14.</span> <span class="nav-text">删除pod</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
