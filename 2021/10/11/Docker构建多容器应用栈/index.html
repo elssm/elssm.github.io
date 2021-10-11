@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言在这个例子中，需要做的是把一个使用Express框架的并且带有Redis后端的Node.js应用完全Docker化。目的是能够将Docker的特性结合起来使用。主要的工作内容是  一个Node容器，用来服务于Node应用 一个Redis主容器，用于保存和集群化应用状态 两个Redis副本容器，用于集群化应用状态 一个日志容器，用于捕获应用日志  最终我们的Node应用程序会运行在一个容器中，它">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker构建多容器应用栈">
+<meta property="og:url" content="elssm.github.io/2021/10/11/Docker构建多容器应用栈/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="前言在这个例子中，需要做的是把一个使用Express框架的并且带有Redis后端的Node.js应用完全Docker化。目的是能够将Docker的特性结合起来使用。主要的工作内容是  一个Node容器，用来服务于Node应用 一个Redis主容器，用于保存和集群化应用状态 两个Redis副本容器，用于集群化应用状态 一个日志容器，用于捕获应用日志  最终我们的Node应用程序会运行在一个容器中，它">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/1.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/2.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/3.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/4.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/5.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/6.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/7.png">
+<meta property="og:image" content="/2021/10/11/Docker构建多容器应用栈/8.png">
+<meta property="og:updated_time" content="2021-10-11T11:08:19.300Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker构建多容器应用栈">
+<meta name="twitter:description" content="前言在这个例子中，需要做的是把一个使用Express框架的并且带有Redis后端的Node.js应用完全Docker化。目的是能够将Docker的特性结合起来使用。主要的工作内容是  一个Node容器，用来服务于Node应用 一个Redis主容器，用于保存和集群化应用状态 两个Redis副本容器，用于集群化应用状态 一个日志容器，用于捕获应用日志  最终我们的Node应用程序会运行在一个容器中，它">
+<meta name="twitter:image" content="/2021/10/11/Docker构建多容器应用栈/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/10/11/Docker构建多容器应用栈/">
+
+
+
+
+
+  <title>Docker构建多容器应用栈 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/10/11/Docker构建多容器应用栈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker构建多容器应用栈</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-11T15:37:25+08:00">
+                2021-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>在这个例子中，需要做的是把一个使用<code>Express</code>框架的并且带有<code>Redis</code>后端的<code>Node.js</code>应用完全Docker化。目的是能够将Docker的特性结合起来使用。主要的工作内容是</p>
+<ul>
+<li>一个Node容器，用来服务于Node应用</li>
+<li>一个Redis主容器，用于保存和集群化应用状态</li>
+<li>两个Redis副本容器，用于集群化应用状态</li>
+<li>一个日志容器，用于捕获应用日志</li>
+</ul>
+<p>最终我们的Node应用程序会运行在一个容器中，它后面会有一个配置为”主-副本”模式运行在多个容器中的Redis集群。</p>
+<h4 id="Node-js镜像"><a href="#Node-js镜像" class="headerlink" title="Node.js镜像"></a>Node.js镜像</h4><p>首先我们需要构建一个安装了Node.js的镜像。这个镜像有Express应用和相应的必要的软件包。</p>
+<p>第一步先在本地创建一个名为<code>nodejs</code>的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir nodejs &amp;&amp; cd nodejs</span><br></pre></td></tr></table></figure>
+<p>第二步在<code>nodejs</code>文件夹下创建一个存放<code>node.js</code>应用源码的文件夹名为<code>nodeapp</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir nodeapp &amp;&amp; cd nodeapp</span><br></pre></td></tr></table></figure>
+<p>获取<code>node.js</code>源码</p>
+<p>如果下载不下来的话，代码地址:<a href="https://github.com/turnbullpress/dockerbook-code/tree/master/code/6/node/nodejs/nodeapp" target="_blank" rel="noopener">https://github.com/turnbullpress/dockerbook-code/tree/master/code/6/node/nodejs/nodeapp</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/turnbullpress/dockerbook-code/master/code/6/node/nodejs/nodeapp/package.json</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/turnbullpress/dockerbook-code/master/code/6/node/nodejs/nodeapp/server.js</span><br></pre></td></tr></table></figure>
+<p>第三步回到<code>nodejs</code>目录下，创建Dockerfile文件。这个镜像安装了Node，然后我们将<code>nodeapp</code>的源代码通过ADD指令添加到<code>/opt/nodeapp</code>目录。这个Node.js应用是一个简单的Express服务器，包含了<code>package.json</code>文件和实际应用代码的<code>server.js</code>文件。<code>server.js</code>文件引入了所有的依赖，并启动了Express应用，Express应用把session信息保存到Redis里，并创建了一个以JSON格式返回状态信息的节点，这个节点默认使用redis_primary作为主机名去连接Redis。这个应用会把日志记录到<code>/var/log/nodeapp/nodeapp.log</code>文件里，并监听3000端口。我们还将工作目录设置为<code>/opt/nodeapp</code>，并且安装了Node应用的必要软件包，还创建了用于存放Node应用日志的卷<code>/var/log/nodeapp</code>，最后公开了3000端口，并使用ENTRYPOINT指定了运行Node应用的命令</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">18.04</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span> apt-get -qq update</span><br><span class="line"><span class="keyword">RUN</span> apt-get -qq install nodejs npm</span><br><span class="line"><span class="keyword">RUN</span> mkdir -p /var/log/nodeapp</span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD</span> nodeapp /opt/nodeapp/</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span> /opt/nodeapp</span><br><span class="line"><span class="keyword">RUN</span> npm install</span><br><span class="line"></span><br><span class="line"><span class="keyword">VOLUME</span> [ "/var/log/nodeapp" ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span> [ "nodejs", "server.js" ]</span><br></pre></td></tr></table></figure>
+<p>第四步构建镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t elssm/nodejs .</span><br></pre></td></tr></table></figure>
+<h4 id="Redis基础镜像"><a href="#Redis基础镜像" class="headerlink" title="Redis基础镜像"></a>Redis基础镜像</h4><p>第一步先在本地创建一个名为<code>redis_base</code>的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir redis_base &amp;&amp; cd redis_base</span><br></pre></td></tr></table></figure>
+<p>第二步创建Dockerfile文件。这个Redis基础镜像从PPA库安装了最新版本的Redis包。并指定了两个卷，公开了Redis的默认端口是6379。我们只是讲这个镜像作为基础镜像从而构建别的镜像，因此不会执行这个镜像。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">18.04</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span> apt-get -qq update</span><br><span class="line"><span class="keyword">RUN</span> apt-get install -qq software-properties-common</span><br><span class="line"><span class="keyword">RUN</span> add-apt-repository ppa:chris-lea/redis-server</span><br><span class="line"><span class="keyword">RUN</span> apt-get -qq update</span><br><span class="line"><span class="keyword">RUN</span> apt-get -qq install redis-server redis-tools</span><br><span class="line"></span><br><span class="line"><span class="keyword">VOLUME</span> [ "/var/lib/redis", "/var/log/redis" ]</span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">6379</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span> []</span><br></pre></td></tr></table></figure>
+<p>第三步构建Redis基础镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t elssm/redis .</span><br></pre></td></tr></table></figure>
+<h4 id="Redis主镜像"><a href="#Redis主镜像" class="headerlink" title="Redis主镜像"></a>Redis主镜像</h4><p>第一步先在本地创建一个名为<code>redis_primary</code>的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir redis_primary &amp;&amp; cd redis_primary</span><br></pre></td></tr></table></figure>
+<p>第二步创建Dockerfile文件。Redis主镜像基于Redis基础镜像，并通过ENTRYPOINT指定了Redis服务启动命令，将Redis服务的日志文件保存到<code>/var/log/redis/redis-server.log</code></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> elssm/redis</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span> [ "redis-server", "--protected-mode no", "--logfile /var/log/redis/redis-server.log" ]</span><br></pre></td></tr></table></figure>
+<p>第三步构建Redis主奖项</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t elssm/redis_primary .</span><br></pre></td></tr></table></figure>
+<h4 id="Redis副本镜像"><a href="#Redis副本镜像" class="headerlink" title="Redis副本镜像"></a>Redis副本镜像</h4><p>为了配合Redis主镜像，我们会创建Redis副本镜像，保证为Node.js应用提供Redis服务的冗余度。</p>
+<p>第一步先在本地创建一个名为<code>redis_replica</code>的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir redis_replica &amp;&amp; cd redis_replica</span><br></pre></td></tr></table></figure>
+<p>第二步创建Dockerfile文件。Redis副本镜像也是基于Redis基础镜像构建的。并通过ENTRYPOINT指定了运行Redis服务器的命令，设置了日志文件存储位置和<code>slaveof</code>选项，这样就把Redis配置为主-副本模式，从这个镜像构建的任何容器都会将redis_primary主机的Redis作为主服务，连接其6379端口，成为对应的副本服务器</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> elssm/redis</span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span> [ "redis-server", "--protected-mode no", "--logfile /var/log/redis/redis-replica.log", "--slaveof redis_primary 6379" ]</span><br></pre></td></tr></table></figure>
+<p>第三步构建Redis副本镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t elssm/redis_replica .</span><br></pre></td></tr></table></figure>
+<h4 id="创建Redis后端集群"><a href="#创建Redis后端集群" class="headerlink" title="创建Redis后端集群"></a>创建Redis后端集群</h4><p>现在我们已经有了Redis主镜像和副本镜像。如下图所示</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/1.png" alt="1"></p>
+<p>接下来我们可以构建自己的Redis环境了。首先我们创建一个用来运行我们的Express应用程序的网络，名为<code>express</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create express</span><br></pre></td></tr></table></figure>
+<p>使用<code>docker network ls</code>查看网络</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network ls</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/2.png" alt="2"></p>
+<p>现在让我们在这个网络中运行Redis主容器，如下代码所示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -h redis_primary --net express --name redis_primary elssm/redis_primary</span><br></pre></td></tr></table></figure>
+<p>这里使用<code>docker run</code>命令从<code>elssm/redis_primary</code>镜像创建了一个容器。<code>-h</code>用来设置容器的主机名。这会覆盖默认的行为(默认将容器的主机名设置为容器ID)并允许我们指定自己的主机名，使用这个标志可以确保容器使用<code>redis_primary</code>作为主机名，并被本地的DNS服务正确解析。<code>--net</code>确保该容器在<code>express</code>网络中运行，<code>--name</code>确保容器的名字是<code>redis_primary</code>        </p>
+<p>接下来使用<code>docker logs</code>命令来查看Redis主容器的运行情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs redis_primary</span><br></pre></td></tr></table></figure>
+<p>执行命令后发现什么都没有，这是因为Redis服务会将日志记录到一个文件而不是记录到标准输出，所有使用Docker查不到任何日志。因此我们可以使用之前创建的<code>/var/log/redis</code>卷。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --volumes-from redis_primary ubuntu cat /var/log/redis/redis-server.log</span><br></pre></td></tr></table></figure>
+<p>其中<code>-it</code>是以交互方式运行了另一个容器，<code>--rm</code>会在进程运行完后自动删除容器。<code>--volumes-from</code>告诉它从<code>redis_primary</code>容器挂载了所有的卷，然后我们指定了一个ubuntu基础镜像，并执行cat命令来查看日志，这种方式利用了卷的优点，可以直接从    <code>redis_primary</code>容器挂载<code>/var/log/redis</code>目录并读取里面的日志文件，日志文件内容如下图所示</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/3.png" alt="3"></p>
+<p>接下来我们创建一个Redis副本容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -h redis_replica1 --name redis_replica1 --net express elssm/redis_replica</span><br></pre></td></tr></table></figure>
+<p>这里我们运行了另一个容器，这个容器来自<code>elssm/redis_replica</code>镜像，<code>-d</code>标志在后台运行，<code>-h</code>指定主机名，<code>--name</code>指定容器名，<code>--net</code>指定在<code>express</code>网络中运行Redis副本容器。</p>
+<p>和查看Redis主容器一样，我们来查看一下Redis副本容器中的日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --volumes-from redis_replica1 ubuntu cat /var/log/redis/redis-replica.log</span><br></pre></td></tr></table></figure>
+<p>日志文件内容如下图所示</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/4.png" alt="4"></p>
+<p>到这里我们已经成功启动了redis_primary和redis_replica1容器，并让这两个容器进行主从复制。现在我们再来加入另一个容器副本redis_replica2，从而确保万无一失！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -h redis_replica2 --name redis_replica2 --net express elssm/redis_replica</span><br></pre></td></tr></table></figure>
+<p>查看副本redis_replica2容器中的日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --volumes-from redis_replica2 ubuntu cat /var/log/redis/redis-replica.log</span><br></pre></td></tr></table></figure>
+<p>如下图所示</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/5.png" alt="5"></p>
+<h4 id="创建Node容器"><a href="#创建Node容器" class="headerlink" title="创建Node容器"></a>创建Node容器</h4><p>现在我们已经让Redis集群运行了，我们可以为Node.js应用启动一个容器，代码如下所示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name nodeapp -p 3000:3000 --net express elssm/nodejs</span><br></pre></td></tr></table></figure>
+<p>这里我们从<code>elssm/nodejs</code>镜像创建了一个新容器，命名为<code>nodeapp</code>，并将容器内的3000端口映射到宿主机的3000端口，同样我们的<code>nodeapp</code>容器也是运行在express网络中的。</p>
+<p>使用<code>docker logs</code>命令来查看<code>nodeapp</code>容器在做什么</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker logs nodeapp</span><br><span class="line">Listening on port 3000</span><br></pre></td></tr></table></figure>
+<p>访问本地3000端口，如下图所示</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/6.png" alt="6"></p>
+<p>这个输出表明应用正在工作，浏览器的会话状态(session)回先被记录到Redis主容器redis_primary，然后复制到两个Redis副本容器redis_replica1和redis_replica2</p>
+<h4 id="捕获应用日志"><a href="#捕获应用日志" class="headerlink" title="捕获应用日志"></a>捕获应用日志</h4><p>现在应用已经正常运行了，我们需要把这个应用放到生产环境中，在生产环境里需要确保可以捕获日志并将日志保存到日志服务器。我们将使用Logstash来完成这件事，首先创建一个Logstash镜像。</p>
+<p>第一步还是在本地创建一个名为<code>logstash</code>的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir logstash &amp;&amp; cd logstash</span><br></pre></td></tr></table></figure>
+<p>第二步创建Dockerfile文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:18.04</span><br><span class="line"></span><br><span class="line">RUN apt-get -qq update</span><br><span class="line">RUN apt-get -qq install wget gnupg2 openjdk-8-jdk</span><br><span class="line">RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -</span><br><span class="line">RUN echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list</span><br><span class="line">RUN apt-get -qq update</span><br><span class="line">RUN apt-get -qq install logstash</span><br><span class="line"></span><br><span class="line">WORKDIR /usr/share/logstash</span><br><span class="line"></span><br><span class="line">ADD logstash.conf /usr/share/logstash/</span><br><span class="line"></span><br><span class="line">ENTRYPOINT [ "bin/logstash" ]</span><br><span class="line">CMD [ "-f", "logstash.conf", "--config.reload.automatic" ]</span><br></pre></td></tr></table></figure>
+<p>这个镜像在安装了Logstash之后，将<code>logstash.conf</code>文件使用ADD指令添加到了<code>/usr/share/logstash/</code>目录。<code>logstash.conf</code>文件和Dockerfile在统计目录下，它的内容如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  file &#123;</span><br><span class="line">    type =&gt; "syslog"</span><br><span class="line">    path =&gt; ["/var/log/nodeapp/nodeapp.log", "/var/log/redis/redis-server.log"]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">  stdout &#123;</span><br><span class="line">    codec =&gt; rubydebug</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个logstash配置很简单，它监控两个文件<code>/var/log/nodeapp/nodeapp.log</code>和<code>/var/log/redis/redis-server.log</code>。logstash会一直监控这两个文件，将其中新的内容发送个Logstash，配置文件的第二部分是output部分，接受所有logstash输入的内容并将其输出到标准输出上，在实际情况中，一般会将logstash配置为输出到ElasticSearch集群或者是其他的目的地。</p>
+<p>第三步构建logstash镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t elssm/logstash .</span><br></pre></td></tr></table></figure>
+<p>镜像构建成功之后，我们从这个镜像启动一个容器，代码如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name logstash --volumes-from redis_primary --volumes-from nodeapp elssm/logstash</span><br></pre></td></tr></table></figure>
+<p>这样我们就启动了一个名为logstash的新容器，并通过<code>--volumes-from</code>标志分别挂载了redis_primary和nodeapp容器的卷，这样就可以访问Redis和Node的日志文件了，任何加到这些日志文件里的内容都会反应在logstash容器的卷里。</p>
+<p>现在可以使用<code>-f</code>标志来查看logstash容器的日志</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f logstash</span><br></pre></td></tr></table></figure>
+<p>在浏览器里刷新Web应用之后，会产生一个新的日志时间，我们就能在logstash容器的输出中看到这个事件。如下图所示</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/7.png" alt="7"></p>
+<p>相应的当我们启动redis_primary容器后，也可以在logstash中看到相应的日志事件</p>
+<p><img src="/2021/10/11/Docker构建多容器应用栈/8.png" alt="8"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/07/Kubernetes-in-Action-Learning-Notes/" rel="next" title="Kubernetes in Action Learning Notes">
+                <i class="fa fa-chevron-left"></i> Kubernetes in Action Learning Notes
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js镜像"><span class="nav-number">2.</span> <span class="nav-text">Node.js镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis基础镜像"><span class="nav-number">3.</span> <span class="nav-text">Redis基础镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis主镜像"><span class="nav-number">4.</span> <span class="nav-text">Redis主镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis副本镜像"><span class="nav-number">5.</span> <span class="nav-text">Redis副本镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Redis后端集群"><span class="nav-number">6.</span> <span class="nav-text">创建Redis后端集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Node容器"><span class="nav-number">7.</span> <span class="nav-text">创建Node容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#捕获应用日志"><span class="nav-number">8.</span> <span class="nav-text">捕获应用日志</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
