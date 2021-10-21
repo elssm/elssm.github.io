@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="ctf,">
+  <meta name="keywords" content="学习笔记,">
 
 
 
@@ -123,18 +123,20 @@
 
 
 
-<meta name="description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
-<meta name="keywords" content="ctf">
+<meta name="description" content="信号信号概念信号是信息的载体，Linux/UNIX环境下，古老、经典的通信方式，现下依然是主要的通信手段。 Unix早期版本就提供了信号机制，但不可靠，信号可能丢失，Berkeley和AT&amp;amp;T都对信号模型做了更改，增加了可靠信号机制，但彼此不兼容。POSIX.1对可靠信号例程进行了标准化。  未决：产生与递达之间状态 递达：产生并且送达到进程，直接被内核处理掉 信号处理方式：执行默认处理动">
+<meta name="keywords" content="学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sunshine CTF web writeup">
-<meta property="og:url" content="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/index.html">
+<meta property="og:title" content="Linux系统编程(三)">
+<meta property="og:url" content="elssm.github.io/2021/10/20/Linux系统编程-三/index.html">
 <meta property="og:site_name" content="ELSSM">
-<meta property="og:description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta property="og:description" content="信号信号概念信号是信息的载体，Linux/UNIX环境下，古老、经典的通信方式，现下依然是主要的通信手段。 Unix早期版本就提供了信号机制，但不可靠，信号可能丢失，Berkeley和AT&amp;amp;T都对信号模型做了更改，增加了可靠信号机制，但彼此不兼容。POSIX.1对可靠信号例程进行了标准化。  未决：产生与递达之间状态 递达：产生并且送达到进程，直接被内核处理掉 信号处理方式：执行默认处理动">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-08T11:34:02.000Z">
+<meta property="og:image" content="/2021/10/20/Linux系统编程-三/1.png">
+<meta property="og:updated_time" content="2021-10-21T11:43:04.647Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sunshine CTF web writeup">
-<meta name="twitter:description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta name="twitter:title" content="Linux系统编程(三)">
+<meta name="twitter:description" content="信号信号概念信号是信息的载体，Linux/UNIX环境下，古老、经典的通信方式，现下依然是主要的通信手段。 Unix早期版本就提供了信号机制，但不可靠，信号可能丢失，Berkeley和AT&amp;amp;T都对信号模型做了更改，增加了可靠信号机制，但彼此不兼容。POSIX.1对可靠信号例程进行了标准化。  未决：产生与递达之间状态 递达：产生并且送达到进程，直接被内核处理掉 信号处理方式：执行默认处理动">
+<meta name="twitter:image" content="/2021/10/20/Linux系统编程-三/1.png">
 
 
 
@@ -164,13 +166,13 @@
 
 
 
-  <link rel="canonical" href="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/">
+  <link rel="canonical" href="elssm.github.io/2021/10/20/Linux系统编程-三/">
 
 
 
 
 
-  <title>sunshine CTF web writeup | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Linux系统编程(三) | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -297,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/10/20/Linux系统编程-三/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="elssm">
@@ -314,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sunshine CTF web writeup</h1>
+          <h1 class="post-title" itemprop="name headline">Linux系统编程(三)</h1>
         
 
         <div class="post-meta">
@@ -326,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T18:50:09+08:00">
-                2018-04-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-20T11:21:41+08:00">
+                2021-10-20
               </time>
             
 
@@ -364,18 +366,29 @@
       
 
       
-        <ul>
-<li><h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。</p>
-<p>?hello=);print_r(file(“./flag.php”));//  即可得到flag</p>
-<p>​</p>
-</li>
-<li><h2 id="Marceau"><a href="#Marceau" class="headerlink" title="Marceau"></a>Marceau</h2><p>抓包注意header下的Accept一行</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br></pre></td></tr></table></figure>
-<h5 id="将其中的text-html修改为text-php，得到flag"><a href="#将其中的text-html修改为text-php，得到flag" class="headerlink" title="将其中的text/html修改为text/php，得到flag"></a>将其中的text/html修改为text/php，得到flag</h5><p>​</p>
-</li>
-<li><h2 id="Home-Sweet-Home"><a href="#Home-Sweet-Home" class="headerlink" title="Home Sweet Home"></a>Home Sweet Home</h2><p>抓包直接添加信息 x-forward-for: 127.0.0.1，forward后直接在页面看到flag</p>
-</li>
+        <h4 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h4><h5 id="信号概念"><a href="#信号概念" class="headerlink" title="信号概念"></a>信号概念</h5><p>信号是信息的载体，Linux/UNIX环境下，古老、经典的通信方式，现下依然是主要的通信手段。</p>
+<p>Unix早期版本就提供了信号机制，但不可靠，信号可能丢失，Berkeley和AT&amp;T都对信号模型做了更改，增加了可靠信号机制，但彼此不兼容。POSIX.1对可靠信号例程进行了标准化。</p>
+<ul>
+<li>未决：产生与递达之间状态</li>
+<li>递达：产生并且送达到进程，直接被内核处理掉</li>
+<li>信号处理方式：执行默认处理动作、忽略、捕捉</li>
+<li>阻塞信号集(信号屏蔽字)：本质是位图，用来记录信号的屏蔽状态，一旦被屏蔽的信号，在解除屏蔽前，一直处于未决状态</li>
+<li>未决信号集：本质也是位图，用来记录信号的处理状态，该信号集中的信号，表示已经产生，但尚未被处理。</li>
 </ul>
+<h5 id="信号特质"><a href="#信号特质" class="headerlink" title="信号特质"></a>信号特质</h5><p>由于信号是通过软件方法实现，其实现手段导致信号有很强的延时性，但对于用户来说，这个延迟时间非常短，不易察觉。<strong>每个进程收到的所有信号，都是由内核负责发送的，内核处理。</strong></p>
+<h5 id="产生信号"><a href="#产生信号" class="headerlink" title="产生信号"></a>产生信号</h5><ul>
+<li>按键产生：<code>Ctrl+c</code>、<code>Ctrl+z</code>、<code>Ctrl+\</code></li>
+<li><p>系统调用产生：<code>kill、raise、abort</code></p>
+</li>
+<li><p>软件条件产生：定时器<code>alarm</code></p>
+</li>
+<li>硬件异常产生：非法访问内存、除0、内存对齐错误</li>
+<li>命令产生：<code>kill</code>命令</li>
+</ul>
+<h5 id="信号4要素"><a href="#信号4要素" class="headerlink" title="信号4要素"></a>信号4要素</h5><p>和变量三要素类似，每个信号也有其必备四要素，分别是编号、名称、事件和默认处理动作，如下图所示</p>
+<p><img src="/2021/10/20/Linux系统编程-三/1.png" alt="1"></p>
+<h5 id="kill函数"><a href="#kill函数" class="headerlink" title="kill函数"></a>kill函数</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid,<span class="keyword">int</span> sig)</span></span></span><br><span class="line"><span class="function">  </span></span><br><span class="line">成功：0</span><br><span class="line">失败：<span class="number">-1</span> 设置errno</span><br><span class="line"></span><br><span class="line">pid&gt;<span class="number">0</span> : 发送信号给指定的进程</span><br><span class="line">pid=<span class="number">0</span> : 发送信号给与调用kill函数进程属于同一进程组的所有进程</span><br><span class="line">pid&lt;<span class="number">-1</span> : 取|pid|发给对应进程组</span><br><span class="line">pid=<span class="number">-1</span> : 发送给进程有权限发送的系统中的所有进程</span><br></pre></td></tr></table></figure>
+<h5 id="通过子进程发信号的方式kill进程"><a href="#通过子进程发信号的方式kill进程" class="headerlink" title="通过子进程发信号的方式kill进程"></a>通过子进程发信号的方式kill进程</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sys_err</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span></span>&#123;</span><br><span class="line">    perror(str);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">pid_t</span> pid = fork();</span><br><span class="line">  <span class="keyword">if</span>(pid&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"parent,pid = %d\n"</span>,getpid());</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"child pid = %d,ppid = %d\n"</span>,getpid(),getppid());</span><br><span class="line">    sleep(<span class="number">2</span>);</span><br><span class="line">    kill(getppid(),SIGKILL);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -393,7 +406,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ctf/" rel="tag"># ctf</a>
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
           
         </div>
       
@@ -406,8 +419,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/08/读《代码审计》的一些笔记/" rel="next" title="读《代码审计》的一些笔记">
-                <i class="fa fa-chevron-left"></i> 读《代码审计》的一些笔记
+              <a href="/2021/10/11/Docker构建多容器应用栈/" rel="next" title="Docker构建多容器应用栈">
+                <i class="fa fa-chevron-left"></i> Docker构建多容器应用栈
               </a>
             
           </div>
@@ -415,10 +428,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/14/DDCTF-writeup/" rel="prev" title="DDCTF writeup">
-                DDCTF writeup <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -559,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">1.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Marceau"><span class="nav-number">2.</span> <span class="nav-text">Marceau</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将其中的text-html修改为text-php，得到flag"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">将其中的text/html修改为text/php，得到flag</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Home-Sweet-Home"><span class="nav-number">3.</span> <span class="nav-text">Home Sweet Home</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#信号"><span class="nav-number">1.</span> <span class="nav-text">信号</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#信号概念"><span class="nav-number">1.1.</span> <span class="nav-text">信号概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信号特质"><span class="nav-number">1.2.</span> <span class="nav-text">信号特质</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#产生信号"><span class="nav-number">1.3.</span> <span class="nav-text">产生信号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信号4要素"><span class="nav-number">1.4.</span> <span class="nav-text">信号4要素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#kill函数"><span class="nav-number">1.5.</span> <span class="nav-text">kill函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过子进程发信号的方式kill进程"><span class="nav-number">1.6.</span> <span class="nav-text">通过子进程发信号的方式kill进程</span></a></li></ol></li></ol></div>
             
 
           </div>
