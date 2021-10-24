@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="协程概念协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。与线程相比，协程更轻量。一个Python线程大概占用8M内存，而一个协程只占用1KB不到内存。协程更适用于IO密集型的应">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python协程">
+<meta property="og:url" content="elssm.github.io/2021/10/24/Python协程/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="协程概念协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。与线程相比，协程更轻量。一个Python线程大概占用8M内存，而一个协程只占用1KB不到内存。协程更适用于IO密集型的应">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-10-24T06:49:20.365Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python协程">
+<meta name="twitter:description" content="协程概念协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。与线程相比，协程更轻量。一个Python线程大概占用8M内存，而一个协程只占用1KB不到内存。协程更适用于IO密集型的应">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/10/24/Python协程/">
+
+
+
+
+
+  <title>Python协程 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/10/24/Python协程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python协程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-24T11:56:55+08:00">
+                2021-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="协程概念"><a href="#协程概念" class="headerlink" title="协程概念"></a>协程概念</h4><p>协程是一种用户态的轻量级线程，协程的调度完全由用户控制。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈，直接操作栈则基本没有内核切换的开销，可以不加锁的访问全局变量，所以上下文的切换非常快。与线程相比，协程更轻量。一个Python线程大概占用8M内存，而一个协程只占用1KB不到内存。协程更适用于IO密集型的应用。</p>
+<h4 id="greenlet模块"><a href="#greenlet模块" class="headerlink" title="greenlet模块"></a>greenlet模块</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> greenlet <span class="keyword">import</span> greenlet</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    g2.switch()</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start sleeping"</span>)</span><br><span class="line">    print(<span class="string">"finished sleeping"</span>)</span><br><span class="line">    g1.switch()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">g1 = greenlet(eat)</span><br><span class="line">g2 = greenlet(sleep)</span><br><span class="line">g1.switch()</span><br></pre></td></tr></table></figure>
+<p>在上面的代码中，创建了两个协程对象，分别是<code>g1</code>和<code>g2</code>，分别对应的是<code>eat()函数</code>和<code>sleep()</code>函数。通过使用<code>greenlet</code>的<code>switch</code>方法可以切换协程。这里我们先调用<code>g1</code>的<code>switch方法</code>，此时<code>eat()</code>函数被执行，并打印出<code>start eating</code>。接下来是<code>g2</code>的<code>switch方法</code>被调用，此时执行<code>sleep()</code>函数，依次打印<code>start sleeping</code>和<code>finished sleeping</code>，之后又调用了<code>g1</code>的<code>switch方法</code>，回到<code>eat()函数中</code>，打印出<code>finished eating</code>。程序执行结束。这个时候我们就完成了两个协程之间的切换。代码的输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">start eating</span><br><span class="line">start sleeping</span><br><span class="line">finished sleeping</span><br><span class="line">finished eating</span><br></pre></td></tr></table></figure>
+<h4 id="gevent模块"><a href="#gevent模块" class="headerlink" title="gevent模块"></a>gevent模块</h4><p>gevent是第三方库，通过greenlet实现协程。然而当一个greenlet遇到IO操作时，比如访问网络，就自动切换到其他的greenlet，等到IO操作完成，再在适当的时候切换回来继续执行。由于IO操作非常耗时，经常使程序处于等待状态，有了gevent为我们自动切换协程，就保证总有greenlet在运行，而不是等待IO。</p>
+<h5 id="创建协程任务"><a href="#创建协程任务" class="headerlink" title="创建协程任务"></a>创建协程任务</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line"></span><br><span class="line">g1 = gevent.spawn(eat)  <span class="comment"># 创造一个协程任务</span></span><br><span class="line">gevent.sleep(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>在<code>gevent</code>模块中，通过<code>gevent.spawn</code>就可以创建一个协程任务。如果需要交替之行的话，需要使用<code>gevent.sleep</code>交出控制权。这个时候，就会转去执行<code>eat</code>函数。</p>
+<h5 id="阻塞等待协程完成"><a href="#阻塞等待协程完成" class="headerlink" title="阻塞等待协程完成"></a>阻塞等待协程完成</h5><p>使用<code>join</code>方法，可以阻塞等待一个协程的结束。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line"></span><br><span class="line">g1 = gevent.spawn(eat)  </span><br><span class="line">g1.join()</span><br></pre></td></tr></table></figure>
+<h5 id="阻塞等待多个协程"><a href="#阻塞等待多个协程" class="headerlink" title="阻塞等待多个协程"></a>阻塞等待多个协程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    gevent.sleep(<span class="number">3</span>)</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start sleeping"</span>)</span><br><span class="line">    gevent.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"finished sleeping"</span>)</span><br><span class="line"></span><br><span class="line">g1 = gevent.spawn(eat)  </span><br><span class="line">g2 = gevent.spawn(sleep)</span><br><span class="line">g1.join()</span><br><span class="line">g2.join()</span><br></pre></td></tr></table></figure>
+<p>这里需要注意在多个协程中，不能使用<code>time.sleep</code>，这样将会导致协程是同步执行的。输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">start eating</span><br><span class="line">finished eating</span><br><span class="line">start sleeping</span><br><span class="line">finished sleeping</span><br></pre></td></tr></table></figure>
+<p>因此需要使用<code>gevent.sleep</code>，这样才能引起协程之间的切换。输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">start eating</span><br><span class="line">start sleeping</span><br><span class="line">finished sleeping</span><br><span class="line">finished eating</span><br></pre></td></tr></table></figure>
+<p>除此之外，对于多个协程的阻塞，我们也可以不用对于每一个协程采用<code>join</code>方法， 在<code>gevent</code>中提供了<code>joinall</code>方法，在该方法中，只需要传一个协程的列表即可，因此对于上面代码最后两行，我们可以使用下面代码替换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gevent.joinall([g1,g2])</span><br></pre></td></tr></table></figure>
+<h5 id="gevent中的monkey模块"><a href="#gevent中的monkey模块" class="headerlink" title="gevent中的monkey模块"></a>gevent中的monkey模块</h5><p>monkey模块可以使我们在不修改原来使用的python标准库函数的程序的情况下，将程序转换成可以使用gevent框架的异步程序。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">monkey.patch_all()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start sleeping"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"finished sleeping"</span>)</span><br><span class="line"></span><br><span class="line">g1 = gevent.spawn(eat)</span><br><span class="line">g2 = gevent.spawn(sleep)</span><br><span class="line">gevent.joinall([g1, g2])</span><br></pre></td></tr></table></figure>
+<p>我们只需要从<code>gevent</code>中导入<code>monkey</code>。并加上<code>monkey.patch_all()</code>。这样对于代码中的耗时操作，就会转换为<code>gevent</code>中实现的模块。</p>
+<h5 id="同时起多个协程"><a href="#同时起多个协程" class="headerlink" title="同时起多个协程"></a>同时起多个协程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">monkey.patch_all()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line"></span><br><span class="line">g_l = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    g = gevent.spawn(eat)</span><br><span class="line">    g_l.append(g)</span><br><span class="line">gevent.joinall(g_l)</span><br></pre></td></tr></table></figure>
+<p>这里我们使用for循环起10个协程，并将起的每一个协程存入列表中进行阻塞等待。得到的输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">start eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br><span class="line">finished eating</span><br></pre></td></tr></table></figure>
+<h5 id="获取协程返回值"><a href="#获取协程返回值" class="headerlink" title="获取协程返回值"></a>获取协程返回值</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">monkey.patch_all()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start eating"</span>)</span><br><span class="line">    time.sleep(<span class="number">3</span>)</span><br><span class="line">    print(<span class="string">"finished eating"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sleep</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start sleeping"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"finished sleeping"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">456</span></span><br><span class="line"></span><br><span class="line">g1 = gevent.spawn(eat)  <span class="comment"># 创造一个协程任务</span></span><br><span class="line">g2 = gevent.spawn(sleep)</span><br><span class="line"></span><br><span class="line">gevent.joinall([g1, g2])</span><br><span class="line">print(g1.value)</span><br><span class="line">print(g2.value)</span><br></pre></td></tr></table></figure>
+<p>通过<code>g.value</code>可以拿到每一个协程的返回值。输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">start eating</span><br><span class="line">start sleeping</span><br><span class="line">finished sleeping</span><br><span class="line">finished eating</span><br><span class="line">123</span><br><span class="line">456</span><br></pre></td></tr></table></figure>
+<h5 id="gevent实现socket并发"><a href="#gevent实现socket并发" class="headerlink" title="gevent实现socket并发"></a>gevent实现socket并发</h5><p>server端实现如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gevent</span><br><span class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</span><br><span class="line">monkey.patch_all()</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chat</span><span class="params">(conn)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        msg = conn.recv(<span class="number">1024</span>).decode(<span class="string">'utf-8'</span>)</span><br><span class="line">        conn.send(msg.upper().encode(<span class="string">'utf-8'</span>))</span><br><span class="line"></span><br><span class="line">sk = socket.socket()</span><br><span class="line">sk.bind((<span class="string">'127.0.0.1'</span>, <span class="number">9000</span>))</span><br><span class="line">sk.listen()</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    conn, addr = sk.accept()</span><br><span class="line">    gevent.spawn(chat, conn)</span><br></pre></td></tr></table></figure>
+<p>client端实现如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">client</span><span class="params">(i)</span>:</span></span><br><span class="line">    sk = socket.socket()</span><br><span class="line">    sk.connect((<span class="string">'127.0.0.1'</span>, <span class="number">9000</span>))</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        sk.send(<span class="string">'elssm'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">        print(i*<span class="string">'*'</span>,sk.recv(<span class="number">1024</span>).decode(<span class="string">'utf-8'</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">500</span>):</span><br><span class="line">    Thread(target=client,args=(i,)).start()</span><br></pre></td></tr></table></figure>
+<p>这里客户端起500个线程去和服务端进行连接，在服务端接收之后，使用<code>gevent</code>模块，将连接请求通过协程进行处理。</p>
+<h4 id="asyncio模块"><a href="#asyncio模块" class="headerlink" title="asyncio模块"></a>asyncio模块</h4><p>asyncio 是用来编写 <strong>并发</strong> 代码的库，使用 <strong>async/await</strong> 语法。需要注意的是asyncio模块是在python3.x中引入的，在python2.x中并不支持</p>
+<h5 id="起一个协程"><a href="#起一个协程" class="headerlink" title="起一个协程"></a>起一个协程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start ..."</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"end ..."</span>)</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(func())</span><br></pre></td></tr></table></figure>
+<p>首先使用<code>get_event_loop</code>方法创建一个事件循环，之后使用<code>run_until_complete</code>方法将协程注册到事件循环，在asyncio模块中使用async关键字定义一个协程。对于一些耗时的操作，例如网络请求，文件读取等。我们使用asyncio.sleep函数来模拟IO操作。协程的目的也是让这些IO操作异步化。在 sleep的时候，使用await让出控制权。即当遇到阻塞调用的函数的时候，使用await方法将协程的控制权让出，以便loop调用其他的协程。输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start ...</span><br><span class="line">end ...</span><br></pre></td></tr></table></figure>
+<h5 id="启动多个协程"><a href="#启动多个协程" class="headerlink" title="启动多个协程"></a>启动多个协程</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start ..."</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"end ..."</span>)</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">wait_obj = asyncio.wait([func(), func(), func()])</span><br><span class="line">loop.run_until_complete(wait_obj)</span><br></pre></td></tr></table></figure>
+<p>这里我们还是使用<code>get_event_loop</code>方法先创建一个事件循环，接着我们使用<code>asyncio.wait</code>函数将多个协程保存在列表中，每当有任务阻塞的时候就await，然后其他协程继续工作。创建多个协程的列表，然后将这些协程注册到事件循环中。输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">end ...</span><br><span class="line">end ...</span><br><span class="line">end ...</span><br></pre></td></tr></table></figure>
+<h5 id="获取多个协程返回值"><a href="#获取多个协程返回值" class="headerlink" title="获取多个协程返回值"></a>获取多个协程返回值</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"start ..."</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"end ..."</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">123</span></span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">t1 = loop.create_task(func())</span><br><span class="line">t2 = loop.create_task(func())</span><br><span class="line">tasks = [t1,t2]</span><br><span class="line">wait_obj = asyncio.wait([t1,t2])</span><br><span class="line">loop.run_until_complete(wait_obj)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tasks:</span><br><span class="line">    print(i.result())</span><br></pre></td></tr></table></figure>
+<p>在asyncio模块中，可以使用<code>loop</code>自带的<code>create_task</code>。通过<code>result()</code>方法获取到返回值。输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">end ...</span><br><span class="line">end ...</span><br><span class="line">123</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+<h5 id="按顺序获取协程返回值"><a href="#按顺序获取协程返回值" class="headerlink" title="按顺序获取协程返回值"></a>按顺序获取协程返回值</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(i)</span>:</span></span><br><span class="line">    print(<span class="string">"start ..."</span>)</span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">5</span>-i)</span><br><span class="line">    print(<span class="string">"end ..."</span>)</span><br><span class="line">    <span class="keyword">return</span> i,<span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    task_l = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        task = asyncio.ensure_future(func(i))</span><br><span class="line">        task_l.append(task)</span><br><span class="line">    <span class="keyword">for</span> ret <span class="keyword">in</span> asyncio.as_completed(task_l):</span><br><span class="line">        res = <span class="keyword">await</span> ret</span><br><span class="line">        print(res)</span><br><span class="line"></span><br><span class="line">loop = asyncio.get_event_loop()</span><br><span class="line">loop.run_until_complete(main())</span><br></pre></td></tr></table></figure>
+<p>这里我们起5个协程，使用<code>ensure_future</code>安排将要执行的协程任务，并将5个协程保存在列表中，使用<code>as_completed</code>方法可以随时获取任务的返回值，不需要等待循环事件结束后一并获取所有任务的返回值，随后使用<code>await</code>等待任务完成。因为我们是按顺序来获取返回值，因此睡眠时间最短的应该最先返回，对于5次循环，当<code>i=4</code>的时候只需要睡眠1秒，因此我们应该先得到的返回值是<code>(4,123)</code>，最终得到的输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">start ...</span><br><span class="line">end ...</span><br><span class="line">(4, 123)</span><br><span class="line">end ...</span><br><span class="line">(3, 123)</span><br><span class="line">end ...</span><br><span class="line">(2, 123)</span><br><span class="line">end ...</span><br><span class="line">(1, 123)</span><br><span class="line">end ...</span><br><span class="line">(0, 123)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/20/Linux系统编程-三/" rel="next" title="Linux系统编程(三)">
+                <i class="fa fa-chevron-left"></i> Linux系统编程(三)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#协程概念"><span class="nav-number">1.</span> <span class="nav-text">协程概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#greenlet模块"><span class="nav-number">2.</span> <span class="nav-text">greenlet模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gevent模块"><span class="nav-number">3.</span> <span class="nav-text">gevent模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建协程任务"><span class="nav-number">3.1.</span> <span class="nav-text">创建协程任务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#阻塞等待协程完成"><span class="nav-number">3.2.</span> <span class="nav-text">阻塞等待协程完成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#阻塞等待多个协程"><span class="nav-number">3.3.</span> <span class="nav-text">阻塞等待多个协程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gevent中的monkey模块"><span class="nav-number">3.4.</span> <span class="nav-text">gevent中的monkey模块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#同时起多个协程"><span class="nav-number">3.5.</span> <span class="nav-text">同时起多个协程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取协程返回值"><span class="nav-number">3.6.</span> <span class="nav-text">获取协程返回值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#gevent实现socket并发"><span class="nav-number">3.7.</span> <span class="nav-text">gevent实现socket并发</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#asyncio模块"><span class="nav-number">4.</span> <span class="nav-text">asyncio模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#起一个协程"><span class="nav-number">4.1.</span> <span class="nav-text">起一个协程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动多个协程"><span class="nav-number">4.2.</span> <span class="nav-text">启动多个协程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取多个协程返回值"><span class="nav-number">4.3.</span> <span class="nav-text">获取多个协程返回值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#按顺序获取协程返回值"><span class="nav-number">4.4.</span> <span class="nav-text">按顺序获取协程返回值</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
