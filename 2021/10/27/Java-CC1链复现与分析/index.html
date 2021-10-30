@@ -131,6 +131,7 @@
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="Apache Commons CollectionsApache Commons Collections是一个扩展了Java标准库里的Collection结构的第三方基础库，它提供了很多强有力的数据结构类型并且实现了各种集合工具类。作为Apache开源项目的重要组件，Commons Collections被广泛应用于各种Java应用的开发。其实Java JDK已经提供了丰富的集合操作，但是在某些场">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/23.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/1.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/2.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/3.png">
@@ -141,6 +142,7 @@
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/8.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/9.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/10.png">
+<meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/24.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/11.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/12.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/13.png">
@@ -153,11 +155,11 @@
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/19.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/21.png">
 <meta property="og:image" content="/2021/10/27/Java-CC1链复现与分析/22.png">
-<meta property="og:updated_time" content="2021-10-28T04:20:02.115Z">
+<meta property="og:updated_time" content="2021-10-30T08:44:26.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java CC1链复现与分析">
 <meta name="twitter:description" content="Apache Commons CollectionsApache Commons Collections是一个扩展了Java标准库里的Collection结构的第三方基础库，它提供了很多强有力的数据结构类型并且实现了各种集合工具类。作为Apache开源项目的重要组件，Commons Collections被广泛应用于各种Java应用的开发。其实Java JDK已经提供了丰富的集合操作，但是在某些场">
-<meta name="twitter:image" content="/2021/10/27/Java-CC1链复现与分析/1.png">
+<meta name="twitter:image" content="/2021/10/27/Java-CC1链复现与分析/23.png">
 
 
 
@@ -388,10 +390,11 @@
 
       
         <h4 id="Apache-Commons-Collections"><a href="#Apache-Commons-Collections" class="headerlink" title="Apache Commons Collections"></a>Apache Commons Collections</h4><p>Apache Commons Collections是一个扩展了Java标准库里的Collection结构的第三方基础库，它提供了很多强有力的数据结构类型并且实现了各种集合工具类。作为Apache开源项目的重要组件，Commons Collections被广泛应用于各种Java应用的开发。其实Java JDK已经提供了丰富的集合操作，但是在某些场合下，可能无法满足，apache commons组件提供了更加丰富的集数据结构。</p>
-<h4 id="复现环境"><a href="#复现环境" class="headerlink" title="复现环境"></a>复现环境</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Mac OS Big Sur</span><br><span class="line">JDK7</span><br><span class="line">commons-collections3.1</span><br></pre></td></tr></table></figure>
-<p>JDK7下载地址：<a href="https://files-cdn.liferay.com/mirrors/download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-macosx-x64.dmg" target="_blank" rel="noopener">https://files-cdn.liferay.com/mirrors/download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-macosx-x64.dmg</a></p>
+<h4 id="复现环境"><a href="#复现环境" class="headerlink" title="复现环境"></a>复现环境</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Mac OS Big Sur</span><br><span class="line">JDK-7u6</span><br><span class="line">commons-collections3.1</span><br></pre></td></tr></table></figure>
+<p>JDK7下载地址：<a href="https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html" target="_blank" rel="noopener">https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html</a></p>
+<p><img src="/2021/10/27/Java-CC1链复现与分析/23.png" alt="23"></p>
 <p>下载好之后查看本地JDK版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % ls /Library/Java/JavaVirtualMachines </span><br><span class="line">jdk1.7.0_80.jdk		jdk1.8.0_191.jdk</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % ls /Library/Java/JavaVirtualMachines </span><br><span class="line">jdk1.7.0_06.jdk		jdk1.8.0_191.jdk</span><br></pre></td></tr></table></figure>
 <h5 id="IDEA配置"><a href="#IDEA配置" class="headerlink" title="IDEA配置"></a>IDEA配置</h5><p>创建好Maven项目之后，指定对应的JDK版本即可</p>
 <p><img src="/2021/10/27/Java-CC1链复现与分析/1.png" alt="1"></p>
 <p>Common Collections3.1通过maven添加</p>
@@ -422,9 +425,9 @@
 <p>我们再次尝试改写上面的例子，首先实例化一个<code>map</code>对象，并对<code>map</code>进行装饰，因为在后面执行<code>transform</code>方法的是<code>decorate</code>方法传入的第三个参数，因此我们可以给第二个参数传一个空值，之后通过<code>for</code>循环调用<code>setValue</code>方法将我们的<code>Runtime.getRuntime()</code>对象传入。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ccTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Runtime r = Runtime.getRuntime();</span><br><span class="line">        InvokerTransformer invokerTransformer = new InvokerTransformer("exec",new Class[]&#123;String.class&#125;,new Object[]&#123;"open -a calculator"&#125;);</span><br><span class="line">        HashMap&lt;Object,Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">"key"</span>,<span class="string">"value"</span>);</span><br><span class="line">        Map&lt;Object,Object&gt; transformedMap = TransformedMap.decorate(map,<span class="keyword">null</span>,invokerTransformer);</span><br><span class="line">        <span class="keyword">for</span>(Map.Entry entry:transformedMap.entrySet())&#123;</span><br><span class="line">            entry.setValue(r);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="jdk源码关联"><a href="#jdk源码关联" class="headerlink" title="jdk源码关联"></a>jdk源码关联</h5><p>这个时候我们继续向上寻找调用链，看哪些类调用了<code>setValue</code>方法，按照流程，我应该能找到在<code>AnnotationInvocationHandler</code>这个类的<code>readObject</code>方法里面调用了<code>setValue</code>方法，可是找了一圈，并没有。。。我以为是我jdk版本的问题，于是在jdk下面查看，路径是<code>rt.jar</code>下面的<code>sun.reflect.annotation</code>，发现这个类不是源代码，所以查找调用的时候不会出现。</p>
-<p>对于这个问题我找到了一个相对合理的解答：因为sun包是hotspot虚拟机中java.<em> 和javax.</em>的底层实现。因为包含在rt中，所以我们也可以调用。但是因为不是sun对外公开承诺的接口，所以根据实现的需要随时增减，因此在不同版本的hotspot中可能是不同的，而且在其他的jdk实现中是没有的，调用这些类，可能不会向后兼容，所以一般不推荐使用。</p>
-<p>因此如果我们需要查看<code>rt.jar</code>包下的源码就需要进行源码关联。</p>
-<p>JDK7源代码地址：<a href="http://jdk7src.sourceforge.net" target="_blank" rel="noopener">http://jdk7src.sourceforge.net</a></p>
+<p>对于这个问题我找到了一个相对合理的解答：因为sun包是hotspot虚拟机中java.<em> 和javax.</em>的底层实现。因为包含在rt中，所以我们也可以调用。但是因为不是sun对外公开承诺的接口，所以根据实现的需要随时增减，因此在不同版本的hotspot中可能是不同的，而且在其他的jdk实现中是没有的，调用这些类，可能不会向后兼容，所以一般不推荐使用。因此如果我们需要查看<code>rt.jar</code>包下的源码就需要进行源码关联。</p>
+<p>JDK-7u6源代码地址：<a href="http://jdk7src.sourceforge.net" target="_blank" rel="noopener">http://jdk7src.sourceforge.net</a></p>
+<p><img src="/2021/10/27/Java-CC1链复现与分析/24.png" alt="24"></p>
 <p>下载好对应JDK版本之后，在IDEA中就可以设置。进入<code>File-&gt;Project Structrue-&gt;SDKs-&gt;Sourcepath</code>中添加即可</p>
 <p><img src="/2021/10/27/Java-CC1链复现与分析/11.png" alt="11"></p>
 <p>这个时候我们再次查看<code>AnnotationInvocationHandler</code>这个类，发现已经是源代码文件了，同样也在<code>setValue</code>放的的调用类中成功找到了这个类</p>
