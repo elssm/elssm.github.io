@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="go,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介该项目主要分为三个部分，web端负责对etcd的写入，logAgent负责日志的收集，logTransfer负责将日志写入elasticsearch。 logBeegoWeb前端使用Beego框架完成。在运行项目之前，首先安装bee脚手架。 1go get github.com/beego/bee 执行bee命令查看是否安装成功。 1234567891011121314151617181920">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go日志收集项目流程梳理">
+<meta property="og:url" content="elssm.github.io/2021/11/12/Go日志收集项目流程梳理/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="简介该项目主要分为三个部分，web端负责对etcd的写入，logAgent负责日志的收集，logTransfer负责将日志写入elasticsearch。 logBeegoWeb前端使用Beego框架完成。在运行项目之前，首先安装bee脚手架。 1go get github.com/beego/bee 执行bee命令查看是否安装成功。 1234567891011121314151617181920">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/1.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/2.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/3.png">
+<meta property="og:updated_time" content="2021-11-12T07:50:27.258Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go日志收集项目流程梳理">
+<meta name="twitter:description" content="简介该项目主要分为三个部分，web端负责对etcd的写入，logAgent负责日志的收集，logTransfer负责将日志写入elasticsearch。 logBeegoWeb前端使用Beego框架完成。在运行项目之前，首先安装bee脚手架。 1go get github.com/beego/bee 执行bee命令查看是否安装成功。 1234567891011121314151617181920">
+<meta name="twitter:image" content="/2021/11/12/Go日志收集项目流程梳理/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/11/12/Go日志收集项目流程梳理/">
+
+
+
+
+
+  <title>Go日志收集项目流程梳理 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/11/12/Go日志收集项目流程梳理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Go日志收集项目流程梳理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-12T15:10:44+08:00">
+                2021-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>该项目主要分为三个部分，web端负责对etcd的写入，logAgent负责日志的收集，logTransfer负责将日志写入elasticsearch。</p>
+<h4 id="logBeegoWeb"><a href="#logBeegoWeb" class="headerlink" title="logBeegoWeb"></a>logBeegoWeb</h4><p>前端使用Beego框架完成。在运行项目之前，首先安装bee脚手架。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/beego/bee</span><br></pre></td></tr></table></figure>
+<p>执行<code>bee</code>命令查看是否安装成功。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % bee</span><br><span class="line">Bee is a Fast and Flexible tool for managing your Beego Web Application.</span><br><span class="line"></span><br><span class="line">USAGE</span><br><span class="line">    bee command [arguments]</span><br><span class="line"></span><br><span class="line">AVAILABLE COMMANDS</span><br><span class="line"></span><br><span class="line">    version     Prints the current Bee version</span><br><span class="line">    migrate     Runs database migrations</span><br><span class="line">    api         Creates a Beego API application</span><br><span class="line">    bale        Transforms non-Go files to Go source files</span><br><span class="line">    fix         Fixes your application by making it compatible with newer versions of Beego</span><br><span class="line">    pro         Source code generator</span><br><span class="line">    dlv         Start a debugging session using Delve</span><br><span class="line">    dockerize   Generates a Dockerfile for your Beego application</span><br><span class="line">    generate    Source code generator</span><br><span class="line">    hprose      Creates an RPC application based on Hprose and Beego frameworks</span><br><span class="line">    new         Creates a Beego application</span><br><span class="line">    pack        Compresses a Beego application into a single file</span><br><span class="line">    rs          Run customized scripts</span><br><span class="line">    run         Run the application by starting a local development server</span><br><span class="line">    server      serving static content over HTTP on port</span><br><span class="line">    update      Update Bee</span><br><span class="line"></span><br><span class="line">Use bee help [command] for more information about a command.</span><br><span class="line"></span><br><span class="line">ADDITIONAL HELP TOPICS</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Use bee help [topic] for more information about that topic.</span><br></pre></td></tr></table></figure>
+<p>进入logBeegoWeb文件夹，<code>bee run</code>启动项目</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro logBeegoWeb % bee run</span><br><span class="line">______</span><br><span class="line">| ___ \</span><br><span class="line">| |_/ /  ___   ___</span><br><span class="line">| ___ \ / _ \ / _ \</span><br><span class="line">| |_/ /|  __/|  __/</span><br><span class="line">\____/  \___| \___| v1.12.0</span><br><span class="line">2021/11/12 15:09:30 INFO     ▶ 0001 Using 'logBeegoWeb' as 'appname'</span><br><span class="line">2021/11/12 15:09:30 INFO     ▶ 0002 Initializing watcher...</span><br><span class="line">2021/11/12 15:09:32 SUCCESS  ▶ 0003 Built Successfully!</span><br><span class="line">2021/11/12 15:09:32 INFO     ▶ 0004 Restarting 'logBeegoWeb'...</span><br><span class="line">2021/11/12 15:09:32 SUCCESS  ▶ 0005 './logBeegoWeb' is running...</span><br><span class="line">2021/11/12 15:09:32.451 [I] [asm_amd64.s:1374]  http server Running on http://127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+<p>查看本地<code>8080</code>端口，项目启动成功</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/1.png" alt="1"></p>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>创建数据库的sql源码如下，创建名为<code>logCollect</code> 的数据库，并创建三张表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> logCollect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tbl_app_info(</span><br><span class="line">	app_id <span class="built_in">int</span> auto_increment primary <span class="keyword">key</span>,</span><br><span class="line">	app_name <span class="built_in">varchar</span>(<span class="number">1024</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	app_type <span class="built_in">varchar</span>(<span class="number">64</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	create_time <span class="built_in">TIMESTAMP</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span>,</span><br><span class="line">	develop_path <span class="built_in">varchar</span>(<span class="number">256</span>) <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 AUTO_INCREMENT=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tbl_app_ip(</span><br><span class="line">	app_id <span class="built_in">int</span>,</span><br><span class="line">	ip <span class="built_in">varchar</span>(<span class="number">64</span>),</span><br><span class="line">	<span class="keyword">Key</span> app_id_ip_index (app_id, ip)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 AUTO_INCREMENT=<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tbl_log_info(</span><br><span class="line">	log_id <span class="built_in">int</span> auto_increment primary <span class="keyword">key</span>,</span><br><span class="line">	app_id <span class="built_in">varchar</span>(<span class="number">1024</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	log_path <span class="built_in">varchar</span>(<span class="number">64</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	topic <span class="built_in">varchar</span>(<span class="number">1024</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	create_time <span class="built_in">TIMESTAMP</span> <span class="keyword">DEFAULT</span> <span class="keyword">CURRENT_TIMESTAMP</span>,</span><br><span class="line">	<span class="keyword">status</span> <span class="built_in">tinyint</span> <span class="keyword">default</span> <span class="number">1</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 AUTO_INCREMENT=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>数据库创建成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span> show tables;</span><br><span class="line">+----------------------+</span><br><span class="line">| Tables_in_logcollect |</span><br><span class="line">+----------------------+</span><br><span class="line">| tbl_app_info         |</span><br><span class="line">| tbl_app_ip           |</span><br><span class="line">| tbl_log_info         |</span><br><span class="line">+----------------------+</span><br><span class="line">3 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+<p>在前端主页面，项目列表对应<code>tbl_app_info</code>这张表，日志列表对应<code>tbl_log_info</code>这张表。<code>tbl_app_ip</code>这张表用来保存项目所在的<code>ip</code>地址。</p>
+<h4 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h4><p>当我们申请好项目之后，就可以针对该项目所产生的日志进行收集。对于所要收集的日志配置信息，可以采用etcd进行存储。</p>
+<p>例如我们可以在日志申请页写入所要收集的项目信息，前提是项目的名字必须在项目列表中是存在的，否则日志申请就会失败。</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/2.png" alt="2"></p>
+<p>etcd中获取key的值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % etcdctl get /backend/logagent/config/10.100.163.201</span><br><span class="line">/backend/logagent/config/10.100.163.201</span><br><span class="line">[&#123;"logpath":"/Users/caoyifan/test.log","topic":"kafka_test"&#125;]</span><br></pre></td></tr></table></figure>
+<h4 id="logAgent"><a href="#logAgent" class="headerlink" title="logAgent"></a>logAgent</h4><p>logAgent项目树结构如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">logAgent</span><br><span class="line">├── conf</span><br><span class="line">│   └── logAgent.conf</span><br><span class="line">├── kafka</span><br><span class="line">│   └── kafka.go</span><br><span class="line">├── logs</span><br><span class="line">│   └── my.log</span><br><span class="line">├── main</span><br><span class="line">│   ├── config.go</span><br><span class="line">│   ├── etcd.go</span><br><span class="line">│   ├── ip.go</span><br><span class="line">│   ├── log.go</span><br><span class="line">│   ├── main.go</span><br><span class="line">│   └── server.go</span><br><span class="line">├── tailf</span><br><span class="line">│   └── tail.go</span><br><span class="line">└── tools</span><br><span class="line">    └── SetConf</span><br><span class="line">        └── main.go</span><br></pre></td></tr></table></figure>
+<p>其中<code>conf</code>中保存kafka和etcd等配置信息。</p>
+<p>进入main文件夹中，执行<code>go build</code>命令，之后执行<code>./main</code>启动项目，项目启动日志输出如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">2021/11/12 15:32:11.007 [D]  get config from etcd success, [&#123;/Users/caoyifan/test.log kafka_test&#125;]</span><br><span class="line">2021/11/12 15:41:14.985 [D]  导入日志成功&amp;&#123;debug /Users/caoyifan/go/src/Golang_logCollect/logAgent/logs/my.log 100 0.0.0.0:9092 [] 0.0.0.0:2379 /backend/logagent/config/&#125;</span><br><span class="line">2021/11/12 15:41:14.987 [D]  resp from etcd:[key:"/backend/logagent/config/10.100.163.201" create_revision:41 mod_revision:61 version:14 value:"[&#123;\"logpath\":\"/Users/caoyifan/test.log\",\"topic\":\"kafka_test\"&#125;]" ]</span><br><span class="line">2021/11/12 15:41:14.987 [D]  日志设置为[&#123;/Users/caoyifan/test.log kafka_test&#125;]</span><br><span class="line">2021/11/12 15:41:14.987 [D]  连接etcd成功</span><br><span class="line">2021/11/12 15:41:14.987 [D]  初始化etcd成功!</span><br><span class="line">2021/11/12 15:41:14.987 [D]  初始化tailf成功!</span><br><span class="line">2021/11/12 15:41:14.988 [D]  开始监控key: /backend/logagent/config/10.100.163.201</span><br><span class="line">2021/11/12 15:41:14.997 [D]  初始化Kafka producer成功,地址为: 0.0.0.0:9092</span><br><span class="line">2021/11/12 15:41:14.997 [D]  初始化Kafka成功!</span><br></pre></td></tr></table></figure>
+<p>可以看到，项目启动之后首先会从etcd中去获取前端写入etcd中的日志收集配置信息，之后etcd会持续监控key的变化，一旦有新的日志配置加入etcd中，就会更新配置文件，随后启动kafka准备从日志文件中读取日志信息。</p>
+<p>测试日志文件读取</p>
+<p>在<code>/Users/caoyifan</code>目录下创建<code>test.log</code>文件并尝试写入一些信息。</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/3.png" alt="3"></p>
+<p>发现kafka能够成功读取写入的文件信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">2021/11/12 15:46:50.530 [D]  导入日志成功&amp;&#123;debug /Users/caoyifan/go/src/Golang_logCollect/logAgent/logs/my.log 100 0.0.0.0:9092 [] 0.0.0.0:2379 /backend/logagent/config/&#125;</span><br><span class="line">2021/11/12 15:46:50.533 [D]  resp from etcd:[key:"/backend/logagent/config/10.100.163.201" create_revision:41 mod_revision:61 version:14 value:"[&#123;\"logpath\":\"/Users/caoyifan/test.log\",\"topic\":\"kafka_test\"&#125;]" ]</span><br><span class="line">2021/11/12 15:46:50.533 [D]  日志设置为[&#123;/Users/caoyifan/test.log kafka_test&#125;]</span><br><span class="line">2021/11/12 15:46:50.533 [D]  连接etcd成功</span><br><span class="line">2021/11/12 15:46:50.533 [D]  初始化etcd成功!</span><br><span class="line">2021/11/12 15:46:50.533 [D]  初始化tailf成功!</span><br><span class="line">2021/11/12 15:46:50.533 [D]  开始监控key: /backend/logagent/config/10.100.163.201</span><br><span class="line">2021/11/12 15:46:50.536 [D]  初始化Kafka producer成功,地址为: 0.0.0.0:9092</span><br><span class="line">2021/11/12 15:46:50.536 [D]  初始化Kafka成功!</span><br><span class="line">2021/11/12 15:47:21.637 [D]  read success, pid:0, offset:0, topic:kafka_test</span><br><span class="line"></span><br><span class="line">2021/11/12 15:47:21.641 [D]  read success, pid:0, offset:1, topic:kafka_test</span><br><span class="line"></span><br><span class="line">2021/11/12 15:47:21.642 [D]  read success, pid:0, offset:2, topic:kafka_test</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/02/Linux网络编程/" rel="next" title="Linux网络编程">
+                <i class="fa fa-chevron-left"></i> Linux网络编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logBeegoWeb"><span class="nav-number">2.</span> <span class="nav-text">logBeegoWeb</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库"><span class="nav-number">3.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">4.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logAgent"><span class="nav-number">5.</span> <span class="nav-text">logAgent</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
