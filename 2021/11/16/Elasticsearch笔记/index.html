@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ElasticSearch简介Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。Elasticsearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。官方客户端在Java">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch笔记">
+<meta property="og:url" content="elssm.github.io/2021/11/16/Elasticsearch笔记/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="ElasticSearch简介Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。Elasticsearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。官方客户端在Java">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/1.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/2.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/3.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/4.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/5.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/6.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/7.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/8.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/9.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/10.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/11.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/12.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/13.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/14.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/15.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/16.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/17.png">
+<meta property="og:image" content="/Users/caoyifan/blog/source/_posts/Elasticsearch笔记/18.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/19.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/20.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/21.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/22.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/23.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/24.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/25.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/26.png">
+<meta property="og:image" content="/2021/11/16/Elasticsearch笔记/27.png">
+<meta property="og:updated_time" content="2021-11-16T08:52:42.679Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch笔记">
+<meta name="twitter:description" content="ElasticSearch简介Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。Elasticsearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。官方客户端在Java">
+<meta name="twitter:image" content="/2021/11/16/Elasticsearch笔记/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/11/16/Elasticsearch笔记/">
+
+
+
+
+
+  <title>Elasticsearch笔记 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/11/16/Elasticsearch笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Elasticsearch笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-16T14:29:54+08:00">
+                2021-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="ElasticSearch简介"><a href="#ElasticSearch简介" class="headerlink" title="ElasticSearch简介"></a>ElasticSearch简介</h4><p>Elasticsearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。Elasticsearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。官方客户端在Java、.NET（C#）、PHP、Python、Apache Groovy、Ruby和许多其他语言中都是可用的。根据DB-Engines的排名显示，Elasticsearch是最受欢迎的企业搜索引擎，其次是Apache Solr，也是基于Lucene。</p>
+<h4 id="ElasticSearch对比MySQL"><a href="#ElasticSearch对比MySQL" class="headerlink" title="ElasticSearch对比MySQL"></a>ElasticSearch对比MySQL</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ELasticSearch</th>
+<th>MySQL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td>database</td>
+</tr>
+<tr>
+<td>type</td>
+<td>table</td>
+</tr>
+<tr>
+<td>document</td>
+<td>row</td>
+</tr>
+<tr>
+<td>field</td>
+<td>column</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="RESTful"><a href="#RESTful" class="headerlink" title="RESTful"></a>RESTful</h4><p>RESTful中文意思是表现层状态转化。</p>
+<p>在RESTful架构中：每一个URI代表一种资源；客户端和服务器之间，传递这种资源的某种表现层；客户端通过四个HTTP动词，对服务器端资源进行操作，实现”表现层状态转化”。通过URI指定资源，如<code>Index，Document</code>等。通过<code>Http Method</code>指明资源操作类型，如<code>GET POST PUT DELETE</code>等。</p>
+<h4 id="索引创建"><a href="#索引创建" class="headerlink" title="索引创建"></a>索引创建</h4><p>使用postman工具创建一个名为<code>shopping</code>的索引，请求方式为<code>PUT</code></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/1.png" alt="1"></p>
+<h4 id="索引查询"><a href="#索引查询" class="headerlink" title="索引查询"></a>索引查询</h4><h5 id="获取单个索引信息"><a href="#获取单个索引信息" class="headerlink" title="获取单个索引信息"></a>获取单个索引信息</h5><p><img src="/2021/11/16/Elasticsearch笔记/2.png" alt="2"></p>
+<h5 id="获取全部索引信息"><a href="#获取全部索引信息" class="headerlink" title="获取全部索引信息"></a>获取全部索引信息</h5><p>请求地址后面添加<code>_cat/indices?v</code></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/3.png" alt="3"></p>
+<h4 id="索引删除"><a href="#索引删除" class="headerlink" title="索引删除"></a>索引删除</h4><p>删除名为<code>shopping</code>的索引，请求方式为<code>DELETE</code></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/4.png" alt="4"></p>
+<h4 id="创建文档"><a href="#创建文档" class="headerlink" title="创建文档"></a>创建文档</h4><p>请求方式为<code>POST</code>，请求地址为<code>http://localhost:9200/索引名/_doc</code>，请求体为<code>JSON</code>格式</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/5.png" alt="5"></p>
+<p>由于ES自动生成的<code>id</code>不便于记忆，因此我们可以自定义id，只需要在<code>_doc</code>后写入自定义的id即可</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/6.png" alt="6"></p>
+<h4 id="查询文档"><a href="#查询文档" class="headerlink" title="查询文档"></a>查询文档</h4><p>只需要将创建文档的请求方式改为<code>GET</code>即可，其中<code>_doc</code>后面的<code>1001</code>相当于主键</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/7.png" alt="7"></p>
+<p>获取索引下的所有数据，可以在请求的索引后加<code>_search</code></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/8.png" alt="8"></p>
+<h4 id="修改索引下的数据"><a href="#修改索引下的数据" class="headerlink" title="修改索引下的数据"></a>修改索引下的数据</h4><h5 id="全量更新"><a href="#全量更新" class="headerlink" title="全量更新"></a>全量更新</h5><p>因为全量更新的请求是满足幂等条件的，因此请求方式为<code>PUT</code>，将需要修改的内容以<code>JSON</code>格式写入请求体</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/9.png" alt="9"></p>
+<h5 id="局部更新"><a href="#局部更新" class="headerlink" title="局部更新"></a>局部更新</h5><p>局部更新的请求不满足幂等条件，因此请求方式为<code>POST</code>，而且因为是局部更新，因此索引名后面要写<code>_update</code>而不能写<code>_doc</code></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/10.png" alt="10"></p>
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><p>资源地址和创建时是一样的，请求方式变为<code>DELETE</code></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/11.png" alt="11"></p>
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><h5 id="请求路径查询"><a href="#请求路径查询" class="headerlink" title="请求路径查询"></a>请求路径查询</h5><p>请求方式为<code>GET</code>，请求路径为<code>http://localhost:9200/shopping/_search?q=category:iphone13</code></p>
+<p>该请求路径表示查询shopping索引下<code>category=iphone13</code>的所有结果</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/12.png" alt="12"></p>
+<h5 id="请求体查询"><a href="#请求体查询" class="headerlink" title="请求体查询"></a>请求体查询</h5><p>请求体查询在请求路径只需要输入<code>http://localhost:9200/shopping/_search</code>，在请求体中添加<code>JSON</code>查询请求如下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"match"</span>:&#123;</span><br><span class="line">            <span class="attr">"category"</span>:<span class="string">"iphone13"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/13.png" alt="13"></p>
+<p>如果要全量查询，只需要将请求体中的<code>match</code>改为<code>match_all</code>即可</p>
+<h4 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h4><p>全量查询的话数据量会很大，因此我们可以采用分页查询</p>
+<p>请求体中添加<code>JSON</code>如下，其中<code>from</code>表示从哪一页开始，0表示第一页。size表示页的大小，即每一页有多少条数据。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"match_all"</span>:&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"from"</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"size"</span>: <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/14.png" alt="14"></p>
+<h4 id="查询结果数据源控制"><a href="#查询结果数据源控制" class="headerlink" title="查询结果数据源控制"></a>查询结果数据源控制</h4><p>在请求体中添加<code>JSON</code>请求查询如下，其中<code>_source</code>表示所要展示的数据源，这里我们设置只显示<code>title</code>字段</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"match_all"</span>:&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"from"</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"size"</span>: <span class="number">2</span>,</span><br><span class="line">  	<span class="attr">"_source"</span> : [<span class="string">"title"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/15.png" alt="15"></p>
+<h4 id="查询结果排序"><a href="#查询结果排序" class="headerlink" title="查询结果排序"></a>查询结果排序</h4><p>在请求体中添加<code>JSON</code>请求查询如下，其中<code>sort</code>表示所要要对数据进行排序，这里我们设置按照价格进行降序排序，</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"match_all"</span>:&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"from"</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"size"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"_source"</span> : [<span class="string">"title"</span>],</span><br><span class="line">    <span class="attr">"sort"</span> : &#123;</span><br><span class="line">        <span class="attr">"price"</span> : &#123;</span><br><span class="line">            <span class="attr">"order"</span> : <span class="string">"desc"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/16.png" alt="16"></p>
+<h4 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h4><h5 id="多条件同时成立"><a href="#多条件同时成立" class="headerlink" title="多条件同时成立"></a>多条件同时成立</h5><p>请求体如下，其中<code>bool</code>代表条件查询，<code>must</code>表示多个条件必须同时成立</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"bool"</span> : &#123;</span><br><span class="line">            <span class="attr">"must"</span> : [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"match"</span> :&#123;</span><br><span class="line">                        <span class="attr">"category"</span>:<span class="string">"iphone13"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"match"</span> :&#123;</span><br><span class="line">                        <span class="attr">"price"</span>:<span class="string">"7999"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/17.png" alt="17"></p>
+<h5 id="多条件任意成立"><a href="#多条件任意成立" class="headerlink" title="多条件任意成立"></a>多条件任意成立</h5><p>请求体如下，其中<code>bool</code>代表条件查询，<code>should</code>表示多个条件任意成立一个都行，这个时候我们会同时查出价格为5999和7999的结果</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"bool"</span> : &#123;</span><br><span class="line">            <span class="attr">"should"</span> : [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"match"</span> :&#123;</span><br><span class="line">                        <span class="attr">"price"</span>:<span class="string">"5999"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"match"</span> :&#123;</span><br><span class="line">                        <span class="attr">"price"</span>:<span class="string">"7999"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/Users/caoyifan/blog/source/_posts/Elasticsearch笔记/18.png" alt="18"></p>
+<h4 id="范围查询"><a href="#范围查询" class="headerlink" title="范围查询"></a>范围查询</h4><p>请求体如下，其中<code>filter</code>表示过滤，<code>range</code>表示范围，我们选择<code>price</code>大于6000作为条件。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span>:&#123;</span><br><span class="line">        <span class="attr">"bool"</span> : &#123;</span><br><span class="line">            <span class="attr">"should"</span> : [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">"match"</span> :&#123;</span><br><span class="line">                        <span class="attr">"category"</span>:<span class="string">"iphone13"</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"filter"</span> : &#123;</span><br><span class="line">                <span class="attr">"range"</span> : &#123;</span><br><span class="line">                    <span class="attr">"price"</span> : &#123;</span><br><span class="line">                        <span class="attr">"gt"</span> : <span class="number">6000</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/19.png" alt="19"></p>
+<h4 id="完全匹配"><a href="#完全匹配" class="headerlink" title="完全匹配"></a>完全匹配</h4><p>ES在进行匹配查询的时候，会对文字进行插词之后倒排索引，因此对于<code>category=华为</code>来讲，我们在<code>match</code>匹配的时候只写一个华或是一个为，ES都会匹配出<code>category=华为</code>的结果。如果我们需要完全匹配的话，需要将<code>match</code>改为<code>match_phrase</code></p>
+<h4 id="高亮查询"><a href="#高亮查询" class="headerlink" title="高亮查询"></a>高亮查询</h4><p>请求体如下，这里我们的匹配规则是<code>category=iphone13</code>，并对<code>category</code>字段进行高亮处理</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"query"</span> : &#123;</span><br><span class="line">        <span class="attr">"match"</span> : &#123;</span><br><span class="line">            <span class="attr">"category"</span> : <span class="string">"iphone13"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"highlight"</span> : &#123;</span><br><span class="line">        <span class="attr">"fields"</span> : &#123;</span><br><span class="line">            <span class="attr">"category"</span> : &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/20.png" alt="20"></p>
+<h4 id="映射关系"><a href="#映射关系" class="headerlink" title="映射关系"></a>映射关系</h4><h5 id="创建一个索引映射"><a href="#创建一个索引映射" class="headerlink" title="创建一个索引映射"></a>创建一个索引映射</h5><p>首先创建一个<code>test</code>索引</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/21.png" alt="21"></p>
+<p>创建索引的结构信息</p>
+<p>请求路径为<code>http://localhost:9200/test/_mapping</code>，请求方式为<code>PUT</code>，请求体如下，其中<code>properties</code>表示属性设置，<code>type=text</code>表示<code>name</code>可以分词处理，<code>index=true</code>表示<code>name</code>可以被索引查询，<code>type=keyword</code>表示<code>sex</code>不可以分词处理，必须完整匹配。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"properties"</span> : &#123;</span><br><span class="line">        <span class="attr">"name"</span> : &#123;</span><br><span class="line">            <span class="attr">"type"</span> : <span class="string">"text"</span>,</span><br><span class="line">            <span class="attr">"index"</span> : <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"sex"</span> : &#123;</span><br><span class="line">            <span class="attr">"type"</span> : <span class="string">"keyword"</span>,</span><br><span class="line">            <span class="attr">"index"</span> : <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">"tel"</span> : &#123;</span><br><span class="line">            <span class="attr">"type"</span> : <span class="string">"keyword"</span>,</span><br><span class="line">            <span class="attr">"index"</span> : <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/16/Elasticsearch笔记/22.png" alt="22"></p>
+<h5 id="增加数据"><a href="#增加数据" class="headerlink" title="增加数据"></a>增加数据</h5><p><img src="/2021/11/16/Elasticsearch笔记/23.png" alt="23"></p>
+<h5 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h5><p>因为我们的<code>name</code>设置的是可以分词，因此我们在查询的时候对于<code>name</code>只匹配一个字也可以查询出来结果。</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/24.png" alt="24"></p>
+<p>对于<code>sex</code>因为我们设置的是<code>keyword</code>，因此不可以分词查询。必须完全匹配。</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/25.png" alt="25"></p>
+<p><img src="/2021/11/16/Elasticsearch笔记/26.png" alt="26"></p>
+<p>而对于<code>tel</code>字段，因为<code>index</code>为<code>false</code>，即不可以通过索引进行查询，因此我们无法根据<code>tel</code>字段查到数据。</p>
+<p><img src="/2021/11/16/Elasticsearch笔记/27.png" alt="27"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/12/Go日志收集项目流程梳理/" rel="next" title="Go日志收集项目流程梳理">
+                <i class="fa fa-chevron-left"></i> Go日志收集项目流程梳理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ElasticSearch简介"><span class="nav-number">1.</span> <span class="nav-text">ElasticSearch简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ElasticSearch对比MySQL"><span class="nav-number">2.</span> <span class="nav-text">ElasticSearch对比MySQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RESTful"><span class="nav-number">3.</span> <span class="nav-text">RESTful</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引创建"><span class="nav-number">4.</span> <span class="nav-text">索引创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引查询"><span class="nav-number">5.</span> <span class="nav-text">索引查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取单个索引信息"><span class="nav-number">5.1.</span> <span class="nav-text">获取单个索引信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#获取全部索引信息"><span class="nav-number">5.2.</span> <span class="nav-text">获取全部索引信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引删除"><span class="nav-number">6.</span> <span class="nav-text">索引删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建文档"><span class="nav-number">7.</span> <span class="nav-text">创建文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询文档"><span class="nav-number">8.</span> <span class="nav-text">查询文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改索引下的数据"><span class="nav-number">9.</span> <span class="nav-text">修改索引下的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#全量更新"><span class="nav-number">9.1.</span> <span class="nav-text">全量更新</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#局部更新"><span class="nav-number">9.2.</span> <span class="nav-text">局部更新</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">10.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#条件查询"><span class="nav-number">11.</span> <span class="nav-text">条件查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#请求路径查询"><span class="nav-number">11.1.</span> <span class="nav-text">请求路径查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#请求体查询"><span class="nav-number">11.2.</span> <span class="nav-text">请求体查询</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分页查询"><span class="nav-number">12.</span> <span class="nav-text">分页查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询结果数据源控制"><span class="nav-number">13.</span> <span class="nav-text">查询结果数据源控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询结果排序"><span class="nav-number">14.</span> <span class="nav-text">查询结果排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多条件查询"><span class="nav-number">15.</span> <span class="nav-text">多条件查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#多条件同时成立"><span class="nav-number">15.1.</span> <span class="nav-text">多条件同时成立</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多条件任意成立"><span class="nav-number">15.2.</span> <span class="nav-text">多条件任意成立</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#范围查询"><span class="nav-number">16.</span> <span class="nav-text">范围查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完全匹配"><span class="nav-number">17.</span> <span class="nav-text">完全匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高亮查询"><span class="nav-number">18.</span> <span class="nav-text">高亮查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#映射关系"><span class="nav-number">19.</span> <span class="nav-text">映射关系</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建一个索引映射"><span class="nav-number">19.1.</span> <span class="nav-text">创建一个索引映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加数据"><span class="nav-number">19.2.</span> <span class="nav-text">增加数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询数据"><span class="nav-number">19.3.</span> <span class="nav-text">查询数据</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
