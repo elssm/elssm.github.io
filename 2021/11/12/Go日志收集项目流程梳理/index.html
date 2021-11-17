@@ -134,7 +134,13 @@
 <meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/1.png">
 <meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/2.png">
 <meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/3.png">
-<meta property="og:updated_time" content="2021-11-15T09:54:48.959Z">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/4.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/5.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/6.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/7.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/8.png">
+<meta property="og:image" content="/2021/11/12/Go日志收集项目流程梳理/9.png">
+<meta property="og:updated_time" content="2021-11-17T10:31:31.598Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go日志收集项目流程梳理">
 <meta name="twitter:description" content="简介该项目主要分为三个部分，web端负责对etcd的写入以及从mysql读写数据进行展示。logAgent负责日志的收集，主要是通过tail从etcd中实时获取所要收集的日志项，然后通过sarama从相应的日志文件读取日志信息发送到Kafka。logTransfer负责从Kafka中读取日志，并将日志写入elasticsearch最后通过Kibana进行日志的检索。 logBeegoWeb前端使用">
@@ -399,6 +405,24 @@
 <p><img src="/2021/11/12/Go日志收集项目流程梳理/3.png" alt="3"></p>
 <p>发现kafka能够成功读取写入的文件信息</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">2021/11/12 15:46:50.530 [D]  导入日志成功&amp;&#123;debug /Users/caoyifan/go/src/Golang_logCollect/logAgent/logs/my.log 100 0.0.0.0:9092 [] 0.0.0.0:2379 /backend/logagent/config/&#125;</span><br><span class="line">2021/11/12 15:46:50.533 [D]  resp from etcd:[key:"/backend/logagent/config/10.100.163.201" create_revision:41 mod_revision:61 version:14 value:"[&#123;\"logpath\":\"/Users/caoyifan/test.log\",\"topic\":\"kafka_test\"&#125;]" ]</span><br><span class="line">2021/11/12 15:46:50.533 [D]  日志设置为[&#123;/Users/caoyifan/test.log kafka_test&#125;]</span><br><span class="line">2021/11/12 15:46:50.533 [D]  连接etcd成功</span><br><span class="line">2021/11/12 15:46:50.533 [D]  初始化etcd成功!</span><br><span class="line">2021/11/12 15:46:50.533 [D]  初始化tailf成功!</span><br><span class="line">2021/11/12 15:46:50.533 [D]  开始监控key: /backend/logagent/config/10.100.163.201</span><br><span class="line">2021/11/12 15:46:50.536 [D]  初始化Kafka producer成功,地址为: 0.0.0.0:9092</span><br><span class="line">2021/11/12 15:46:50.536 [D]  初始化Kafka成功!</span><br><span class="line">2021/11/12 15:47:21.637 [D]  read success, pid:0, offset:0, topic:kafka_test</span><br><span class="line"></span><br><span class="line">2021/11/12 15:47:21.641 [D]  read success, pid:0, offset:1, topic:kafka_test</span><br><span class="line"></span><br><span class="line">2021/11/12 15:47:21.642 [D]  read success, pid:0, offset:2, topic:kafka_test</span><br></pre></td></tr></table></figure>
+<h4 id="logTransfer"><a href="#logTransfer" class="headerlink" title="logTransfer"></a>logTransfer</h4><p>确保已经启动了<code>kafka</code>和<code>ElasticSearch</code>和<code>kibana</code></p>
+<p>进入main文件夹下，执行<code>go build</code>，输出日志如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro main % ./main  </span><br><span class="line">2021/11/17 17:51:56.784 [D]  初始化配置成功</span><br></pre></td></tr></table></figure>
+<p>这个时候我们查看一下etcd中的日志配置信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % etcdctl get /backend/logagent/config/10.100.163.201</span><br><span class="line">/backend/logagent/config/10.100.163.201</span><br><span class="line">[&#123;"logpath":"/Users/caoyifan/kafka.log","topic":"kafka_log"&#125;]</span><br></pre></td></tr></table></figure>
+<p>接着我们尝试向<code>kafka.log</code>中写入一些测试信息</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/4.png" alt="4"></p>
+<p>这个时候我们查看<code>logAgent</code>中的日志，发现消息已经成功写入了kafka中</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/5.png" alt="5"></p>
+<p>再查看<code>logTransfer</code>中的日志，发现已经成功收集到日志信息</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/6.png" alt="6"></p>
+<h4 id="Kibana可视化"><a href="#Kibana可视化" class="headerlink" title="Kibana可视化"></a>Kibana可视化</h4><p>这个时候我们已经成功收集到了kafka中的消息，并且已经将消息写入到了ElasticSearch中，接下来我们配置一下Kibana查看收集到的相关信息。</p>
+<p>首先我们在Kibana中创建索引，索引名就是我们在etcd中获取到的topic名称。</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/7.png" alt="7"></p>
+<p>通过postman，我们看到当前ElasticSearch中一共有三个索引，其中有一个就是我们创建好的<code>kafka_log</code>索引</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/8.png" alt="8"></p>
+<p>最后我们在Kibana的Discover模块下，选择相应的索引，就可以看到索引下的相关数据。</p>
+<p><img src="/2021/11/12/Go日志收集项目流程梳理/9.png" alt="9"></p>
 
       
     </div>
@@ -582,7 +606,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logBeegoWeb"><span class="nav-number">2.</span> <span class="nav-text">logBeegoWeb</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库"><span class="nav-number">3.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">4.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logAgent"><span class="nav-number">5.</span> <span class="nav-text">logAgent</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logBeegoWeb"><span class="nav-number">2.</span> <span class="nav-text">logBeegoWeb</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库"><span class="nav-number">3.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">4.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logAgent"><span class="nav-number">5.</span> <span class="nav-text">logAgent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#logTransfer"><span class="nav-number">6.</span> <span class="nav-text">logTransfer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kibana可视化"><span class="nav-number">7.</span> <span class="nav-text">Kibana可视化</span></a></li></ol></div>
             
 
           </div>
