@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="libevent简介libevent是一个用C语言编写的轻量级的开源高性能事件通知库，支持多种I/O多路复用技术，支持定时器和信号等事件，而且是跨平台的。 libevent特点 事件驱动，高性能 轻量级，专注于网络 跨平台，支持Windows、Linux、MacOs等 支持多种I/O多路复用技术，epoll、poll、dev/poll、select和kqueue等  支持I/O，定时器和信号等事件">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅学libevent">
+<meta property="og:url" content="elssm.github.io/2021/11/19/浅学libevent/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="libevent简介libevent是一个用C语言编写的轻量级的开源高性能事件通知库，支持多种I/O多路复用技术，支持定时器和信号等事件，而且是跨平台的。 libevent特点 事件驱动，高性能 轻量级，专注于网络 跨平台，支持Windows、Linux、MacOs等 支持多种I/O多路复用技术，epoll、poll、dev/poll、select和kqueue等  支持I/O，定时器和信号等事件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/11/19/浅学libevent/1.png">
+<meta property="og:image" content="/2021/11/19/浅学libevent/2.png">
+<meta property="og:image" content="/2021/11/19/浅学libevent/3.png">
+<meta property="og:image" content="/2021/11/19/浅学libevent/4.png">
+<meta property="og:image" content="/2021/11/19/浅学libevent/5.png">
+<meta property="og:image" content="/2021/11/19/浅学libevent/6.png">
+<meta property="og:updated_time" content="2021-11-19T07:55:27.778Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅学libevent">
+<meta name="twitter:description" content="libevent简介libevent是一个用C语言编写的轻量级的开源高性能事件通知库，支持多种I/O多路复用技术，支持定时器和信号等事件，而且是跨平台的。 libevent特点 事件驱动，高性能 轻量级，专注于网络 跨平台，支持Windows、Linux、MacOs等 支持多种I/O多路复用技术，epoll、poll、dev/poll、select和kqueue等  支持I/O，定时器和信号等事件">
+<meta name="twitter:image" content="/2021/11/19/浅学libevent/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/11/19/浅学libevent/">
+
+
+
+
+
+  <title>浅学libevent | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/11/19/浅学libevent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅学libevent</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-19T14:17:46+08:00">
+                2021-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="libevent简介"><a href="#libevent简介" class="headerlink" title="libevent简介"></a>libevent简介</h4><p><code>libevent</code>是一个用C语言编写的轻量级的开源高性能事件通知库，支持多种I/O多路复用技术，支持定时器和信号等事件，而且是跨平台的。</p>
+<h4 id="libevent特点"><a href="#libevent特点" class="headerlink" title="libevent特点"></a>libevent特点</h4><ul>
+<li>事件驱动，高性能</li>
+<li>轻量级，专注于网络</li>
+<li>跨平台，支持<code>Windows</code>、<code>Linux</code>、<code>MacOs</code>等</li>
+<li><p>支持多种I/O多路复用技术，<code>epoll</code>、<code>poll</code>、<code>dev/poll</code>、<code>select</code>和<code>kqueue</code>等</p>
+</li>
+<li><p>支持I/O，定时器和信号等事件</p>
+</li>
+</ul>
+<h4 id="libevent下载及安装"><a href="#libevent下载及安装" class="headerlink" title="libevent下载及安装"></a>libevent下载及安装</h4><p>下载地址：<a href="https://libevent.org/" target="_blank" rel="noopener">https://libevent.org/</a></p>
+<p>这里我下载的是<code>libevent-2.1.8-stable.tar.gz</code>，下载之后解压。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf libevent-2.1.8-stable.tar.gz</span><br></pre></td></tr></table></figure>
+<p>接下来进行源码包安装，这一步的目的是检查安装环境，生成makefile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br></pre></td></tr></table></figure>
+<p>之后执行<code>make</code>命令生成<code>.o</code>可执行文件，最后执行<code>sudo make install</code>将必要资源放置系统指定目录</p>
+<h4 id="验证libevent安装"><a href="#验证libevent安装" class="headerlink" title="验证libevent安装"></a>验证libevent安装</h4><p>进入<code>libevent-2.1.8-stable</code>下的<code>sample</code>目录，gcc编译<code>hello-world.c</code>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello-world.c -o hello</span><br></pre></td></tr></table></figure>
+<p>这个时候会出现报错如下，显示未定义引用</p>
+<p><img src="/2021/11/19/浅学libevent/1.png" alt="1"></p>
+<p>出现上述报错是因为我们没有指定库名，因此需要加<code>-l</code>选项</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello-world.c -o hello -l event</span><br></pre></td></tr></table></figure>
+<p><code>hello</code>文件是一个简单的服务器程序，端口是<code>9995</code>，我们尝试运行<code>hello</code>，它会等待客户端的连接。并向客户端发送<code>Hello,World</code>字符串，如下所示，证明<code>libevent</code>库安装成功。</p>
+<p><img src="/2021/11/19/浅学libevent/2.png" alt="2"></p>
+<p><code>libevent</code>库的安装位置在<code>/usr/local/lib</code>路径下</p>
+<p><img src="/2021/11/19/浅学libevent/3.png" alt="3"></p>
+<h4 id="Hello-world分析"><a href="#Hello-world分析" class="headerlink" title="Hello-world分析"></a>Hello-world分析</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  This example program provides a trivial server program that listens for TCP</span></span><br><span class="line"><span class="comment">  connections on port 9995.  When they arrive, it writes a short message to</span></span><br><span class="line"><span class="comment">  each client connection, and closes each connection once it is flushed.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">  Where possible, it exits cleanly in response to a SIGINT (ctrl-c).</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _WIN32</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">ifdef</span> _XOPEN_SOURCE_EXTENDED</span></span><br><span class="line"><span class="meta">#  <span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;event2/bufferevent.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;event2/buffer.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;event2/listener.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;event2/util.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;event2/event.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> MESSAGE[] = <span class="string">"Hello, World!\n"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定端口</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> PORT = <span class="number">9995</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明静态函数</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">listener_cb</span><span class="params">(struct evconnlistener *, <span class="keyword">evutil_socket_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    struct sockaddr *, <span class="keyword">int</span> socklen, <span class="keyword">void</span> *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">conn_writecb</span><span class="params">(struct bufferevent *, <span class="keyword">void</span> *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">conn_eventcb</span><span class="params">(struct bufferevent *, short, <span class="keyword">void</span> *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">signal_cb</span><span class="params">(<span class="keyword">evutil_socket_t</span>, short, <span class="keyword">void</span> *)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span>;</span> <span class="comment">//libevent基础声明。相当于一个底座</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">evconnlistener</span> *<span class="title">listener</span>;</span> <span class="comment">//监听，用于建立连接</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event</span> *<span class="title">signal_event</span>;</span> <span class="comment">//信号事件</span></span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">sin</span>;</span> <span class="comment">//地址结构</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN32</span></span><br><span class="line">	WSADATA wsa_data;</span><br><span class="line">	WSAStartup(<span class="number">0x0201</span>, &amp;wsa_data);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	base = event_base_new(); <span class="comment">//创建底座</span></span><br><span class="line">	<span class="keyword">if</span> (!base) &#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Could not initialize libevent!\n"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">memset</span>(&amp;<span class="built_in">sin</span>, <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="built_in">sin</span>)); <span class="comment">//地址结构清零</span></span><br><span class="line">	<span class="built_in">sin</span>.sin_family = AF_INET;</span><br><span class="line">	<span class="built_in">sin</span>.sin_port = htons(PORT);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//相当于socket、bind、listen、accept的融合</span></span><br><span class="line">	listener = evconnlistener_new_bind(base, listener_cb, (<span class="keyword">void</span> *)base,</span><br><span class="line">	    LEV_OPT_REUSEABLE|LEV_OPT_CLOSE_ON_FREE, <span class="number">-1</span>,</span><br><span class="line">	    (struct sockaddr*)&amp;<span class="built_in">sin</span>,</span><br><span class="line">	    <span class="keyword">sizeof</span>(<span class="built_in">sin</span>));</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!listener) &#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Could not create a listener!\n"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//创建信号事件</span></span><br><span class="line">	signal_event = evsignal_new(base, SIGINT, signal_cb, (<span class="keyword">void</span> *)base);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!signal_event || event_add(signal_event, <span class="literal">NULL</span>)&lt;<span class="number">0</span>) &#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Could not create/add a signal event!\n"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//相当于while循环+select/poll/epoll</span></span><br><span class="line">	event_base_dispatch(base);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//释放相关事件</span></span><br><span class="line">	evconnlistener_free(listener); </span><br><span class="line">	event_free(signal_event);</span><br><span class="line">	event_base_free(base);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"done\n"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">listener_cb(struct evconnlistener *listener, <span class="keyword">evutil_socket_t</span> fd,</span><br><span class="line">    struct sockaddr *sa, <span class="keyword">int</span> socklen, <span class="keyword">void</span> *user_data)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span> = <span class="title">user_data</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">bufferevent</span> *<span class="title">bev</span>;</span></span><br><span class="line"></span><br><span class="line">	bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);</span><br><span class="line">	<span class="keyword">if</span> (!bev) &#123;</span><br><span class="line">		<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Error constructing bufferevent!"</span>);</span><br><span class="line">		event_base_loopbreak(base);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	bufferevent_setcb(bev, <span class="literal">NULL</span>, conn_writecb, conn_eventcb, <span class="literal">NULL</span>);</span><br><span class="line">	bufferevent_enable(bev, EV_WRITE);</span><br><span class="line">	bufferevent_disable(bev, EV_READ);</span><br><span class="line"></span><br><span class="line">	bufferevent_write(bev, MESSAGE, <span class="built_in">strlen</span>(MESSAGE));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">conn_writecb(struct bufferevent *bev, <span class="keyword">void</span> *user_data)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">evbuffer</span> *<span class="title">output</span> = <span class="title">bufferevent_get_output</span>(<span class="title">bev</span>);</span></span><br><span class="line">	<span class="keyword">if</span> (evbuffer_get_length(output) == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"flushed answer\n"</span>);</span><br><span class="line">		bufferevent_free(bev);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">conn_eventcb(struct bufferevent *bev, short events, <span class="keyword">void</span> *user_data)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (events &amp; BEV_EVENT_EOF) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Connection closed.\n"</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (events &amp; BEV_EVENT_ERROR) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Got an error on the connection: %s\n"</span>,</span><br><span class="line">		    strerror(errno));<span class="comment">/*XXX win32*/</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/* None of the other events can happen here, since we haven't enabled</span></span><br><span class="line"><span class="comment">	 * timeouts */</span></span><br><span class="line">	bufferevent_free(bev);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">signal_cb(<span class="keyword">evutil_socket_t</span> sig, short events, <span class="keyword">void</span> *user_data)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span> = <span class="title">user_data</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">delay</span> = &#123;</span> <span class="number">2</span>, <span class="number">0</span> &#125;; <span class="comment">//延迟两秒</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Caught an interrupt signal; exiting cleanly in two seconds.\n"</span>);</span><br><span class="line"></span><br><span class="line">	event_base_loopexit(base, &amp;delay);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="libevent框架"><a href="#libevent框架" class="headerlink" title="libevent框架"></a>libevent框架</h4><h5 id="创建event-base"><a href="#创建event-base" class="headerlink" title="创建event_base"></a>创建event_base</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;event2/event.h&gt;</span></span></span><br><span class="line"><span class="function">struct event_base *<span class="title">event_base_new</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span> = <span class="title">NULL</span>;</span></span><br><span class="line">base = event_base_new();</span><br></pre></td></tr></table></figure>
+<h5 id="创建事件"><a href="#创建事件" class="headerlink" title="创建事件"></a>创建事件</h5><ul>
+<li>常规事件 <code>event</code>—-&gt;<code>event_new()</code></li>
+<li>带缓冲区的事件 <code>bufferevent</code> —-&gt;<code>bufferevent_socket_new()</code></li>
+</ul>
+<h5 id="添加事件"><a href="#添加事件" class="headerlink" title="添加事件"></a>添加事件</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_add</span><span class="params">(struct event *ev,<span class="keyword">const</span> struct timeval *tv)</span></span>;</span><br></pre></td></tr></table></figure>
+<h5 id="启动循环"><a href="#启动循环" class="headerlink" title="启动循环"></a>启动循环</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_base_dispatch</span><span class="params">(struct event_base *base)</span></span>;</span><br><span class="line">	base:event_base_new 函数的返回值</span><br><span class="line">  成功：<span class="number">0</span>，失败：<span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<p>只有<code>event_new</code>中指定了<code>EV_PERSIST</code>才持续触发，否则只触发一次，就跳出循环</p>
+<p>通常设置为<code>EV_WRITE|EV_PERSIST</code>、<code>EV_READ|EV_PERSIST</code></p>
+<h5 id="其他循环"><a href="#其他循环" class="headerlink" title="其他循环"></a>其他循环</h5><p>在指定时间后停止循环</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_base_loopexit</span><span class="params">(struct event_base *base,<span class="keyword">const</span> struct timeval *tv)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>立即停止循环</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_base_loopbreak</span><span class="params">(struct event_base *base)</span></span>;</span><br></pre></td></tr></table></figure>
+<h5 id="释放event-base"><a href="#释放event-base" class="headerlink" title="释放event_base"></a>释放event_base</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event_base_free(base);</span><br></pre></td></tr></table></figure>
+<h4 id="查看支持哪些多路I-O"><a href="#查看支持哪些多路I-O" class="headerlink" title="查看支持哪些多路I/O"></a>查看支持哪些多路I/O</h4><p><code>event.c</code>代码如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;event2/event.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sys_err</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	perror(str);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span> = <span class="title">event_base_new</span>();</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">char</span> **buf;</span><br><span class="line">	buf = event_get_supported_methods();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"buf[%d]=%s\n"</span>,i,buf[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>gcc编译</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc event.c -o event -l event</span><br></pre></td></tr></table></figure>
+<p>执行结果如下，可以发现mac并不支持<code>epoll</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro event % ./event </span><br><span class="line">buf[<span class="number">0</span>]=poll</span><br><span class="line">buf[<span class="number">1</span>]=select</span><br><span class="line">buf[<span class="number">2</span>]=(null)</span><br><span class="line">buf[<span class="number">3</span>]=(null)</span><br><span class="line">buf[<span class="number">4</span>]=(null)</span><br><span class="line">buf[<span class="number">5</span>]=(null)</span><br><span class="line">buf[<span class="number">6</span>]=(null)</span><br><span class="line">buf[<span class="number">7</span>]=(null)</span><br><span class="line">buf[<span class="number">8</span>]=(null)</span><br><span class="line">buf[<span class="number">9</span>]=(null)</span><br></pre></td></tr></table></figure>
+<h4 id="创建事件-1"><a href="#创建事件-1" class="headerlink" title="创建事件"></a>创建事件</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct event *<span class="title">event_new</span><span class="params">(struct event_base *base,<span class="keyword">evutil_socket_t</span> fd,short what,event_callback_fn cb,<span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"></span><br><span class="line">	base: event_base_new()返回值</span><br><span class="line">  fd: 绑定到event上的文件描述符</span><br><span class="line">  what: 对应的事件(读、写、异常)</span><br><span class="line">    EV_READ 一次读事件</span><br><span class="line">    EV_WRITE 一次写事件</span><br><span class="line">    EV_PERSIST 持续触发，结合event_base_dispatch函数使用</span><br><span class="line">  cb: 一旦事件满足监听条件，回调的函数</span><br><span class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*event_callback_fn)</span><span class="params">(<span class="keyword">evutil_socket_t</span> fd,short,<span class="keyword">void</span> *)</span></span></span><br><span class="line">  arg: 回调的函数的参数</span><br><span class="line">  返回值: 成功创建的event</span><br></pre></td></tr></table></figure>
+<h4 id="添加事件到base"><a href="#添加事件到base" class="headerlink" title="添加事件到base"></a>添加事件到base</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_add</span><span class="params">(struct event *ev,<span class="keyword">const</span> struct timeval *tv)</span></span>;</span><br><span class="line"></span><br><span class="line">	ev: event_new()函数返回的事件</span><br><span class="line">  tv: <span class="literal">NULL</span>,即不会超时 一旦等到事件被触发，回调函数会被调用</span><br></pre></td></tr></table></figure>
+<h4 id="从base拿下事件"><a href="#从base拿下事件" class="headerlink" title="从base拿下事件"></a>从base拿下事件</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_del</span><span class="params">(struct event *ev)</span></span></span><br><span class="line"><span class="function">  </span></span><br><span class="line">  ev: event_new()的返回值</span><br></pre></td></tr></table></figure>
+<h4 id="销毁事件"><a href="#销毁事件" class="headerlink" title="销毁事件"></a>销毁事件</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">event_free</span><span class="params">(struct event *ev)</span></span></span><br><span class="line"><span class="function">  </span></span><br><span class="line">  ev: event_new()的返回值</span><br><span class="line">  成功: <span class="number">0</span></span><br><span class="line">  失败: <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用libevent读写fifo"><a href="#使用libevent读写fifo" class="headerlink" title="使用libevent读写fifo"></a>使用libevent读写fifo</h4><p><code>read_fifo.c</code>代码如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;event2/event.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">read_cb</span><span class="params">(<span class="keyword">evutil_socket_t</span> fd,short what,<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	<span class="comment">//读管道</span></span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span> len = read(fd,buf,<span class="keyword">sizeof</span>(buf));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"read event: %s \n"</span>,what &amp; EV_READ ?<span class="string">"Yes"</span>:<span class="string">"No"</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"data len = %d,buf = %s\n"</span>,len,buf);</span><br><span class="line">	sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//读管道</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">const</span> <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	unlink(<span class="string">"myfifo"</span>);</span><br><span class="line">	mkfifo(<span class="string">"myfifo"</span>,<span class="number">0644</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> fd = open(<span class="string">"myfifo"</span>,O_RDONLY | O_NONBLOCK);</span><br><span class="line">	<span class="keyword">if</span>(fd == <span class="number">-1</span>)&#123;</span><br><span class="line">		perror(<span class="string">"open error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//创建一个event_base</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span> = <span class="title">NULL</span>;</span></span><br><span class="line">	base = event_base_new();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建事件</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event</span> *<span class="title">ev</span> = <span class="title">NULL</span>;</span></span><br><span class="line">	ev = event_new(base,fd,EV_READ|EV_PERSIST,read_cb,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加事件</span></span><br><span class="line">	event_add(ev,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//事件循环</span></span><br><span class="line">	event_base_dispatch(base);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//释放资源</span></span><br><span class="line">	event_free(ev);</span><br><span class="line">	event_base_free(base);</span><br><span class="line">	close(fd);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>write_fifo.c</code>代码如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;event2/event.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">write_cb</span><span class="params">(<span class="keyword">evutil_socket_t</span> fd,short what,<span class="keyword">void</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	<span class="comment">//写管道</span></span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">sprintf</span>(buf,<span class="string">"hello,world-%d\n"</span>,num++);</span><br><span class="line">	write(fd,buf,<span class="built_in">strlen</span>(buf)+<span class="number">1</span>);</span><br><span class="line">	sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写管道</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">const</span> <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> fd = open(<span class="string">"myfifo"</span>,O_WRONLY | O_NONBLOCK);</span><br><span class="line">	<span class="keyword">if</span>(fd == <span class="number">-1</span>)&#123;</span><br><span class="line">		perror(<span class="string">"open error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//创建一个event_base</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event_base</span> *<span class="title">base</span> = <span class="title">NULL</span>;</span></span><br><span class="line">	base = event_base_new();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建事件</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">event</span> *<span class="title">ev</span> = <span class="title">NULL</span>;</span></span><br><span class="line">	ev = event_new(base,fd,EV_WRITE|EV_PERSIST,write_cb,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//添加事件</span></span><br><span class="line">	event_add(ev,<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//事件循环</span></span><br><span class="line">	event_base_dispatch(base);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//释放资源</span></span><br><span class="line">	event_free(ev);</span><br><span class="line">	event_base_free(base);</span><br><span class="line">	close(fd);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在mac上编译执行之后发现并没有打印结果，<code>gdb</code>调试一下，发现卡在了<code>dispatch</code>这里，<code>dispatch</code>函数就相当于是<code>while+select/poll/epoll</code>这种形式，对于<code>libevent</code>库默认使用的是<code>epoll</code>，然而<code>epoll</code>对于mac是不支持的。</p>
+<p><img src="/2021/11/19/浅学libevent/4.png" alt="4"></p>
+<p>于是我把代码放到了<code>centos</code>服务器上，<code>./read_fifo</code>运行报错如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error <span class="keyword">while</span> loading shared libraries: libevent<span class="number">-2.1</span>.so<span class="number">.6</span>: cannot open shared object file: No such file <span class="keyword">or</span> directory</span><br></pre></td></tr></table></figure>
+<p>ldd查看依赖发现没有找到<code>libevent-2.1.so.6</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">elssm@VM-20-13-centos ~/event&gt; ldd read_fifo</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffcbc5f7000)</span><br><span class="line"><span class="meta">	/$</span>LIB/libonion.so =&gt; /lib64/libonion.so (0x00007fda57d92000)</span><br><span class="line">	libevent-2.1.so.6 =&gt; not found</span><br><span class="line">	libc.so.6 =&gt; /lib64/libc.so.6 (0x00007fda57657000)</span><br><span class="line">	libdl.so.2 =&gt; /lib64/libdl.so.2 (0x00007fda57453000)</span><br><span class="line">	libcrypto.so.10 =&gt; /lib64/libcrypto.so.10 (0x00007fda56ff0000)</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007fda56dd4000)</span><br><span class="line">	/lib64/ld-linux-x86-64.so.2 (0x00007fda57c79000)</span><br><span class="line">	libz.so.1 =&gt; /lib64/libz.so.1 (0x00007fda56bbe000)</span><br></pre></td></tr></table></figure>
+<p>创建软链接如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/lib/libevent<span class="number">-2.1</span>.so<span class="number">.6</span> /usr/lib64/libevent<span class="number">-2.1</span>.so<span class="number">.6</span></span><br></pre></td></tr></table></figure>
+<p>再次查看依赖</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">elssm@VM<span class="number">-20</span><span class="number">-13</span>-centos ~/event&gt; ldd read_fifo</span><br><span class="line">	linux-vdso.so<span class="number">.1</span> =&gt;  (<span class="number">0x00007ffcbc5f7000</span>)</span><br><span class="line">	/$LIB/libonion.so =&gt; /lib64/libonion.so (<span class="number">0x00007fda57d92000</span>)</span><br><span class="line">	libevent<span class="number">-2.1</span>.so<span class="number">.6</span> =&gt; /lib64/libevent<span class="number">-2.1</span>.so<span class="number">.6</span> (<span class="number">0x00007fda57a25000</span>)</span><br><span class="line">	libc.so<span class="number">.6</span> =&gt; /lib64/libc.so<span class="number">.6</span> (<span class="number">0x00007fda57657000</span>)</span><br><span class="line">	libdl.so<span class="number">.2</span> =&gt; /lib64/libdl.so<span class="number">.2</span> (<span class="number">0x00007fda57453000</span>)</span><br><span class="line">	libcrypto.so<span class="number">.10</span> =&gt; /lib64/libcrypto.so<span class="number">.10</span> (<span class="number">0x00007fda56ff0000</span>)</span><br><span class="line">	libpthread.so<span class="number">.0</span> =&gt; /lib64/libpthread.so<span class="number">.0</span> (<span class="number">0x00007fda56dd4000</span>)</span><br><span class="line">	/lib64/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span> (<span class="number">0x00007fda57c79000</span>)</span><br><span class="line">	libz.so<span class="number">.1</span> =&gt; /lib64/libz.so<span class="number">.1</span> (<span class="number">0x00007fda56bbe000</span>)</span><br></pre></td></tr></table></figure>
+<p>之后分别执行<code>./read_fifo</code>和<code>./write_fifo</code>。发现成功读写</p>
+<p><img src="/2021/11/19/浅学libevent/5.png" alt="5"></p>
+<h4 id="事件的未决和非未决"><a href="#事件的未决和非未决" class="headerlink" title="事件的未决和非未决"></a>事件的未决和非未决</h4><ul>
+<li>未决：有资格被处理，但尚未被处理</li>
+<li>非未决：没有资格被处理</li>
+</ul>
+<p>事件的未决和非未决状态转换图如下所示</p>
+<p><img src="/2021/11/19/浅学libevent/6.png" alt="6"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/16/Elasticsearch笔记/" rel="next" title="Elasticsearch笔记">
+                <i class="fa fa-chevron-left"></i> Elasticsearch笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#libevent简介"><span class="nav-number">1.</span> <span class="nav-text">libevent简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#libevent特点"><span class="nav-number">2.</span> <span class="nav-text">libevent特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#libevent下载及安装"><span class="nav-number">3.</span> <span class="nav-text">libevent下载及安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证libevent安装"><span class="nav-number">4.</span> <span class="nav-text">验证libevent安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hello-world分析"><span class="nav-number">5.</span> <span class="nav-text">Hello-world分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#libevent框架"><span class="nav-number">6.</span> <span class="nav-text">libevent框架</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建event-base"><span class="nav-number">6.1.</span> <span class="nav-text">创建event_base</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建事件"><span class="nav-number">6.2.</span> <span class="nav-text">创建事件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#添加事件"><span class="nav-number">6.3.</span> <span class="nav-text">添加事件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动循环"><span class="nav-number">6.4.</span> <span class="nav-text">启动循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他循环"><span class="nav-number">6.5.</span> <span class="nav-text">其他循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#释放event-base"><span class="nav-number">6.6.</span> <span class="nav-text">释放event_base</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看支持哪些多路I-O"><span class="nav-number">7.</span> <span class="nav-text">查看支持哪些多路I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建事件-1"><span class="nav-number">8.</span> <span class="nav-text">创建事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加事件到base"><span class="nav-number">9.</span> <span class="nav-text">添加事件到base</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从base拿下事件"><span class="nav-number">10.</span> <span class="nav-text">从base拿下事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#销毁事件"><span class="nav-number">11.</span> <span class="nav-text">销毁事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用libevent读写fifo"><span class="nav-number">12.</span> <span class="nav-text">使用libevent读写fifo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件的未决和非未决"><span class="nav-number">13.</span> <span class="nav-text">事件的未决和非未决</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
