@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="算法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="剑指 Offer 43. 1～n 整数中 1 出现的次数(hard)1234567891011121314151617181920212223242526272829303132333435363738class Solution(object):    def countDigitOne(self, n):        &quot;&quot;&quot;        :type n: int        :rtype">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="近期Leetcode题解">
+<meta property="og:url" content="elssm.github.io/2021/11/24/近期Leetcode题解/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="剑指 Offer 43. 1～n 整数中 1 出现的次数(hard)1234567891011121314151617181920212223242526272829303132333435363738class Solution(object):    def countDigitOne(self, n):        &quot;&quot;&quot;        :type n: int        :rtype">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-11-24T04:21:37.266Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="近期Leetcode题解">
+<meta name="twitter:description" content="剑指 Offer 43. 1～n 整数中 1 出现的次数(hard)1234567891011121314151617181920212223242526272829303132333435363738class Solution(object):    def countDigitOne(self, n):        &quot;&quot;&quot;        :type n: int        :rtype">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/11/24/近期Leetcode题解/">
+
+
+
+
+
+  <title>近期Leetcode题解 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/11/24/近期Leetcode题解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">近期Leetcode题解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-24T12:12:45+08:00">
+                2021-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="剑指-Offer-43-1～n-整数中-1-出现的次数-hard"><a href="#剑指-Offer-43-1～n-整数中-1-出现的次数-hard" class="headerlink" title="剑指 Offer 43. 1～n 整数中 1 出现的次数(hard)"></a>剑指 Offer 43. 1～n 整数中 1 出现的次数(hard)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countDigitOne</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        对于305295这个数而言</span></span><br><span class="line"><span class="string">        我们假设从百位开始算，百位前面305计为a,百位后面95计为b，百位数等于n%100，100计为base</span></span><br><span class="line"><span class="string">        当百位数大于1的时候</span></span><br><span class="line"><span class="string">            百位数的前半段可以取值为0～305，一共有a+1个数，后半段可以取0～99，一共有base个数</span></span><br><span class="line"><span class="string">            则百位上1能取到的个数是(a+1)*base个数</span></span><br><span class="line"><span class="string">        对于305195这个数而言</span></span><br><span class="line"><span class="string">        当百位数等于1的时候，分两种情况</span></span><br><span class="line"><span class="string">            1.百位数的前半段可以取值为0～304，一共有a个数，后半段可以取0～99，一共有base个数。</span></span><br><span class="line"><span class="string">            2.百位数的前半段可以取值为305，一共有1个数，后半段可以取0～95，一共有b+1个数。</span></span><br><span class="line"><span class="string">            则百位上1能取到的个数是(a*base+1*(b+1))个数</span></span><br><span class="line"><span class="string">        对于305095这个数而言</span></span><br><span class="line"><span class="string">        当百位数小于1的时候</span></span><br><span class="line"><span class="string">            百位数的前半段可以取值为0～304，一共有a个数，后半段可以取0～99，一共有base个数</span></span><br><span class="line"><span class="string">            则百位上1能取到的个数是(a*base)个数</span></span><br><span class="line"><span class="string">        之后while循环分三种情况统计每一位上1的个数即可</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        base = <span class="number">1</span></span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> base &lt;= n:</span><br><span class="line">            b = n % base</span><br><span class="line">            a = n // base</span><br><span class="line">            cur = a % <span class="number">10</span></span><br><span class="line">            a //= <span class="number">10</span></span><br><span class="line">            <span class="keyword">if</span> cur &gt; <span class="number">1</span>:</span><br><span class="line">                res += (a + <span class="number">1</span>) * base</span><br><span class="line">            <span class="keyword">elif</span> cur == <span class="number">1</span>:</span><br><span class="line">                res += (a * base + b + <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res += a * base</span><br><span class="line">            base *= <span class="number">10</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-51-数组中的逆序对-hard"><a href="#剑指-Offer-51-数组中的逆序对-hard" class="headerlink" title="剑指 Offer 51. 数组中的逆序对(hard)"></a>剑指 Offer 51. 数组中的逆序对(hard)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reversePairs</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        通过不断地插入值来寻找前面大于当前值的元素个数</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        res = <span class="number">0</span> <span class="comment">#统计计数</span></span><br><span class="line">        sorted_nums = [] <span class="comment">#准备一个待插入的列表</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">            <span class="comment">#找到nums中当前数在sorted_nums中要插入的下标</span></span><br><span class="line">            k = bisect.bisect(sorted_nums, nums[i]) </span><br><span class="line">            <span class="comment">#当前下标减去要插入的下标就是在大于当前数的个数</span></span><br><span class="line">            res += i - k</span><br><span class="line">            sorted_nums[k:k] = [nums[i]] <span class="comment">#插入当前元素</span></span><br><span class="line">            <span class="comment"># bisect.insort(sorted_nums,nums[i]) #插入当前元素</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-60-n个骰子的点数-medium"><a href="#剑指-Offer-60-n个骰子的点数-medium" class="headerlink" title="剑指 Offer 60. n个骰子的点数(medium)"></a>剑指 Offer 60. n个骰子的点数(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import numpy as np</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dicesProbability</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: List[float]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="comment">#卷积做法</span></span><br><span class="line">        <span class="comment"># conv1 = [1.0/6 for i in range(6)]</span></span><br><span class="line">        <span class="comment"># if n==1:</span></span><br><span class="line">        <span class="comment">#     return conv1</span></span><br><span class="line">        <span class="comment"># else:</span></span><br><span class="line">        <span class="comment">#     convN = self.dicesProbability(n-1)</span></span><br><span class="line">        <span class="comment">#     return np.convolve(convN,conv1)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#动态规划</span></span><br><span class="line">        dp = [<span class="number">1.0</span>/<span class="number">6</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">6</span>)] <span class="comment">#骰子数为1时候的值</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,n+<span class="number">1</span>):</span><br><span class="line">            <span class="comment">#tmp长度为n个骰子能取到的值的个数，全部初始化为0</span></span><br><span class="line">            tmp = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(i*<span class="number">5</span>+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(len(dp)): <span class="comment">#n-1个骰子取到的所有值</span></span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">6</span>): <span class="comment">#加上第n个骰子取得的值</span></span><br><span class="line">                    tmp[j+k] += dp[j]/<span class="number">6.0</span> <span class="comment">#之前的值和当前的值叠加</span></span><br><span class="line">            dp = tmp <span class="comment">#得到最新的值赋值给dp</span></span><br><span class="line">        <span class="keyword">return</span> dp</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-12-矩阵中的路径-medium"><a href="#剑指-Offer-12-矩阵中的路径-medium" class="headerlink" title="剑指 Offer 12. 矩阵中的路径(medium)"></a>剑指 Offer 12. 矩阵中的路径(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exist</span><span class="params">(self, board, word)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type board: List[List[str]]</span></span><br><span class="line"><span class="string">        :type word: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(board,i,j,word,k)</span>:</span></span><br><span class="line">            <span class="comment">#判断下标是否越界</span></span><br><span class="line">            <span class="keyword">if</span> i&lt;<span class="number">0</span> <span class="keyword">or</span> i == len(board) <span class="keyword">or</span> j &lt; <span class="number">0</span> <span class="keyword">or</span> j == len(board[<span class="number">0</span>]):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="comment">#如果当前值和word当前值不相等，直接返回</span></span><br><span class="line">            <span class="keyword">if</span> board[i][j] != word[k]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="comment">#如果访问到了word最后一个值，返回True</span></span><br><span class="line">            <span class="keyword">if</span> k == len(word)<span class="number">-1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="comment">#先将当前值置空，防止后面重复访问</span></span><br><span class="line">            board[i][j] = <span class="string">''</span></span><br><span class="line">            res = dfs(board, i<span class="number">-1</span>, j, word, k+<span class="number">1</span>) <span class="keyword">or</span> dfs(board, i, j<span class="number">-1</span>, word, k+<span class="number">1</span>) \</span><br><span class="line">            <span class="keyword">or</span> dfs(board, i+<span class="number">1</span>, j, word, k+<span class="number">1</span>) <span class="keyword">or</span> dfs(board, i, j+<span class="number">1</span>, word, k+<span class="number">1</span>)</span><br><span class="line">            board[i][j] = word[k]</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(board)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(len(board[i])):</span><br><span class="line">                <span class="keyword">if</span> dfs(board,i,j,word,<span class="number">0</span>):</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-41-数据流中的中位数-hard"><a href="#剑指-Offer-41-数据流中的中位数-hard" class="headerlink" title="剑指 Offer 41. 数据流中的中位数(hard)"></a>剑指 Offer 41. 数据流中的中位数(hard)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> heapq <span class="keyword">import</span> *</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MedianFinder</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 菜鸡的数组排序做法</span></span><br><span class="line">    <span class="comment"># def __init__(self):</span></span><br><span class="line">    <span class="comment">#     """</span></span><br><span class="line">    <span class="comment">#     initialize your data structure here.</span></span><br><span class="line">    <span class="comment">#     """</span></span><br><span class="line">    <span class="comment">#     self.res=[]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># def addNum(self, num):</span></span><br><span class="line">    <span class="comment">#     """</span></span><br><span class="line">    <span class="comment">#     :type num: int</span></span><br><span class="line">    <span class="comment">#     :rtype: None</span></span><br><span class="line">    <span class="comment">#     """</span></span><br><span class="line">    <span class="comment">#     self.res.append(num)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># def findMedian(self):</span></span><br><span class="line">    <span class="comment">#     """</span></span><br><span class="line">    <span class="comment">#     :rtype: float</span></span><br><span class="line">    <span class="comment">#     """</span></span><br><span class="line">    <span class="comment">#     self.res=sorted(self.res)</span></span><br><span class="line">    <span class="comment">#     if len(self.res)%2:</span></span><br><span class="line">    <span class="comment">#         return self.res[len(self.res)/2]</span></span><br><span class="line">    <span class="comment">#     else:</span></span><br><span class="line">    <span class="comment">#         return (self.res[len(self.res)/2-1]+self.res[len(self.res)/2])/2.0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#大佬的堆解法</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment">#heapq默认小顶堆</span></span><br><span class="line">        self.A = [] <span class="comment"># 小顶堆，保存较大的一半</span></span><br><span class="line">        <span class="comment">#实现大顶堆进堆的时候取相反数</span></span><br><span class="line">        self.B = [] <span class="comment"># 大顶堆，保存较小的一半</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addNum</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        <span class="comment"># 如果不相等，说明A多了一个</span></span><br><span class="line">        <span class="comment"># 把当前数存到A，调整堆之后，返回A中的最小值给B</span></span><br><span class="line">        <span class="keyword">if</span> len(self.A) != len(self.B):</span><br><span class="line">            heappush(self.B, -heappushpop(self.A, num))</span><br><span class="line">        <span class="comment"># 如果相等，就把当前数给B，调整堆之后，返回B中的最大值给A</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            heappush(self.A, -heappushpop(self.B, -num))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findMedian</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 如果是奇数，直接返回A中的最小值</span></span><br><span class="line">        <span class="comment"># 如果是偶数，则返回两者堆顶的平均值</span></span><br><span class="line">        <span class="comment"># print(self.A)</span></span><br><span class="line">        <span class="comment"># print(self.B)</span></span><br><span class="line">        <span class="keyword">return</span> self.A[<span class="number">0</span>] <span class="keyword">if</span> len(self.A) != len(self.B) <span class="keyword">else</span> (self.A[<span class="number">0</span>] - self.B[<span class="number">0</span>]) / <span class="number">2.0</span></span><br><span class="line"></span><br><span class="line">            </span><br><span class="line"></span><br><span class="line"><span class="comment"># Your MedianFinder object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"># obj = MedianFinder()</span></span><br><span class="line"><span class="comment"># obj.addNum(num)</span></span><br><span class="line"><span class="comment"># param_2 = obj.findMedian()</span></span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-13-机器人的运动范围-medium"><a href="#剑指-Offer-13-机器人的运动范围-medium" class="headerlink" title="剑指 Offer 13. 机器人的运动范围(medium)"></a>剑指 Offer 13. 机器人的运动范围(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">movingCount</span><span class="params">(self, m, n, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type m: int</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(i,j,k)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> <span class="number">0</span>&lt;= i &lt;m <span class="keyword">or</span> <span class="keyword">not</span> <span class="number">0</span>&lt;= j &lt;n <span class="keyword">or</span> (i,j) <span class="keyword">in</span> a <span class="keyword">or</span> (i%<span class="number">10</span>+i//<span class="number">10</span>+j%<span class="number">10</span>+j//<span class="number">10</span>)&gt;k: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="comment">#把这个点加入到访问集合中</span></span><br><span class="line">            a.add((i,j))</span><br><span class="line">            <span class="comment">#因为从（0,0）开始，所以只要向下走或向右走就行</span></span><br><span class="line">            dfs(i+<span class="number">1</span>,j,k)</span><br><span class="line">            dfs(i,j+<span class="number">1</span>,k) </span><br><span class="line">        a = set()</span><br><span class="line">        dfs(<span class="number">0</span>,<span class="number">0</span>,k)</span><br><span class="line">        <span class="keyword">return</span> len(a)</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-44-数字序列中某一位的数字-medium"><a href="#剑指-Offer-44-数字序列中某一位的数字-medium" class="headerlink" title="剑指 Offer 44. 数字序列中某一位的数字(medium)"></a>剑指 Offer 44. 数字序列中某一位的数字(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findNthDigit</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> n &lt; <span class="number">10</span>:</span><br><span class="line">            <span class="keyword">return</span> n</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        num = <span class="number">0</span></span><br><span class="line">        temp=<span class="number">0</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        如果n大于9的话，判断n应该在哪个区间</span></span><br><span class="line"><span class="string">        因为1位数一共有9个</span></span><br><span class="line"><span class="string">        2位数有90*2=180个</span></span><br><span class="line"><span class="string">        3位数有900*3=2700个</span></span><br><span class="line"><span class="string">        因此我们可以知道n位数有9*(10**(i-1)*i)个</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">while</span> n&gt;num:</span><br><span class="line">            temp = num <span class="comment">#temp保存上一个num的数</span></span><br><span class="line">            addnum = <span class="number">9</span>*(<span class="number">10</span>**i)*(i+<span class="number">1</span>)</span><br><span class="line">            num+=addnum</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">        res = n-temp <span class="comment">#减去区间之前的那些数</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        此时得到的i如果是3，则说明从三位数开始</span></span><br><span class="line"><span class="string">        可以得到区间在100-1000之间</span></span><br><span class="line"><span class="string">        从而算得起始的数是10**(3-1)=100</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        start_num = <span class="number">10</span>**(i<span class="number">-1</span>)</span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        因为在这个区间每一个数都是i位，因此我们得到除数div</span></span><br><span class="line"><span class="string">        对于三位数来讲，如果除数div=10，则可以得到数字是在100+10-1=109附近</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        div = res / i</span><br><span class="line">        mod = res % i</span><br><span class="line">        new_num = start_num + div - <span class="number">1</span> <span class="comment">#这个数字就是区间内加上除数之后的数字</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        进一步通过余数判断，如果余数为0，则说明当前得到的数字的最后一个数字就是结果</span></span><br><span class="line"><span class="string">        如果余数不为0，则说明最终结果在下一个数字，从而根据余数得到最终结果</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> mod == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> int(str(new_num)[<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> int(str(new_num+<span class="number">1</span>)[mod - i - <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="comment">#第一种方法，超时了</span></span><br><span class="line">        <span class="comment"># s=0</span></span><br><span class="line">        <span class="comment"># for i in range(n+1):</span></span><br><span class="line">        <span class="comment">#     s+=len(str(i))</span></span><br><span class="line">        <span class="comment">#     if s&gt;=n+1:</span></span><br><span class="line">        <span class="comment">#         return int(str(i)[n-temp])</span></span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-33-二叉搜索树的后序遍历序列-medium"><a href="#剑指-Offer-33-二叉搜索树的后序遍历序列-medium" class="headerlink" title="剑指 Offer 33. 二叉搜索树的后序遍历序列(medium)"></a>剑指 Offer 33. 二叉搜索树的后序遍历序列(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">verifyPostorder</span><span class="params">(self, postorder)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type postorder: List[int]</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> len(postorder) == <span class="number">1</span> <span class="keyword">or</span> (<span class="keyword">not</span> postorder):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        root = postorder[<span class="number">-1</span>] <span class="comment">#后序遍历最后一个值为根结点</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(postorder)): <span class="comment">#找到根节点右子树的第一个值</span></span><br><span class="line">            <span class="keyword">if</span> postorder[i]&gt;=root:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        left = postorder[:i] <span class="comment">#划分左子树</span></span><br><span class="line">        right = postorder[i:len(postorder)<span class="number">-1</span>] <span class="comment">#划分右子树</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> left: <span class="comment">#如果左子树中有小于根的，直接return </span></span><br><span class="line">            <span class="keyword">if</span> i&gt;root:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> right: <span class="comment">#如果右子树中有小于根的，直接return </span></span><br><span class="line">            <span class="keyword">if</span> i&lt;root:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        left = self.verifyPostorder(left) <span class="comment">#递归判断左子树</span></span><br><span class="line">        right = self.verifyPostorder(right) <span class="comment">#递归判断右子树</span></span><br><span class="line">        <span class="keyword">if</span> left <span class="keyword">and</span> right:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-16-数值的整数次方-medium"><a href="#剑指-Offer-16-数值的整数次方-medium" class="headerlink" title="剑指 Offer 16. 数值的整数次方(medium)"></a>剑指 Offer 16. 数值的整数次方(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">myPow</span><span class="params">(self, x, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type x: float</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: float</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> n==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> n &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>/x * self.myPow(<span class="number">1</span>/x,-n<span class="number">-1</span>) </span><br><span class="line">        <span class="keyword">if</span> n%<span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> x * self.myPow(x*x,n/<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> n%<span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> self.myPow(x*x,n/<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-67-把字符串转换成整数-medium"><a href="#剑指-Offer-67-把字符串转换成整数-medium" class="headerlink" title="剑指 Offer 67. 把字符串转换成整数(medium)"></a>剑指 Offer 67. 把字符串转换成整数(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">strToInt</span><span class="params">(self, str)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type str: str</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        str = list(str.lstrip())  <span class="comment"># 去掉开头多余的空格</span></span><br><span class="line">        num = [<span class="string">'0'</span>, <span class="string">'1'</span>,<span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>]</span><br><span class="line">        <span class="keyword">if</span> len(str)==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> len(str)==<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> str[<span class="number">0</span>] <span class="keyword">in</span> num:</span><br><span class="line">                <span class="keyword">return</span> int(str[<span class="number">0</span>])</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; len(str):</span><br><span class="line">            <span class="keyword">if</span> str[i] != <span class="string">"-"</span> <span class="keyword">and</span> str[i] != <span class="string">"+"</span> <span class="keyword">and</span> str[i] <span class="keyword">not</span> <span class="keyword">in</span> num:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">elif</span> str[i] == <span class="string">'-'</span> <span class="keyword">or</span> str[i] == <span class="string">'+'</span>: <span class="comment">#处理以‘-’和‘+’开头的</span></span><br><span class="line">                temp=str[i] <span class="comment">#保存‘+-’符号</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> str[i] <span class="keyword">not</span> <span class="keyword">in</span> num:</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">while</span> i &lt; len(str):</span><br><span class="line">                        <span class="keyword">if</span> str[i] <span class="keyword">in</span> num:</span><br><span class="line">                            res *= <span class="number">10</span></span><br><span class="line">                            res += int(str[i])</span><br><span class="line">                            i += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">else</span>: <span class="comment">#如果第i个字符不是数字直接退出</span></span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">if</span> temp == <span class="string">'-'</span>:</span><br><span class="line">                        <span class="keyword">if</span> res&gt;pow(<span class="number">2</span>,<span class="number">31</span>):</span><br><span class="line">                            <span class="keyword">return</span> -pow(<span class="number">2</span>,<span class="number">31</span>)</span><br><span class="line">                        <span class="keyword">return</span> -res</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        <span class="keyword">if</span> res&gt;pow(<span class="number">2</span>,<span class="number">31</span>)<span class="number">-1</span>:</span><br><span class="line">                            <span class="keyword">return</span> pow(<span class="number">2</span>,<span class="number">31</span>)<span class="number">-1</span></span><br><span class="line">                        <span class="keyword">return</span> res</span><br><span class="line">            <span class="keyword">elif</span> str[i] <span class="keyword">in</span> num: <span class="comment">#处理以字母开头的</span></span><br><span class="line">                <span class="keyword">while</span> i &lt; len(str):</span><br><span class="line">                        <span class="keyword">if</span> str[i] <span class="keyword">in</span> num:</span><br><span class="line">                            res *= <span class="number">10</span></span><br><span class="line">                            res += int(str[i])</span><br><span class="line">                            i += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">if</span> res&gt;pow(<span class="number">2</span>,<span class="number">31</span>)<span class="number">-1</span>:</span><br><span class="line">                    <span class="keyword">return</span> pow(<span class="number">2</span>,<span class="number">31</span>)<span class="number">-1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-46-把数字翻译成字符串-medium"><a href="#剑指-Offer-46-把数字翻译成字符串-medium" class="headerlink" title="剑指 Offer 46. 把数字翻译成字符串(medium)"></a>剑指 Offer 46. 把数字翻译成字符串(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">translateNum</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type num: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> num &lt; <span class="number">10</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> num%<span class="number">100</span>&lt;<span class="number">10</span> <span class="keyword">or</span> num%<span class="number">100</span>&gt;<span class="number">25</span>:</span><br><span class="line">            <span class="keyword">return</span> self.translateNum(num/<span class="number">10</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> (self.translateNum(num/<span class="number">10</span>)+self.translateNum(num/<span class="number">100</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-14-II-剪绳子-II-medium"><a href="#剑指-Offer-14-II-剪绳子-II-medium" class="headerlink" title="剑指 Offer 14- II. 剪绳子 II(medium)"></a>剑指 Offer 14- II. 剪绳子 II(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cuttingRope</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        尽可能分成长度为3的</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> n&lt;=<span class="number">3</span>:</span><br><span class="line">            <span class="keyword">return</span> n<span class="number">-1</span></span><br><span class="line">        res = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> n&gt;<span class="number">4</span>:</span><br><span class="line">            res*=<span class="number">3</span></span><br><span class="line">            n-=<span class="number">3</span></span><br><span class="line">        <span class="keyword">return</span> (res*n)% <span class="number">1000000007</span></span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-66-构建乘积数组-medium"><a href="#剑指-Offer-66-构建乘积数组-medium" class="headerlink" title="剑指 Offer 66. 构建乘积数组(medium)"></a>剑指 Offer 66. 构建乘积数组(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">constructArr</span><span class="params">(self, a)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type a: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        从前向后累乘一次并保存结果，从后向前累乘一次并保存结果</span></span><br><span class="line"><span class="string">        就[1,2,3,4,5]而言</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> len(a)==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        res1 = [] </span><br><span class="line">        res2 = []</span><br><span class="line">        result = []</span><br><span class="line">        m = <span class="number">1</span></span><br><span class="line">        n = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> a[:<span class="number">-1</span>]: <span class="comment">#从前向后乘只计算到倒数第二个数</span></span><br><span class="line">            m*=i</span><br><span class="line">            res1.append(m) <span class="comment">#res1中保存[1,1*2,1*2*3,1*2*3*4]</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> a[::<span class="number">-1</span>][:<span class="number">-1</span>]: <span class="comment">#从后向前乘只计算到第二个数</span></span><br><span class="line">            n*=i</span><br><span class="line">            res2.append(n) <span class="comment">#res2中保存[5,5*4,5*4*3,5*4*3*2]</span></span><br><span class="line">        res2 = res2[::<span class="number">-1</span>] <span class="comment">#反转后得[5*4*3*2,5*4*3,5*4,5]</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        此时res1 = [1,1*2,1*2*3,1*2*3*4]</span></span><br><span class="line"><span class="string">            res2 = [5*4*3*2,5*4*3,5*4,5]</span></span><br><span class="line"><span class="string">        我们可以得到当缺失第一个数时，值为res2[0]</span></span><br><span class="line"><span class="string">        当缺失最后一个数时，值为res1[-1]</span></span><br><span class="line"><span class="string">        从缺失第二个数到倒数第二个数</span></span><br><span class="line"><span class="string">        我们可以得到值为res[i]*res[i-1]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(res2)+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                result.append(res2[<span class="number">0</span>])</span><br><span class="line">            <span class="keyword">elif</span> i == len(res2):</span><br><span class="line">                result.append(res1[<span class="number">-1</span>])</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(res2[i]*res1[i<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-63-股票的最大利润-medium"><a href="#剑指-Offer-63-股票的最大利润-medium" class="headerlink" title="剑指 Offer 63. 股票的最大利润(medium)"></a>剑指 Offer 63. 股票的最大利润(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span><span class="params">(self, prices)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type prices: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        max_num=<span class="number">0</span> <span class="comment">#记录当前股票最大差值</span></span><br><span class="line">        <span class="keyword">if</span> len(prices)==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        min_num=prices[<span class="number">0</span>] <span class="comment">#将第一天的股票作为最小的值</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(prices)):</span><br><span class="line">            min_num = min(min_num,prices[i<span class="number">-1</span>]) <span class="comment">#判断当天和当前最小值中的最小值</span></span><br><span class="line">            <span class="keyword">if</span> prices[i]-min_num&gt;max_num: <span class="comment">#如果当天的股票减去之前的股票最小值大于最大差值</span></span><br><span class="line">                max_num = prices[i]-min_num <span class="comment">#则替换最大差值</span></span><br><span class="line">        <span class="keyword">return</span> max_num</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-36-二叉搜索树与双向链表-medium"><a href="#剑指-Offer-36-二叉搜索树与双向链表-medium" class="headerlink" title="剑指 Offer 36. 二叉搜索树与双向链表(medium)"></a>剑指 Offer 36. 二叉搜索树与双向链表(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># Definition for a Node.</span></span><br><span class="line"><span class="string">class Node(object):</span></span><br><span class="line"><span class="string">    def __init__(self, val, left=None, right=None):</span></span><br><span class="line"><span class="string">        self.val = val</span></span><br><span class="line"><span class="string">        self.left = left</span></span><br><span class="line"><span class="string">        self.right = right</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    head = <span class="literal">None</span></span><br><span class="line">    tail = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">treeToDoublyList</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: Node</span></span><br><span class="line"><span class="string">        :rtype: Node</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        self.pre(root) <span class="comment">#中序遍历</span></span><br><span class="line">        self.head.left = self.tail <span class="comment">#头节点前驱指向尾节点</span></span><br><span class="line">        self.tail.right = self.head <span class="comment">#尾节点后驱指向头节点</span></span><br><span class="line">        <span class="keyword">return</span> self.head</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre</span><span class="params">(self,root)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> root == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.pre(root.left)</span><br><span class="line">        <span class="keyword">if</span>(self.head == <span class="literal">None</span>):</span><br><span class="line">            self.head = self.tail = root</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.tail.right = root</span><br><span class="line">            root.left = self.tail</span><br><span class="line">            self.tail = root</span><br><span class="line">        self.pre(root.right)</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-31-栈的压入、弹出序列-medium"><a href="#剑指-Offer-31-栈的压入、弹出序列-medium" class="headerlink" title="剑指 Offer 31. 栈的压入、弹出序列(medium)"></a>剑指 Offer 31. 栈的压入、弹出序列(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validateStackSequences</span><span class="params">(self, pushed, popped)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type pushed: List[int]</span></span><br><span class="line"><span class="string">        :type popped: List[int]</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        s = [] <span class="comment">#初始化一个栈</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> popped:</span><br><span class="line">            <span class="comment">#得到每一个pop出去的数字在push数组中的下标</span></span><br><span class="line">            <span class="comment">#加一为了方便后续对s栈进行插入操作，即这里res-1才是真正的下标</span></span><br><span class="line">            res = pushed.index(i)+<span class="number">1</span></span><br><span class="line">            <span class="comment">#如果当前pop出去的数在push数组的下标大于s栈的长度</span></span><br><span class="line">            <span class="comment">#则需要将下标数字之前的数字都写入s栈中</span></span><br><span class="line">            <span class="keyword">if</span> res &gt; len(s):</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> range(len(s),res):</span><br><span class="line">                    s.append(k)</span><br><span class="line">                <span class="comment">#这一步对pop出去的下标置为-1</span></span><br><span class="line">                s[res<span class="number">-1</span>] = <span class="number">-1</span></span><br><span class="line">            <span class="comment">#如果当前pop出去的数在push数组的下标小于s栈的长度</span></span><br><span class="line">            <span class="comment">#则我们只需要判断在s栈中对于res下标之后的数值是否为-1即可</span></span><br><span class="line">            <span class="keyword">elif</span> res &lt; len(s):</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(res,len(s)):</span><br><span class="line">                    <span class="comment">#如果在res下标之后存在不为-1的下标，则直接返回false</span></span><br><span class="line">                    <span class="keyword">if</span> s[j] != <span class="number">-1</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">False</span> </span><br><span class="line">                <span class="comment">#如果res下标之后存在s栈中的都是-1</span></span><br><span class="line">                <span class="comment">#则对当前下标进行置为-1操作</span></span><br><span class="line">                s[res<span class="number">-1</span>] = <span class="number">-1</span></span><br><span class="line">        <span class="comment">#循环结束的话返回True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-35-复杂链表的复制-medium"><a href="#剑指-Offer-35-复杂链表的复制-medium" class="headerlink" title="剑指 Offer 35. 复杂链表的复制(medium)"></a>剑指 Offer 35. 复杂链表的复制(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string"># Definition for a Node.</span></span><br><span class="line"><span class="string">class Node:</span></span><br><span class="line"><span class="string">    def __init__(self, x, next=None, random=None):</span></span><br><span class="line"><span class="string">        self.val = int(x)</span></span><br><span class="line"><span class="string">        self.next = next</span></span><br><span class="line"><span class="string">        self.random = random</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">copyRandomList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: Node</span></span><br><span class="line"><span class="string">        :rtype: Node</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        d = &#123;&#125;</span><br><span class="line">        node = head <span class="comment">#保留头节点不改变</span></span><br><span class="line">        <span class="keyword">while</span>(node): <span class="comment">#先用字典单独复制每一个节点信息</span></span><br><span class="line">            d[node] = Node(node.val)</span><br><span class="line">            node = node.next</span><br><span class="line">        node = head <span class="comment">#保留头节点不改变</span></span><br><span class="line">        <span class="keyword">while</span>(node): <span class="comment">#链接每一个单节点</span></span><br><span class="line">            d[node].next = d.get(node.next)</span><br><span class="line">            d[node].random = d.get(node.random)</span><br><span class="line">            node = node.next</span><br><span class="line">        <span class="keyword">return</span> d[head]</span><br></pre></td></tr></table></figure>
+<h4 id="剑指-Offer-07-重建二叉树-medium"><a href="#剑指-Offer-07-重建二叉树-medium" class="headerlink" title="剑指 Offer 07. 重建二叉树(medium)"></a>剑指 Offer 07. 重建二叉树(medium)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode(object):</span></span><br><span class="line"><span class="comment">#     def __init__(self, x):</span></span><br><span class="line"><span class="comment">#         self.val = x</span></span><br><span class="line"><span class="comment">#         self.left = None</span></span><br><span class="line"><span class="comment">#         self.right = None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">buildTree</span><span class="params">(self, preorder, inorder)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type preorder: List[int]</span></span><br><span class="line"><span class="string">        :type inorder: List[int]</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> preorder:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        root = TreeNode(preorder[<span class="number">0</span>]) <span class="comment">#将前序遍历第一个值作为根节点</span></span><br><span class="line">        index = inorder.index(preorder[<span class="number">0</span>]) <span class="comment">#找到根节点再中序遍历中的位置</span></span><br><span class="line">        root.left = self.buildTree(preorder[<span class="number">1</span>:<span class="number">1</span>+index],inorder[:index]) <span class="comment">#递归构建左子树</span></span><br><span class="line">        root.right = self.buildTree(preorder[<span class="number">1</span>+index:],inorder[index+<span class="number">1</span>:]) <span class="comment">#递归构建右子树</span></span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/23/深入理解linux内核之中断和异常/" rel="next" title="深入理解linux内核之中断和异常">
+                <i class="fa fa-chevron-left"></i> 深入理解linux内核之中断和异常
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-43-1～n-整数中-1-出现的次数-hard"><span class="nav-number">1.</span> <span class="nav-text">剑指 Offer 43. 1～n 整数中 1 出现的次数(hard)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-51-数组中的逆序对-hard"><span class="nav-number">2.</span> <span class="nav-text">剑指 Offer 51. 数组中的逆序对(hard)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-60-n个骰子的点数-medium"><span class="nav-number">3.</span> <span class="nav-text">剑指 Offer 60. n个骰子的点数(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-12-矩阵中的路径-medium"><span class="nav-number">4.</span> <span class="nav-text">剑指 Offer 12. 矩阵中的路径(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-41-数据流中的中位数-hard"><span class="nav-number">5.</span> <span class="nav-text">剑指 Offer 41. 数据流中的中位数(hard)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-13-机器人的运动范围-medium"><span class="nav-number">6.</span> <span class="nav-text">剑指 Offer 13. 机器人的运动范围(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-44-数字序列中某一位的数字-medium"><span class="nav-number">7.</span> <span class="nav-text">剑指 Offer 44. 数字序列中某一位的数字(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-33-二叉搜索树的后序遍历序列-medium"><span class="nav-number">8.</span> <span class="nav-text">剑指 Offer 33. 二叉搜索树的后序遍历序列(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-16-数值的整数次方-medium"><span class="nav-number">9.</span> <span class="nav-text">剑指 Offer 16. 数值的整数次方(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-67-把字符串转换成整数-medium"><span class="nav-number">10.</span> <span class="nav-text">剑指 Offer 67. 把字符串转换成整数(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-46-把数字翻译成字符串-medium"><span class="nav-number">11.</span> <span class="nav-text">剑指 Offer 46. 把数字翻译成字符串(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-14-II-剪绳子-II-medium"><span class="nav-number">12.</span> <span class="nav-text">剑指 Offer 14- II. 剪绳子 II(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-66-构建乘积数组-medium"><span class="nav-number">13.</span> <span class="nav-text">剑指 Offer 66. 构建乘积数组(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-63-股票的最大利润-medium"><span class="nav-number">14.</span> <span class="nav-text">剑指 Offer 63. 股票的最大利润(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-36-二叉搜索树与双向链表-medium"><span class="nav-number">15.</span> <span class="nav-text">剑指 Offer 36. 二叉搜索树与双向链表(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-31-栈的压入、弹出序列-medium"><span class="nav-number">16.</span> <span class="nav-text">剑指 Offer 31. 栈的压入、弹出序列(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-35-复杂链表的复制-medium"><span class="nav-number">17.</span> <span class="nav-text">剑指 Offer 35. 复杂链表的复制(medium)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#剑指-Offer-07-重建二叉树-medium"><span class="nav-number">18.</span> <span class="nav-text">剑指 Offer 07. 重建二叉树(medium)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

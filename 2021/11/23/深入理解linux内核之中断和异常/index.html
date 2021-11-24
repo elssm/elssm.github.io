@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习笔记,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言中断通常被定义为一个事件，该事件改变处理器执行的指令顺序。这样的事件与CPU芯片内外部硬件电路产生的电信号相对应。 中断通常分为同步(synchronous)中断和异步(asynchronous)中断：  同步中断是当指令执行时由CPU控制单元产生的，之所以称为同步，是因为只有在一条指令终止执行后CPU才会发出中断。 异步中断是由其他硬件设备依照CPU时钟信号随机产生的。  在Intel微处理">
+<meta name="keywords" content="学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解linux内核之中断和异常">
+<meta property="og:url" content="elssm.github.io/2021/11/23/深入理解linux内核之中断和异常/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="前言中断通常被定义为一个事件，该事件改变处理器执行的指令顺序。这样的事件与CPU芯片内外部硬件电路产生的电信号相对应。 中断通常分为同步(synchronous)中断和异步(asynchronous)中断：  同步中断是当指令执行时由CPU控制单元产生的，之所以称为同步，是因为只有在一条指令终止执行后CPU才会发出中断。 异步中断是由其他硬件设备依照CPU时钟信号随机产生的。  在Intel微处理">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-11-23T14:51:24.839Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解linux内核之中断和异常">
+<meta name="twitter:description" content="前言中断通常被定义为一个事件，该事件改变处理器执行的指令顺序。这样的事件与CPU芯片内外部硬件电路产生的电信号相对应。 中断通常分为同步(synchronous)中断和异步(asynchronous)中断：  同步中断是当指令执行时由CPU控制单元产生的，之所以称为同步，是因为只有在一条指令终止执行后CPU才会发出中断。 异步中断是由其他硬件设备依照CPU时钟信号随机产生的。  在Intel微处理">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/11/23/深入理解linux内核之中断和异常/">
+
+
+
+
+
+  <title>深入理解linux内核之中断和异常 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/11/23/深入理解linux内核之中断和异常/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入理解linux内核之中断和异常</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-23T21:51:39+08:00">
+                2021-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>中断通常被定义为一个事件，该事件改变处理器执行的指令顺序。这样的事件与CPU芯片内外部硬件电路产生的电信号相对应。</p>
+<p>中断通常分为同步(synchronous)中断和异步(asynchronous)中断：</p>
+<ul>
+<li>同步中断是当指令执行时由CPU控制单元产生的，之所以称为同步，是因为只有在一条指令终止执行后CPU才会发出中断。</li>
+<li>异步中断是由其他硬件设备依照CPU时钟信号随机产生的。</li>
+</ul>
+<p>在Intel微处理器手册中，把同步和异步中断分别称为异常(exception)和中断(interrupt)</p>
+<p>中断是由<strong>间隔定时器</strong>和<strong>I/O设备</strong>产生的，例如，用户的一次按键会引起一个中断。</p>
+<p>异常是由程序的错误产生的，或者是由内核必须处理的异常条件产生的。第一种情况下，内核通过发送一个信号来处理异常，例如<code>SIGTERM、SIGINT</code>等。第二种情况下，内核执行恢复异常需要的所有步骤，例如缺页，或对内核服务的一个请求。</p>
+<h4 id="中断信号的作用"><a href="#中断信号的作用" class="headerlink" title="中断信号的作用"></a>中断信号的作用</h4><p>中断信号提供了一种特殊的方式，使得处理器转而去运行正常控制流之外的代码。当一个中断信号到达时，CPU必须停止它当前所做的事情，并且切换到一个新的活动，为了做到这一点，就要在内核态堆栈保存程序计数器的当前值(即eip和cs寄存器的内容)，并把与中断类型相关的一个地址放进程序计数器。</p>
+<p>必须要声明的是，中断处理与进程切换有一个明显的差异：由中断或异常处理程序执行的代码不是一个进程。更确切地说，它是一个内核控制路径，代表中断发生时正在运行的进程执行，作为一个内核控制路径，中断处理程序比一个进程要“轻”（这是因为中断的上下文很少，建立或终止中断处理需要的事件很少）</p>
+<p>中断处理是由内核执行的最敏感的任务之一，它必须满足以下约束</p>
+<ul>
+<li>内核的目标就是让中断尽可能快的处理完，尽其所能把更多的处理向后推迟，例如，假设一个数据块已经到达了网线，当硬件中断内核时，内核只简单的标志数据到来了，让处理器恢复到它以前运行的状态，其余的处理稍后再进行（如把数据移入一个缓冲区，它的接收进程可以在缓冲区找到数据并恢复这个进程的执行）。因此，内核响应中断后需要进行的操作分为两部分：对于关键紧急的部分，内核立即执行；其余部分内核随后执行。</li>
+<li>因为中断随时会到来，所以内核可能正在处理其中一个中断时，另一个中断又发生了，应该尽可能多的允许这种情况发生，因为这能维持更多的I/O设备处于忙状态。因此，中断处理程序必须编写成使相应的内核控制路径能以嵌套的方式执行。当最后一个内核控制路径终止时，内核必须能恢复被中断进程的执行，或者，如果中断信号已导致了重新调度，内核能切换到另外的进程。</li>
+<li>尽管内核在处理前一个中断时可以接受一个新的中断，但在内核代码中还是存在一些临界区，在临界区中，中断必须被禁止。必须尽可能地限制这样的临界区，因为根据以前的要求，内核尤其是中断处理程序，应该在大部分时间内以开中断的方式运行。</li>
+</ul>
+<h4 id="中断和异常"><a href="#中断和异常" class="headerlink" title="中断和异常"></a>中断和异常</h4><h5 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h5><ul>
+<li>可屏蔽中断：I/O设备发出的所有中断请求都产生可屏蔽中断。可屏蔽中断可以处于两种状态：屏蔽的(masked)或非屏蔽的(unmasked)，一个屏蔽的中断只要还是屏蔽的，控制单元就忽略它。</li>
+<li>非屏蔽中断：只有几个危机事件(如硬件故障)才引起非屏蔽中断，非屏蔽中断总是由CPU辨认</li>
+</ul>
+<h5 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h5><ul>
+<li>处理器探测异常：当CPU执行指令时探测到的一个反常条件所产生的异常。可以进一步分为三组。这取决于CPU控制单元产生异常时保存在内核态堆栈<code>eip</code>寄存器中的值<ul>
+<li>故障(fault)：通常可以纠正，一旦纠正，程序就可以在不失连贯性的情况下重新开始。保存在<code>eip</code>中的值是引起故障的指令地址，因此，当异常处理程序终止时，那条指令会被重新执行。</li>
+<li>陷阱(trap)：在陷阱指令执行后立即报告，内核把控制权返回给程序后就可以继续执行它的执行而不失连贯性，保存在<code>eip</code>中的值是一个随后要执行的指令地址。只有当没有必要重新执行已终止的指令时，才触发陷阱，<strong>陷阱的主要用途是为了调试程序</strong>。在这种情况下，中断信号的作用是通知调试程序一条特殊指令已被执行(例如到了一个程序的断点)。一旦用户检查到调试程序所提供的数据，他就可能要求被调试程序从下一条指令重新开始执行。</li>
+<li>异常中止(abort)：发生一个严重的错误，控制单元出了问题，不能在<code>eip</code>寄存器中保存引起异常的指令所在的确切位置。异常中止用于报告严重的错误，如硬件故障或系统表中无效的值或不一致的值。由控制单元发生的这个中断信号是紧急信号，用来把控制权切换到相应的异常中止处理程序，这个异常中止处理程序除了强制受影响的进程终止外，没有别的选择。</li>
+</ul>
+</li>
+<li>编程异常：在编程者发出请求时发生。是由<code>int</code>或<code>int3</code>指令触发的，当<code>into</code>(检查溢出)和<code>bound</code>(检查越界)指令检查的条件不为真时，也引起编程异常。控制单元把编程异常作为陷阱来处理，编程异常通常也叫做<strong>软中断</strong>。这样的异常有两种常用的用途：执行系统调用及给调试程序通报一个特定的事件。</li>
+</ul>
+<p>每个中断和异常是由0~255之间的一个数来标识，因为一些未知的原因，Intel把这个8位的无符号整数叫做一个向量(vector)。非屏蔽中断的向量和异常的向量是固定的。而可屏蔽中断的向量可以通过对中断控制器的编程来改变。</p>
+<h4 id="IRQ和中断"><a href="#IRQ和中断" class="headerlink" title="IRQ和中断"></a>IRQ和中断</h4><p>每个能够发出中断请求的硬件设备控制器都有一条名为IRQ(Interrupt ReQuest)的输出线，所有现有的IRQ线都与一个名为可编程中断控制器(Programmable Interrupt Controller,PIC)的硬件电路的输入引脚相连，可编程中断控制器执行下列动作</p>
+<ul>
+<li>监视IRQ线，检查产生的信号(raised signal)。如果有条或两条以上的IRQ线上产生信号，就选择引脚编号较小的IRQ线，</li>
+<li>如果一个引发信号出现在IRQ线上<ul>
+<li>把接收到的引发信号转换成对应的向量</li>
+<li>把这个向量存放在中断控制器的一个I/O端口，从而允许CPU通过数据总线读此向量</li>
+<li>把引发信号发送到处理器的INTR引脚，即产生一个中断</li>
+<li>等待，直到CPU通过把这个中断信号写进可编程中断控制器的一个I/O端口来确认它，当这种情况发生时，清INTR线。</li>
+</ul>
+</li>
+<li>返回到监视IRQ线操作</li>
+</ul>
+<p>IRQ线是从0开始顺序编号的，因此，第一条IRQ线通常表示为IRQ0，与IRQn关联的Intel的缺省向量是n+32。如前所述，通过向中断控制器端口发布合适的指令，就可以修改IRQ和向量之间的映射。</p>
+<p>可以有选择地禁止每条IRQ线。因此，可以对PIC编程从而禁止IRQ，也就是说，可以告诉PIC停止对给定的IRQ线发布中断，或者激活它们。禁止的中断是丢失不了的，它们一旦被激活，PIC就又把它们发送到CPU。这个特点被大多数中断处理程序使用，因为这允许中断处理程序逐次地处理同一类型的IRQ。</p>
+<h4 id="高级可编程中断控制器"><a href="#高级可编程中断控制器" class="headerlink" title="高级可编程中断控制器"></a>高级可编程中断控制器</h4><p>如果系统只有一个单独的CPU，那么主PIC的输出线可以直截了当的连接到CPU的INTR引脚。然而，如果系统中包含两个或多个CPU，那么这种方式不再有效，因而需要更复杂的PIC。</p>
+<p>Intel从<code>Pentiun III</code>开始引入了一种名为I/O高级可编程控制器(APIC)的新组件。此外，<code>80x86</code>微处理器当前所有的CPU都含有一个本地<code>APIC</code>。每个本地<code>APIC</code>都有32位的寄存器、一个内部时钟、一个本地定时设备及为本地<code>APIC</code>中断保留的两条额外的IRQ线<code>LINR0</code>和<code>LINT1</code>。所有本地<code>APIC</code>都连接到一个外部<code>I/O APIC</code>，形成一个多<code>APIC</code>的系统。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习笔记/" rel="tag"># 学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/19/浅学libevent/" rel="next" title="浅学libevent">
+                <i class="fa fa-chevron-left"></i> 浅学libevent
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/24/近期Leetcode题解/" rel="prev" title="近期Leetcode题解">
+                近期Leetcode题解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断信号的作用"><span class="nav-number">2.</span> <span class="nav-text">中断信号的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断和异常"><span class="nav-number">3.</span> <span class="nav-text">中断和异常</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#中断"><span class="nav-number">3.1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异常"><span class="nav-number">3.2.</span> <span class="nav-text">异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IRQ和中断"><span class="nav-number">4.</span> <span class="nav-text">IRQ和中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高级可编程中断控制器"><span class="nav-number">5.</span> <span class="nav-text">高级可编程中断控制器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
