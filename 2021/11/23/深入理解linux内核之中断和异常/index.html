@@ -132,7 +132,7 @@
 <meta property="og:description" content="前言中断通常被定义为一个事件，该事件改变处理器执行的指令顺序。这样的事件与CPU芯片内外部硬件电路产生的电信号相对应。 中断通常分为同步(synchronous)中断和异步(asynchronous)中断：  同步中断是当指令执行时由CPU控制单元产生的，之所以称为同步，是因为只有在一条指令终止执行后CPU才会发出中断。 异步中断是由其他硬件设备依照CPU时钟信号随机产生的。  在Intel微处理">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2021/11/23/深入理解linux内核之中断和异常/1.png">
-<meta property="og:updated_time" content="2021-11-24T12:40:07.065Z">
+<meta property="og:updated_time" content="2021-11-25T12:41:43.009Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解linux内核之中断和异常">
 <meta name="twitter:description" content="前言中断通常被定义为一个事件，该事件改变处理器执行的指令顺序。这样的事件与CPU芯片内外部硬件电路产生的电信号相对应。 中断通常分为同步(synchronous)中断和异步(asynchronous)中断：  同步中断是当指令执行时由CPU控制单元产生的，之所以称为同步，是因为只有在一条指令终止执行后CPU才会发出中断。 异步中断是由其他硬件设备依照CPU时钟信号随机产生的。  在Intel微处理">
@@ -594,6 +594,81 @@
 <li>时钟中断：某些时钟产生一个中断，这种中断告诉内核一个固定的时间间隔已经过去</li>
 <li>处理器中断：多处理器系统中一个CPU对另一个CPU发出一个中断</li>
 </ul>
+<h4 id="I-O中断处理"><a href="#I-O中断处理" class="headerlink" title="I/O中断处理"></a>I/O中断处理</h4><p>中断处理程序的灵活性是以两种不同的方式实现的</p>
+<ul>
+<li>IRQ共享：中断处理程序执行多个中断服务例程(interrupt service routine，ISR)，每个ISR是一个与单独设备(共享IRQ线)相关的函数。因为不可能预先知道哪个特定的设备产生IRQ，因此，每个ISR都被执行，以验证它的设备是否需要关注，如果是，当设备产生中断时，就执行需要执行的所有操作。</li>
+<li>IRQ动态分配：一条IRQ线在可能的最后时刻才与一个设备驱动程序相关联，例如，软盘设备的IRQ线只有在用户访问软盘设备时才被分配。这样，即使几个硬件设备并不共享IRQ线，同一个IRQ向量也可以由这几个设备在不同时刻使用。</li>
+</ul>
+<p>当一个中断发生时，并不是所有的操作都具有相同的急迫性。事实上，把所有的操作都放进中断处理程序本身并不合适，需要时间长的、非重要的操作应该推后，因为当一个中断处理程序正在运行时，相应的IRQ线上发出的信号就被暂时忽略。更重要的是，中断处理程序是代表进程执行的，它所代表的进程必须总处于<code>TASK_RUNNING</code>状态，否则，就可能出现系统僵死情形。因此，中断处理程序不能执行任何阻塞过程。如磁盘I/O操作，因此Linux把紧随中断要执行的操作分为三类</p>
+<ul>
+<li>紧急的（Critical）：这样的操作诸如：对PIC应答中断，对PIC或设备控制器重编程，或者修改由设备和处理器同时访问的数据结构，这些都能被很快地执行，而之所以说它们是紧急的是因为他们必须被尽快的执行。紧急操作要在一个中断处理程序内立即执行，而且是在禁止可屏蔽中断的情况下。</li>
+<li>非紧急的（Noncritical）：这样的操作诸如修改那些只有处理器才会访问的数据结构，这些操作也要很快地完成，因此，它们由中断处理程序立即执行，但必须是在开中断的情况下。</li>
+<li>非紧急可延迟的（Noncritical deferrable）：这样的操作例如把缓冲区的内容拷贝到某个进程的地址空间。这些操作可能被延迟较长的时间间隔而不影响内核操作。</li>
+</ul>
+<p>不管引起中断的电路种类如何，所有的I/O中断处理程序都执行四个相同的基本操作</p>
+<ul>
+<li>在内核态堆栈中保存IRQ的值和寄存器的内容</li>
+<li>为正在给IRQ线服务的PIC发送一个应答，这将允许PIC进一步发出中断</li>
+<li>执行共享这个IRQ的所有设备的中断服务例程(ISR)</li>
+<li>跳到<code>ret_from_intr()</code>的地址后终止</li>
+</ul>
+<p>Linux中的中断向量</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>向量范围</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0～19(0x0~0x13)</td>
+<td>非屏蔽中断和异常</td>
+</tr>
+<tr>
+<td>20~31(0x14~0x1f)</td>
+<td>Intel保留</td>
+</tr>
+<tr>
+<td>32~127(0x20~0x7f)</td>
+<td>外部中断(IRQ)</td>
+</tr>
+<tr>
+<td>128(0x80)</td>
+<td>用于系统调用的可编程异常</td>
+</tr>
+<tr>
+<td>129~238(0x81~0xee)</td>
+<td>外部中断(IRQ)</td>
+</tr>
+<tr>
+<td>239(0xef)</td>
+<td>本地APIC时钟中断</td>
+</tr>
+<tr>
+<td>240(0xf0)</td>
+<td>本地APIC高温中断</td>
+</tr>
+<tr>
+<td>241~250(0xf0~0xfa)</td>
+<td>由Linux留作将来使用</td>
+</tr>
+<tr>
+<td>251~253(0xfb~0xff)</td>
+<td>处理器间中断</td>
+</tr>
+<tr>
+<td>254(0xfe)</td>
+<td>本地APIC错误中断</td>
+</tr>
+<tr>
+<td>255(0xff)</td>
+<td>本地APIC伪中断</td>
+</tr>
+</tbody>
+</table>
+</div>
 
       
     </div>
@@ -777,7 +852,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断信号的作用"><span class="nav-number">2.</span> <span class="nav-text">中断信号的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断和异常"><span class="nav-number">3.</span> <span class="nav-text">中断和异常</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#中断"><span class="nav-number">3.1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异常"><span class="nav-number">3.2.</span> <span class="nav-text">异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IRQ和中断"><span class="nav-number">4.</span> <span class="nav-text">IRQ和中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高级可编程中断控制器"><span class="nav-number">5.</span> <span class="nav-text">高级可编程中断控制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常-1"><span class="nav-number">6.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断描述符表"><span class="nav-number">7.</span> <span class="nav-text">中断描述符表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理"><span class="nav-number">8.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断处理"><span class="nav-number">9.</span> <span class="nav-text">中断处理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断信号的作用"><span class="nav-number">2.</span> <span class="nav-text">中断信号的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断和异常"><span class="nav-number">3.</span> <span class="nav-text">中断和异常</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#中断"><span class="nav-number">3.1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#异常"><span class="nav-number">3.2.</span> <span class="nav-text">异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IRQ和中断"><span class="nav-number">4.</span> <span class="nav-text">IRQ和中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高级可编程中断控制器"><span class="nav-number">5.</span> <span class="nav-text">高级可编程中断控制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常-1"><span class="nav-number">6.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断描述符表"><span class="nav-number">7.</span> <span class="nav-text">中断描述符表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理"><span class="nav-number">8.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断处理"><span class="nav-number">9.</span> <span class="nav-text">中断处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O中断处理"><span class="nav-number">10.</span> <span class="nav-text">I/O中断处理</span></a></li></ol></div>
             
 
           </div>
