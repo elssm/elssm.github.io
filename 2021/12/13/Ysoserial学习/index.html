@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介之前没有学习过Java，所以不太了解Java相关漏洞，因此打算通过ysoserial这个工具学习一下，ysoserial集合了各种Java反序列化payload，上手也比较容易。 github地址：https://github.com/frohoff/ysoserial Ysoserial环境配置git clone到本地之后通过IDEA打开。因为ysoserial项目是通过Maven搭建的，因">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ysoserial学习">
+<meta property="og:url" content="elssm.github.io/2021/12/13/Ysoserial学习/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="简介之前没有学习过Java，所以不太了解Java相关漏洞，因此打算通过ysoserial这个工具学习一下，ysoserial集合了各种Java反序列化payload，上手也比较容易。 github地址：https://github.com/frohoff/ysoserial Ysoserial环境配置git clone到本地之后通过IDEA打开。因为ysoserial项目是通过Maven搭建的，因">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/1.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/2.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/3.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/4.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/5.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/6.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/7.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/8.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/9.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/10.png">
+<meta property="og:image" content="/2021/12/13/Ysoserial学习/11.png">
+<meta property="og:updated_time" content="2021-12-13T05:19:08.022Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ysoserial学习">
+<meta name="twitter:description" content="简介之前没有学习过Java，所以不太了解Java相关漏洞，因此打算通过ysoserial这个工具学习一下，ysoserial集合了各种Java反序列化payload，上手也比较容易。 github地址：https://github.com/frohoff/ysoserial Ysoserial环境配置git clone到本地之后通过IDEA打开。因为ysoserial项目是通过Maven搭建的，因">
+<meta name="twitter:image" content="/2021/12/13/Ysoserial学习/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/12/13/Ysoserial学习/">
+
+
+
+
+
+  <title>Ysoserial学习 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/12/13/Ysoserial学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ysoserial学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-13T12:20:53+08:00">
+                2021-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>之前没有学习过Java，所以不太了解Java相关漏洞，因此打算通过<code>ysoserial</code>这个工具学习一下，<code>ysoserial</code>集合了各种Java反序列化payload，上手也比较容易。</p>
+<p>github地址：<a href="https://github.com/frohoff/ysoserial" target="_blank" rel="noopener">https://github.com/frohoff/ysoserial</a></p>
+<h4 id="Ysoserial环境配置"><a href="#Ysoserial环境配置" class="headerlink" title="Ysoserial环境配置"></a>Ysoserial环境配置</h4><p><code>git clone</code>到本地之后通过<code>IDEA</code>打开。因为<code>ysoserial</code>项目是通过<code>Maven</code>搭建的，因此相关依赖也通过<code>Maven</code>下载配置。</p>
+<p>依赖配置完成之后，运行项目的主函数，地址在</p>
+<p><code>ysoserial/src/main/java/ysoserial/GeneratePayload.main()</code></p>
+<p><img src="/2021/12/13/Ysoserial学习/1.png" alt="1"></p>
+<p>我们也可以通过<code>IDEA</code>给<code>ysoserial</code>添加参数，例如通过<code>CommonsCollections1</code>执行弹计算器的命令。</p>
+<p><img src="/2021/12/13/Ysoserial学习/2.png" alt="2"></p>
+<p>执行<code>GeneratePayload.java</code>如下图所示，这样我们就得到了序列化后的字符串。</p>
+<p><img src="/2021/12/13/Ysoserial学习/3.png" alt="3"></p>
+<p>测试的时候我们可以将这段<code>payload</code>发送出去，但是由于是序列化的文件，因此我们需要将序列化后的字符串保存到一个二进制文件中。</p>
+<p>我们知道，在序列化的时候，程序会执行<code>writeObject()</code>方法，因此我们可以在<code>writeObject()</code>之后将数据保存。因此可以定位到如下这段代码</p>
+<p><img src="/2021/12/13/Ysoserial学习/4.png" alt="4"></p>
+<p>在<code>Serializer.serialize()</code>中执行了<code>writeObject()</code>方法</p>
+<p><img src="/2021/12/13/Ysoserial学习/5.png" alt="5"></p>
+<p>因此我们在<code>writeObject()</code>方法后，写入保存序列化文件的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">            FileOutputStream fout = <span class="keyword">new</span> FileOutputStream(<span class="string">"/YourPath/payload.ser"</span>);</span><br><span class="line">            ObjectOutputStream ot = <span class="keyword">new</span> ObjectOutputStream(fout);</span><br><span class="line">            ot.writeObject(obj);</span><br><span class="line">            ot.close();</span><br><span class="line">            fout.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException fnfe)&#123;</span><br><span class="line">            System.out.println(<span class="string">"payload not found"</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/12/13/Ysoserial学习/6.png" alt="6"></p>
+<p>之后再次运行<code>GeneratePayload.java</code>，则会在指定的路径下生成<code>payload.ser</code>文件</p>
+<p><img src="/2021/12/13/Ysoserial学习/7.png" alt="7"></p>
+<h4 id="WebServer配置"><a href="#WebServer配置" class="headerlink" title="WebServer配置"></a>WebServer配置</h4><h5 id="版本说明"><a href="#版本说明" class="headerlink" title="版本说明"></a>版本说明</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tomcat:8.5.73</span><br><span class="line">jdk:1.7</span><br></pre></td></tr></table></figure>
+<h5 id="Web-xml配置"><a href="#Web-xml配置" class="headerlink" title="Web.xml配置"></a>Web.xml配置</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>DemoServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>demotest.DemoServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>DemoServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/demotest<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="相关包的引入"><a href="#相关包的引入" class="headerlink" title="相关包的引入"></a>相关包的引入</h5><p>在<code>WEB-INF/lib</code>下导入<code>CommonsCollections3.1.jar</code></p>
+<h5 id="Tomcat配置"><a href="#Tomcat配置" class="headerlink" title="Tomcat配置"></a>Tomcat配置</h5><p><img src="/2021/12/13/Ysoserial学习/8.png" alt="8"></p>
+<h5 id="处理请求"><a href="#处理请求" class="headerlink" title="处理请求"></a>处理请求</h5><p>对<code>POST</code>请求的数据执行反序列化操作，处理代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> demotest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoServlet</span> <span class="keyword">extends</span> <span class="title">javax</span>.<span class="title">servlet</span>.<span class="title">http</span>.<span class="title">HttpServlet</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(javax.servlet.http.HttpServletRequest request,javax.servlet.http.HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ServletInputStream sis = request.getInputStream();</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(sis);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ois.readObject();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(javax.servlet.http.HttpServletRequest request,javax.servlet.http.HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        PrintWriter out = response.getWriter();</span><br><span class="line">        out.println(<span class="string">"This is a demo"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h5><p><img src="/2021/12/13/Ysoserial学习/9.png" alt="9"></p>
+<p><img src="/2021/12/13/Ysoserial学习/10.png" alt="10"></p>
+<h4 id="CC1-Payload测试"><a href="#CC1-Payload测试" class="headerlink" title="CC1 Payload测试"></a>CC1 Payload测试</h4><p>使用<code>curl</code>命令向服务器发送post请求，将前面生成的<code>payload.ser</code>发送到服务器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8080/demotest --data-binary @/Users/caoyifan/payload.ser</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--data-binary &lt;data&gt;</span><br><span class="line">  (HTTP) This posts data exactly as specified with no extra processing whatsoever.</span><br><span class="line">  If you start the data with the letter @, the rest should be a filename.  Data is</span><br><span class="line">  posted in a similar manner as --data-ascii does, except that newlines are preserved</span><br><span class="line">  and conversions are never done.</span><br></pre></td></tr></table></figure>
+<p>成功执行弹计算器的命令</p>
+<p><img src="/2021/12/13/Ysoserial学习/11.png" alt="11"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/01/Java-RMI/" rel="next" title="Java RMI">
+                <i class="fa fa-chevron-left"></i> Java RMI
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ysoserial环境配置"><span class="nav-number">2.</span> <span class="nav-text">Ysoserial环境配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebServer配置"><span class="nav-number">3.</span> <span class="nav-text">WebServer配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#版本说明"><span class="nav-number">3.1.</span> <span class="nav-text">版本说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Web-xml配置"><span class="nav-number">3.2.</span> <span class="nav-text">Web.xml配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关包的引入"><span class="nav-number">3.3.</span> <span class="nav-text">相关包的引入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Tomcat配置"><span class="nav-number">3.4.</span> <span class="nav-text">Tomcat配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#处理请求"><span class="nav-number">3.5.</span> <span class="nav-text">处理请求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动服务"><span class="nav-number">3.6.</span> <span class="nav-text">启动服务</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CC1-Payload测试"><span class="nav-number">4.</span> <span class="nav-text">CC1 Payload测试</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
