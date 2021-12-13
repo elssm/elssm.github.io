@@ -112,7 +112,7 @@
 
 
 
-  <meta name="keywords" content="代码,">
+  <meta name="keywords" content="Python,">
 
 
 
@@ -124,14 +124,14 @@
 
 
 <meta name="description" content="最近几天在用python写一个简单的爬虫，主要是来爬取一些实时的漏洞库。由于技术太菜，中途遇到了好些问题，我在这里作一个小的总结 爬取的网站是https://www.seebug.org python版本为3.x  因为是https的，刚开始使用requests获取源码的时候总是报SSL错误，很无奈，最终还是选择使用selenium，利用pip安装好selenium之后要做的是下载浏览器drive">
-<meta name="keywords" content="代码">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python写的一个简单爬虫">
 <meta property="og:url" content="elssm.github.io/2018/04/07/python写的一个简单爬虫/index.html">
 <meta property="og:site_name" content="ELSSM">
 <meta property="og:description" content="最近几天在用python写一个简单的爬虫，主要是来爬取一些实时的漏洞库。由于技术太菜，中途遇到了好些问题，我在这里作一个小的总结 爬取的网站是https://www.seebug.org python版本为3.x  因为是https的，刚开始使用requests获取源码的时候总是报SSL错误，很无奈，最终还是选择使用selenium，利用pip安装好selenium之后要做的是下载浏览器drive">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-08T15:03:26.000Z">
+<meta property="og:updated_time" content="2021-12-13T09:50:10.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python写的一个简单爬虫">
 <meta name="twitter:description" content="最近几天在用python写一个简单的爬虫，主要是来爬取一些实时的漏洞库。由于技术太菜，中途遇到了好些问题，我在这里作一个小的总结 爬取的网站是https://www.seebug.org python版本为3.x  因为是https的，刚开始使用requests获取源码的时候总是报SSL错误，很无奈，最终还是选择使用selenium，利用pip安装好selenium之后要做的是下载浏览器drive">
@@ -368,20 +368,19 @@
 <p>爬取的网站是<a href="https://www.seebug.org" target="_blank" rel="noopener">https://www.seebug.org</a></p>
 <p>python版本为3.x</p>
 <ul>
-<li><p>因为是https的，刚开始使用requests获取源码的时候总是报SSL错误，很无奈，最终还是选择使用selenium，利用pip安装好selenium之后要做的是下载浏览器driver，我这里下载的是chromedriver，路径一定要在Application文件夹下。</p>
-<p>​</p>
-</li>
-<li><p>获取网站的cookie，刚开始获取cookie的时候我用的是cookiejar，后来发现不怎么好使，最后还是觉得使用selenium方便，直接模拟浏览器操作。省心又放心！</p>
-<p>​</p>
-</li>
-<li><p>获取相应标签的内容，一开始我选择用beautifulsoup来进行解析，因为要解析五个内容，测试发现使用xpath比beautifulsoup要更简单，果断选择xpath，使用html.xpath获取的文件是list形式，我在写入csv时都转换成了str型。</p>
-<p>​</p>
-</li>
-<li><p>爬虫文件需要保存为csv文件，起初怎么都保存不进去，最后发现是”w“和”wb“的问题，csv文件的话最好注意一下writerow和writerows的区别</p>
-<p>​</p>
-</li>
-<li><p>这个程序中途出现了多次TypeError,AttributeError报错提示，不过最终还是通过google&amp;baidu解决了问题。。。以下是一个简单的demo，后续完善…</p>
-</li>
+<li>因为是https的，刚开始使用requests获取源码的时候总是报SSL错误，很无奈，最终还是选择使用selenium，利用pip安装好selenium之后要做的是下载浏览器driver，我这里下载的是chromedriver，路径一定要在Application文件夹下。</li>
+</ul>
+<ul>
+<li>获取网站的cookie，刚开始获取cookie的时候我用的是cookiejar，后来发现不怎么好使，最后还是觉得使用selenium方便，直接模拟浏览器操作。省心又放心！</li>
+</ul>
+<ul>
+<li>获取相应标签的内容，一开始我选择用beautifulsoup来进行解析，因为要解析五个内容，测试发现使用xpath比beautifulsoup要更简单，果断选择xpath，使用html.xpath获取的文件是list形式，我在写入csv时都转换成了str型。</li>
+</ul>
+<ul>
+<li>爬虫文件需要保存为csv文件，起初怎么都保存不进去，最后发现是”w“和”wb“的问题，csv文件的话最好注意一下writerow和writerows的区别</li>
+</ul>
+<ul>
+<li>这个程序中途出现了多次TypeError,AttributeError报错提示，不过最终还是通过google&amp;baidu解决了问题。。。以下是一个简单的demo，后续完善…</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">doSth</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> time</span><br><span class="line">    chrome = webdriver.Chrome()</span><br><span class="line">    chrome.get(url)</span><br><span class="line">    <span class="comment">#time.sleep(5)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    __jsluid = <span class="string">'__jsluid='</span> + chrome.get_cookie(<span class="string">'__jsluid'</span>)[<span class="string">'value'</span>] + <span class="string">';'</span></span><br><span class="line">    __jsl_clearance = <span class="string">'__jsl_clearance='</span> + chrome.get_cookie(<span class="string">'__jsl_clearance'</span>)[<span class="string">'value'</span>] + <span class="string">';'</span></span><br><span class="line">    <span class="comment">#csrftoken='csrftoken='+ chrome.get_cookie('csrftoken')['value']+';'</span></span><br><span class="line"></span><br><span class="line">    chrome.quit()</span><br><span class="line"></span><br><span class="line">    headers=&#123;</span><br><span class="line">        <span class="string">"Host"</span>: <span class="string">"www.seebug.org"</span>,</span><br><span class="line">        <span class="string">"Connection"</span>: <span class="string">"close"</span>,</span><br><span class="line">        <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">        <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">"1"</span>,</span><br><span class="line">        <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36"</span>,</span><br><span class="line">        <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"</span>,</span><br><span class="line">        <span class="string">"Referer"</span>: <span class="string">"https://www.seebug.org/"</span>,</span><br><span class="line">        <span class="string">"Accept-Language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">        <span class="string">"Cookie"</span>: __jsluid + __jsl_clearance <span class="comment">#+ csrftoken</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    requests.packages.urllib3.disable_warnings() </span><br><span class="line">    res=requests.get(url,headers=headers,verify=<span class="literal">False</span>).content</span><br><span class="line">    html=etree.HTML(res)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#articles=[]</span></span><br><span class="line">    title=html.xpath(<span class="string">'//*[@id="j-vul-title"]/span/text()'</span>)</span><br><span class="line">    title_str=<span class="string">""</span>.join(title)</span><br><span class="line">    time=html.xpath(<span class="string">'//*[@id="j-vul-basic-info"]/div/div[1]/dl[2]/dd/text()'</span>)</span><br><span class="line">    time_str=<span class="string">""</span>.join(time)</span><br><span class="line">    number=html.xpath(<span class="string">'//*[@id="j-vul-basic-info"]/div/div[3]/dl[1]/dd/a/text()'</span>)</span><br><span class="line">    number_str=<span class="string">""</span>.join(number)</span><br><span class="line">    step=html.xpath(<span class="string">'//*[@id="j-vul-basic-info"]/div/div[1]/dl[4]/dd/div[1]/@data-original-title'</span>)</span><br><span class="line">    step_str=<span class="string">""</span>.join(step)</span><br><span class="line">    desc=html.xpath(<span class="string">'//*[@id="j-affix-target"]/div[2]/div[1]/section[2]/div[2]/div[2]/p[1]/text()'</span>)</span><br><span class="line">    desc_str=<span class="string">""</span>.join(desc)</span><br><span class="line">    articles.append([title_str,time_str,number_str,step_str,desc_str])</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                <span class="comment">#保存在csv文件中</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"seebug.csv"</span>,<span class="string">"w"</span>,newline=<span class="string">""</span>) <span class="keyword">as</span> f:</span><br><span class="line">        writer=csv.writer(f,dialect=(<span class="string">"excel"</span>))</span><br><span class="line">        writer.writerow([<span class="string">"标题"</span>,<span class="string">"时间"</span>,<span class="string">"编号"</span>,<span class="string">"危害级别"</span>,<span class="string">"漏洞描述"</span>])</span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> articles:</span><br><span class="line">            writer.writerow(row)</span><br><span class="line"></span><br><span class="line">articles=[]</span><br><span class="line">url=<span class="string">"https://www.seebug.org/vuldb/ssvid-"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">97210</span>,<span class="number">97213</span>):</span><br><span class="line">    url_data=url+str(i)</span><br><span class="line">    doSth(url_data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#def main(h=1,m=0):  </span></span><br><span class="line"> <span class="comment">#   while True:  </span></span><br><span class="line">  <span class="comment">#      now = datetime.datetime.now()  </span></span><br><span class="line">        <span class="comment"># print(now.hour, now.minute)  </span></span><br><span class="line">   <span class="comment">#     if now.hour == h and now.minute == m:  </span></span><br><span class="line">    <span class="comment">#        break  </span></span><br><span class="line">        <span class="comment"># 每隔60秒检测一次   </span></span><br><span class="line">     <span class="comment">#   time.sleep(60)  </span></span><br><span class="line">   <span class="comment"># doSth()#爬虫程序</span></span><br></pre></td></tr></table></figure>
 
@@ -401,7 +400,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/代码/" rel="tag"># 代码</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
