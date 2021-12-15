@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="复现环境1234Mac OS Big SurJDK-7u6commons-collections4-4.0tomcat8 Ysoserial环境和Web Server环境配置和这里的配置是一样的。 CC2复现Payload生成 Payload测试 复现成功 前置知识JavassistJavassist是用来处理java字节码的类库， java字节码一般存放在后缀名称为class的二进制文件中。每个">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java CC2链复现与分析">
+<meta property="og:url" content="elssm.github.io/2021/12/15/Java-CC2链复现与分析/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="复现环境1234Mac OS Big SurJDK-7u6commons-collections4-4.0tomcat8 Ysoserial环境和Web Server环境配置和这里的配置是一样的。 CC2复现Payload生成 Payload测试 复现成功 前置知识JavassistJavassist是用来处理java字节码的类库， java字节码一般存放在后缀名称为class的二进制文件中。每个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/1.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/2.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/3.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/4.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/5.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/6.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/7.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/8.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/9.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/10.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/11.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/12.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/13.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/14.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/15.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/16.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/17.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/18.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/19.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/20.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/21.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/22.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/23.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/24.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/25.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/26.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/27.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/28.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/29.png">
+<meta property="og:image" content="/2021/12/15/Java-CC2链复现与分析/30.png">
+<meta property="og:updated_time" content="2021-12-15T03:59:52.874Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java CC2链复现与分析">
+<meta name="twitter:description" content="复现环境1234Mac OS Big SurJDK-7u6commons-collections4-4.0tomcat8 Ysoserial环境和Web Server环境配置和这里的配置是一样的。 CC2复现Payload生成 Payload测试 复现成功 前置知识JavassistJavassist是用来处理java字节码的类库， java字节码一般存放在后缀名称为class的二进制文件中。每个">
+<meta name="twitter:image" content="/2021/12/15/Java-CC2链复现与分析/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/12/15/Java-CC2链复现与分析/">
+
+
+
+
+
+  <title>Java CC2链复现与分析 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/12/15/Java-CC2链复现与分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java CC2链复现与分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-15T09:16:42+08:00">
+                2021-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="复现环境"><a href="#复现环境" class="headerlink" title="复现环境"></a>复现环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Mac OS Big Sur</span><br><span class="line">JDK-7u6</span><br><span class="line">commons-collections4-4.0</span><br><span class="line">tomcat8</span><br></pre></td></tr></table></figure>
+<p><code>Ysoserial</code>环境和<code>Web Server</code>环境配置和<a href="http://elssm.top/2021/12/13/Ysoserial%E5%AD%A6%E4%B9%A0/#more" target="_blank" rel="noopener">这里的配置</a>是一样的。</p>
+<h4 id="CC2复现"><a href="#CC2复现" class="headerlink" title="CC2复现"></a>CC2复现</h4><h5 id="Payload生成"><a href="#Payload生成" class="headerlink" title="Payload生成"></a>Payload生成</h5><p><img src="/2021/12/15/Java-CC2链复现与分析/1.png" alt="1"></p>
+<h5 id="Payload测试"><a href="#Payload测试" class="headerlink" title="Payload测试"></a>Payload测试</h5><p><img src="/2021/12/15/Java-CC2链复现与分析/2.png" alt="2"></p>
+<p>复现成功</p>
+<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="Javassist"><a href="#Javassist" class="headerlink" title="Javassist"></a>Javassist</h5><p>Javassist是用来处理java字节码的类库， java字节码一般存放在后缀名称为class的二进制文件中。每个二进制文件都包含一个java类或者是java接口。对于Javassist有很多知识点，这里我们仅仅说几个payload中用到的一些用法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ClassPool：一个基于哈希表实现的CtClass对象容器，其中键名是类名称，值是表示该类的CtClass对象</span><br><span class="line">  常用方法如下</span><br><span class="line">  getDefault()：单例获取ClassPool，主要用来修改字节码，里面存储基于二进制文件构建的CtClass对象</span><br><span class="line">  get()：根据名称获取CtClass对象</span><br><span class="line">  makeClassInitializer：在当前类中创建一个静态代码块</span><br><span class="line">  insertBefore：在静态代码块的开头插入源代码</span><br><span class="line">CtClass：一个CtClass对象可以处理一个<span class="class"><span class="keyword">class</span>文件，这些<span class="title">CtClass</span>对象可以从<span class="title">ClassPool</span>的一些方法获得。</span></span><br><span class="line"><span class="class">  常用方法如下</span></span><br><span class="line"><span class="class">  <span class="title">writeFile</span>：将生成的类写入文件</span></span><br><span class="line"><span class="class">  <span class="title">toClass</span>：拿到生成的类</span></span><br><span class="line"><span class="class">  <span class="title">newInstance</span>：获取实例对象</span></span><br></pre></td></tr></table></figure>
+<p>举一个例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> javatest;</span><br><span class="line"><span class="keyword">import</span> javassist.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">javas</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NotFoundException, CannotCompileException, IOException, InstantiationException, IllegalAccessException </span>&#123;</span><br><span class="line">        <span class="comment">//获取ClassPool实例，主要用来修改字节码，里面存储基于二进制文件构建的CtClass对象</span></span><br><span class="line">        ClassPool pool = ClassPool.getDefault();</span><br><span class="line">        <span class="comment">//通过get方法，获取CtClass对象，将获取到的CtClass对象赋值给cc变量</span></span><br><span class="line">        <span class="comment">//ClassPool中有一张保存CtClass信息的HashTable，在该HashTable中Key为类名，value为类对应的CtClass对象</span></span><br><span class="line">        CtClass cc = pool.get(javas<span class="class">.<span class="keyword">class</span>.<span class="title">getName</span>())</span>;</span><br><span class="line">        <span class="comment">//有了CtClass实例对象，就可以处理类文件，编辑或者修改类</span></span><br><span class="line">        <span class="comment">//因为添加的内容都是完整的java源代码，因此引号要进行转义处理</span></span><br><span class="line">        String cmd = <span class="string">"java.lang.Runtime.getRuntime().exec(\"open -a calculator\");"</span>;</span><br><span class="line">        <span class="comment">//makeClassInitializer：在当前类(javas)中创建一个静态代码块</span></span><br><span class="line">        <span class="comment">//insertBefore：在静态代码块的开头插入源代码</span></span><br><span class="line">        cc.makeClassInitializer().insertBefore(cmd);</span><br><span class="line">        String randomClassName = <span class="string">"Elssm"</span> + System.nanoTime();</span><br><span class="line">        <span class="comment">//setName：设置类名，使用System.nanoTime为了不让类名重复</span></span><br><span class="line">        cc.setName(randomClassName);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//writeFile：将生成的类写入文件</span></span><br><span class="line">        cc.writeFile(<span class="string">"/Users/caoyifan/IdeaProjects/WebTest/src/javatest/"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码会在指定文件下生成一个新的字节码文件。我们发现，动态生成的类在原有类的基础上添加了静态代码块，如果我们加载这个类的话，静态代码块中的内容就会被执行。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/3.png" alt="3"></p>
+<p>现在我们通过<code>toClass</code>拿到生成的类，并通过<code>newInstance</code>获取实例对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> javatest;</span><br><span class="line"><span class="keyword">import</span> javassist.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">javas</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NotFoundException, CannotCompileException, IOException, InstantiationException, IllegalAccessException </span>&#123;</span><br><span class="line">        <span class="comment">//获取ClassPool实例，主要用来修改字节码，里面存储基于二进制文件构建的CtClass对象</span></span><br><span class="line">        ClassPool pool = ClassPool.getDefault();</span><br><span class="line">        <span class="comment">//通过get方法，获取CtClass对象，将获取到的CtClass对象赋值给cc变量</span></span><br><span class="line">        <span class="comment">//ClassPool中有一张保存CtClass信息的HashTable，在该HashTable中Key为类名，value为类对应的CtClass对象</span></span><br><span class="line">        CtClass cc = pool.get(javas<span class="class">.<span class="keyword">class</span>.<span class="title">getName</span>())</span>;</span><br><span class="line">        <span class="comment">//有了CtClass实例对象，就可以处理类文件，编辑或者修改类</span></span><br><span class="line">        <span class="comment">//因为添加的内容都是完整的java源代码，因此引号要进行转义处理</span></span><br><span class="line">        String cmd = <span class="string">"java.lang.Runtime.getRuntime().exec(\"open -a calculator\");"</span>;</span><br><span class="line">        <span class="comment">//makeClassInitializer：在当前类(javas)中创建一个静态代码块</span></span><br><span class="line">        <span class="comment">//insertBefore：在静态代码块的开头插入源代码</span></span><br><span class="line">        cc.makeClassInitializer().insertBefore(cmd);</span><br><span class="line">        String randomClassName = <span class="string">"Elssm"</span> + System.nanoTime();</span><br><span class="line">        <span class="comment">//setName：设置类名，使用System.nanoTime为了不让类名重复</span></span><br><span class="line">        cc.setName(randomClassName);</span><br><span class="line">        <span class="comment">//toClass：拿到生成的类</span></span><br><span class="line">        <span class="comment">//newInstance：获取实例对象</span></span><br><span class="line">        cc.toClass().newInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成功弹出计算器</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/4.png" alt="4"></p>
+<h5 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h5><p>PriorityQueue实际上是一个堆（不指定Comparator时默认为最小堆），队列既可以根据元素的自然顺序来排序，也可以根据 Comparator来设置排序规则。队列的头是按指定排序方式的最小元素。如果多个元素都是最小值，则头是其中一个元素。新建对象的时候可以指定一个初始容量，其容量会自动增加。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PriorityQueue优先级队列的函数定义</span><br><span class="line">add() : 在优先级队列的队尾插入元素 , 插入失败则抛出异常.</span><br><span class="line">offer() : 在优先级队列的队尾插入元素 , 插入失败则返回 <span class="keyword">null</span>.</span><br><span class="line">element() : 获取但不删除优先级队列的队首元素 , 获取失败时抛出异常.</span><br><span class="line">peek() : 获取但不删除优先级队列的队首元素 , 获取失败时返回 <span class="keyword">null</span>.</span><br><span class="line">remove : 获取且删除优先级队列的队首元素 , 获取失败时抛出异常.</span><br><span class="line">poll() : 获取且删除优先级队列的队首元素 , 获取失败时返回 <span class="keyword">null</span>.</span><br></pre></td></tr></table></figure>
+<h4 id="Ysoserial-Payload生成分析"><a href="#Ysoserial-Payload生成分析" class="headerlink" title="Ysoserial Payload生成分析"></a>Ysoserial Payload生成分析</h4><h5 id="createTemplatesImpl"><a href="#createTemplatesImpl" class="headerlink" title="createTemplatesImpl"></a>createTemplatesImpl</h5><p>在生成CC2 Payload的时候，首先执行的是<code>Gadgets.createTemplatesImpl(command)</code></p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/5.png" alt="5"></p>
+<p>在<code>createTemplatesImpl</code>方法中首先会通过<code>getProperty</code>方法获取系统属性<code>properXalan</code>的值，<code>properXalan</code>的默认属性是<code>false</code>，通过调试发现走的是下面的<code>return</code>条件。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/6.png" alt="6"></p>
+<p>跟进发现，首先获取了<code>TemplatesImpl</code>的实例对象。之后通过<code>Javassist</code>动态修改<code>StubTransletPayload</code>类。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/7.png" alt="7"></p>
+<p>接着通过<code>get</code>方法获取<code>abstTranslet</code>类，并通过<code>setSuperclass</code>将该类作为新建类的父类，因为在前面我们获取到了<code>StubTransletPayload</code>类，而<code>StubTransletPayload</code>是继承<code>abstTranslet</code>类的</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/8.png" alt="8"></p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/9.png" alt="9"></p>
+<p>通过上述<code>Javassist</code>操作，就可以将我们写的恶意代码注入到新的字节码文件中中的静态代码块部分</p>
+<p>之后通过<code>CtClass.toBytecode</code>方法获取到恶意类的字节码，并通过java反射机制将字节码填充到<code>TemplatesImpl</code>实例对象的<code>_bytecodes</code>数组中。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/10.png" alt="10"></p>
+<p>之后填充了<code>_name</code>和<code>_tfactory</code>字段，并将<code>TemplatesImpl</code>实例对象返回</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/11.png" alt="11"></p>
+<h5 id="InvokerTransformer"><a href="#InvokerTransformer" class="headerlink" title="InvokerTransformer"></a>InvokerTransformer</h5><p>返回<code>TemplatesImpl</code>实例对象之后，接着获取了<code>InvokerTransformer</code>实例对象，并做了一些初始化。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/12.png" alt="12"></p>
+<h5 id="PriorityQueue-1"><a href="#PriorityQueue-1" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h5><p>接着创建一个优先级队列，指定队列的初始容量和比较器。然后填充了两个1来占位初始化。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/13.png" alt="13"></p>
+<p>在优先级队列里，通过<code>TransformingComparator(transformer)</code>获取构造器实例对象，此时的<code>transformer</code>就是上面<code>InvokerTransformer</code>类型的<code>transformer</code>实例对象。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/14.png" alt="14"></p>
+<p>接着优先级队列每次比较的时候，都会调用比较器的<code>compare</code>方法，此时服务端就会调用<code>TransformingComparator.compare</code>方法，进而执行<code>this.transformer.transform</code>方法，这个时候就会执行<code>InvokerTransformer.transform</code>方法</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/15.png" alt="15"></p>
+<h5 id="setFieldValue"><a href="#setFieldValue" class="headerlink" title="setFieldValue"></a>setFieldValue</h5><p>继续回到CC2 Payload文件中，<code>setFieldValue</code>方法通过反射将<code>iMethodName</code>修改为<code>newTransformer</code></p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/16.png" alt="16"></p>
+<h5 id="getFieldValue"><a href="#getFieldValue" class="headerlink" title="getFieldValue"></a>getFieldValue</h5><p>接下来获取到优先级队列的实例对象，并修改了其字段值，将我们构造的恶意类注入</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/17.png" alt="17"></p>
+<p>修改之后，优先级队列会调用比较器的<code>compare</code>方法去比较<code>templates</code>和1的值，此时会调用执行<code>InvokerTransformer.transform(templates)</code>方法。此时由于<code>templates</code>是<code>TemplatesImpl</code>类型的，因此实际最后会执行<code>TemplatesImpl.newTransformer</code>方法。</p>
+<p>最后<code>Ysoserial</code>返回的优先级队列实例对象如下</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/18.png" alt="18"></p>
+<h4 id="CC2-Payload利用原理"><a href="#CC2-Payload利用原理" class="headerlink" title="CC2 Payload利用原理"></a>CC2 Payload利用原理</h4><p>通过<code>Ysoserial</code>分析可以看到Payload返回的是一个<code>PriorityQueue</code>对象。在对<code>Web Server</code>进行调试的时候，我们直接将断点打在<code>PriorityQueue</code>的<code>readObject</code>方法处。</p>
+<p><code>PriorityQueue</code>路径为<code>rt.jar.java.util.PriorityQueue</code></p>
+<h5 id="PriorityQueue-readObject"><a href="#PriorityQueue-readObject" class="headerlink" title="PriorityQueue.readObject"></a>PriorityQueue.readObject</h5><p><img src="/2021/12/15/Java-CC2链复现与分析/19.png" alt="19"></p>
+<p>在<code>readObject</code>方法中，首先通过<code>defaultReadObject</code>方法反序列化数据流。之后通过<code>readInt</code>方法读取优先级队列的长度，接着循环读取数组<code>queue</code>中的内容</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/20.png" alt="20"></p>
+<h5 id="PriorityQueue-heapify"><a href="#PriorityQueue-heapify" class="headerlink" title="PriorityQueue.heapify"></a>PriorityQueue.heapify</h5><p>之后调用<code>heapify</code>方法，将无序数组还原成优先级队列。在该方法中会循环找最后一个非叶子结点，然后倒序调用<code>siftDown</code>方法</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/21.png" alt="21"></p>
+<h5 id="PriorityQueue-siftDown"><a href="#PriorityQueue-siftDown" class="headerlink" title="PriorityQueue.siftDown"></a>PriorityQueue.siftDown</h5><p>在<code>siftDown</code>方法中，会调用<code>siftDownUsingComparator</code>方法</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/22.png" alt="22"></p>
+<h5 id="PriorityQueue-siftDownUsingComparator"><a href="#PriorityQueue-siftDownUsingComparator" class="headerlink" title="PriorityQueue.siftDownUsingComparator"></a>PriorityQueue.siftDownUsingComparator</h5><p>该方法主要用于形成最小堆</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/23.png" alt="23"></p>
+<h5 id="cc4-TransformingComparator"><a href="#cc4-TransformingComparator" class="headerlink" title="cc4.TransformingComparator"></a>cc4.TransformingComparator</h5><p>该方法会获取需要比较的变量。从而执行<code>this.transformer.transform</code>，因为我们已经将<code>this.transformer</code>指向了<code>InvokerTransformer</code>实例对象。因此会执行<code>InvokerTransformer.transform</code>方法，而<code>transform</code>中的参数就是我们传入的恶意类<code>TemplatesImpl</code></p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/24.png" alt="24"></p>
+<h5 id="InvokerTransformer-transform"><a href="#InvokerTransformer-transform" class="headerlink" title="InvokerTransformer.transform"></a>InvokerTransformer.transform</h5><p>在<code>Ysoserial</code>分析payload生成的时候我们将<code>iMethodName</code>的值改为了<code>newTransformer</code>，因此这里会反射调用<code>TemplatesImpl.newTransformer</code>方法</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/25.png" alt="25"></p>
+<h5 id="TemplatesImpl-newTransformer"><a href="#TemplatesImpl-newTransformer" class="headerlink" title="TemplatesImpl.newTransformer"></a>TemplatesImpl.newTransformer</h5><p><code>TemplatesImpl</code>路径为<code>rt.jar.com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl</code></p>
+<p>在构建<code>TemplatesImpl</code>实例对象时，会调用<code>getTransletInstance</code>方法。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/26.png" alt="26"></p>
+<h5 id="TemplatesImpl-getTransletInstance"><a href="#TemplatesImpl-getTransletInstance" class="headerlink" title="TemplatesImpl.getTransletInstance"></a>TemplatesImpl.getTransletInstance</h5><p>在<code>getTransletInstance</code>方法中，首先会判断<code>_name</code>是否为空，如果为空，直接<code>return</code>。接着会判断<code>_class</code>并进入<code>defineTransletClasses</code>方法中</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/27.png" alt="27"></p>
+<h5 id="TemplatesImpl-defineTransletClasses"><a href="#TemplatesImpl-defineTransletClasses" class="headerlink" title="TemplatesImpl.defineTransletClasses"></a>TemplatesImpl.defineTransletClasses</h5><p>该方法会对<code>_bytecodes</code>字段进行解析，最后将<code>_transletIndex</code>的值赋为0</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/28.png" alt="28"></p>
+<h5 id="newInstance"><a href="#newInstance" class="headerlink" title="newInstance"></a>newInstance</h5><p>此时的<code>_class[_transletIndex]</code>即为<code>_class[0]</code>也就是我们通过啊<code>Ysoserial</code>构造的恶意类，调用<code>newInstance</code>方法后恶意类会被加载然后被实例化，最终执行命令。</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/29.png" alt="29"></p>
+<p>完整的利用链如下图所示</p>
+<p><img src="/2021/12/15/Java-CC2链复现与分析/30.png" alt="30"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/13/Ysoserial学习/" rel="next" title="Ysoserial学习">
+                <i class="fa fa-chevron-left"></i> Ysoserial学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#复现环境"><span class="nav-number">1.</span> <span class="nav-text">复现环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CC2复现"><span class="nav-number">2.</span> <span class="nav-text">CC2复现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Payload生成"><span class="nav-number">2.1.</span> <span class="nav-text">Payload生成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Payload测试"><span class="nav-number">2.2.</span> <span class="nav-text">Payload测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前置知识"><span class="nav-number">3.</span> <span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Javassist"><span class="nav-number">3.1.</span> <span class="nav-text">Javassist</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PriorityQueue"><span class="nav-number">3.2.</span> <span class="nav-text">PriorityQueue</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ysoserial-Payload生成分析"><span class="nav-number">4.</span> <span class="nav-text">Ysoserial Payload生成分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#createTemplatesImpl"><span class="nav-number">4.1.</span> <span class="nav-text">createTemplatesImpl</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#InvokerTransformer"><span class="nav-number">4.2.</span> <span class="nav-text">InvokerTransformer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PriorityQueue-1"><span class="nav-number">4.3.</span> <span class="nav-text">PriorityQueue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#setFieldValue"><span class="nav-number">4.4.</span> <span class="nav-text">setFieldValue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getFieldValue"><span class="nav-number">4.5.</span> <span class="nav-text">getFieldValue</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CC2-Payload利用原理"><span class="nav-number">5.</span> <span class="nav-text">CC2 Payload利用原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PriorityQueue-readObject"><span class="nav-number">5.1.</span> <span class="nav-text">PriorityQueue.readObject</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PriorityQueue-heapify"><span class="nav-number">5.2.</span> <span class="nav-text">PriorityQueue.heapify</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PriorityQueue-siftDown"><span class="nav-number">5.3.</span> <span class="nav-text">PriorityQueue.siftDown</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PriorityQueue-siftDownUsingComparator"><span class="nav-number">5.4.</span> <span class="nav-text">PriorityQueue.siftDownUsingComparator</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cc4-TransformingComparator"><span class="nav-number">5.5.</span> <span class="nav-text">cc4.TransformingComparator</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#InvokerTransformer-transform"><span class="nav-number">5.6.</span> <span class="nav-text">InvokerTransformer.transform</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TemplatesImpl-newTransformer"><span class="nav-number">5.7.</span> <span class="nav-text">TemplatesImpl.newTransformer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TemplatesImpl-getTransletInstance"><span class="nav-number">5.8.</span> <span class="nav-text">TemplatesImpl.getTransletInstance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TemplatesImpl-defineTransletClasses"><span class="nav-number">5.9.</span> <span class="nav-text">TemplatesImpl.defineTransletClasses</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#newInstance"><span class="nav-number">5.10.</span> <span class="nav-text">newInstance</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
