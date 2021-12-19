@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Algorithm,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="找出数组中的第一个回文字符串12给你一个字符串数组 words ，找出并返回数组中的 第一个回文字符串 。如果不存在满足要求的字符串，返回一个 空字符串 &amp;quot;&amp;quot; 。回文字符串 的定义为：如果一个字符串正着读和反着读一样，那么该字符串就是一个 回文字符串 。 1234输入：words = [&amp;quot;abc&amp;quot;,&amp;quot;car&amp;quot;,&amp;quot;ada&amp;quot">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode第272场周赛write up">
+<meta property="og:url" content="elssm.github.io/2021/12/19/Leetcode第272场周赛write-up/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="找出数组中的第一个回文字符串12给你一个字符串数组 words ，找出并返回数组中的 第一个回文字符串 。如果不存在满足要求的字符串，返回一个 空字符串 &amp;quot;&amp;quot; 。回文字符串 的定义为：如果一个字符串正着读和反着读一样，那么该字符串就是一个 回文字符串 。 1234输入：words = [&amp;quot;abc&amp;quot;,&amp;quot;car&amp;quot;,&amp;quot;ada&amp;quot">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-12-19T05:24:33.028Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode第272场周赛write up">
+<meta name="twitter:description" content="找出数组中的第一个回文字符串12给你一个字符串数组 words ，找出并返回数组中的 第一个回文字符串 。如果不存在满足要求的字符串，返回一个 空字符串 &amp;quot;&amp;quot; 。回文字符串 的定义为：如果一个字符串正着读和反着读一样，那么该字符串就是一个 回文字符串 。 1234输入：words = [&amp;quot;abc&amp;quot;,&amp;quot;car&amp;quot;,&amp;quot;ada&amp;quot">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/12/19/Leetcode第272场周赛write-up/">
+
+
+
+
+
+  <title>Leetcode第272场周赛write up | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/12/19/Leetcode第272场周赛write-up/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Leetcode第272场周赛write up</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-19T12:42:32+08:00">
+                2021-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="找出数组中的第一个回文字符串"><a href="#找出数组中的第一个回文字符串" class="headerlink" title="找出数组中的第一个回文字符串"></a>找出数组中的第一个回文字符串</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">给你一个字符串数组 words ，找出并返回数组中的 第一个回文字符串 。如果不存在满足要求的字符串，返回一个 空字符串 &quot;&quot; 。</span><br><span class="line">回文字符串 的定义为：如果一个字符串正着读和反着读一样，那么该字符串就是一个 回文字符串 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;abc&quot;,&quot;car&quot;,&quot;ada&quot;,&quot;racecar&quot;,&quot;cool&quot;]</span><br><span class="line">输出：&quot;ada&quot;</span><br><span class="line">解释：第一个回文字符串是 &quot;ada&quot; 。</span><br><span class="line">注意，&quot;racecar&quot; 也是回文字符串，但它不是第一个。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;notapalindrome&quot;,&quot;racecar&quot;]</span><br><span class="line">输出：&quot;racecar&quot;</span><br><span class="line">解释：第一个也是唯一一个回文字符串是 &quot;racecar&quot; 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：words = [&quot;def&quot;,&quot;ghi&quot;]</span><br><span class="line">输出：&quot;&quot;</span><br><span class="line">解释：不存在回文字符串，所以返回一个空字符串。</span><br></pre></td></tr></table></figure>
+<p>这道没什么说的，依次遍历每一个字符串取反后进行比较，如果相等直接返回</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">firstPalindrome</span><span class="params">(self, words)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type words: List[str]</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">            r_word = word[::<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">if</span> r_word == word:</span><br><span class="line">                <span class="keyword">return</span> word</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span></span><br></pre></td></tr></table></figure>
+<h4 id="向字符串添加空格"><a href="#向字符串添加空格" class="headerlink" title="向字符串添加空格"></a>向字符串添加空格</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">给你一个下标从 0 开始的字符串 s ，以及一个下标从 0 开始的整数数组 spaces。</span><br><span class="line">数组 spaces 描述原字符串中需要添加空格的下标。每个空格都应该插入到给定索引处的字符值之前。</span><br><span class="line">例如，s = &quot;EnjoyYourCoffee&quot; 且 spaces = [5, 9] ，那么我们需要在 &apos;Y&apos; 和 &apos;C&apos; 之前添加空格，这两个字符分别位于下标 5 和下标 9 。因此，最终得到 &quot;Enjoy Your Coffee&quot; 。</span><br><span class="line">请你添加空格，并返回修改后的字符串。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;LeetcodeHelpsMeLearn&quot;, spaces = [8,13,15]</span><br><span class="line">输出：&quot;Leetcode Helps Me Learn&quot;</span><br><span class="line">解释：</span><br><span class="line">下标 8、13 和 15 对应 &quot;LeetcodeHelpsMeLearn&quot; 中加粗斜体字符。</span><br><span class="line">接着在这些字符前添加空格。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;icodeinpython&quot;, spaces = [1,5,7,9]</span><br><span class="line">输出：&quot;i code in py thon&quot;</span><br><span class="line">解释：</span><br><span class="line">下标 1、5、7 和 9 对应 &quot;icodeinpython&quot; 中加粗斜体字符。</span><br><span class="line">接着在这些字符前添加空格。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;spacing&quot;, spaces = [0,1,2,3,4,5,6]</span><br><span class="line">输出：&quot; s p a c i n g&quot;</span><br><span class="line">解释：</span><br><span class="line">字符串的第一个字符前可以添加空格。</span><br></pre></td></tr></table></figure>
+<p>这道题的思路是：根据要插入空格的地方将字符串进行拆分，将拆分后的字符串通过空格连接即可。这里要注意<code>spaces</code>第一个位置和最后一个位置的处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addSpaces</span><span class="params">(self, s, spaces)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type spaces: List[int]</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(spaces)):</span><br><span class="line">          //处理spaces第一个位置</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                res.append(s[<span class="number">0</span>:spaces[<span class="number">0</span>]])</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res.append(s[spaces[i<span class="number">-1</span>]:spaces[i]])</span><br><span class="line">        //处理spaces最后一个位置</span><br><span class="line">        <span class="keyword">if</span> spaces[<span class="number">-1</span>]&lt;len(s):</span><br><span class="line">            res.append(s[spaces[<span class="number">-1</span>]:])</span><br><span class="line">        <span class="keyword">return</span> <span class="string">" "</span>.join(res)</span><br></pre></td></tr></table></figure>
+<h4 id="股票平滑下跌阶段的数目"><a href="#股票平滑下跌阶段的数目" class="headerlink" title="股票平滑下跌阶段的数目"></a>股票平滑下跌阶段的数目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给你一个整数数组 prices ，表示一支股票的历史每日股价，其中 prices[i] 是这支股票第 i 天的价格。</span><br><span class="line">一个 平滑下降的阶段 定义为：对于 连续一天或者多天 ，每日股价都比 前一日股价恰好少 1 ，这个阶段第一天的股价没有限制。</span><br><span class="line">请你返回 平滑下降阶段 的数目。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：prices = [3,2,1,4]</span><br><span class="line">输出：7</span><br><span class="line">解释：总共有 7 个平滑下降阶段：</span><br><span class="line">[3], [2], [1], [4], [3,2], [2,1] 和 [3,2,1]</span><br><span class="line">注意，仅一天按照定义也是平滑下降阶段。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：prices = [8,6,7,7]</span><br><span class="line">输出：4</span><br><span class="line">解释：总共有 4 个连续平滑下降阶段：[8], [6], [7] 和 [7]</span><br><span class="line">由于 8 - 6 ≠ 1 ，所以 [8,6] 不是平滑下降阶段。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：prices = [1]</span><br><span class="line">输出：1</span><br><span class="line">解释：总共有 1 个平滑下降阶段：[1]</span><br></pre></td></tr></table></figure>
+<p>这道题思路也比较简单，首先我们考虑一下，对于连续1天，则可以得到平滑下降的阶段是1个，对于连续2天，则可以得到平滑下降的阶段是3个，假如<code>prices=[2,1]</code>，则阶段值为<code>[2],[1],[2,1]</code>，对于连续3天，则可以得到平滑下降的阶段是6个，假如<code>prices=[3,2,1]</code>，则阶段值为<code>[3],[2],[1],[3,2],[2,1],[3,2,1]</code>，这样我们就可以找到规律，对于连续n天，平滑下降的阶段是<code>1+2+...+n</code>的值。</p>
+<p>所以我们可以依次遍历<code>prices</code>中的值，找到每一个连续平滑阶段，并根据每一个阶段中的值计算数目。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDescentPeriods</span><span class="params">(self, prices)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type prices: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> len(prices) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        res = []</span><br><span class="line">        tmp=[]</span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        i=<span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; len(prices):</span><br><span class="line">          //如果前一个比后一个多<span class="number">1</span>，则他们属于一个平滑阶段</span><br><span class="line">            <span class="keyword">if</span> prices[i<span class="number">-1</span>]-prices[i] == <span class="number">1</span>:</span><br><span class="line">                tmp.append(prices[i<span class="number">-1</span>])</span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">              //这里因为前一个值还没有加入到tmp中，因此先添加前一个值</span><br><span class="line">                tmp.append(prices[i<span class="number">-1</span>])</span><br><span class="line">                ////先把之前的平滑阶段保存起来</span><br><span class="line">                res.append(tmp)</span><br><span class="line">                //判断后续的平滑阶段，因此tmp置为空</span><br><span class="line">                tmp=[]</span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> tmp:</span><br><span class="line">          //如果tmp中有值，那说明最后一段没有加入到res中</span><br><span class="line">            res.append(tmp)</span><br><span class="line">        //如果prices中最后一个值比倒数第二个值小<span class="number">1</span>，则最后一个值属于倒数第二个tmp平滑阶段</span><br><span class="line">        <span class="keyword">if</span> prices[<span class="number">-2</span>] - prices[<span class="number">-1</span>] == <span class="number">1</span>:</span><br><span class="line">            res[<span class="number">-1</span>].append(prices[<span class="number">-1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">          //否则的话最后一个值单独组成一个平滑阶段</span><br><span class="line">            res.append([prices[<span class="number">-1</span>]])</span><br><span class="line">        <span class="keyword">for</span> r <span class="keyword">in</span> res:</span><br><span class="line">          //计算累加和</span><br><span class="line">          result += (<span class="number">1</span>+len(r))*len(r)/<span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h4 id="使数组-K-递增的最少操作次数"><a href="#使数组-K-递增的最少操作次数" class="headerlink" title="使数组 K 递增的最少操作次数"></a>使数组 K 递增的最少操作次数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">给你一个下标从 0 开始包含 n 个正整数的数组 arr ，和一个正整数 k 。</span><br><span class="line">如果对于每个满足 k &lt;= i &lt;= n-1 的下标 i ，都有 arr[i-k] &lt;= arr[i] ，那么我们称 arr 是 K 递增 的。</span><br><span class="line">比方说，arr = [4, 1, 5, 2, 6, 2] 对于 k = 2 是 K 递增的，因为：</span><br><span class="line">arr[0] &lt;= arr[2] (4 &lt;= 5)</span><br><span class="line">arr[1] &lt;= arr[3] (1 &lt;= 2)</span><br><span class="line">arr[2] &lt;= arr[4] (5 &lt;= 6)</span><br><span class="line">arr[3] &lt;= arr[5] (2 &lt;= 2)</span><br><span class="line">但是，相同的数组 arr 对于 k = 1 不是 K 递增的（因为 arr[0] &gt; arr[1]），对于 k = 3 也不是 K 递增的（因为 arr[0] &gt; arr[3] ）。</span><br><span class="line">每一次 操作 中，你可以选择一个下标 i 并将 arr[i] 改成任意 正整数。</span><br><span class="line">请你返回对于给定的 k ，使数组变成 K 递增的 最少操作次数 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [5,4,3,2,1], k = 1</span><br><span class="line">输出：4</span><br><span class="line">解释：</span><br><span class="line">对于 k = 1 ，数组最终必须变成非递减的。</span><br><span class="line">可行的 K 递增结果数组为 [5,6,7,8,9]，[1,1,1,1,1]，[2,2,3,4,4] 。它们都需要 4 次操作。</span><br><span class="line">次优解是将数组变成比方说 [6,7,8,9,10] ，因为需要 5 次操作。</span><br><span class="line">显然我们无法使用少于 4 次操作将数组变成 K 递增的。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [4,1,5,2,6,2], k = 2</span><br><span class="line">输出：0</span><br><span class="line">解释：</span><br><span class="line">这是题目描述中的例子。</span><br><span class="line">对于每个满足 2 &lt;= i &lt;= 5 的下标 i ，有 arr[i-2] &lt;= arr[i] 。</span><br><span class="line">由于给定数组已经是 K 递增的，我们不需要进行任何操作。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [4,1,5,2,6,2], k = 3</span><br><span class="line">输出：2</span><br><span class="line">解释：</span><br><span class="line">下标 3 和 5 是仅有的 3 &lt;= i &lt;= 5 且不满足 arr[i-3] &lt;= arr[i] 的下标。</span><br><span class="line">将数组变成 K 递增的方法之一是将 arr[3] 变为 4 ，且将 arr[5] 变成 5 。</span><br><span class="line">数组变为 [4,1,5,4,6,5] 。</span><br><span class="line">可能有其他方法将数组变为 K 递增的，但没有任何一种方法需要的操作次数小于 2 次。</span><br></pre></td></tr></table></figure>
+<p>这道题暂时没啥思路。。。。🐶</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/15/Java-CC2链复现与分析/" rel="next" title="Java CC2链复现与分析">
+                <i class="fa fa-chevron-left"></i> Java CC2链复现与分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#找出数组中的第一个回文字符串"><span class="nav-number">1.</span> <span class="nav-text">找出数组中的第一个回文字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向字符串添加空格"><span class="nav-number">2.</span> <span class="nav-text">向字符串添加空格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#股票平滑下跌阶段的数目"><span class="nav-number">3.</span> <span class="nav-text">股票平滑下跌阶段的数目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使数组-K-递增的最少操作次数"><span class="nav-number">4.</span> <span class="nav-text">使数组 K 递增的最少操作次数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
