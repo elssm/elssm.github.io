@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Algorithm,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="反转两次的数字123反转 一个整数意味着倒置它的所有位。例如，反转 2021 得到 1202 。反转 12300 得到 321 ，不保留前导零 。给你一个整数 num ，反转 num 得到 reversed1 ，接着反转 reversed1 得到 reversed2 。如果 reversed2 等于 num ，返回 true ；否则，返回 false 。 123输入：num = 526输出：tru">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode第273场周赛write up">
+<meta property="og:url" content="elssm.github.io/2021/12/26/Leetcode第273场周赛write-up/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="反转两次的数字123反转 一个整数意味着倒置它的所有位。例如，反转 2021 得到 1202 。反转 12300 得到 321 ，不保留前导零 。给你一个整数 num ，反转 num 得到 reversed1 ，接着反转 reversed1 得到 reversed2 。如果 reversed2 等于 num ，返回 true ；否则，返回 false 。 123输入：num = 526输出：tru">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/12/26/Leetcode第273场周赛write-up/1.png">
+<meta property="og:image" content="/2021/12/26/Leetcode第273场周赛write-up/2.png">
+<meta property="og:updated_time" content="2021-12-26T09:00:20.422Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode第273场周赛write up">
+<meta name="twitter:description" content="反转两次的数字123反转 一个整数意味着倒置它的所有位。例如，反转 2021 得到 1202 。反转 12300 得到 321 ，不保留前导零 。给你一个整数 num ，反转 num 得到 reversed1 ，接着反转 reversed1 得到 reversed2 。如果 reversed2 等于 num ，返回 true ；否则，返回 false 。 123输入：num = 526输出：tru">
+<meta name="twitter:image" content="/2021/12/26/Leetcode第273场周赛write-up/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/12/26/Leetcode第273场周赛write-up/">
+
+
+
+
+
+  <title>Leetcode第273场周赛write up | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/12/26/Leetcode第273场周赛write-up/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Leetcode第273场周赛write up</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-26T16:12:20+08:00">
+                2021-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="反转两次的数字"><a href="#反转两次的数字" class="headerlink" title="反转两次的数字"></a>反转两次的数字</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">反转 一个整数意味着倒置它的所有位。</span><br><span class="line">例如，反转 2021 得到 1202 。反转 12300 得到 321 ，不保留前导零 。</span><br><span class="line">给你一个整数 num ，反转 num 得到 reversed1 ，接着反转 reversed1 得到 reversed2 。如果 reversed2 等于 num ，返回 true ；否则，返回 false 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：num = 526</span><br><span class="line">输出：true</span><br><span class="line">解释：反转 num 得到 625 ，接着反转 625 得到 526 ，等于 num 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：num = 1800</span><br><span class="line">输出：false</span><br><span class="line">解释：反转 num 得到 81 ，接着反转 81 得到 18 ，不等于 num 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：num = 0</span><br><span class="line">输出：true</span><br><span class="line">解释：反转 num 得到 0 ，接着反转 0 得到 0 ，等于 num 。</span><br></pre></td></tr></table></figure>
+<p>这道题分两种情况，最后一位是0和最后一位不是0。</p>
+<p>如果最后一位是不是0，直接返回True</p>
+<p>如果最后一位是0，分这个数是0还是其他数字。如果这个数是0，直接回返True，如果这个数不是0，直接返回False</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isSameAfterReversals</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type num: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span> num%<span class="number">10</span>==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h4 id="执行所有后缀指令"><a href="#执行所有后缀指令" class="headerlink" title="执行所有后缀指令"></a>执行所有后缀指令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">现有一个 n x n 大小的网格，左上角单元格坐标 (0, 0) ，右下角单元格坐标 (n - 1, n - 1) 。给你整数 n 和一个整数数组 startPos ，其中 startPos = [startrow, startcol] 表示机器人最开始在坐标为 (startrow, startcol) 的单元格上。</span><br><span class="line">另给你一个长度为 m 、下标从 0 开始的字符串 s ，其中 s[i] 是对机器人的第 i 条指令：&apos;L&apos;（向左移动），&apos;R&apos;（向右移动），&apos;U&apos;（向上移动）和 &apos;D&apos;（向下移动）。</span><br><span class="line">机器人可以从 s 中的任一第 i 条指令开始执行。它将会逐条执行指令直到 s 的末尾，但在满足下述条件之一时，机器人将会停止：</span><br><span class="line">下一条指令将会导致机器人移动到网格外。</span><br><span class="line">没有指令可以执行。</span><br><span class="line">返回一个长度为 m 的数组 answer ，其中 answer[i] 是机器人从第 i 条指令 开始 ，可以执行的指令数目。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入：n = 3, startPos = [0,1], s = &quot;RRDDLU&quot;</span><br><span class="line">输出：[1,5,4,3,1,0]</span><br><span class="line">解释：机器人从 startPos 出发，并从第 i 条指令开始执行：</span><br><span class="line">- 0: &quot;RRDDLU&quot; 在移动到网格外之前，只能执行一条 &quot;R&quot; 指令。</span><br><span class="line">- 1:  &quot;RDDLU&quot; 可以执行全部五条指令，机器人仍在网格内，最终到达 (0, 0) 。</span><br><span class="line">- 2:   &quot;DDLU&quot; 可以执行全部四条指令，机器人仍在网格内，最终到达 (0, 0) 。</span><br><span class="line">- 3:    &quot;DLU&quot; 可以执行全部三条指令，机器人仍在网格内，最终到达 (0, 0) 。</span><br><span class="line">- 4:     &quot;LU&quot; 在移动到网格外之前，只能执行一条 &quot;L&quot; 指令。</span><br><span class="line">- 5:      &quot;U&quot; 如果向上移动，将会移动到网格外。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：n = 2, startPos = [1,1], s = &quot;LURD&quot;</span><br><span class="line">输出：[4,1,0,0]</span><br><span class="line">解释：</span><br><span class="line">- 0: &quot;LURD&quot;</span><br><span class="line">- 1:  &quot;URD&quot;</span><br><span class="line">- 2:   &quot;RD&quot;</span><br><span class="line">- 3:    &quot;D&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n = 1, startPos = [0,0], s = &quot;LRUD&quot;</span><br><span class="line">输出：[0,0,0,0]</span><br><span class="line">解释：无论机器人从哪条指令开始执行，都会移动到网格外。</span><br></pre></td></tr></table></figure>
+<p>这道题，拿到手，我就直接上<code>if else</code>。分别对上下左右进行边界判断，如果字符串最终走完了，那么说明该字符串的指令都可以执行，如果执行到一半退出了，那么说明越界了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">executeInstructions</span><span class="params">(self, n, startPos, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :type startPos: List[int]</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">          	<span class="comment">#flag用来标记是否在字符串中间退出</span></span><br><span class="line">            flag = <span class="number">1</span></span><br><span class="line">            tmpPos = startPos[:]</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(i, len(s)):</span><br><span class="line">                <span class="keyword">if</span> s[j] == <span class="string">'L'</span>:</span><br><span class="line">                    tmpPos[<span class="number">1</span>] -= <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> tmpPos[<span class="number">1</span>] &lt; <span class="number">0</span>:</span><br><span class="line">                        res.append(j-i)</span><br><span class="line">                        flag = <span class="number">0</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">elif</span> s[j] == <span class="string">'R'</span>:</span><br><span class="line">                    tmpPos[<span class="number">1</span>] += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> tmpPos[<span class="number">1</span>] &gt;= n:</span><br><span class="line">                        res.append(j-i)</span><br><span class="line">                        flag = <span class="number">0</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">elif</span> s[j] == <span class="string">'U'</span>:</span><br><span class="line">                    tmpPos[<span class="number">0</span>] -= <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> tmpPos[<span class="number">0</span>] &lt; <span class="number">0</span>:</span><br><span class="line">                        res.append(j-i)</span><br><span class="line">                        flag = <span class="number">0</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                <span class="keyword">elif</span> s[j] == <span class="string">'D'</span>:</span><br><span class="line">                    tmpPos[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> tmpPos[<span class="number">0</span>] &gt;= n:</span><br><span class="line">                        res.append(j-i)</span><br><span class="line">                        flag = <span class="number">0</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">if</span> flag:</span><br><span class="line">                res.append(len(s) - i)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p>做第三题之前，我们先来做一下<code>Leetcode</code>1685题，第三题和这道题类似。</p>
+<h4 id="有序数组中差绝对值之和"><a href="#有序数组中差绝对值之和" class="headerlink" title="有序数组中差绝对值之和"></a>有序数组中差绝对值之和</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给你一个 非递减 有序整数数组 nums 。</span><br><span class="line">请你建立并返回一个整数数组 result，它跟 nums 长度相同，且result[i] 等于 nums[i] 与数组中所有其他元素差的绝对值之和。</span><br><span class="line">换句话说， result[i] 等于 sum(|nums[i]-nums[j]|) ，其中 0 &lt;= j &lt; nums.length 且 j != i （下标从 0 开始）。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,3,5]</span><br><span class="line">输出：[4,3,5]</span><br><span class="line">解释：假设数组下标从 0 开始，那么</span><br><span class="line">result[0] = |2-2| + |2-3| + |2-5| = 0 + 1 + 3 = 4，</span><br><span class="line">result[1] = |3-2| + |3-3| + |3-5| = 1 + 0 + 2 = 3，</span><br><span class="line">result[2] = |5-2| + |5-3| + |5-5| = 3 + 2 + 0 = 5。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,4,6,8,10]</span><br><span class="line">输出：[24,15,13,15,21]</span><br></pre></td></tr></table></figure>
+<p>初看这道题，我眼前一亮，一上来就是一个双重循环。多么美妙的手法啊！写完之后，执行代码没有问题，点击提交，多么优雅！过了三秒，如下图所示，我知道我大意了。</p>
+<p><img src="/2021/12/26/Leetcode第273场周赛write-up/1.png" alt="1"></p>
+<p>思索数分钟后，我点击了<code>相关标签</code>这个选项，试图寻找一丝灵感。相关标签里写到了三个大字，前缀和。我恍然大悟。接下来，我将通过如下的思路来进行分析。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">解题思路：</span><br><span class="line">        因为是有序排列，因此后一个减去前一个肯定是正数，无论是否加绝对值</span><br><span class="line">        考虑nums = 2 3 5 6这四个数</span><br><span class="line">        res1 = |2-2|+|2-3|+|2-5|+|2-6|</span><br><span class="line">        从第二个绝对值开始，结果都要取反，不考虑相等的值</span><br><span class="line">        将res1改为</span><br><span class="line">        res1 = 2-2+3-2+5-2+6-2 = sum(nums)-2*len(nums)</span><br><span class="line">        </span><br><span class="line">        res2 = |3-2|+|3-3|+|3-5|+|3-6|</span><br><span class="line">        从第三个绝对值开始，结果都要取反，不考虑相等的值</span><br><span class="line">        将res2改为</span><br><span class="line">        res2 = 3-2+3-3+5-3+6-3，其中为了凑到sum(res1)</span><br><span class="line">        我们将 3-2 凑成 (2-3)+(3-2)*2</span><br><span class="line">        则res2 = sum(nums)-3*len(nums) + (3-2)*2</span><br><span class="line">        </span><br><span class="line">        res3 = |5-2|+|5-3|+|5-5|+|5-6|</span><br><span class="line">        从第四个绝对值开始，结果都要取反，不考虑相等的值</span><br><span class="line">        将res3改为</span><br><span class="line">        res3 = 5-2+5-3+5-5+6-5，其中为了凑到sum(res1)</span><br><span class="line">        我们将 5-2+5-3 凑成 (2-5+3-5)+(5-2+5-3)*2</span><br><span class="line">        则res2 = sum(nums)-5*len(nums) + (5-2+5-3)*2</span><br><span class="line">        </span><br><span class="line">        res4 = |6-2|+|6-3|+|6-5|+|6-6|</span><br><span class="line">        将res4改为</span><br><span class="line">        res4 = 6-2+6-3+6-5+6-6，其中为了凑到sum(res1)</span><br><span class="line">        我们将 6-2+6-3+6-5 凑成 (2-6+3-6+5-6)+(6-2+6-3+6-5)*2</span><br><span class="line">        则res2 = sum(nums)-6*len(nums) + (6-2+6-3+6-5)*2</span><br><span class="line">        </span><br><span class="line">        通过上述分析我们最终可以得到第i个数的结果为</span><br><span class="line">        res[i] = (sum(nums)-nums[i]*len(nums)+(nums[i]*i - sum(1...i))*2</span><br></pre></td></tr></table></figure>
+<p>如果你看懂了上面的分析过程，那么代码写起来将会非常容易。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getSumAbsoluteDifferences</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        res = []</span><br><span class="line">        n = len(nums)</span><br><span class="line">        sums = sum(nums)</span><br><span class="line">        tmp_sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">            res.append(sums - nums[i] * n + (nums[i] * i - tmp_sum) * <span class="number">2</span>)</span><br><span class="line">            tmp_sum += nums[i]</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p>现在让我们回到本周周赛的第三题</p>
+<h4 id="相同元素的间隔之和"><a href="#相同元素的间隔之和" class="headerlink" title="相同元素的间隔之和"></a>相同元素的间隔之和</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">给你一个下标从 0 开始、由 n 个整数组成的数组 arr 。</span><br><span class="line">arr 中两个元素的间隔定义为它们下标之间的 绝对差 。更正式地，arr[i]和arr[j] 之间的间隔是 |i - j|。</span><br><span class="line">返回一个长度为 n 的数组 intervals ，其中 intervals[i] 是 arr[i] 和 arr 中每个相同元素（与 arr[i] 的值相同）的 间隔之和 。</span><br><span class="line">注意：|x| 是 x 的绝对值。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [2,1,3,1,2,3,3]</span><br><span class="line">输出：[4,2,7,2,4,4,5]</span><br><span class="line">解释：</span><br><span class="line">- 下标 0 ：另一个 2 在下标 4 ，|0 - 4| = 4</span><br><span class="line">- 下标 1 ：另一个 1 在下标 3 ，|1 - 3| = 2</span><br><span class="line">- 下标 2 ：另两个 3 在下标 5 和 6 ，|2 - 5| + |2 - 6| = 7</span><br><span class="line">- 下标 3 ：另一个 1 在下标 1 ，|3 - 1| = 2</span><br><span class="line">- 下标 4 ：另一个 2 在下标 0 ，|4 - 0| = 4</span><br><span class="line">- 下标 5 ：另两个 3 在下标 2 和 6 ，|5 - 2| + |5 - 6| = 4</span><br><span class="line">- 下标 6 ：另两个 3 在下标 2 和 5 ，|6 - 2| + |6 - 5| = 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：arr = [10,5,10,10]</span><br><span class="line">输出：[5,0,3,4]</span><br><span class="line">解释：</span><br><span class="line">- 下标 0 ：另两个 10 在下标 2 和 3 ，|0 - 2| + |0 - 3| = 5</span><br><span class="line">- 下标 1 ：只有这一个 5 在数组中，所以到相同元素的间隔之和是 0</span><br><span class="line">- 下标 2 ：另两个 10 在下标 0 和 3 ，|2 - 0| + |2 - 3| = 3</span><br><span class="line">- 下标 3 ：另两个 10 在下标 0 和 2 ，|3 - 0| + |3 - 2| = 4</span><br></pre></td></tr></table></figure>
+<p>现在再看这道题，多么熟悉！由于我之前并没有做过1685这道题，所以我早上比赛的时候一脸懵逼，但是还是硬着头皮写了一下。我先讲一下我没有做1685这道题之前做这个题的思路。</p>
+<ul>
+<li>首先我肯定需要分组，按照相同的数字将他们的下标分在一组。</li>
+<li>其次针对每一组数我都需要计算他们各自和组里其他数的绝对值之和。</li>
+</ul>
+<p>于是我写了如下代码，其中我通过字典的key来保存数字，value来保存数字的下标。之后对字典的value进行遍历，去计算组内每个数和其他数之间的绝对值之和。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDistances</span><span class="params">(self, arr)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type arr: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        d = &#123;&#125;</span><br><span class="line">        res = [<span class="number">0</span>] * len(arr)</span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(arr)):</span><br><span class="line">            <span class="keyword">if</span> arr[i] <span class="keyword">not</span> <span class="keyword">in</span> d.keys():</span><br><span class="line">                d[arr[i]] = [i]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                d[arr[i]].append(i)</span><br><span class="line">        print(d)</span><br><span class="line">        <span class="keyword">for</span> value <span class="keyword">in</span> d.values():</span><br><span class="line">            <span class="keyword">for</span> v <span class="keyword">in</span> value:</span><br><span class="line">                s = <span class="number">0</span></span><br><span class="line">                <span class="keyword">for</span> r <span class="keyword">in</span> value:</span><br><span class="line">                    s+=abs(v-r)</span><br><span class="line">                res[v] = s</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<p>最终还是超时了。。。。。</p>
+<p>当我做了1685这道题之后，我明白了我需要改进的地方。对于字典分组这一块还是不需要改变的，只需要改进后面计算绝对值之和。改进后的代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDistances</span><span class="params">(self, arr)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type arr: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        d = &#123;&#125;</span><br><span class="line">        res = [<span class="number">0</span>] * len(arr)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(arr)):</span><br><span class="line">            <span class="keyword">if</span> arr[i] <span class="keyword">not</span> <span class="keyword">in</span> d.keys():</span><br><span class="line">                d[arr[i]] = [i]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                d[arr[i]].append(i)</span><br><span class="line">        <span class="keyword">for</span> nums <span class="keyword">in</span> d.values():</span><br><span class="line">            res = []</span><br><span class="line">            n = len(nums)</span><br><span class="line">            sums = sum(nums)</span><br><span class="line">            tmp_sum = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">                res.append(sums - nums[i] * n + (nums[i] * i - tmp_sum) * <span class="number">2</span>)</span><br><span class="line">                tmp_sum += nums[i]</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">                result[nums[i]] = res[i]</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>最终还是超时了。。。。。</p>
+<p>我突然感觉眼前一片黑暗，这特么也能超时？？？于是我打算优化一下前面字典分组这一块，优化代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDistances</span><span class="params">(self, arr)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type arr: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        d = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i,v <span class="keyword">in</span> enumerate(arr):</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">not</span> <span class="keyword">in</span> d.keys():</span><br><span class="line">                d[v] = [i]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                d[v].append(i)</span><br><span class="line">        result = [<span class="number">0</span>] * len(arr)</span><br><span class="line">        <span class="keyword">for</span> nums <span class="keyword">in</span> d.values():</span><br><span class="line">            res = []</span><br><span class="line">            n = len(nums)</span><br><span class="line">            sums = sum(nums)</span><br><span class="line">            tmp_sum = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">                res.append(sums - nums[i] * n + (nums[i] * i - tmp_sum) * <span class="number">2</span>)</span><br><span class="line">                tmp_sum += nums[i]</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">                result[nums[i]] = res[i]</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>梅开三度，还是超时。。。于是我看了一下题解是怎么写的。其中有一个<code>python</code>的解法跟我这个差不太多，我借用了一下人家对于字典分组这块的写法，最终代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getDistances</span><span class="params">(self, arr)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type arr: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        </span><br><span class="line">        d = collections.defaultdict(list)</span><br><span class="line">        ans = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i , v <span class="keyword">in</span> enumerate(arr):</span><br><span class="line">          d[v].append(i)</span><br><span class="line">        result = [<span class="number">0</span>] * len(arr)</span><br><span class="line">        <span class="keyword">for</span> nums <span class="keyword">in</span> d.values():</span><br><span class="line">            res = []</span><br><span class="line">            n = len(nums)</span><br><span class="line">            sums = sum(nums)</span><br><span class="line">            tmp_sum = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">                res.append(sums - nums[i] * n + (nums[i] * i - tmp_sum) * <span class="number">2</span>)</span><br><span class="line">                tmp_sum += nums[i]</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):</span><br><span class="line">                result[nums[i]] = res[i]</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>终于通过了😭😭😭，特么的，同样都是字典，为啥原生的字典和<code>collections</code>模块中的字典差距就这么大呢。。。</p>
+<p><img src="/2021/12/26/Leetcode第273场周赛write-up/2.png" alt="2"></p>
+<h4 id="还原原数组"><a href="#还原原数组" class="headerlink" title="还原原数组"></a>还原原数组</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Alice 有一个下标从 0 开始的数组 arr ，由 n 个正整数组成。她会选择一个任意的 正整数 k 并按下述方式创建两个下标从 0 开始的新整数数组 lower 和 higher ：</span><br><span class="line">对每个满足 0 &lt;= i &lt; n 的下标 i ，lower[i] = arr[i] - k</span><br><span class="line">对每个满足 0 &lt;= i &lt; n 的下标 i ，higher[i] = arr[i] + k</span><br><span class="line">不幸地是，Alice 丢失了全部三个数组。但是，她记住了在数组 lower 和 higher 中出现的整数，但不知道每个整数属于哪个数组。请你帮助 Alice 还原原数组。</span><br><span class="line">给你一个由 2n 个整数组成的整数数组 nums ，其中 恰好 n 个整数出现在 lower ，剩下的出现在 higher ，还原并返回 原数组 arr 。如果出现答案不唯一的情况，返回 任一 有效数组。</span><br><span class="line">注意：生成的测试用例保证存在 至少一个 有效数组 arr 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,10,6,4,8,12]</span><br><span class="line">输出：[3,7,11]</span><br><span class="line">解释：</span><br><span class="line">如果 arr = [3,7,11] 且 k = 1 ，那么 lower = [2,6,10] 且 higher = [4,8,12] 。</span><br><span class="line">组合 lower 和 higher 得到 [2,6,10,4,8,12] ，这是 nums 的一个排列。</span><br><span class="line">另一个有效的数组是 arr = [5,7,9] 且 k = 3 。在这种情况下，lower = [2,4,6] 且 higher = [8,10,12] 。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,1,3,3]</span><br><span class="line">输出：[2,2]</span><br><span class="line">解释：</span><br><span class="line">如果 arr = [2,2] 且 k = 1 ，那么 lower = [1,1] 且 higher = [3,3] 。</span><br><span class="line">组合 lower 和 higher 得到 [1,1,3,3] ，这是 nums 的一个排列。</span><br><span class="line">注意，数组不能是 [1,3] ，因为在这种情况下，获得 [1,1,3,3] 唯一可行的方案是 k = 0 。</span><br><span class="line">这种方案是无效的，k 必须是一个正整数。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [5,435]</span><br><span class="line">输出：[220]</span><br><span class="line">解释：</span><br><span class="line">唯一可行的组合是 arr = [220] 且 k = 215 。在这种情况下，lower = [5] 且 higher = [435] 。</span><br></pre></td></tr></table></figure>
+<p>这道题嘛！告辞。。。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/19/Leetcode第272场周赛write-up/" rel="next" title="Leetcode第272场周赛write up">
+                <i class="fa fa-chevron-left"></i> Leetcode第272场周赛write up
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#反转两次的数字"><span class="nav-number">1.</span> <span class="nav-text">反转两次的数字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行所有后缀指令"><span class="nav-number">2.</span> <span class="nav-text">执行所有后缀指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序数组中差绝对值之和"><span class="nav-number">3.</span> <span class="nav-text">有序数组中差绝对值之和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相同元素的间隔之和"><span class="nav-number">4.</span> <span class="nav-text">相同元素的间隔之和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还原原数组"><span class="nav-number">5.</span> <span class="nav-text">还原原数组</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
