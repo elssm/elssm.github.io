@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Notes,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="5G介绍5G 是指第五代移动网络。它旨在扩展现有的 4G LTE 蜂窝网络，甚至完全取代它们。每一代技术都是由几个因素决定的，例如所使用的技术、发送与接收信号之间的时间间隔（延迟），以及通过网络向所连设备传输数据的速度。5G 网络有望实现千兆级的速度。同时，5G 服务还大大缩短了延迟，并可将覆盖范围扩展到偏远地区。  5G应用场景eMBB“增强移动宽带”。就是以人为中心的应用场景，集中表现为超高的">
+<meta name="keywords" content="Notes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5G基础学习">
+<meta property="og:url" content="elssm.github.io/2021/12/31/5G基础学习/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="5G介绍5G 是指第五代移动网络。它旨在扩展现有的 4G LTE 蜂窝网络，甚至完全取代它们。每一代技术都是由几个因素决定的，例如所使用的技术、发送与接收信号之间的时间间隔（延迟），以及通过网络向所连设备传输数据的速度。5G 网络有望实现千兆级的速度。同时，5G 服务还大大缩短了延迟，并可将覆盖范围扩展到偏远地区。  5G应用场景eMBB“增强移动宽带”。就是以人为中心的应用场景，集中表现为超高的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2021/12/31/5G基础学习/1.png">
+<meta property="og:image" content="/2021/12/31/5G基础学习/2.png">
+<meta property="og:image" content="/2021/12/31/5G基础学习/3.png">
+<meta property="og:image" content="/2021/12/31/5G基础学习/4.png">
+<meta property="og:image" content="/2021/12/31/5G基础学习/5.png">
+<meta property="og:image" content="/2021/12/31/5G基础学习/6.png">
+<meta property="og:image" content="/2021/12/31/5G基础学习/7.png">
+<meta property="og:updated_time" content="2022-01-01T05:57:57.849Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5G基础学习">
+<meta name="twitter:description" content="5G介绍5G 是指第五代移动网络。它旨在扩展现有的 4G LTE 蜂窝网络，甚至完全取代它们。每一代技术都是由几个因素决定的，例如所使用的技术、发送与接收信号之间的时间间隔（延迟），以及通过网络向所连设备传输数据的速度。5G 网络有望实现千兆级的速度。同时，5G 服务还大大缩短了延迟，并可将覆盖范围扩展到偏远地区。  5G应用场景eMBB“增强移动宽带”。就是以人为中心的应用场景，集中表现为超高的">
+<meta name="twitter:image" content="/2021/12/31/5G基础学习/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2021/12/31/5G基础学习/">
+
+
+
+
+
+  <title>5G基础学习 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2021/12/31/5G基础学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">5G基础学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-31T10:58:21+08:00">
+                2021-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="5G介绍"><a href="#5G介绍" class="headerlink" title="5G介绍"></a>5G介绍</h4><p>5G 是指第五代移动网络。它旨在扩展现有的 4G LTE 蜂窝网络，甚至完全取代它们。每一代技术都是由几个因素决定的，例如所使用的技术、发送与接收信号之间的时间间隔（延迟），以及通过网络向所连设备传输数据的速度。5G 网络有望实现千兆级的速度。同时，5G 服务还大大缩短了延迟，并可将覆盖范围扩展到偏远地区。 </p>
+<h4 id="5G应用场景"><a href="#5G应用场景" class="headerlink" title="5G应用场景"></a>5G应用场景</h4><h5 id="eMBB"><a href="#eMBB" class="headerlink" title="eMBB"></a>eMBB</h5><p>“增强移动宽带”。就是以人为中心的应用场景，集中表现为超高的传输数据速率，广覆盖下的移动性保证等，这是最直观改善移动网速，未来更多的应用对移动网速的需求都将得到满足，从 eMBB 层面上来说， 它是原来移动网络的升级，让人们体验到极致的网速。因此，增强移动宽带（eMBB）将是 5G 发展初期面向个人消费市场的核心应用场景。</p>
+<h5 id="uRLLC"><a href="#uRLLC" class="headerlink" title="uRLLC"></a>uRLLC</h5><p>“高可靠低时延连接”。在此场景下，连接时延要达到 1ms 级别，而且要支持高速移动（500KM/H）情况下的高可靠性（99.999%）连接。这一场景更多面向车联网、工业控制、远程医疗等特殊应用，这类应用在未来潜在的价值极高，未来社会走向智能化，就得依靠这个场景得网络，这些应用的安全性、可靠性要求极高。</p>
+<h5 id="mMTC"><a href="#mMTC" class="headerlink" title="mMTC"></a>mMTC</h5><p>“大规模机器类型通信”，5G 强大的连接能力可以快速促进各垂直行业（智慧城市、智能家居、环境监测等）的深度融合。万物互联下，人们的生活方式也将发生颠覆性的变化。这一场景下，数据速率较低且时延不敏感，连接覆盖生活的方方面面，终端成本更低，电池寿命更长且可靠性更高，真正能实现万物互联。</p>
+<p>如下图所示为5G不同应用场景的需求指标差异</p>
+<p><img src="/2021/12/31/5G基础学习/1.png" alt="1"></p>
+<h4 id="5G网络架构"><a href="#5G网络架构" class="headerlink" title="5G网络架构"></a>5G网络架构</h4><p>针对于上述的三大应用场景，单一的网络很难满足三种网络需求，因此我们可以设置三种网络分别是<code>5G-eMBB</code>网络、<code>5G-uRLLC</code>网络、<code>5G-mMTC</code>网络。这是一种解决办法，但是这样做的成本太高，非常不划算。因此这也成为了5G时代的一种挑战。</p>
+<p><img src="/2021/12/31/5G基础学习/2.png" alt="2"></p>
+<h5 id="基于服务的架构SBA"><a href="#基于服务的架构SBA" class="headerlink" title="基于服务的架构SBA"></a>基于服务的架构SBA</h5><p><img src="/2021/12/31/5G基础学习/3.png" alt="3"></p>
+<p>AMF(Access and Mobility Management function)：接入和移动性管理功能，类似于4G的MME</p>
+<ul>
+<li>终止RAN CP接口(N2)</li>
+<li>终止NAS(N1)，NAS加密和完整性保护</li>
+<li>注册、连接、可达性和流动性管理</li>
+<li>合法拦截</li>
+<li>为UE和SMF之间的SM消息提供传输</li>
+<li>用于路由SM消息的透明代理</li>
+<li>接入身份验证和接入授权</li>
+</ul>
+<p>SMF(The Session Management function)：会话管理功能，类似于4G的PGW</p>
+<ul>
+<li>负责与分离的数据面交互，创建、更新和删除PDU会话</li>
+<li>管理与UPF的会话环境</li>
+<li>负责DHCP服务器和IP地址管理系统的功能</li>
+</ul>
+<p>UPF(The User plane function)：用户面功能</p>
+<ul>
+<li>终端和外部数据的传输</li>
+<li>数据包的路由转发</li>
+<li>应用数据传输的策略</li>
+<li>处理QOS相关功能</li>
+</ul>
+<p>PCF(The Policy Control function)：策略控制功能</p>
+<ul>
+<li>给整个网络提供配置</li>
+<li>通过访问用户数据库转发策略信息</li>
+</ul>
+<p>NEF(The Network Exposure function)：网络开放功能</p>
+<ul>
+<li>给外部用户提供一些特定的服务</li>
+</ul>
+<p>NRF(The Network Repository function)：网络存储库功能</p>
+<ul>
+<li>支持服务发现</li>
+</ul>
+<p>UDM(The Unified Data Management)：统一数据管理</p>
+<ul>
+<li>生成鉴权信息</li>
+</ul>
+<p>AUSF(The Authentication Server function)：鉴权服务功能</p>
+<ul>
+<li>提供鉴权和接入</li>
+</ul>
+<p>AF(The Application function)：应用功能</p>
+<ul>
+<li>提供上层的应用功能</li>
+</ul>
+<p>UDR(The Unified Data Repository)：统一数据存储库</p>
+<ul>
+<li>通过UDM来提取存储签约数据</li>
+<li>通过PCF提取存储策略数据</li>
+<li>存储一些结构化的数据</li>
+</ul>
+<p>UDFS(The Unstructured Data Storage function)：非结构化数据存储功能</p>
+<ul>
+<li>存储一些非结构化的数据</li>
+</ul>
+<p>SMSF(The Short Message Service function)：短消息服务功能</p>
+<ul>
+<li>短信管理，签约信息管理</li>
+</ul>
+<p>NSSF(The Network Slice Selection function)：网络切片选择功能</p>
+<ul>
+<li>根据UE提供的信息管理特定的网络切片</li>
+</ul>
+<p>5G-EIR(The 5G-Equipment Identity Register)：5G设备认证中心</p>
+<ul>
+<li>检查设备状态</li>
+</ul>
+<p>LMF(The Location Management function)：位置管理功能</p>
+<ul>
+<li>支持定位相关功能的管理</li>
+</ul>
+<p>SEPP(The Security Edge Protection Proxy)：安全边缘保护代理</p>
+<ul>
+<li>规则定义，数据包过滤</li>
+</ul>
+<p>NWDAF(The Network Data Analytics function)：网络数据分析功能</p>
+<ul>
+<li>提供基于网络切片的网络数据分析</li>
+</ul>
+<h5 id="网络功能服务框架"><a href="#网络功能服务框架" class="headerlink" title="网络功能服务框架"></a>网络功能服务框架</h5><h5 id="交互机制"><a href="#交互机制" class="headerlink" title="交互机制"></a>交互机制</h5><p>服务使用者和服务提供者之间的交互基于两种机制，分别是</p>
+<ul>
+<li>请求响应机制</li>
+<li>订阅通知机制</li>
+</ul>
+<p><img src="/2021/12/31/5G基础学习/4.png" alt="4"></p>
+<h5 id="注册、发现、授权机制"><a href="#注册、发现、授权机制" class="headerlink" title="注册、发现、授权机制"></a>注册、发现、授权机制</h5><p>服务提供者在上线之后会进行注册，注册通过发送消息给NRF。注册之后，NRF中会存储现在的一个状态服务信息，后续假如有其他服务的使用者想使用这个服务。如下图所示，PCF想使用AMF服务的功能，那么PCF首先会给NRF发送一个服务发现消息。查询NRF中是否存有AMF服务信息，如果有的话，NRF会对PCF进行鉴权，之后PCF会获得AMF的相关服务信息，之后就可以使用请求响应机制来获取AMF相关的服务。</p>
+<p><img src="/2021/12/31/5G基础学习/5.png" alt="5"></p>
+<h5 id="SBI接口协议"><a href="#SBI接口协议" class="headerlink" title="SBI接口协议"></a>SBI接口协议</h5><p><img src="/2021/12/31/5G基础学习/6.png" alt="6"></p>
+<h5 id="5G核心网与EPC交互"><a href="#5G核心网与EPC交互" class="headerlink" title="5G核心网与EPC交互"></a>5G核心网与EPC交互</h5><p><img src="/2021/12/31/5G基础学习/7.png" alt="7"></p>
+<h5 id="5G接入网架构"><a href="#5G接入网架构" class="headerlink" title="5G接入网架构"></a>5G接入网架构</h5>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Notes/" rel="tag"># Notes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/26/Leetcode第273场周赛write-up/" rel="next" title="Leetcode第273场周赛write up">
+                <i class="fa fa-chevron-left"></i> Leetcode第273场周赛write up
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/01/01/辞旧迎新/" rel="prev" title="辞旧迎新">
+                辞旧迎新 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#5G介绍"><span class="nav-number">1.</span> <span class="nav-text">5G介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5G应用场景"><span class="nav-number">2.</span> <span class="nav-text">5G应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#eMBB"><span class="nav-number">2.1.</span> <span class="nav-text">eMBB</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uRLLC"><span class="nav-number">2.2.</span> <span class="nav-text">uRLLC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mMTC"><span class="nav-number">2.3.</span> <span class="nav-text">mMTC</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5G网络架构"><span class="nav-number">3.</span> <span class="nav-text">5G网络架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基于服务的架构SBA"><span class="nav-number">3.1.</span> <span class="nav-text">基于服务的架构SBA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#网络功能服务框架"><span class="nav-number">3.2.</span> <span class="nav-text">网络功能服务框架</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#交互机制"><span class="nav-number">3.3.</span> <span class="nav-text">交互机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注册、发现、授权机制"><span class="nav-number">3.4.</span> <span class="nav-text">注册、发现、授权机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SBI接口协议"><span class="nav-number">3.5.</span> <span class="nav-text">SBI接口协议</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5G核心网与EPC交互"><span class="nav-number">3.6.</span> <span class="nav-text">5G核心网与EPC交互</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5G接入网架构"><span class="nav-number">3.7.</span> <span class="nav-text">5G接入网架构</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
