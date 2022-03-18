@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Cloud Security,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="What is Cilium？Cilium is open source software for transparently securing the network connectivity between application services deployed using Linux container management platforms like Docker and Kuber">
+<meta name="keywords" content="Cloud Security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="略知一二之Cilium">
+<meta property="og:url" content="elssm.github.io/2022/03/18/略知一二之Cilium/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="What is Cilium？Cilium is open source software for transparently securing the network connectivity between application services deployed using Linux container management platforms like Docker and Kuber">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/1.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/2.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/3.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/4.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/5.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/6.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/7.jpeg">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/8.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/9.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/10.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/11.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/12.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/13.png">
+<meta property="og:image" content="/2022/03/18/略知一二之Cilium/14.png">
+<meta property="og:updated_time" content="2022-03-18T10:13:18.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="略知一二之Cilium">
+<meta name="twitter:description" content="What is Cilium？Cilium is open source software for transparently securing the network connectivity between application services deployed using Linux container management platforms like Docker and Kuber">
+<meta name="twitter:image" content="/2022/03/18/略知一二之Cilium/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2022/03/18/略知一二之Cilium/">
+
+
+
+
+
+  <title>略知一二之Cilium | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/03/18/略知一二之Cilium/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">略知一二之Cilium</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-18T18:06:24+08:00">
+                2022-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="What-is-Cilium？"><a href="#What-is-Cilium？" class="headerlink" title="What is Cilium？"></a>What is Cilium？</h4><p>Cilium is open source software for transparently securing the network connectivity between application services deployed using Linux container management platforms like Docker and Kubernetes.</p>
+<p>At the foundation of Cilium is a new Linux kernel technology called BPF, which enables the dynamic insertion of powerful security visibility and control logic within Linux itself. Because BPF runs inside the Linux kernel, Cilium security policies can be applied and updated without any changes to the application code or container configuration.</p>
+<h4 id="Why-Cilium？"><a href="#Why-Cilium？" class="headerlink" title="Why Cilium？"></a>Why Cilium？</h4><p><img src="/2022/03/18/略知一二之Cilium/1.png" alt="1"></p>
+<h4 id="eBPF-Architecture"><a href="#eBPF-Architecture" class="headerlink" title="eBPF Architecture"></a>eBPF Architecture</h4><p><img src="/2022/03/18/略知一二之Cilium/2.png" alt="2"></p>
+<h4 id="XDP"><a href="#XDP" class="headerlink" title="XDP"></a>XDP</h4><p>Cilium方案中大量使用了XDP、TC等网络相关的BPF hook，以实现高性能的网络RX和TX。</p>
+<p>XDP全称为<strong>eXpress Data Path</strong>，是Linux内核网络栈的最底层。它只存在于RX路径上，允许在网络设备驱动内部网络堆栈中数据来源最早的地方进行数据包处理，在特定模式下可以在操作系统分配内存（<strong>skb</strong>）之前就已经完成处理。</p>
+<p>尝试写一个xdp代码，名为<code>xdp-example.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;linux/bpf.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __section</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> __section(NAME) \</span></span><br><span class="line">   __attribute__((section(NAME),used))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">__section(<span class="string">"prog"</span>)</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">xdp_drop</span><span class="params">(struct xdp_md *ctx)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> XDP_DROP;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> __license[] __section(<span class="string">"license"</span>) = <span class="string">"GPL"</span>;</span><br></pre></td></tr></table></figure>
+<p>查看整个编译过程都做了哪些事情</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# clang -ccc-print-phases -o2 -Wall -target bpf -c xdp-example.c -o xdp-example.o</span><br><span class="line">         +- 0: input, "xdp-example.c", c				//输入</span><br><span class="line">      +- 1: preprocessor, &#123;0&#125;, cpp-output				//预处理</span><br><span class="line">   +- 2: compiler, &#123;1&#125;, ir											//编译</span><br><span class="line">+- 3: backend, &#123;2&#125;, assembler										//汇编</span><br><span class="line">4: assembler, &#123;3&#125;, object												//生成目标代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# file xdp-example.o</span><br><span class="line">xdp-example.o: ELF 64-bit LSB relocatable, eBPF, version 1 (SYSV), not stripped</span><br></pre></td></tr></table></figure>
+<p>加载xdp程序</p>
+<p>首先查看主机的网卡设备列表</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens160: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:82:8b:d7 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    altname enp3s0</span><br><span class="line">    inet 192.168.19.84/16 brd 192.168.255.255 scope global ens160</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::250:56ff:fe82:8bd7/64 scope link </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>加载程序之前ping虚拟机</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % ping 192.168.19.84</span><br><span class="line">PING 192.168.19.84 (192.168.19.84): 56 data bytes</span><br><span class="line">64 bytes from 192.168.19.84: icmp_seq=0 ttl=60 time=98.922 ms</span><br><span class="line">64 bytes from 192.168.19.84: icmp_seq=1 ttl=60 time=104.328 ms</span><br><span class="line">64 bytes from 192.168.19.84: icmp_seq=2 ttl=60 time=101.547 ms</span><br><span class="line">64 bytes from 192.168.19.84: icmp_seq=3 ttl=60 time=107.351 ms</span><br><span class="line">64 bytes from 192.168.19.84: icmp_seq=4 ttl=60 time=62.270 ms</span><br><span class="line">64 bytes from 192.168.19.84: icmp_seq=5 ttl=60 time=84.121 ms</span><br><span class="line">^C</span><br><span class="line">--- 192.168.19.84 ping statistics ---</span><br><span class="line">6 packets transmitted, 6 packets received, 0.0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 62.270/93.090/107.351/15.629 ms</span><br></pre></td></tr></table></figure>
+<p>加载xdp程序到网卡设备</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ip link set dev ens160 xdp obj xdp-example.o</span><br></pre></td></tr></table></figure>
+<p>检查是否已经挂载到<code>ens160</code>网卡</p>
+<p><img src="/2022/03/18/略知一二之Cilium/3.png" alt="3"></p>
+<p>加载程序之后ping虚拟机</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro ~ % ping 192.168.19.84                    </span><br><span class="line">PING 192.168.19.84 (192.168.19.84): 56 data bytes</span><br><span class="line">Request timeout for icmp_seq 0</span><br><span class="line">Request timeout for icmp_seq 1</span><br><span class="line">Request timeout for icmp_seq 2</span><br><span class="line">Request timeout for icmp_seq 3</span><br><span class="line">^C</span><br><span class="line">--- 192.168.19.84 ping statistics ---</span><br><span class="line">5 packets transmitted, 0 packets received, 100.0% packet loss</span><br></pre></td></tr></table></figure>
+<p>卸载xdp程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# ip link set dev ens160 xdp off</span><br></pre></td></tr></table></figure>
+<h4 id="内核跟踪"><a href="#内核跟踪" class="headerlink" title="内核跟踪"></a>内核跟踪</h4><p><img src="/2022/03/18/略知一二之Cilium/4.png" alt="4"></p>
+<h5 id="动态追踪历史"><a href="#动态追踪历史" class="headerlink" title="动态追踪历史"></a>动态追踪历史</h5><p>严格来讲 Linux 中的动态追踪技术其实是一种高级的调试技术, 可以在内核态和用户态进行深入的分析, 方便开发者或系统管理者便捷快速的定位和处理问题</p>
+<p>如下表所示, 为 Linux 追踪技术的大致发展历程</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">年份</th>
+<th style="text-align:center">技术</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2004</td>
+<td style="text-align:center">kprobes/kretprobes</td>
+</tr>
+<tr>
+<td style="text-align:center">2005</td>
+<td style="text-align:center">systemtap</td>
+</tr>
+<tr>
+<td style="text-align:center">2008</td>
+<td style="text-align:center">ftrace</td>
+</tr>
+<tr>
+<td style="text-align:center">2009</td>
+<td style="text-align:center">perf_events</td>
+</tr>
+<tr>
+<td style="text-align:center">2009</td>
+<td style="text-align:center">tracepoints</td>
+</tr>
+<tr>
+<td style="text-align:center">2012</td>
+<td style="text-align:center">uprobes</td>
+</tr>
+<tr>
+<td style="text-align:center">2015</td>
+<td style="text-align:center">eBPF</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="tracepoint"><a href="#tracepoint" class="headerlink" title="tracepoint"></a>tracepoint</h5><p>tracepoints是散落在内核源码中的一些hook，它们可以在特定的代码被执行到时触发，这一特定可以被各种trace/debug工具所使用。</p>
+<p>perf将tracepoint产生的时间记录下来，生成报告，通过分析这些报告，条有人缘便可以了解程序运行期间内核的各种细节，对性能症状做出准确的诊断。</p>
+<p>安装perf工具</p>
+<p>首先下载内核对应的源码包：<a href="https://mirrors.edge.kernel.org/pub/linux/kernel/" target="_blank" rel="noopener">https://mirrors.edge.kernel.org/pub/linux/kernel/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/linux-5.8/tools/perf# uname -r</span><br><span class="line">5.8.0-050800-generic</span><br><span class="line">root@ubuntu:~# cd linux-5.8/tools/perf/</span><br><span class="line">root@ubuntu:~# make</span><br><span class="line">root@ubuntu:~# sudo make install</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/linux-5.8/tools/perf# ./perf list tracepoint</span><br><span class="line"></span><br><span class="line">List of pre-defined events (to be used in -e):</span><br><span class="line"></span><br><span class="line">  alarmtimer:alarmtimer_cancel                       [Tracepoint event]</span><br><span class="line">  alarmtimer:alarmtimer_fired                        [Tracepoint event]</span><br><span class="line">  alarmtimer:alarmtimer_start                        [Tracepoint event]</span><br><span class="line">  alarmtimer:alarmtimer_suspend                      [Tracepoint event]</span><br><span class="line">  block:block_bio_backmerge                          [Tracepoint event]</span><br><span class="line">  block:block_bio_bounce                             [Tracepoint event]</span><br><span class="line">  block:block_bio_complete                           [Tracepoint event]</span><br><span class="line">  block:block_bio_frontmerge                         [Tracepoint event]</span><br><span class="line">  block:block_bio_queue                              [Tracepoint event]</span><br><span class="line">  block:block_bio_remap                              [Tracepoint event]</span><br><span class="line">  block:block_dirty_buffer                           [Tracepoint event]</span><br><span class="line">  block:block_getrq                                  [Tracepoint event]</span><br><span class="line">  block:block_plug                                   [Tracepoint event]</span><br><span class="line">  block:block_rq_complete                            [Tracepoint event]</span><br><span class="line">  block:block_rq_insert                              [Tracepoint event]</span><br><span class="line">  block:block_rq_issue                               [Tracepoint event]</span><br><span class="line">  block:block_rq_remap                               [Tracepoint event]</span><br><span class="line">  block:block_rq_requeue                             [Tracepoint event]</span><br><span class="line">  block:block_sleeprq                                [Tracepoint event]</span><br><span class="line">  block:block_split                                  [Tracepoint event]</span><br><span class="line">  block:block_touch_buffer                           [Tracepoint event]</span><br><span class="line">  block:block_unplug                                 [Tracepoint event]</span><br></pre></td></tr></table></figure>
+<p>用户空间下，ping命令的系统调用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/linux-5.8/tools/perf# strace -fF -e trace=network ping 114.114.114.114 -c 1</span><br><span class="line">strace: deprecated option -F ignored</span><br><span class="line">socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP) = 3</span><br><span class="line">socket(AF_INET6, SOCK_DGRAM, IPPROTO_ICMPV6) = 4</span><br><span class="line">socket(AF_INET, SOCK_DGRAM, IPPROTO_IP) = 5</span><br><span class="line">connect(5, &#123;sa_family=AF_INET, sin_port=htons(1025), sin_addr=inet_addr("114.114.114.114")&#125;, 16) = 0</span><br><span class="line">getsockname(5, &#123;sa_family=AF_INET, sin_port=htons(51536), sin_addr=inet_addr("192.168.19.84")&#125;, [16]) = 0</span><br><span class="line">setsockopt(3, SOL_IP, IP_RECVERR, [1], 4) = 0</span><br><span class="line">setsockopt(3, SOL_IP, IP_RECVTTL, [1], 4) = 0</span><br><span class="line">setsockopt(3, SOL_IP, IP_RETOPTS, [1], 4) = 0</span><br><span class="line">setsockopt(3, SOL_SOCKET, SO_SNDBUF, [324], 4) = 0</span><br><span class="line">setsockopt(3, SOL_SOCKET, SO_RCVBUF, [65536], 4) = 0</span><br><span class="line">getsockopt(3, SOL_SOCKET, SO_RCVBUF, [131072], [4]) = 0</span><br><span class="line">PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.</span><br><span class="line">setsockopt(3, SOL_SOCKET, SO_TIMESTAMP, [1], 4) = 0</span><br><span class="line">setsockopt(3, SOL_SOCKET, SO_SNDTIMEO, "\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16) = 0</span><br><span class="line">setsockopt(3, SOL_SOCKET, SO_RCVTIMEO, "\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16) = 0</span><br><span class="line">sendto(3, "\10\0\177\7\0\0\0\1\345\0053b\0\0\0\0\227\274\n\0\0\0\0\0\20\21\22\23\24\25\26\27"..., 64, 0, &#123;sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("114.114.114.114")&#125;, 16) = 64</span><br><span class="line">recvmsg(3, &#123;msg_name=&#123;sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("114.114.114.114")&#125;, msg_namelen=128-&gt;16, msg_iov=[&#123;iov_base="\0\0\207\3\0\4\0\1\345\0053b\0\0\0\0\227\274\n\0\0\0\0\0\20\21\22\23\24\25\26\27"..., iov_len=192&#125;], msg_iovlen=1, msg_control=[&#123;cmsg_len=32, cmsg_level=SOL_SOCKET, cmsg_type=SCM_TIMESTAMP, cmsg_data=&#123;tv_sec=1647511013, tv_usec=720786&#125;&#125;, &#123;cmsg_len=20, cmsg_level=SOL_IP, cmsg_type=IP_TTL, cmsg_data=[66]&#125;], msg_controllen=56, msg_flags=0&#125;, 0) = 64</span><br><span class="line">64 bytes from 114.114.114.114: icmp_seq=1 ttl=66 time=17.1 ms</span><br><span class="line"></span><br><span class="line">--- 114.114.114.114 ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min/avg/max/mdev = 17.147/17.147/17.147/0.000 ms</span><br><span class="line">+++ exited with 0 +++</span><br></pre></td></tr></table></figure>
+<p>内核空间下，ping命令的系统调用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/linux-5.8/tools/perf# ./perf trace --event 'net:*' ping 114.114.114.114 -c 1 &gt; /dev/null </span><br><span class="line">     0.000 ping/3954500 net:net_dev_queue(skbaddr: 0xffff9204a4a42600, len: 98, name: "ens160")</span><br><span class="line">     0.044 ping/3954500 net:net_dev_start_xmit(name: "ens160", queue_mapping: 3, skbaddr: 0xffff9204a4a42600, protocol: 2048, len: 98, network_offset: 14, transport_offset_valid: 1, transport_offset: 34)</span><br><span class="line">     0.087 ping/3954500 net:net_dev_xmit(skbaddr: 0xffff9204a4a42600, len: 98, name: "ens160")</span><br></pre></td></tr></table></figure>
+<p>除此之外，还可以通过perf查看系统调用函数使用cpu的情况</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/linux-5.8/tools/perf# ./perf top</span><br><span class="line">   PerfTop:   16433 irqs/sec  kernel:66.4%  exact:  0.0% lost: 0/0 drop: 0/0 [4000Hz cpu-clock:pppH],  (all, 4 CPUs)</span><br><span class="line">-------------------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">     9.79%  [kernel]          [k] finish_task_switch</span><br><span class="line">     4.87%  [kernel]          [k] __lock_text_start</span><br><span class="line">     1.81%  [kernel]          [k] do_syscall_64</span><br><span class="line">     1.25%  [kernel]          [k] do_user_addr_fault</span><br><span class="line">     1.13%  [kernel]          [k] clear_page_orig</span><br><span class="line">     0.80%  [kernel]          [k] __softirqentry_text_start</span><br><span class="line">     0.72%  [kernel]          [k] exit_to_usermode_loop</span><br><span class="line">     0.51%  perf              [.] dso__find_symbol</span><br><span class="line">     0.48%  [kernel]          [k] rmqueue_pcplist.constprop.0</span><br><span class="line">     0.45%  [kernel]          [k] strchr</span><br><span class="line">     0.44%  perf              [.] hists__findnew_entry</span><br><span class="line">     0.42%  [kernel]          [k] copy_page_regs</span><br><span class="line">     0.40%  perf              [.] hist_entry__sort</span><br><span class="line">     0.39%  [kernel]          [k] memset_orig</span><br><span class="line">     0.38%  [kernel]          [k] string_escape_mem</span><br><span class="line">     0.36%  perf              [.] __symbols__insert</span><br><span class="line">     0.35%  perf              [.] rb_next</span><br><span class="line">     0.34%  [kernel]          [k] zap_pte_range</span><br><span class="line">     0.33%  perf              [.] sort__dso_cmp</span><br><span class="line">     0.33%  [kernel]          [k] _raw_spin_lock</span><br><span class="line">     0.32%  ld-2.31.so        [.] 0x000000000000e304</span><br><span class="line">     0.30%  perf              [.] perf_hpp__is_dynamic_entry</span><br><span class="line">     0.30%  [kernel]          [k] __schedule</span><br><span class="line">     0.29%  dockerd           [.] crypto/sha256.block</span><br><span class="line">     0.29%  perf              [.] evsel__parse_sample</span><br><span class="line">     0.29%  perf              [.] hpp__sort_overhead</span><br><span class="line">     0.28%  [kernel]          [k] copy_user_generic_unrolled</span><br><span class="line">     0.28%  [kernel]          [k] filemap_map_pages</span><br><span class="line">     0.27%  dockerd           [.] runtime.mallocgc</span><br><span class="line">     0.26%  [kernel]          [k] __handle_mm_fault</span><br><span class="line">     0.26%  kube-apiserver    [.] 0x0000000001068802</span><br><span class="line">     0.26%  [kernel]          [k] __d_lookup_rcu</span><br><span class="line">     0.26%  [kernel]          [k] memcg_kmem_get_cache</span><br><span class="line">     0.25%  [kernel]          [k] __d_lookup</span><br><span class="line">     0.23%  dockerd           [.] runtime.scanobject</span><br><span class="line">     0.23%  perf              [.] sort__sym_cmp</span><br><span class="line">     0.22%  [kernel]          [k] kmem_cache_alloc</span><br><span class="line">     0.21%  [kernel]          [k] rcu_all_qs</span><br><span class="line">     0.21%  [kernel]          [k] handle_mm_fault</span><br><span class="line">     0.19%  [kernel]          [k] __run_timers.part.0</span><br><span class="line">     0.19%  [kernel]          [k] free_unref_page_list</span><br></pre></td></tr></table></figure>
+<h5 id="uprobes"><a href="#uprobes" class="headerlink" title="uprobes"></a>uprobes</h5><p>uprobe是用户态的探针，它和kprobe是相对应的，kprobe是内核态的探针。uprobe需要制定用户态探针在执行文件中的位置，插入探针的原理和kprobe类似。</p>
+<p>准备一个测试代码<code>demo.c</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_info</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"current count = %d\n"</span>,count);</span><br><span class="line">    count++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">      print_info();</span><br><span class="line">      system(<span class="string">"sleep 1"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译并运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/uprobe# gcc demo.c -o demo</span><br><span class="line">root@ubuntu:~/uprobe# ./demo </span><br><span class="line">current count = 0</span><br><span class="line">current count = 1</span><br><span class="line">current count = 2</span><br><span class="line">current count = 3</span><br><span class="line">current count = 4</span><br><span class="line">current count = 5</span><br><span class="line">current count = 6</span><br><span class="line">current count = 7</span><br></pre></td></tr></table></figure>
+<p>这个时候如果程序出现问题，我们就可以通过uprobe查看相关信息。</p>
+<p>首先通过<code>objdump</code>查看相关段的信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/uprobe# objdump -t demo | grep print</span><br><span class="line">0000000000000000       F *UND*	0000000000000000              printf@@GLIBC_2.2.5</span><br><span class="line">0000000000001169 g     F .text	0000000000000033              print_info</span><br></pre></td></tr></table></figure>
+<p>添加程序相关信息到uprobe点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/uprobe# cat /sys/kernel/debug/tracing/uprobe_events </span><br><span class="line">root@ubuntu:~/uprobe# echo 'p:print_info ~/uprobe/demo:0x1169 %ip %ax' &gt; /sys/kernel/debug/tracing/uprobe_events</span><br><span class="line">root@ubuntu:~/uprobe# cat /sys/kernel/debug/tracing/uprobe_events</span><br><span class="line">p:uprobes/print_info ~/uprobe/demo:0x0000000000001169 arg1=%ip arg2=%ax</span><br></pre></td></tr></table></figure>
+<p>打开日志追踪</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/uprobe# echo 1 &gt; /sys/kernel/debug/tracing/events/uprobes/enable</span><br></pre></td></tr></table></figure>
+<p>查看日志信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/uprobe# cat /sys/kernel/debug/tracing/trace</span><br><span class="line"><span class="meta">#</span> tracer: nop</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> entries-in-buffer/entries-written: 10/10   #P:4</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span>                              _-----=&gt; irqs-off</span><br><span class="line"><span class="meta">#</span>                             / _----=&gt; need-resched</span><br><span class="line"><span class="meta">#</span>                            | / _---=&gt; hardirq/softirq</span><br><span class="line"><span class="meta">#</span>                            || / _--=&gt; preempt-depth</span><br><span class="line"><span class="meta">#</span>                            ||| /     delay</span><br><span class="line"><span class="meta">#</span>           TASK-PID   CPU#  ||||    TIMESTAMP  FUNCTION</span><br><span class="line"><span class="meta">#</span>              | |       |   ||||       |         |</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239242.207371: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239243.212293: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239244.217997: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [000] d... 1239245.235024: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239246.240172: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239247.247020: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239248.255470: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [003] d... 1239249.260487: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [001] d... 1239250.266369: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br><span class="line">           &lt;...&gt;-4007899 [001] d... 1239251.271204: print_info: (0x55e58e23e169) arg1=0x55e58e23e169 arg2=0x0</span><br></pre></td></tr></table></figure>
+<p>关闭及清理</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~/uprobe# echo 0 &gt; /sys/kernel/debug/tracing/events/uprobes/enable</span><br><span class="line">root@ubuntu:~/uprobe# &gt; /sys/kernel/debug/tracing/trace</span><br></pre></td></tr></table></figure>
+<h5 id="kprobe"><a href="#kprobe" class="headerlink" title="kprobe"></a>kprobe</h5><p>Kprobe是一种内核调测手段，它可以动态地跟踪内核的行为、收集debug信息和性能信息。</p>
+<p>查看<code>do_sys_open</code>系统调用的详细信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# echo 'r:myprobe do_sys_open' &gt; /sys/kernel/debug/tracing/kprobe_events </span><br><span class="line">root@ubuntu:~# cat /sys/kernel/debug/tracing/kprobe_events</span><br><span class="line">r4:kprobes/myprobe do_sys_open</span><br></pre></td></tr></table></figure>
+<p>打开日志追踪</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# echo 1 &gt; /sys/kernel/debug/tracing/events/kprobes/enable</span><br></pre></td></tr></table></figure>
+<p>查看调用信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:~# cat /sys/kernel/debug/tracing/trace</span><br></pre></td></tr></table></figure>
+<h4 id="网络跟踪"><a href="#网络跟踪" class="headerlink" title="网络跟踪"></a>网络跟踪</h4><ul>
+<li>BPF XDP</li>
+<li>BPF TC hooks</li>
+<li>BPF Cgroups</li>
+<li>BPF sockmap and sockops</li>
+<li>BPF system calls</li>
+</ul>
+<p><img src="/2022/03/18/略知一二之Cilium/5.png" alt="5"></p>
+<h4 id="Cilium-vs-Kube-router"><a href="#Cilium-vs-Kube-router" class="headerlink" title="Cilium vs Kube-router"></a>Cilium vs Kube-router</h4><p><img src="/2022/03/18/略知一二之Cilium/6.png" alt="6"></p>
+<h5 id="VxLan"><a href="#VxLan" class="headerlink" title="VxLan"></a>VxLan</h5><p><code>VxLan</code>（Virtual eXtensible Local Area Network，虚拟可扩展局域网），是一种虚拟化隧道通信技术。它是一种 Overlay（覆盖网络）技术，通过三层的网络来搭建虚拟的二层网络。</p>
+<p>简单来讲，<code>VxLan</code>是在底层物理网络（underlay）之上使用隧道技术，借助 <code>UDP</code> 层构建的 Overlay 的逻辑网络，使逻辑网络与物理网络解耦，实现灵活的组网需求。它对原有的网络架构几乎没有影响，不需要对原网络做任何改动，即可架设一层新的网络。也正是因为这个特性，很多CNI插件会选择 <code>VxLan</code> 作为通信网络。</p>
+<p><code>VxLan</code> 不仅支持一对一，也支持一对多，一个 <code>VxLan</code> 设备能通过像网桥一样的学习方式学习到其他对端的 IP 地址，还可以直接配置静态转发表。</p>
+<p>VxLan常见术语</p>
+<ul>
+<li><p>VTEP（VXLAN Tunnel Endpoints，VxLan 隧道端点）</p>
+<p>VxLan 网络的边缘设备，用来进行VxLan报文的处理（封包和解包）。VTEP 可以是网络设备（比如交换机），也可以是一台机器（比如虚拟化集群中的宿主机）。</p>
+</li>
+<li><p>VNI（VxLan Network Identifier，VxLan 网络标识符）</p>
+<p><code>VNI</code> 是每个 VXLAN 段的标识，是个 24 位整数，一共有16777216个，一般每个 <code>VNI</code> 对应一个租户，也就是说使用 <code>VxLan</code> 搭建的公有云可以理论上可以支撑千万级别的租户。</p>
+</li>
+<li><p>Tunnel（VxLan 隧道）</p>
+<p>隧道是一个逻辑上的概念，在 VxLan 模型中并没有具体的物理实体向对应。隧道可以看做是一种虚拟通道，VxLan 通信双方认为自己是在直接通信，并不知道底层网络的存在。从整体来说，每个 VxLan 网络像是为通信的虚拟机搭建了一个单独的通信通道，也就是隧道。</p>
+</li>
+</ul>
+<h4 id="Cilium组件"><a href="#Cilium组件" class="headerlink" title="Cilium组件"></a>Cilium组件</h4><h5 id="Cilium-agent"><a href="#Cilium-agent" class="headerlink" title="Cilium agent"></a>Cilium agent</h5><ul>
+<li>以Node为单位</li>
+<li>采用DaemonSet方式部署</li>
+<li>通过CNI插件与CRI和Kubernetes交互</li>
+<li>采用IPAM地址分配方式</li>
+<li>生成eBPF程序，编译字节码，Attach到内核</li>
+</ul>
+<p><img src="/2022/03/18/略知一二之Cilium/7.jpeg" alt="7"></p>
+<h5 id="Cilium-operator"><a href="#Cilium-operator" class="headerlink" title="Cilium operator"></a>Cilium operator</h5><p><img src="/2022/03/18/略知一二之Cilium/8.png" alt="8"></p>
+<h5 id="Cilium控制平面"><a href="#Cilium控制平面" class="headerlink" title="Cilium控制平面"></a>Cilium控制平面</h5><p>创建一个Pod的流程</p>
+<ul>
+<li>kubectl将对应的请求发给API Server</li>
+<li>API Server将对应的pod信息写到etcd中</li>
+<li>Scheduler服务会watch API Server，选择合适的节点</li>
+<li>kublet调用CRI-Containerd创建容器</li>
+<li>创建对应的容器网络，调用CNI-Plugin，即调用Cilium agent</li>
+<li>Cilium agent创建对应的网络，调用<code>bpf_syscall()</code></li>
+</ul>
+<p><img src="/2022/03/18/略知一二之Cilium/9.png" alt="9"></p>
+<h5 id="Cilium数据平面-ipvs-iptables"><a href="#Cilium数据平面-ipvs-iptables" class="headerlink" title="Cilium数据平面-ipvs/iptables"></a>Cilium数据平面-ipvs/iptables</h5><p>从网卡到Pod经历了哪些点</p>
+<p><img src="/2022/03/18/略知一二之Cilium/10.png" alt="10"></p>
+<ul>
+<li>经过eth0，此时数据放在Ring Buffer中，内核会通过NAPI轮训调取Ring Buffer数据</li>
+<li>经过XDP，对数据进行PASS、DROP等操作，前提是网卡支持XDP</li>
+<li>内核给数据分配skb，skb是网络在内核中的结构体</li>
+<li>经过GRO，将数据包进行组合封包，提升网络吞吐</li>
+<li>经过TC ingress，包括流量限速，流量整形，策略应用等操作</li>
+<li>经过Netfilter</li>
+<li>经过TC egress，出口流量的队列调度等操作</li>
+<li>经过GSO，将大封包转为小封包</li>
+<li>本地流量走第17步，远程流量走第18步</li>
+</ul>
+<h5 id="Cilium数据平面-eBPF"><a href="#Cilium数据平面-eBPF" class="headerlink" title="Cilium数据平面-eBPF"></a>Cilium数据平面-eBPF</h5><p><img src="/2022/03/18/略知一二之Cilium/11.png" alt="11"></p>
+<h5 id="Cilium数据平面-service转发"><a href="#Cilium数据平面-service转发" class="headerlink" title="Cilium数据平面-service转发"></a>Cilium数据平面-service转发</h5><ul>
+<li>南北向流量：XDP或TC</li>
+<li>东西向流量：BPF socket</li>
+</ul>
+<h5 id="Cilium数据转发与tc-hook"><a href="#Cilium数据转发与tc-hook" class="headerlink" title="Cilium数据转发与tc hook"></a>Cilium数据转发与tc hook</h5><p><img src="/2022/03/18/略知一二之Cilium/12.png" alt="12"></p>
+<p>Cilium 在主机网络空间上创建了三个虚拟接口：ciliumhost、ciliumnet和ciliumvxlan。Cilium Agent 在启动时创建一个名为“ciliumhost -&gt; ciliumnet”的 veth 对，并将 CIDR 的第一个IP地址设置为 ciliumhost，然后作为 CIDR 的网关。CNI 插件会生成 BPF 规则，编译后注入内核，以解决veth对之间的连通问题。</p>
+<h5 id="Cilium组网模式-VxLan"><a href="#Cilium组网模式-VxLan" class="headerlink" title="Cilium组网模式-VxLan"></a>Cilium组网模式-VxLan</h5><p><img src="/2022/03/18/略知一二之Cilium/13.png" alt="13"></p>
+<h5 id="Cilium组网模式-BGP-router"><a href="#Cilium组网模式-BGP-router" class="headerlink" title="Cilium组网模式-BGP router"></a>Cilium组网模式-BGP router</h5><p><img src="/2022/03/18/略知一二之Cilium/14.png" alt="14"></p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a href="https://www.cnxct.com/how-does-cilium-use-ebpf-with-go-and-c/" target="_blank" rel="noopener">https://www.cnxct.com/how-does-cilium-use-ebpf-with-go-and-c/</a></li>
+<li><a href="https://rexrock.github.io/post/cilium2/" target="_blank" rel="noopener">https://rexrock.github.io/post/cilium2/</a></li>
+<li><a href="https://arthurchiao.art/blog/understanding-ebpf-datapath-in-cilium-zh/" target="_blank" rel="noopener">https://arthurchiao.art/blog/understanding-ebpf-datapath-in-cilium-zh/</a></li>
+<li><a href="https://www.bookstack.cn/read/cilium-1.10-en/0caa2e34522dac68.md" target="_blank" rel="noopener">https://www.bookstack.cn/read/cilium-1.10-en/0caa2e34522dac68.md</a></li>
+<li><a href="https://docs.cilium.io/en/v0.12/intro/" target="_blank" rel="noopener">https://docs.cilium.io/en/v0.12/intro/</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Cloud-Security/" rel="tag"># Cloud Security</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/02/28/从0到0-5-eBPF加速ServiceMesh实践/" rel="next" title="从0到0.5:eBPF加速ServiceMesh实践">
+                <i class="fa fa-chevron-left"></i> 从0到0.5:eBPF加速ServiceMesh实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-Cilium？"><span class="nav-number">1.</span> <span class="nav-text">What is Cilium？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Why-Cilium？"><span class="nav-number">2.</span> <span class="nav-text">Why Cilium？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eBPF-Architecture"><span class="nav-number">3.</span> <span class="nav-text">eBPF Architecture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XDP"><span class="nav-number">4.</span> <span class="nav-text">XDP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核跟踪"><span class="nav-number">5.</span> <span class="nav-text">内核跟踪</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动态追踪历史"><span class="nav-number">5.1.</span> <span class="nav-text">动态追踪历史</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#tracepoint"><span class="nav-number">5.2.</span> <span class="nav-text">tracepoint</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uprobes"><span class="nav-number">5.3.</span> <span class="nav-text">uprobes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#kprobe"><span class="nav-number">5.4.</span> <span class="nav-text">kprobe</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络跟踪"><span class="nav-number">6.</span> <span class="nav-text">网络跟踪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cilium-vs-Kube-router"><span class="nav-number">7.</span> <span class="nav-text">Cilium vs Kube-router</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#VxLan"><span class="nav-number">7.1.</span> <span class="nav-text">VxLan</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cilium组件"><span class="nav-number">8.</span> <span class="nav-text">Cilium组件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium-agent"><span class="nav-number">8.1.</span> <span class="nav-text">Cilium agent</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium-operator"><span class="nav-number">8.2.</span> <span class="nav-text">Cilium operator</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium控制平面"><span class="nav-number">8.3.</span> <span class="nav-text">Cilium控制平面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium数据平面-ipvs-iptables"><span class="nav-number">8.4.</span> <span class="nav-text">Cilium数据平面-ipvs/iptables</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium数据平面-eBPF"><span class="nav-number">8.5.</span> <span class="nav-text">Cilium数据平面-eBPF</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium数据平面-service转发"><span class="nav-number">8.6.</span> <span class="nav-text">Cilium数据平面-service转发</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium数据转发与tc-hook"><span class="nav-number">8.7.</span> <span class="nav-text">Cilium数据转发与tc hook</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium组网模式-VxLan"><span class="nav-number">8.8.</span> <span class="nav-text">Cilium组网模式-VxLan</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cilium组网模式-BGP-router"><span class="nav-number">8.9.</span> <span class="nav-text">Cilium组网模式-BGP router</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">9.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
