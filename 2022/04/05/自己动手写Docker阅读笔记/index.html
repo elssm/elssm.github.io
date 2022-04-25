@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Notes,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="NamespaceconceptLinux Namespace是Kernel的一个功能，它可以隔离一系列的系统资源。例如PID、UserID、Network等。Namespace也可以在一些资源上，将进程隔离起来，这些资源包括进程树、网络接口、挂载点等。 例如一家公司向外界出售自己的计算资源。但是需要将不同的客户隔离起来。这个时候，Linux Namespace就派上了用场，使用Namespace">
+<meta name="keywords" content="Notes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自己动手写Docker阅读笔记">
+<meta property="og:url" content="elssm.github.io/2022/04/05/自己动手写Docker阅读笔记/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="NamespaceconceptLinux Namespace是Kernel的一个功能，它可以隔离一系列的系统资源。例如PID、UserID、Network等。Namespace也可以在一些资源上，将进程隔离起来，这些资源包括进程树、网络接口、挂载点等。 例如一家公司向外界出售自己的计算资源。但是需要将不同的客户隔离起来。这个时候，Linux Namespace就派上了用场，使用Namespace">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2022/04/05/自己动手写Docker阅读笔记/1.png">
+<meta property="og:image" content="/2022/04/05/自己动手写Docker阅读笔记/2.png">
+<meta property="og:updated_time" content="2022-04-05T11:21:13.063Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自己动手写Docker阅读笔记">
+<meta name="twitter:description" content="NamespaceconceptLinux Namespace是Kernel的一个功能，它可以隔离一系列的系统资源。例如PID、UserID、Network等。Namespace也可以在一些资源上，将进程隔离起来，这些资源包括进程树、网络接口、挂载点等。 例如一家公司向外界出售自己的计算资源。但是需要将不同的客户隔离起来。这个时候，Linux Namespace就派上了用场，使用Namespace">
+<meta name="twitter:image" content="/2022/04/05/自己动手写Docker阅读笔记/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2022/04/05/自己动手写Docker阅读笔记/">
+
+
+
+
+
+  <title>自己动手写Docker阅读笔记 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/04/05/自己动手写Docker阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自己动手写Docker阅读笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-04-05T16:58:17+08:00">
+                2022-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Namespace"><a href="#Namespace" class="headerlink" title="Namespace"></a>Namespace</h4><h5 id="concept"><a href="#concept" class="headerlink" title="concept"></a>concept</h5><p><code>Linux Namespace</code>是Kernel的一个功能，它可以隔离一系列的系统资源。例如PID、UserID、Network等。<code>Namespace</code>也可以在一些资源上，将进程隔离起来，这些资源包括进程树、网络接口、挂载点等。</p>
+<p>例如一家公司向外界出售自己的计算资源。但是需要将不同的客户隔离起来。这个时候，<code>Linux Namespace</code>就派上了用场，使用<code>Namespace</code>就可以做到UID级别的隔离，也就是说，可以以UID为n的用户，虚拟化出来一个<code>Namespace</code>，在这个<code>Namespace</code>里面，用户是具有root权限的。但是在真实的物理机器上，他还是那个以UID为n的用户。</p>
+<p>除了<code>User Namespace</code>，PID也是可以被虚拟的。命名空间建立系统的不同视图。从用户的角度来看，每一个命名空间应该像一台单独的Linux计算机一样，有自己的<code>init</code>进程(PID为1)，其他进程的PID依次递增。A和B空间都有PID为1的<code>init</code>进程，子命名空间的进程映射到父命名空间的进程上，父命名空间可以知道每一个子命名空间的运行状态，而子命名空间与子命名空间之间是隔离的。</p>
+<p>如下图所示，进程3在父命名空间中的PID为 3，但是在子命名空间内，它的PID就是1。也就是说用户从子命名空间A内看进程3就像<code>init</code>进程一样，以为这个进程是自己的初始化进程，但是从整个host来看，它其实只是3号进程虚拟化出来的一个空间而己。</p>
+<p><img src="/2022/04/05/自己动手写Docker阅读笔记/1.png" alt="1"></p>
+<p>当前Linux一共实现了6种不同类型的<code>Namespace</code></p>
+<p><img src="/2022/04/05/自己动手写Docker阅读笔记/2.png" alt="2"></p>
+<p><code>Namespace</code>的API主要是用如下3个系统调用</p>
+<ul>
+<li><code>clone()</code>创建新进程。根据系统调用参数来判断哪些类型的<code>Namespace</code>被创建，而且它们的子进程也会被包含到这些<code>Namespace</code>中</li>
+<li><code>unshare()</code>将进程移出某个<code>Namespace</code></li>
+<li><code>setns()</code>将进程加入到<code>Namespace</code>中</li>
+</ul>
+<h5 id="UTS-Namespace"><a href="#UTS-Namespace" class="headerlink" title="UTS Namespace"></a>UTS Namespace</h5><p><code>UTS Namespace</code>主要用来隔离<code>nodename</code>和<code>domainname</code>两个系统标识。在<code>UTS Namespace</code>里面，每个<code>Namespace</code>允许有自己的<code>hostname</code></p>
+<p>输出当前的PID</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $$</span><br></pre></td></tr></table></figure>
+<p>查看进程的UTS</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readlink /proc/&lt;PID&gt;/ns/uts</span><br></pre></td></tr></table></figure>
+<h5 id="IPC-Namespace"><a href="#IPC-Namespace" class="headerlink" title="IPC Namespace"></a>IPC Namespace</h5><p><code>IPC Namespace</code>用来隔离<code>System V IPC</code>和<code>POSIX message queues</code>。每一个<code>IPC Namespace</code>都有自己的<code>System V IPC</code>和<code>POSIX message queues</code></p>
+<p>查看现有的<code>ipc Message Queues</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipcs -q</span><br></pre></td></tr></table></figure>
+<h5 id="PID-Namespace"><a href="#PID-Namespace" class="headerlink" title="PID Namespace"></a>PID Namespace</h5><p><code>PID Namespace</code>是用来隔离进程ID的。同样一个进程在不同的<code>PID Namespace</code>里可以拥有不同的PID。这样就可以理解，在<code>docker container</code>里面，使用<code>ps-ef</code>经常会发现，在容器 内，前台运行的那个进程PID是1，但是在容器外，使用<code>ps -ef</code>会发现同样的进程却有不同的PID，这就是<code>PID Namespace</code>做的事情</p>
+<p>查看进程树</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pstree -pl</span><br></pre></td></tr></table></figure>
+<h5 id="Mount-Namespace"><a href="#Mount-Namespace" class="headerlink" title="Mount Namespace"></a>Mount Namespace</h5><p><code>Mount Namespace</code>用来隔离各个进程看到的挂载点视图。在不同<code>Namespace</code>的进程中， 看 到的文件系统层次是不一样的。在<code>Mount Namespace</code>中调用<code>mount()</code>和<code>umount()</code>仅仅只会影响当前<code>Namespace</code>内的文件系统 ，而对全局的文件系统是没有影响的</p>
+<h5 id="User-Namespace"><a href="#User-Namespace" class="headerlink" title="User Namespace"></a>User Namespace</h5><p><code>User Namespace</code>主要是隔离用户的用户组ID。也就是说，一个进程的<code>User ID</code>和<code>Group ID</code>在<code>User Namespace</code>内外可以是不同的。比较常用的是，在宿主机上以一个非root用户运行 创建一个<code>User Namespace</code>， 然后在<code>User Namespace</code>里面却映射成root用户。这意味着， 这个进程在<code>User Namespace</code>里面有root权限，但是在<code>User Namespace</code>外面却没有root的权限。从<code>Linux Kernel 3.8</code>开始，非root进程也可以创建<code>User Namespace</code>，并且此用户在<code>Namespace</code>里面可以被映射成root，且在<code>Namespace</code>内有root权限</p>
+<h5 id="Network-Namespace"><a href="#Network-Namespace" class="headerlink" title="Network Namespace"></a>Network Namespace</h5><p><code>Network Namespace</code>是用来隔离网络设备、IP地址端口等网络栈的<code>Namespace</code>。<code>Network Namespace</code>可以让每个容器拥有自己独立的(虚拟的)网络设备，而且容器内的应用可以绑定到自己的端口，每个<code>Namespace</code>内的端口都不会互相冲突。在宿主机上搭建网桥后，就能很方 便地实现容器之间的通信，而且不同容器上的应用可以使用相同的端口</p>
+<h4 id="Cgroups"><a href="#Cgroups" class="headerlink" title="Cgroups"></a>Cgroups</h4><h5 id="concept-1"><a href="#concept-1" class="headerlink" title="concept"></a>concept</h5><p><code>Namespace</code>技术能够帮助进程隔离出自己单独的空间，但是Docker是怎么限制每个空间的大小，保证它们不会互相争夺呢。这里就用到了<code>Cgroups</code>技术。</p>
+<p><code>Linux Cgroups</code>(Control Groups)提供了对一组进程及将来子进程的资源限制、控制和统计的能力，这些资源包括CPU、内存、存储、网络等。通过<code>Cgroups</code>，可以方便地限制某个进 程的资源占用，并且可以实时地监控进程的监控和统计信息</p>
+<h5 id="Cgroups中的3个组件"><a href="#Cgroups中的3个组件" class="headerlink" title="Cgroups中的3个组件"></a>Cgroups中的3个组件</h5><ul>
+<li><code>cgroup</code>是对进程分组管理的一种机制，一个<code>cgroup</code>包含一组进程，并可以在这个<code>cgroup</code>上增加<code>Linux subsystem</code>的各种参数配置，将一组进程和一组<code>subsystem</code>的系统参数关联起来。</li>
+<li><code>subsystem</code>是一组资源控制的模块，一般包含如下几项<ul>
+<li><code>blkio</code>设置对块设备(比如硬盘)输入输出的访问控制</li>
+<li><code>cpu</code>设置<code>cgroup</code>中进程的<code>CPU</code>被调度的策略</li>
+<li><code>cpuacct</code>可以统计<code>cgroup</code>中进程的<code>CPU</code>占用</li>
+<li><code>cpuset</code>在多核机器上设置<code>cgroup</code>中进程可以使用的<code>CPU</code>和内存(此处内存仅使用于NUMA 架构)</li>
+<li><code>devices</code>控制<code>cgroup</code>中进程对设备的访问</li>
+<li><code>freezer</code>用于挂起(suspend)和恢复(resume)<code>cgroup</code>中的进程</li>
+<li><code>memory</code>用于控制<code>cgroup</code>中进程的内存占用</li>
+<li><code>net_els</code>用于将<code>cgroup</code>中进程产生的网络包分类，以便<code>Linux</code>的<code>tc(traffic controller)</code>可以根据分类区分出来自某个<code>cgroup</code>的包并做限流或监控</li>
+<li><code>net_prio</code>设置<code>cgroup</code>中进程产生的网络流量的优先级</li>
+<li><code>ns</code>这个<code>subsystem</code>比较特殊，它的作用是使<code>cgroup</code>中的进程在新的<code>Namespace</code>中<code>fork</code>新进程<code>CNEWNS</code>时，创建出一个新的<code>cgroup</code>，这个<code>cgroup</code>包含新的<code>Namespace</code>中的进</li>
+</ul>
+</li>
+</ul>
+<p>每个<code>subsystem</code>会关联到定义了相应限制的<code>cgroup</code>上，并对这个<code>cgroup</code>中的进程做相应的限制和控制。</p>
+<ul>
+<li><code>hierarchy</code>的功能是把一组<code>cgroup</code>串成一个树状的结构，一个这样的树便是一个 <code>hierarchy</code>，通过这种树状结构，<code>Cgroups</code>可以做到继承。比如，系统对一组定时的任务进程通过<code>cgroup1</code>限制了CPU的使用率，然后其中有一个定时<code>dump</code>日志的进程还需要限制磁盘 IO，为了避免限制了磁盘IO之后影响到其他进程，就可以创建<code>cgroup2</code>，使其继承于 <code>cgroup1</code>并限制磁盘的IO，这样<code>cgroup2</code>便继承了<code>cgroup1</code>中对<code>CPU</code>使用率的限制，并且增加了磁盘IO的限制而不影响到<code>cgroup1</code>中的其他进程</li>
+</ul>
+<h5 id="三个组件之间的关系"><a href="#三个组件之间的关系" class="headerlink" title="三个组件之间的关系"></a>三个组件之间的关系</h5><ul>
+<li>系统在创建了新的<code>hierarchy</code>之后，系统中所有的进程都会加入这个<code>hierarchy</code>的<code>cgroup</code>根节点，这个<code>cgroup</code>根节点是<code>hierarchy</code>默认创建的</li>
+<li>一个<code>subsystem</code>只能附加到一个<code>hierarchy</code>上面</li>
+<li>一个<code>hierarchy</code>可以附加多个<code>subsystem</code></li>
+<li>一个进程可以作为多个<code>cgroup</code>的成员，但是这些<code>cgroup</code>必须在不同的<code>hierarchy</code>中</li>
+<li>一个进程<code>fork</code>出子进程时，子进程是和父进程在同一个<code>cgroup</code>中的，也可以根据需要将其移动到其他<code>cgroup</code>中</li>
+</ul>
+<h5 id="Docker是如何使用Cgroups的"><a href="#Docker是如何使用Cgroups的" class="headerlink" title="Docker是如何使用Cgroups的"></a>Docker是如何使用Cgroups的</h5><p>设置内存限制</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd -m 128m ubuntu</span><br></pre></td></tr></table></figure>
+<p>docker会为每个容器在系统的<code>hierarchy</code>种创建<code>cgroup</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /sys/fs/cgroup/memory/docker/&lt;container_id&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat memory.limit_in_bytes #查看cgroup的内存限制</span><br><span class="line">cat memory.usage_in_bytes #查看cgroup中进程所使用的内存大小</span><br></pre></td></tr></table></figure>
+<p>可以看到，Docker通过为每个容器创建<code>cgroup</code>，并通过<code>cgroup</code>去配置资源限制和资源监控</p>
+<h4 id="Union-File-System"><a href="#Union-File-System" class="headerlink" title="Union File System"></a>Union File System</h4><h5 id="concept-2"><a href="#concept-2" class="headerlink" title="concept"></a>concept</h5><p><code>Union File System</code>简称<code>UnionFS</code>，是一种位<code>Linux</code>、<code>FreeBSD</code>和<code>NetBSD</code>操作系统设计的，把其他文件系统联合到一个联合挂载点的文件系统服务。它使用<code>branch</code>把不同文件系统的文件和目录”透明地”覆盖，形成一个单一一致的文件系统。这些<code>branch</code>或者是<code>read-only</code>的，或者是<code>read-write</code>的，所以当对这个虚拟后的联合文件系统进行写操作的时候，系统是真正写到了一个新的文件中。看起来这个虚拟后的联合文件系统是可以对任何文件进行操作的，但是其实它并没有改变原来的文件，这是因为<code>unionfs</code>用到了一个重要的资源管理技术，叫写时复制。</p>
+<p>写时复制(copy-on-write，简称CoW)，也叫隐式共享，是一种对可修改资源实现高效复制的资源管理技术。它的思想是，如果一个资源是重复的，但没有任何修改，这时并不需要立即创建一个新的资源，这个资源可以被新旧实例共享。创建新资源发生在第一次写操作，也就是对资源进行修改的时候。通过这种资源共享的方式，可以显著地减少未修改资源复制带来的消耗，但是也会在进行资源修改时增加小部分的开销</p>
+<h5 id="AUFS"><a href="#AUFS" class="headerlink" title="AUFS"></a>AUFS</h5><p><code>AUFS</code>，英文全称是<code>Advanced Multi-Layered Unification Filesystem</code>，曾经也叫<code>Acronym Multi-Layered Unification Filesystem</code>、<code>Another Multi-Layered Unification Filesystem</code>。 <code>AUFS</code>完全重写了早期的<code>UnionFS 1.x</code>，其主要目的是为了可靠性和性能，并且引入了一些新的功能，比如可写分支的负载均衡。<code>AUFS</code>的一些实现已经被纳入<code>UnionFS 2.x</code>版本</p>
+<h5 id="Docker是如何使用AUFS的"><a href="#Docker是如何使用AUFS的" class="headerlink" title="Docker是如何使用AUFS的"></a>Docker是如何使用AUFS的</h5><p><code>AUFS</code>是Docker选用的第一种存储驱动。<code>AUFS</code>具有快速启动容器、高效利用存储和内存的优点。直到现在，<code>AUFS</code>仍然是Docker支持的一种存储驱动类型。</p>
+<h6 id="Image-layer和AUFS"><a href="#Image-layer和AUFS" class="headerlink" title="Image layer和AUFS"></a>Image layer和AUFS</h6><p>每一个<code>Docker image</code>都是由一系列<code>read-only layer</code>组成的，<code>image layer</code>的内容都存储在<code>Docker hosts filesystem</code>的<code>/var/lib/docker/aufs/diff</code>目录下。而<code>/var/lib/docker/aufs/layers</code>目录，则存储着<code>image layer</code>如何堆栈这些<code>layer</code>的<code>metadata</code></p>
+<h6 id="Container-layer和AUFS"><a href="#Container-layer和AUFS" class="headerlink" title="Container layer和AUFS"></a>Container layer和AUFS</h6><p>Docker使用<code>AUFS</code>的<code>CoW</code>技术来实现<code>image layer</code>共享和减少磁盘空间占用。<code>CoW</code>意味着一旦某个文件只有很小的部分有改动， <code>AUFS</code>也需要复制整个文件。这种设计会对容器性能产生一定的影响，尤其是在待复制的文件很大，或者位于很多<code>image layer</code>下方，又或者<code>AUFS</code>需要深度搜索目录结构树的时候。不过也不用过度担心，对于一个容器而言，每个<code>image layer</code>最多只需要复制一次。后续的改动都会在第一次拷贝的<code>container layer</code>上进行。</p>
+<p>启动一个<code>container</code>的时候，Docker会为其创建一个<code>read-only</code>的<code>init layer</code>，用来存储与这个容器内环境相关的内容，Docker还会为其创建一个<code>read-write</code>的<code>layer</code>来执行所有写操作。</p>
+<p><code>container layer</code>的<code>mount</code>目录也是<code>/var/lib/docker/aufs/mnt</code>。<code>container</code>的<code>metadata</code>和配置文件都存放在<code>/var/lib/docker/containers/&lt;container-id&gt;</code>目录中。<code>container</code>的<code>read-write layer</code>存储在<code>/var/lib/docker/aufs/diff/</code>目录下。即使容器停止，这个可读写层仍然存在，因而重启容器不会丢失数据，只有当一个容器被删除的时候，这个可读写层才会一起删除。</p>
+<p>最后，讲一下<code>AUFS</code>如何为<code>container</code>删除一个文件。如果要删除file1时，<code>AUFS</code>会在<code>container</code> 的<code>read-write</code>层生成一个<code>.wh.file1</code>的文件来隐藏所有<code>read-only</code>层的file1文件。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Notes/" rel="tag"># Notes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/18/略知一二之Cilium/" rel="next" title="略知一二之Cilium">
+                <i class="fa fa-chevron-left"></i> 略知一二之Cilium
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://elssm.lofter.com" target="_blank" title="Lofter">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Lofter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Namespace"><span class="nav-number">1.</span> <span class="nav-text">Namespace</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#concept"><span class="nav-number">1.1.</span> <span class="nav-text">concept</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UTS-Namespace"><span class="nav-number">1.2.</span> <span class="nav-text">UTS Namespace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IPC-Namespace"><span class="nav-number">1.3.</span> <span class="nav-text">IPC Namespace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PID-Namespace"><span class="nav-number">1.4.</span> <span class="nav-text">PID Namespace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mount-Namespace"><span class="nav-number">1.5.</span> <span class="nav-text">Mount Namespace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#User-Namespace"><span class="nav-number">1.6.</span> <span class="nav-text">User Namespace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Network-Namespace"><span class="nav-number">1.7.</span> <span class="nav-text">Network Namespace</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cgroups"><span class="nav-number">2.</span> <span class="nav-text">Cgroups</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#concept-1"><span class="nav-number">2.1.</span> <span class="nav-text">concept</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cgroups中的3个组件"><span class="nav-number">2.2.</span> <span class="nav-text">Cgroups中的3个组件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三个组件之间的关系"><span class="nav-number">2.3.</span> <span class="nav-text">三个组件之间的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker是如何使用Cgroups的"><span class="nav-number">2.4.</span> <span class="nav-text">Docker是如何使用Cgroups的</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Union-File-System"><span class="nav-number">3.</span> <span class="nav-text">Union File System</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#concept-2"><span class="nav-number">3.1.</span> <span class="nav-text">concept</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AUFS"><span class="nav-number">3.2.</span> <span class="nav-text">AUFS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker是如何使用AUFS的"><span class="nav-number">3.3.</span> <span class="nav-text">Docker是如何使用AUFS的</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Image-layer和AUFS"><span class="nav-number">3.3.1.</span> <span class="nav-text">Image layer和AUFS</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Container-layer和AUFS"><span class="nav-number">3.3.2.</span> <span class="nav-text">Container layer和AUFS</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
