@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Notes,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="第五章节BPF实用程序到目前为止，我们已经讨论了如何编写BPF程序以在系统中获得更多可见性。多年来，许多开发人员都使用BPF构建了用于相同目的的工具。在本章中，我们将讨论一些你可以每天使用的现成工具。其中许多工具是你已经见过的一些BPF程序的高级版本。还有一些工具可以帮助你直接了解自己的BPF程序。 本章介绍了一些工具，可以在BPF的日常工作中对你有所帮助。我们首先介绍BPFTool，这是一个命令">
+<meta name="keywords" content="Notes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用BPF的Linux可观测性(下篇)-翻译">
+<meta property="og:url" content="elssm.github.io/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/index.html">
+<meta property="og:site_name" content="ELSSM">
+<meta property="og:description" content="第五章节BPF实用程序到目前为止，我们已经讨论了如何编写BPF程序以在系统中获得更多可见性。多年来，许多开发人员都使用BPF构建了用于相同目的的工具。在本章中，我们将讨论一些你可以每天使用的现成工具。其中许多工具是你已经见过的一些BPF程序的高级版本。还有一些工具可以帮助你直接了解自己的BPF程序。 本章介绍了一些工具，可以在BPF的日常工作中对你有所帮助。我们首先介绍BPFTool，这是一个命令">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/1.png">
+<meta property="og:image" content="/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/2.png">
+<meta property="og:updated_time" content="2022-05-29T12:17:26.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用BPF的Linux可观测性(下篇)-翻译">
+<meta name="twitter:description" content="第五章节BPF实用程序到目前为止，我们已经讨论了如何编写BPF程序以在系统中获得更多可见性。多年来，许多开发人员都使用BPF构建了用于相同目的的工具。在本章中，我们将讨论一些你可以每天使用的现成工具。其中许多工具是你已经见过的一些BPF程序的高级版本。还有一些工具可以帮助你直接了解自己的BPF程序。 本章介绍了一些工具，可以在BPF的日常工作中对你有所帮助。我们首先介绍BPFTool，这是一个命令">
+<meta name="twitter:image" content="/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/">
+
+
+
+
+
+  <title>使用BPF的Linux可观测性(下篇)-翻译 | ELSSM</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author1.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用BPF的Linux可观测性(下篇)-翻译</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-05-29T20:07:54+08:00">
+                2022-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="第五章节"><a href="#第五章节" class="headerlink" title="第五章节"></a>第五章节</h2><h3 id="BPF实用程序"><a href="#BPF实用程序" class="headerlink" title="BPF实用程序"></a>BPF实用程序</h3><p>到目前为止，我们已经讨论了如何编写BPF程序以在系统中获得更多可见性。多年来，许多开发人员都使用BPF构建了用于相同目的的工具。在本章中，我们将讨论一些你可以每天使用的现成工具。其中许多工具是你已经见过的一些BPF程序的高级版本。还有一些工具可以帮助你直接了解自己的BPF程序。</p>
+<p>本章介绍了一些工具，可以在BPF的日常工作中对你有所帮助。我们首先介绍BPFTool，这是一个命令行实用程序，用于获取有关 BPF 程序的更多信息。我们涵盖了<code>BPFTrace</code>和<code>kubectl-trace</code>，它们会让你使用简洁的领域特定语言(DSL)有效地编写BPF程序。最后，我们谈谈<code>eBPF Exporter</code>，一个将BPF与Prometheus集成的开源项目。</p>
+<h4 id="BPFTool"><a href="#BPFTool" class="headerlink" title="BPFTool"></a>BPFTool</h4><p>BPFTool是一个用于检查BPF程序和映射的内核实用程序。默认情况下，该工具不会安装在任何Linux发行版上，而且它正在大量开发中，因此需要最能支持你的Linux内核版本。这里我们介绍<code>Linux 5.1</code>版的BPFTool。</p>
+<p>在接下来的部分中，我们将讨论如何将BPFTool安装到你的系统上，以及如何使用它来观察和更改BPF程序的行为和终端中的映射。</p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 获取内核源码。源码下载地址如下</span><br><span class="line">https://mirrors.edge.kernel.org/pub/linux/kernel/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 解压</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 进入tool目录</span><br><span class="line">cd linux-x.x/tools/bpf/bpftool</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装bpf</span><br><span class="line">make &amp;&amp; sudo make install</span><br></pre></td></tr></table></figure>
+<p>可以通过检查其版本来检查BPFTool是否已正确安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# bpftool --version</span><br><span class="line">bpftool v5.17.0</span><br><span class="line">features: libbpf_strict</span><br></pre></td></tr></table></figure>
+<h5 id="功能展示"><a href="#功能展示" class="headerlink" title="功能展示"></a>功能展示</h5><p>你可以使用BPFTool执行的基本操作之一是扫描系统以了解可以访问哪些BPF功能。 当你不记得哪个版本的内核引入了哪种程序或是否启用了<code>BPF JIT</code>编译器时，这种方法非常有用。要找出这些问题以及许多其他问题的答案，请运行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# bpftool feature </span><br><span class="line">Scanning system configuration...</span><br><span class="line">bpf() syscall for unprivileged users is enabled</span><br><span class="line">JIT compiler is enabled</span><br><span class="line">JIT compiler hardening is disabled</span><br><span class="line">JIT compiler kallsyms exports are enabled for root</span><br><span class="line">...</span><br><span class="line">Scanning system call availability...</span><br><span class="line">bpf() syscall is available</span><br><span class="line">Scanning eBPF program types...</span><br><span class="line">eBPF program_type socket_filter is available</span><br><span class="line">eBPF program_type kprobe is available</span><br><span class="line">...</span><br><span class="line">Scanning eBPF map types...</span><br><span class="line">eBPF map_type hash is available</span><br><span class="line">eBPF map_type array is available</span><br><span class="line">eBPF map_type prog_array is available</span><br><span class="line">eBPF map_type perf_event_array is availab</span><br></pre></td></tr></table></figure>
+<p>在此输出中可以看到我们的系统允许非特权用户执行<code>syscall bpf</code>，此调用仅限于某些操作。 还可以看到JIT已启用。较新版本的内核默认启用此JIT，它对编译BPF程序有很大帮助。 如果你的系统没有启用它，您可以运行以下命令来启用它：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> echo 1 &gt; /proc/sys/net/core/bpf_jit_enable</span><br></pre></td></tr></table></figure>
+<p>功能输出还显示了系统中启用了哪些程序类型和映射类型。这个命令提供的信息比我们在这里展示的要多得多，比如程序类型和许多其他配置指令支持的BPF助手。</p>
+<h5 id="检查BPF程序"><a href="#检查BPF程序" class="headerlink" title="检查BPF程序"></a>检查BPF程序</h5><p>BPFTool为你提供有关内核上BPF程序的直接信息。它允许调查系统中已经运行的内容。还允许加载和固定以前从命令行编译的新的BPF程序。</p>
+<p>学习如何使用BPFTool处理程序的最佳起点是检查你在系统中运行的内容。为此，可以运行命令<code>bpftool prog show</code>。 如果你使用<code>Systemd</code>作为你的init系统，那么可能已经加载了一些BPF程序并附加到一些cgroup；我们稍后再讨论这些。 运行该命令的输出将如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# bpftool prog show</span><br><span class="line">52: cgroup_skb  tag 7be49e3934a125ba</span><br><span class="line">       loaded_at 2019-03-28T16:46:04-0700  uid 0</span><br><span class="line">       xlated 296B  jited 229B  memlock 4096B  map_ids 52,53</span><br><span class="line">53: cgroup_skb  tag 2a142ef67aaad174</span><br><span class="line">       loaded_at 2019-03-28T16:46:04-0700  uid 0</span><br><span class="line">       xlated 296B  jited 229B  memlock 4096B  map_ids 52,53</span><br><span class="line">54: cgroup_skb  tag 7be49e3934a125ba</span><br><span class="line">       loaded_at 2019-03-28T16:46:04-0700  uid 0</span><br><span class="line">       xlated 296B  jited 229B  memlock 4096B  map_ids 54,55</span><br></pre></td></tr></table></figure>
+<p>左侧冒号前的数字是程序标识符；我们稍后会使用它们来调查这些程序的全部内容。从这个输出中还可以了解系统正在运行哪些类型的程序。在当前这种情况下，系统正在运行三个附加到cgroup套接字缓冲区的BPF程序。如果这些程序实际上是由<code>Systemd</code>启动的，则加载时间可能会与你启动系统时匹配。你还可以查看这些程序当前使用了多少内存以及与它们关联的映射的标识符。 所有这些乍一看都很有用，而且因为我们有程序标识符，我们可以更深入地进行研究。</p>
+<p>你可以将程序标识符作为额外参数添加到前面的命令中：<code>bpftool prog show id 52</code>。这样，BPFTool将显示你之前看到的相同信息，但仅针对由ID 52标识的程序； 这样可以过滤掉你不需要的信息。 此命令还支持<code>--json</code>标志来生成一些JSON输出。如果你想操作输出，这个JSON输出非常方便。例如，像<code>jq</code>这样的工具会为你提供更结构化的数据格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bpftool prog show --json id 52 | jq</span><br><span class="line"> &#123;</span><br><span class="line">  "id": 52,</span><br><span class="line">  "type": "cgroup_skb",</span><br><span class="line">  "tag": "7be49e3934a125ba",</span><br><span class="line">  "gpl_compatible": false,</span><br><span class="line">  "loaded_at": 1553816764,</span><br><span class="line">  "uid": 0,</span><br><span class="line">  "bytes_xlated": 296,</span><br><span class="line">  "jited": true,</span><br><span class="line">  "bytes_jited": 229,</span><br><span class="line">  "bytes_memlock": 4096,</span><br><span class="line">  "map_ids": [</span><br><span class="line">  52,</span><br><span class="line">  53</span><br><span class="line">  ] </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>当你知道程序标识符时，你还可以使用BPFTool获取整个程序的转储；当你需要调试编译器生成的BPF字节码时，这会很方便：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bpftool prog dump xlated id 52</span><br><span class="line">       0: (bf) r6 = r1</span><br><span class="line">       1: (69) r7 = *(u16 *)(r6 +192)</span><br><span class="line">       2: (b4) w8 = 0</span><br><span class="line">       3: (55) if r7 != 0x8 goto pc+14</span><br><span class="line">       4: (bf) r1 = r6</span><br><span class="line">       5: (b4) w2 = 16</span><br><span class="line">       6: (bf) r3 = r10</span><br><span class="line">       7: (07) r3 += -4</span><br><span class="line">       8: (b4) w4 = 4</span><br><span class="line">       9: (85) call bpf_skb_load_bytes#7151872</span><br><span class="line">       ...</span><br></pre></td></tr></table></figure>
+<p>这个由<code>Systemd</code>加载到我们内核中的程序正在使用帮助程序<code>bpf_skb_load_bytes</code>检查数据包数据。</p>
+<p>如果你想要这个程序更直观的表示，包括指令跳转，你可以在这个命令中使用<code>visual</code>关键字。 这将生成一种格式化的输出，你可以使用<code>dot</code>之类的工具或任何其他可以绘制图形的程序将其转换为图形表示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bpftool prog dump xlated id 52 visual &amp;&gt; output.out</span><br><span class="line"><span class="meta">#</span> dot -Tpng output.out -o visual-graph.png</span><br></pre></td></tr></table></figure>
+<p>如果你运行的是<code>5.1</code>或更新版本的内核，还可以访问运行时统计信息。它们告诉你内核在你的BPF程序上花费了多长时间。默认情况下，系统中可能未启用此功能；你需要先运行这个命令，让内核知道它需要向你展示这些数据：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> sysctl -w kernel.bpf_stats_enabled=1</span><br></pre></td></tr></table></figure>
+<p>启用统计信息后，你将在运行BPFTool时获得另外两条信息：内核运行该程序所花费的总时间<code>(run_time_ns)</code>，以及运行该程序的次数<code>(run_cnt)</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">52: cgroup_skb  tag 7be49e3934a125ba  run_time_ns 14397 run_cnt 39</span><br><span class="line">     	loaded_at 2019-03-28T16:46:04-0700  uid 0</span><br><span class="line">     	xlated 296B  jited 229B  memlock 4096B  map_ids 52,53</span><br></pre></td></tr></table></figure>
+<p>但是BPFTool不仅允许你检查程序的运行情况；它还允许你将新程序加载到内核中并将其中一些附加到套接字和 <code>cgroup</code>。 例如，我们可以加载我们以前的程序之一并将其固定到BPF文件系统，使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt1]# bpftool prog load bpf_program.o /sys/fs/bpf/bpf_prog</span><br><span class="line">[root@VM-16-14-centos cpt1]# bpftool prog show</span><br><span class="line">254: tracepoint  name bpf_prog  tag c6e8e35bea53af79  gpl</span><br><span class="line">	loaded_at 2022-05-28T17:06:14+0800  uid 0</span><br><span class="line">	xlated 112B  jited 76B  memlock 4096B  map_ids 43</span><br></pre></td></tr></table></figure>
+<h5 id="检查BPF映射"><a href="#检查BPF映射" class="headerlink" title="检查BPF映射"></a>检查BPF映射</h5><p>除了允许检查和操作BPF程序之外，BPFTool还可以让您访问这些程序正在使用的BPF映射。 列出所有映射并按其标识符过滤映射的命令，类似之前看到的show命令。 除了让BPFTool显示prog的信息，还可以显示map的信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bpftool map show</span><br><span class="line">    52: lpm_trie  flags 0x1</span><br><span class="line">            key 8B  value 8B  max_entries 1  memlock 4096B</span><br><span class="line">    53: lpm_trie  flags 0x1</span><br><span class="line">            key 20B  value 8B  max_entries 1  memlock 4096B</span><br><span class="line">    54: lpm_trie  flags 0x1</span><br><span class="line">            key 8B  value 8B  max_entries 1  memlock 4096B</span><br><span class="line">    55: lpm_trie  flags 0x1</span><br><span class="line">            key 20B  value 8B  max_entries 1  memlock 4096B</span><br></pre></td></tr></table></figure>
+<p>这些映射与之前看到的附加到程序的标识符相匹配。还可以按ID过滤映射。</p>
+<p>你可以使用BPFTool创建和更新映射并列出映射中的所有元素。创建新映射所需的信息与你在初始化映射时提供的信息相同。我们需要指定要创建的映射类型、键和值的大小及其名称。因为我们没有将映射与程序一起初始化，所以我们还需要将它固定到BPF文件系统，以便我们以后可以使用它：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos bpf]# bpftool map create /sys/fs/bpf/counter type array key 4 value 4 entries 5 name counter</span><br></pre></td></tr></table></figure>
+<p>如果在运行该命令后列出系统中的映射，将在列表底部看到新映射：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos bpf]# bpftool map</span><br><span class="line">1: array  flags 0x0</span><br><span class="line">	key 4B  value 4B  max_entries 100  memlock 4096B</span><br><span class="line">45: array  name counter  flags 0x0</span><br><span class="line">	key 4B  value 4B  max_entries 5  memlock 4096B</span><br></pre></td></tr></table></figure>
+<p>创建映射后可以像在BPF程序中那样更新和删除元素。</p>
+<p>如果要向映射添加新元素或更新现有元素，可以使用映射更新命令。你可以从前面的示例中获取映射标识符：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos bpf]# bpftool map update id 45 key 1 0 0 0 value 1 0 0 0</span><br></pre></td></tr></table></figure>
+<p>如果你尝试使用无效的键或值更新元素，BPFTool将返回错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos bpf]# bpftool map update id 45 key 1 0 0 0 value 1 0 0</span><br><span class="line">Error: value expected 4 bytes got 3</span><br></pre></td></tr></table></figure>
+<p>如果需要检查其值，BPFTool可以提供映射中所有元素的转储。在创建固定大小的数组映射时，可以看到BPF如何将所有元素初始化为空值：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos bpf]# bpftool map dump id 45</span><br><span class="line">key: 00 00 00 00  value: 00 00 00 00</span><br><span class="line">key: 01 00 00 00  value: 01 00 00 00</span><br><span class="line">key: 02 00 00 00  value: 00 00 00 00</span><br><span class="line">key: 03 00 00 00  value: 00 00 00 00</span><br><span class="line">key: 04 00 00 00  value: 00 00 00 00</span><br><span class="line">Found 5 elements</span><br></pre></td></tr></table></figure>
+<p>BPFTool提供的最强大的选项之一是，你可以将预先创建的映射附加到新程序，并用这些预先分配的映射替换它们初始化的映射。这样你可以从一开始就让程序访问保存的数据，即使你没有编写程序来从BPF文件系统读取映射。 为此，你需要在使用BPFTool加载程序时设置要初始化的映射。可以通过程序加载它时的有序标识符来指定映射，例如，0表示第一个映射，1表示第二个映射，依此类推。还可以通过名称指定映射，这通常更方便：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt1]# bpftool prog load bpf_program.o /sys/fs/bpf/bpf_prog_2         map name counter pinned /sys/fs/bpf/counter</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，我们将刚刚创建的映射附加到一个新程序中。在这种情况下，我们将映射替换为它的名称，因为我们知道程序初始化了一个名为counter的映射。 你还可以使用关键字<code>idx</code>使用映射的索引位置，如<code>idx 0</code>。</p>
+<p>当您需要实时调试消息传递时，直接从命令行访问BPF映射很有用。 BPFTool让你以一种更方便的方式直接访问。 除了自省程序和映射之外，你还可以使用BPFTool从内核中提取更多信息。 接下来让我们看看如何访问特定的接口。</p>
+<h5 id="检查附着到特定接口的程序"><a href="#检查附着到特定接口的程序" class="headerlink" title="检查附着到特定接口的程序"></a>检查附着到特定接口的程序</h5><p>有时你会发现自己想知道哪些程序附加到特定接口。BPF 可以加载在<code>cgroup</code>、<code>Perf</code>事件和网络数据包之上工作的程序。子命令<code>cgroup、perf 和 net</code>可以帮助你追溯这些接口上的附着程序。</p>
+<p><code>perf</code>子命令列出所有附加到系统中跟踪点的程序，如<code>kprobes、uprobes和tracepoints</code>； 你可以通过运行 <code>bpftool perf show</code>来查看该列表。</p>
+<p><code>net</code>子命令列出了附加到XDP和Traffic Control的程序。其他附着程序，如套接字过滤器和重用端口程序，只能通过使用<code>iproute2</code>访问。 您可以使用<code>bpftool net show</code>列出XDP和TC的附着程序，就像在其他BPF对象中看到的一样。</p>
+<p>最后，<code>cgroup</code>子命令列出所有附加到<code>cgroup</code>的程序。 这个子命令与你看到的其他命令有些不同。<code>bpftool cgroup show</code>需要你检查的<code>cgroup</code>路径。如果要列出系统中所有<code>cgroup</code>中的所有附着程序，则需要使用<code>bpftool cgroup tree</code>，如下例所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bpftool cgroup tree</span><br><span class="line">    CgroupPath</span><br><span class="line">    ID       AttachType      AttachFlags     Name</span><br><span class="line">    /sys/fs/cgroup/unified/system.slice/systemd-udevd.service</span><br><span class="line">5 ingress</span><br><span class="line">        4        egress</span><br><span class="line">    /sys/fs/cgroup/unified/system.slice/systemd-journald.service</span><br><span class="line">3 ingress</span><br><span class="line">        2        egress</span><br><span class="line">    /sys/fs/cgroup/unified/system.slice/systemd-logind.service</span><br><span class="line">        7        ingress</span><br><span class="line">        6        egress</span><br></pre></td></tr></table></figure>
+<p>至此，我们已经讨论了如何在终端中输入不同的命令来调试BPF程序。但是，当你最需要这些命令时，记住所有这些命令可能会很麻烦。接下来，我们将描述如何从纯文本文件加载几个命令，以便你可以构建一组方便使用的脚本。</p>
+<h5 id="在批处理模式下加载命令"><a href="#在批处理模式下加载命令" class="headerlink" title="在批处理模式下加载命令"></a>在批处理模式下加载命令</h5><p>当你尝试分析一个或多个系统的行为时，经常反复运行多个命令。最终可能会得到一组经常在工具链中使用的命令。 如果你不想每次都输入这些命令，BPFTool的批处理模式就很适合你。</p>
+<p>使用批处理模式可以将要执行的所有命令写入文件并一次运行所有命令。还可以通过以<code>#</code>开头的行在此文件中写入注释。但是，这种执行模式不是原子的。BPFTool逐行执行命令，如果其中一个命令失败，它将中止执行，使系统处于运行最新成功命令后的状态。</p>
+<p>以下是批处理模式可以处理的文件的简短示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Create a new hash map</span><br><span class="line">map create /sys/fs/bpf/hash_map type hash key 4 value 4 entries 5 name hash_map</span><br><span class="line"><span class="meta">#</span> Now show all the maps in the system</span><br><span class="line">map show</span><br></pre></td></tr></table></figure>
+<p>如果将这些命令保存在名为<code>/tmp/batch_example.txt</code>的文件中，则可以使用<code>bpftool batch file /tmp/batch_example.txt</code>加载它。 当你第一次运行这个命令时，你会得到类似于下面的代码片段的输出，但是如果你再次尝试运行它，这个命令将会退出并且没有输出，因为我们已经有一个名为<code>hash_map</code>的映射在系统，并且批处理执行将在第一行失败：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos tmp]# bpftool batch file /tmp/batch_example.txt</span><br><span class="line">46: array  name counter  flags 0x0</span><br><span class="line">	key 4B  value 4B  max_entries 5  memlock 4096B</span><br><span class="line">51: hash  name hash_map  flags 0x0</span><br><span class="line">	key 4B  value 4B  max_entries 5  memlock 4096B</span><br><span class="line">processed 2 commands</span><br></pre></td></tr></table></figure>
+<h5 id="显示BTF信息"><a href="#显示BTF信息" class="headerlink" title="显示BTF信息"></a>显示BTF信息</h5><p>BPFTool可以显示任何给定二进制对象存在的BPF类型格式(BTF)信息。BTF使用元数据信息对程序结构进行注释，以帮助你调试程序。</p>
+<p>例如，当你将关键字<code>linum</code>添加到<code>prog dump</code>时，它可以为你提供BPF程序中每条指令的源文件和行号。</p>
+<p>BPFTool的最新版本包括一个新的<code>btf</code>子命令，帮助你深入了解程序。此命令的初始重点是可视化结构类型。例如，<code>bpftool btf dump id 54</code>显示了ID为54的程序的所有BTF类型。</p>
+<h4 id="BPFTrace"><a href="#BPFTrace" class="headerlink" title="BPFTrace"></a>BPFTrace</h4><p>BPFTrace是BPF的高级跟踪语言。允许你使用简洁的DSL编写BPF程序，并将它们保存为可以执行的脚本，而无需手动编译和加载它们到内核中。该语言受到其他知名工具的启发，例如<code>awk</code>和<code>DTrace</code>。</p>
+<p>与直接使用BCC或其他BPF工具编写程序相比，使用BPFTrace的优势之一是BPFTrace提供了许多你不需要自己实现的内置功能，例如聚合信息和创建直方图。</p>
+<p>以Centos8为例，如果你安装了<code>epel-release</code>支持，那么一条dnf就可以安装bpftrace</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# dnf install bpftrace</span><br></pre></td></tr></table></figure>
+<p>BPFTrace执行的程序具有简洁的语法。我们可以将它们分为三个部分：<code>header, action blocks, and footer</code>。 <code>header</code>是BPFTrace在加载程序时执行的特殊块；它通常用于在输出顶部打印一些信息，例如序言。同样，<code>footer</code>是一个特殊的块，BPFTrace在终止程序之前执行一次。 <code>header</code>和<code>footer</code>都是BPFTrace程序中的可选部分。一个 BPFTrace程序必须至少有一个<code>action block</code>。<code>action block</code>是我们指定要跟踪的探针以及内核触发这些探针的事件时执行的操作的地方。下一个示例我们将展示这三个部分：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">BEGIN</span><br><span class="line">    &#123;</span><br><span class="line">      printf("starting BPFTrace program\n")</span><br><span class="line">&#125;</span><br><span class="line">kprobe:do_sys_open</span><br><span class="line">    &#123;</span><br><span class="line">      printf("opening file descriptor: %s\n", str(arg1))</span><br><span class="line">&#125;</span><br><span class="line">END</span><br><span class="line">    &#123;</span><br><span class="line">      printf("exiting BPFTrace program\n")</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>header</code>部分总是用关键字BEGIN标记，而<code>footer</code>部分总是用关键字END标记。 这些关键字由BPFTrace保留。 <code>action block</code>标识符定义了你希望将BPF操作附加到的探测器。在前面的示例中，我们在内核每次打开文件时打印一行日志。</p>
+<p>除了识别程序部分之外，我们已经可以在前面的示例中看到有关语言语法的更多细节。BPFTrace提供了一些帮助程序，这些帮助程序在程序编译时被翻译成BPF代码。 帮助程序<code>printf</code>是C函数<code>printf</code>的包装器，它在你需要时打印程序详细信息。str是一个内置的辅助函数，它将C指针转换为其字符串表示形式。许多内核函数接收指向字符的指针作为参数。这个辅助函数会为你翻译那些指向字符串的指针。</p>
+<p>BPFTrace可以被认为是一种动态语言，因为它不知道内核执行探针时可能收到的参数数量。这就是BPFTrace提供参数辅助函数来访问内核处理的信息的原因。BPFTrace根据块接收的参数数量动态生成这些帮助程序，可以通过其在参数列表中的位置访问信息。在前面的示例中，<code>arg1</code>是对open系统调用中第二个参数的引用，它引用了文件路径。</p>
+<p>要执行此示例，可以将其保存在文件中并使用文件路径作为第一个参数运行BPFTrace：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# bpftrace /tmp/example.bt</span><br></pre></td></tr></table></figure>
+<p>BPFTrace语言在设计时考虑了脚本。在前面的示例中，您已经看到了该语言的简洁版本。 但是，你也可以无需将这些单行程序存储在文件中即可执行它们；可以在执行BPFTrace时使用选项<code>-e</code>运行它们。 如下所示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# bpftrace -e "kprobe:do_sys_open &#123; @opens[arg1] = count() &#125;"</span><br><span class="line">Attaching 1 probe...</span><br><span class="line">@opens[94865239214048]: 1</span><br><span class="line">@opens[140736438418016]: 1</span><br><span class="line">@opens[140297599132240]: 1</span><br><span class="line">@opens[93945902307104]: 1</span><br><span class="line">@opens[94865239225648]: 1</span><br><span class="line">@opens[94865239215744]: 1</span><br><span class="line">@opens[93945902306496]: 1</span><br><span class="line">@opens[139870543823312]: 1</span><br><span class="line">@opens[139870563935520]: 1</span><br><span class="line">@opens[140267846679600]: 1</span><br><span class="line">@opens[139870563971376]: 1</span><br><span class="line">@opens[94774158865584]: 1</span><br><span class="line">@opens[140449669998819]: 1</span><br><span class="line">@opens[93945902302160]: 1</span><br><span class="line">@opens[93945902300160]: 1</span><br><span class="line">@opens[93907893935248]: 1</span><br></pre></td></tr></table></figure>
+<h5 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h5><p>当你运行前面的例子时，你可能会得到一个系统不断打开的文件流，直到你按下<code>Ctrl-C</code>退出程序。 那是因为我们告诉BPF打印内核打开的每个文件描述符。在某些情况下，你只想针对特定条件执行<code>action block</code>。 BPFTrace称之为过滤。</p>
+<p>你可以将一个过滤器关联到每个<code>action block</code>。 它们像<code>action block</code>一样评估，但如果过滤器返回false值，则操作不会执行。他们还可以访问该语言的其余部分，包括探测参数和辅助函数。 这些过滤器封装在动作标头之后的两个斜杠中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kprobe:do_sys_open /str(arg1) == "/tmp/example.bt"/</span><br><span class="line">    &#123;</span><br><span class="line">      printf("opening file descriptor: %s\n", str(arg1))</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，我们将我们的动作块优化为仅当内核打开的文件是我们用来存储这个例子的文件时才执行。如果你用新的过滤器运行程序，你会看到它打印了标题，但它在那里停止打印。 这是因为由于我们的新过滤器，之前触发我们操作的每个文件现在都被跳过了。如果你在不同的终端中多次打开示例文件，你将看到当过滤器匹配我们的文件路径时内核如何执行操作：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# bpftrace /tmp/example.bt</span><br><span class="line">    Attaching 3 probes...</span><br><span class="line">    starting BPFTrace program</span><br><span class="line">    opening file descriptor: /tmp/example.bt</span><br><span class="line">    opening file descriptor: /tmp/example.bt</span><br><span class="line">    opening file descriptor: /tmp/example.bt</span><br><span class="line">    ^Cexiting BPFTrace program</span><br></pre></td></tr></table></figure>
+<h5 id="动态映射"><a href="#动态映射" class="headerlink" title="动态映射"></a>动态映射</h5><p>BPFTrace实现的一项方便的功能是动态映射关联。 它可以动态生成BPF映射，你可以将其用于本书中看到的许多操作。所有映射关联都以字符<code>@</code>开头，后面跟要创建的映射的名称。 还可以通过为它们分配值来关联这些映射中的更新元素。</p>
+<p>如果我们以本节开头的示例为例，我们可以汇总系统打开特定文件的频率。为此，我们需要计算内核在特定文件上运行open系统调用的次数，然后将这些计数器存储在映射中。为了识别这些聚合，我们可以使用文件路径作为映射的键。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kprobe:do_sys_open</span><br><span class="line">&#123;</span><br><span class="line"> @opens[str(arg1)] = count()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行程序后输出如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bpftrace /tmp/example.bt</span><br><span class="line">    Attaching 3 probes...</span><br><span class="line">    starting BPFTrace program</span><br><span class="line">    ^Cexiting BPFTrace program</span><br><span class="line">    @opens[/var/lib/snapd/lib/gl/haswell/libdl.so.2]: 1</span><br><span class="line">    @opens[/var/lib/snapd/lib/gl32/x86_64/libdl.so.2]: 1</span><br><span class="line">    ...</span><br><span class="line">    @opens[/usr/lib/locale/en.utf8/LC_TIME]: 10</span><br><span class="line">    @opens[/usr/lib/locale/en_US/LC_TIME]: 10</span><br><span class="line">    @opens[/usr/share/locale/locale.alias]: 12</span><br><span class="line">    @opens[/proc/8483/cmdline]: 12</span><br></pre></td></tr></table></figure>
+<p>如你所见，BPFTrace在停止程序执行时打印映射的内容。它汇总了内核在我们系统中打开文件的频率。 默认情况下，BPFTrace总是会在它终止时打印它创建的每个映射的内容。 您无需指定要打印的映射；你可以通过使用内置函数clear清除END块内的映射来更改该行为。 这是因为打印映射总是发生在<code>footer</code>块执行之后。</p>
+<h4 id="kubectl-trace"><a href="#kubectl-trace" class="headerlink" title="kubectl-trace"></a>kubectl-trace</h4><p><code>kubectl-trace</code>是Kubernetes命令行kubectl的插件。它可以帮助你在Kubernetes集群中处理BPFTrace程序，而无需安装任何额外的包或模块。它通过使用容器镜像调度一个<code>Kubernetes job</code>来实现这一点，该容器镜像已经安装了运行程序所需的一切。 此镜像称为<code>trace-runner</code>，它也可以在公共Docker中使用。å</p>
+<h5 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h5><p>你需要使用Go的工具链从其源存储库安装<code>kubectl-trace</code>，因为其开发人员不提供任何二进制包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/iovisor/kubectl-trace/cmd/kubectl-trace</span><br></pre></td></tr></table></figure>
+<p>在Go的工具链编译程序并将其放入路径后，kubectl的插件系统会自动检测到这个新插件。<code>kubectl-trace</code>会在你第一次执行它时自动下载它在集群中运行的Docker镜像。</p>
+<h5 id="检查k8s节点"><a href="#检查k8s节点" class="headerlink" title="检查k8s节点"></a>检查k8s节点</h5><p>可以使用<code>kubectl-trace</code>来定位运行容器的节点和pod，也可以使用它来定位在这些容器上运行的进程。在第一种情况下，你几乎可以运行任何你想要的BPF程序。但是，在第二种情况下只能运行将用户空间探测器附加到这些进程的程序。</p>
+<p>如果要在特定节点上运行BPF程序，则需要一个适当的标识符，以便Kubernetes将作业安排在适当的位置。有了这个标识符之后，运行程序就和运行你之前看到的程序类似。 如下所示我们运行单行来计算文件打开次数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl trace run node/node_identifier -e \</span><br><span class="line">      "kprobe:do_sys_open &#123; @opens[str(arg1)] = count() &#125;"</span><br></pre></td></tr></table></figure>
+<p>我们使用命令<code>kubectl trace run</code>将其安排在特定的集群节点中。 我们使用语法<code>node/...</code>来告诉<code>kubectl-trace</code>我们正在针对集群中的一个节点。如果我们想针对特定的pod，我们可以将<code>node/</code>替换为<code>pod/</code>。</p>
+<p>在特定容器上运行程序更加复杂</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl trace run pod/pod_identifier -n application_name -e &lt;&lt;PROGRAM</span><br><span class="line">    uretprobe:/proc/$container_pid/exe:"main.main" &#123;</span><br><span class="line">      printf("exit: %d\n", retval)</span><br><span class="line">    &#125;</span><br><span class="line">PROGRAM</span><br></pre></td></tr></table></figure>
+<p>在这个命令中有两件事情需要强调。第一个是我们需要容器中运行的应用程序的名称才能找到它的进程； 这对应于我们示例中的<code>application_name</code>， 需要使用在容器中执行的二进制文件的名称，例如<code>nginx</code>或<code>memc ached</code>。 通常，容器只运行一个进程，但这为我们提供了额外的保证，即我们将程序附加到正确的进程。第二个方面是在BPF程序中包含<code>$container_pid</code>。 这不是BPFTrace辅助函数，而是<code>kubectl-trace</code>用作进程标识符替换的占位符。在运行BPF程序之前，<code>trace-runner</code>用适当的标识符替换占位符，并将我们的程序附加到正确的进程。</p>
+<p>在本节和前面几节中，我们专注于更有效地运行BPF程序的工具，即使在容器环境中也是如此。 在下一节中，我们将讨论一个更好的工具，它将BPF程序收集的数据与开源监控系统Prometheus集成在一起。</p>
+<h4 id="eBPF-Exporter"><a href="#eBPF-Exporter" class="headerlink" title="eBPF Exporter"></a>eBPF Exporter</h4><p><code>eBPF Exporter</code>是一个允许你自定义BPF跟踪指标导出到Prometheus的工具。Prometheus是一个高度可扩展的监控和警报系统。与其他监控系统不同的一个关键因素是它使用拉取策略来获取指标，而不是期望客户端将指标推送给它。这允许用户编写可以从任何系统收集指标的自定义导出器，Prometheus使用API模式提取它们。<code>eBPF Exporter</code>实现此API以从BPF程序中获取跟踪指标并将它们导入Prometheus。</p>
+<h5 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h5><p>尽管<code>eBPF Exporter</code>提供二进制包，但我们建议从源代码安装它，因为通常没有新版本。从源代码构建还可以让你访问BCC（BPF 编译器集合）之上构建的更新功能。</p>
+<p>要从源代码安装<code>eBPF Exporter</code>，你需要在计算机上已经安装BCC和Go的工具链。 有了这些先决条件后可以使用Go下载和构建二进制文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/cloudflare/ebpf_exporter/...</span><br></pre></td></tr></table></figure>
+<h5 id="从BPF导出指标"><a href="#从BPF导出指标" class="headerlink" title="从BPF导出指标"></a>从BPF导出指标</h5><p><code>eBPF Exporter</code>使用YAML文件进行配置，你可以在其中指定要从系统收集的指标、生成这些指标的BPF程序以及它们如何转换为Prometheus。当 Prometheus向<code>eBPF Exporter</code>发送请求以提取指标时，此工具会将BPF程序正在收集的信息转换为指标值。<code>eBPF Exporter</code>捆绑了许多系统收集非常有用的信息的程序，例如周期指令(IPC)和CPU缓存命中率。</p>
+<p><code>eBPF Exporter</code>的简单配置文件包括三个主要部分。在第一部分中定义了希望Prometheus从系统中提取的指标。 在这里可以将BPF映射中收集的数据转换为Prometheus理解的指标。 如下示例所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">programs:</span></span><br><span class="line">	<span class="bullet">-</span> <span class="attr">name:</span> <span class="string">timers</span></span><br><span class="line">		<span class="attr">metrics:</span> </span><br><span class="line">			<span class="attr">counters:</span></span><br><span class="line">				<span class="bullet">-</span> <span class="attr">name:</span> <span class="string">timer_start_total</span></span><br><span class="line">					<span class="attr">help:</span> <span class="string">Timers</span> <span class="string">fired</span> <span class="string">in</span> <span class="string">the</span> <span class="string">kernel</span> </span><br><span class="line">					<span class="attr">table:</span> <span class="string">counts</span></span><br><span class="line">					<span class="attr">labels:</span></span><br><span class="line">						<span class="bullet">-</span> <span class="attr">name:</span> <span class="string">function</span> </span><br><span class="line">						<span class="attr">size:</span> <span class="number">8</span></span><br><span class="line">						<span class="attr">decoders:</span></span><br><span class="line">							<span class="bullet">-</span> <span class="attr">name:</span> <span class="string">ksym</span></span><br></pre></td></tr></table></figure>
+<p>我们定义了一个名为<code>timer_start_total</code>的指标，它聚合了内核启动定时器的频率。我们还指定我们希望从名为<code>counts</code>的BPF映射中收集此信息。 最后，我们为映射的键定义了一个翻译函数。 这是必要的，因为映射键通常是指向信息的指针，我们希望向Prometheus发送实际的函数名称。</p>
+<p>本例中的第二部分描述了我们想要将BPF程序附加到的探针。在这种情况下，我们要跟踪计时器开始调用； 我们使用<code>tracepoint timer:timer_start</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tracepoints:</span><br><span class="line">  timer:timer_start: tracepoint__timer__timer_start</span><br></pre></td></tr></table></figure>
+<p>这里我们告诉<code>eBPF Exporter</code>，我们希望将BPF函数<code>tracepoint__timer__timer_start</code>附加到这个特定的跟踪点。 接下来让我们看看如何声明该函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">code: |</span><br><span class="line">BPF_HASH(counts, u64);</span><br><span class="line"><span class="comment">// Generates function tracepoint__timer__timer_start </span></span><br><span class="line">TRACEPOINT_PROBE(timer, timer_start) &#123;</span><br><span class="line">  counts.increment((u64) args-&gt;function);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>eBPF Exporter</code>使用BCC编译程序，因此我们可以访问它的所有宏和帮助程序。前面的代码片段使用宏<code>TRACEPOINT_PROBE</code>生成最终函数，我们将附加到名为<code>tracepoint__timer__timer_start</code>的跟踪点。</p>
+<p>Cloudflare使用<code>eBPF Exporter</code>来监控其所有数据中心的指标。</p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>在本章中，我们讨论了一些系统分析工具。当你需要调试系统上的任何异常时，这些工具可以随时使用。所有工具都抽象了我们在前几章中看到的概念，以帮助你使用BPF即便你的环境还没有准备好。这是BPF与其他众多分析工具相比的优势之一；因为任何现代Linux内核都包含BPF虚拟机，所以你可以在其上构建利用这些强大功能的新工具。</p>
+<p>还有许多其他工具将BPF用于类似目的，例如<code>Cilium</code>和<code>Sysdig</code>，我们鼓励你去尝试使用它们。</p>
+<p>在接下来的章节中，我们将深入探讨它的网络功能。我们将展示如何分析任何网络中的流量以及如何使用BPF来控制网络中的消息。</p>
+<h2 id="第六章节"><a href="#第六章节" class="headerlink" title="第六章节"></a>第六章节</h2><h3 id="Linux网络和BPF"><a href="#Linux网络和BPF" class="headerlink" title="Linux网络和BPF"></a>Linux网络和BPF</h3><p>从网络的角度来看，我们将BPF程序用于两个用途：数据包捕获和过滤。</p>
+<p>这意味着用户空间程序可以将过滤器附加到任何套接字并提取有关流经它的数据包的信息，并允许/禁止/重定向某些类型的数据包，因为它们在该级别可以看到。</p>
+<p>本章的目的是解释BPF程序在Linux内核网络堆栈中网络数据路径的不同阶段如何与<code>Socket Buffer</code>结构进行交互。 我们将确定两种类型的程序作为常见用例</p>
+<ul>
+<li>与套接字相关的程序类型</li>
+<li>基于BPF的流量控制分类器编写的程序</li>
+</ul>
+<p><code>Socket Buffer</code>结构，也称为SKB或<code>sk_buff</code>，是内核中为每个发送或接收的数据包创建和使用的结构。通过读取SKB可以传递或丢弃数据包并填充BPF映射以创建有关当前流量的统计信息和流量指标。</p>
+<p>此外，一些BPF程序允许你操作SKB，并通过扩展转换最终数据包，以重定向或改变它们的基本结构。例如，在仅使用IPv6的系统上可以编写一个程序，将所有收到的数据包从IPv4转换为 IPv6，这可以通过修改数据包的SKB来完成。</p>
+<p>理解网络中的BPF和eBPF的关键是需要了解我们可以编写的不同类型的程序之间的差异，以及不同的程序如何导致相同的结果；在下一节中，我们将介绍在套接字级别进行过滤的两种方法：使用经典的BPF过滤器，以及使用附加到套接字的eBPF程序。</p>
+<h3 id="BPF和包过滤"><a href="#BPF和包过滤" class="headerlink" title="BPF和包过滤"></a>BPF和包过滤</h3><p>如前所述，BPF过滤器和eBPF程序是BPF程序在网络环境中的主要用例。然而最开始BPF程序是包过滤的同义词。</p>
+<p>包过滤仍然是最重要的用例之一，并且已经从经典的BPF (cBPF)扩展到<code>Linux 3.19</code>中的eBPF，并在过滤程序类型<code>BPF_PROG_TYPE_SOCKET_FILTER</code>中添加了与映射相关的功能。</p>
+<p>过滤器主要可用于三个高级场景：</p>
+<ul>
+<li>实时流量丢弃（例如，仅允许用户数据报协议UDP流量，丢弃其他任何内容）</li>
+<li>实时观察流入系统的一组过滤数据包</li>
+<li>使用<code>pcap</code>格式对实时系统上捕获的网络流量进行回顾分析</li>
+</ul>
+<p>术语<code>pcap</code>来自两个词的结合：数据包(packet)和捕获(capture)。<code>pcap</code>格式在数据包捕获库 <code>libpcap</code>的库中实现，是用于数据包捕获的特定域API。 当你希望在实时系统上捕获的一组数据包能够直接保存到文件中，方便后续使用<code>pcap</code>格式导出的数据包流的工具进行分析时，这种格式在调试场景中很有用。</p>
+<p>在接下来的部分中，我们将展示两种不同的方式来应用BPF程序的包过滤。首先，我们展示了像<code>tcpdump</code>这样的常见且广泛使用的工具如何充当用作过滤器的BPF程序的更高级的接口。然后我们使用<code>BPF_PROG_TYPE_SOCKET_FILTER</code>BPF程序类型编写并加载我们自己的程序。</p>
+<h4 id="tcpdump和BPF表达式"><a href="#tcpdump和BPF表达式" class="headerlink" title="tcpdump和BPF表达式"></a>tcpdump和BPF表达式</h4><p>说到实时流量分析和观察，每个人都知道的命令行工具之一就是<code>tcpdump</code>。 本质上是<code>libpcap</code>的前端，它允许用户定义高级过滤表达式。<code>tcpdump</code>所做的是从你选择的网络接口（或任何接口）读取数据包，然后将接收到的数据包的内容写入标准输出或文件。然后可以使用<code>pcap</code>过滤器语法过滤数据包流。<code>pcap</code>过滤器语法是一种DSL，使用一组原语组成的高级表达式集过滤数据包，这些原语通常比BPF汇编更容易记住。解释<code>pcap</code>过滤器语法中所有可能的原语和表达式超出了本章的范围，具体可以使用<code>man 7 pcap-filter</code>查看。</p>
+<p>场景是我们在一个Linux机器中，它在端口<code>8080</code>上公开了一个Web服务器；这个Web服务器没有记录它接收到的请求，我们想知道它是否正在接收任何请求以及这些请求是如何流入的，因为所服务应用程序的客户抱怨在浏览时无法获得任何响应产品页面。在这一点上，我们只知道客户正在使用由该Web服务器提供的Web应用程序连接到我们的产品页面，并且总是发生这种情况，我们不知道是什么原因，因为最终用户通常不会调试服务，不幸的是我们没有在这个系统中部署任何日志记录或错误报告策略，因此我们在调查问题时完全是盲目的。幸运的是，有一个工具可以帮助我们！它是<code>tcpdump</code>，可以告诉它只过滤在我们系统中流动的IPv4数据包，这些数据包在端口8080上使用传输控制协议 (TCP)。因此，我们将能够分析Web服务器的流量。</p>
+<p>以下是使用<code>tcpdump</code>进行过滤的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# tcpdump -n 'ip and tcp port 8080'</span><br></pre></td></tr></table></figure>
+<p>让我们看看这个命令中发生了什么：</p>
+<ul>
+<li><code>-n</code> 是为了告诉<code>tcpdump</code>不要将地址转换为各自的名称，我们想查看源地址和目标地址。</li>
+<li><code>ip and tcp port 8080</code>是<code>tcpdump</code>用于过滤数据包的<code>pcap</code>过滤器表达式。ip表示 <code>IPv4</code>，它是一个连词，表示一个更复杂的过滤器，以允许添加更多表达式来匹配，然后我们指定我们只对来自tcp端口8080或到达端口8080的tcp数据包感兴趣。在这种情况下，更好的过滤器应该是<code>tcp dst port 8080</code>，因为我们只对目标端口为<code>8080</code>的数据包感兴趣，而不是来自它的数据包。</li>
+</ul>
+<p>其输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">    listening on wlp4s0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">    12:04:29.593703 IP 192.168.1.249.44206 &gt; 192.168.1.63.8080: Flags [P.],</span><br><span class="line">       seq 1:325, ack 1, win 343,</span><br><span class="line">       options [nop,nop,TS val 25580829 ecr 595195678],</span><br><span class="line">       length 324: HTTP: GET / HTTP/1.1</span><br><span class="line">    12:04:29.596073 IP 192.168.1.63.8080 &gt; 192.168.1.249.44206: Flags [.],</span><br><span class="line">       seq 1:1449, ack 325, win 507,</span><br><span class="line">       options [nop,nop,TS val 595195731 ecr 25580829],</span><br><span class="line">       length 1448: HTTP: HTTP/1.1 200 OK</span><br><span class="line">    12:04:29.596139 IP 192.168.1.63.8080 &gt; 192.168.1.249.44206: Flags [P.],</span><br><span class="line">       seq 1449:2390, ack 325, win 507,</span><br><span class="line">       options [nop,nop,TS val 595195731 ecr 25580829],</span><br><span class="line">       length 941: HTTP</span><br><span class="line">    12:04:46.242924 IP 192.168.1.249.44206 &gt; 192.168.1.63.8080: Flags [P.],</span><br><span class="line">       seq 660:996, ack 4779, win 388,</span><br><span class="line">       options [nop,nop,TS val 25584934 ecr 595204802],</span><br><span class="line">       length 336: HTTP: GET /api/products HTTP/1.1</span><br><span class="line">    12:04:46.243594 IP 192.168.1.63.8080 &gt; 192.168.1.249.44206: Flags [P.],</span><br><span class="line">       seq 4779:4873, ack 996, win 503,</span><br><span class="line">       options [nop,nop,TS val 595212378 ecr 25584934],</span><br><span class="line">       length 94: HTTP: HTTP/1.1 500 Internal Server Error</span><br><span class="line">    12:04:46.329245 IP 192.168.1.249.44234 &gt; 192.168.1.63.8080: Flags [P.],</span><br><span class="line">       seq 471:706, ack 4779, win 388,</span><br><span class="line">       options [nop,nop,TS val 25585013 ecr 595205622],</span><br><span class="line">       length 235: HTTP: GET /favicon.ico HTTP/1.1</span><br><span class="line">    12:04:46.331659 IP 192.168.1.63.8080 &gt; 192.168.1.249.44234: Flags [.],</span><br><span class="line">       seq 4779:6227, ack 706, win 506,</span><br><span class="line">       options [nop,nop,TS val 595212466 ecr 25585013],</span><br><span class="line">       length 1448: HTTP: HTTP/1.1 200 OK</span><br><span class="line">    12:04:46.331739 IP 192.168.1.63.8080 &gt; 192.168.1.249.44234: Flags [P.],</span><br><span class="line">       seq 6227:7168, ack 706, win 506,</span><br><span class="line">       options [nop,nop,TS val 595212466 ecr 25585013],</span><br><span class="line">       length 941: HTTP</span><br></pre></td></tr></table></figure>
+<p>可以看到，我们有一堆请求进展顺利，返回200 OK状态代码，但在<code>/api/products</code>端点上还有一个带有500内部服务器错误代码的请求。表示我们在列出产品时服务器遇到问题！</p>
+<p>此时，你可能会问，如果BPF程序有自己的语法，所有这些<code>pcap</code>过滤内容和<code>tcpdump</code>有什么关系？Linux上的<code>Pcap</code>过滤器被编译为BPF程序！而且因为<code>tcpdump</code>使用<code>pcap</code>过滤器进行过滤，这意味着每次使用过滤器执行<code>tcpdump</code>时，实际上是在编译和加载BPF程序来过滤数据包。幸运的是，通过将<code>-d</code>标志传递给<code>tcpdump</code>，你可以转储在使用指定过滤器时将加载的BPF指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# tcpdump  -d  'ip and tcp port 8080'</span><br></pre></td></tr></table></figure>
+<p>该过滤器与上一个示例中使用的过滤器相同，但由于<code>-d</code>标志，现在输出是一组BPF汇编指令。</p>
+<p>输出如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(000) ldh      [12]</span><br><span class="line">(001) jeq      #0x800           jt 2	jf 12</span><br><span class="line">(002) ldb      [23]</span><br><span class="line">(003) jeq      #0x6             jt 4	jf 12</span><br><span class="line">(004) ldh      [20]</span><br><span class="line">(005) jset     #0x1fff          jt 12	jf 6</span><br><span class="line">(006) ldxb     4*([14]&amp;0xf)</span><br><span class="line">(007) ldh      [x + 14]</span><br><span class="line">(008) jeq      #0x1f90          jt 11	jf 9</span><br><span class="line">(009) ldh      [x + 16]</span><br><span class="line">(010) jeq      #0x1f90          jt 11	jf 12</span><br><span class="line">(011) ret      #262144</span><br><span class="line">(012) ret      #0</span><br></pre></td></tr></table></figure>
+<p>分析如下</p>
+<p>ldh [12]：在偏移量12处从累加器加载(ld)一个(h)半字（16 位），这是<code>Ethertype</code>字段，第二层以太网帧结构如下图所示。</p>
+<p><img src="/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/1.png" alt="1"></p>
+<p>jeq #0x800 jt 2 jf 12：如果 (eq) 相等则跳转(j) ；检查上一条指令中的<code>Ethertype</code>值是否等于<code>0x800</code>（这是 IPv4 的标识符），然后使用跳转目标，如果为真（jt）则为2，如果为假（jf）则为12，因此这将继续到下一个如果Internet协议是IPv4的指令——否则它将跳转到末尾并返回零。</p>
+<p>ldb [23]：加载字节(ldb)，将从IP帧中加载更高层协议字段，该字段可在偏移量23处找到——偏移量23来自以太网第2层帧中头的14个字节的添加加上协议在IPv4头中的位置，即第9个，因此14+9=23。</p>
+<p>jeq #0x6 jt 4 jf 12：如果相等，再跳一次。这种情况下，我们检查之前提取的协议是<code>0x6</code>，即TCP。如果是，我们跳到下一条指令(4)或者我们走到最后(12)——如果不是，我们丢弃数据包。</p>
+<p>ldh [20]：这是另一个加载半字指令——在这种情况下，它是从IPv4头加载数据包偏移量+分片偏移量的值。</p>
+<p>jset #0x1fff jt 12 6：如果我们在分片偏移中找到的任何数据为真，则此<code>jset</code>指令将跳转到12——否则，跳转到6，即下一条指令。指令<code>0x1fff</code>之后的偏移量告诉<code>jset</code>指令只查看最后13个字节的数据。（扩展为 0001 1111 1111 1111）</p>
+<p>ldxb 4*([14]&amp;0xf)：将(b)加载(ld)到x中。该指令会将IP标头长度的值加载到x中。</p>
+<p>ldh [x+14]：另一个加载半字指令将获取偏移量(x + 14)处的值，IP标头长度+14，这是数据包中源端口的位置。</p>
+<p>jeq #0x1f90 jt 11 jf 9：如果(x + 14)处的值等于<code>0x1f90</code>（十进制的 8080），这意味着源端口将是<code>8080</code>，继续11或继续检查目标端口是否在端口8080上，如果是错误的，继续9 .</p>
+<p>ldh [x + 16]：这是另一个加载半字指令，它将获取偏移量(x + 16)处的值，这是数据包中目标端口的位置。</p>
+<p>jeq #0x1f90 jt 11 jf 12：这里如果相等再跳转一次，这次用来检查目的地是否为<code>8080</code>，跳转到11；如果不是，转至12并丢弃该数据包。</p>
+<p>ret #262144：到达此指令时，会找到匹配项，从而返回匹配的快照长度。 默认情况下，此值为262144字节。 可以使用<code>tcpdump</code>中的<code>-s</code>参数对其进行调整。</p>
+<p>如果只考虑以<code>8080</code>作为目标的数据包，而不是作为源的数据包，<code>tcpdump</code>示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos ~]# tcpdump -d 'ip and tcp dst port 8080'</span><br><span class="line">(000) ldh      [12]</span><br><span class="line">(001) jeq      #0x800           jt 2	jf 10</span><br><span class="line">(002) ldb      [23]</span><br><span class="line">(003) jeq      #0x6             jt 4	jf 10</span><br><span class="line">(004) ldh      [20]</span><br><span class="line">(005) jset     #0x1fff          jt 10	jf 6</span><br><span class="line">(006) ldxb     4*([14]&amp;0xf)</span><br><span class="line">(007) ldh      [x + 16]</span><br><span class="line">(008) jeq      #0x1f90          jt 9	jf 10</span><br><span class="line">(009) ret      #262144</span><br><span class="line">(010) ret      #0</span><br></pre></td></tr></table></figure>
+<p>除了像我们那样分析从<code>tcpdump</code>生成的程序集之外，你可能还想编写自己的代码来过滤网络数据包。事实证明，在这种情况下，最大的挑战将是实际调试代码的执行以确保它符合我们的期望； 在这种情况下，在内核源代码树中，<code>tools/bpf</code>中有一个名为<code>bpf_dbg.c</code>的工具，它本质上是一个调试器，允许加载程序和<code>pcap</code>文件以逐步测试执行。</p>
+<p><code>tcpdump</code>也可以直接从<code>.pcap</code>文件中读取，并对其应用BPF过滤器。</p>
+<h4 id="原始套接字的数据包过滤"><a href="#原始套接字的数据包过滤" class="headerlink" title="原始套接字的数据包过滤"></a>原始套接字的数据包过滤</h4><p><code>BPF_PROG_TYPE_SOCKET_FILTER</code>程序类型允许你将BPF程序附加到套接字。它接收到的所有数据包都会以<code>sk_buff</code>结构体的形式传递给程序，然后程序可以决定是丢弃还是允许。这种程序还具有访问和处理映射的能力。</p>
+<p>让我们看一个例子，看看如何使用这种BPF程序。</p>
+<p>我们示例程序的目的是计算在观察下流经接口的TCP、UDP和互联网控制消息协议(ICMP)数据包的数量。为此，我们需要以下内容：</p>
+<ul>
+<li>可以看到数据包流动的BPF程序</li>
+<li>加载程序并将其附加到网络接口的代码</li>
+<li>用于编译程序并启动加载程序的脚本</li>
+</ul>
+<p>此时我们可以通过两种方式编写BPF程序：作为C代码然后编译为ELF文件，或者直接作为BPF程序集。对于这个例子，我们选择使用C代码来展示更高层次的抽象以及如何使用Clang来编译程序。</p>
+<h5 id="BPF程序"><a href="#BPF程序" class="headerlink" title="BPF程序"></a>BPF程序</h5><p>这里BPF程序的主要职责是访问它接收到的数据包；检查其协议是TCP、UDP还是ICMP，然后在找到的协议的特定键上增加映射数组上的计数。</p>
+<p>对于这个程序，我们将利用位于内核源码中<code>samples/bpf/bpf_load.c</code>中的帮助程序解析ELF文件的加载机制。 加载函数<code>load_bpf_file</code>能够识别某些特定的ELF节头，并将它们与相应的程序类型相关联。 代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> is_socket = <span class="built_in">strncmp</span>(event, <span class="string">"socket"</span>, <span class="number">6</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_kprobe = <span class="built_in">strncmp</span>(event, <span class="string">"kprobe/"</span>, <span class="number">7</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_kretprobe = <span class="built_in">strncmp</span>(event, <span class="string">"kretprobe/"</span>, <span class="number">10</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_tracepoint = <span class="built_in">strncmp</span>(event, <span class="string">"tracepoint/"</span>, <span class="number">11</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_raw_tracepoint = <span class="built_in">strncmp</span>(event, <span class="string">"raw_tracepoint/"</span>, <span class="number">15</span>) == <span class="number">0</span>; </span><br><span class="line"><span class="keyword">bool</span> is_xdp = <span class="built_in">strncmp</span>(event, <span class="string">"xdp"</span>, <span class="number">3</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_perf_event = <span class="built_in">strncmp</span>(event, <span class="string">"perf_event"</span>, <span class="number">10</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_cgroup_skb = <span class="built_in">strncmp</span>(event, <span class="string">"cgroup/skb"</span>, <span class="number">10</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_cgroup_sk = <span class="built_in">strncmp</span>(event, <span class="string">"cgroup/sock"</span>, <span class="number">11</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_sockops = <span class="built_in">strncmp</span>(event, <span class="string">"sockops"</span>, <span class="number">7</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_sk_skb = <span class="built_in">strncmp</span>(event, <span class="string">"sk_skb"</span>, <span class="number">6</span>) == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">bool</span> is_sk_msg = <span class="built_in">strncmp</span>(event, <span class="string">"sk_msg"</span>, <span class="number">6</span>) == <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>代码所做的第一件事是在节头和内部变量之间创建关联——就像<code>SEC(&quot;socket&quot;)</code>一样，我们最终会得到<code>bool is_socket=true</code></p>
+<p>之后在同一个文件中，我们看到了一组if指令，它们创建了header和实际<code>prog_type</code>之间的关联，因此对于<code>is_socket</code>，我们最终得到<code>BPF_PROG_TYPE_SOCKET_FILTER</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (is_socket) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_SOCKET_FILTER;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_kprobe || is_kretprobe) &#123; </span><br><span class="line">  prog_type = BPF_PROG_TYPE_KPROBE;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_tracepoint) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_TRACEPOINT;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_raw_tracepoint) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_RAW_TRACEPOINT;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_xdp) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_XDP;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_perf_event) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_PERF_EVENT;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_cgroup_skb) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_CGROUP_SKB;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_cgroup_sk) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_CGROUP_SOCK;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_sockops) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_SOCK_OPS;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_sk_skb) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_SK_SKB;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (is_sk_msg) &#123;</span><br><span class="line">	prog_type = BPF_PROG_TYPE_SK_MSG;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Unknown event '%s'\n"</span>, event); </span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为我们想编写一个<code>BPF_PROG_TYPE_SOCKET_FILTER</code>程序，我们需要指定一个<code>SEC(&quot;socket&quot;)</code>作为我们函数的ELF头，它将作为BPF程序的入口点。</p>
+<p>正如从该列表中看到的那样，有多种与套接字和一般网络操作相关的程序类型。在本章中，我们将展示<code>BPF_PROG_TYPE_SOCKET_FILTER</code>的示例；此外，后面我们将讨论程序类型为 <code>BPF_PROG_TYPE_XDP</code>的XDP程序。</p>
+<p>我们想要存储遇到的每个协议的数据包计数，需要创建一个键/值映射，其中协议是键，数据包计数为值。为此可以使用<code>BPF_MAP_TYPE_ARRAY</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct bpf_map_def <span class="title">SEC</span><span class="params">(<span class="string">"maps"</span>)</span> countmap </span>= &#123; </span><br><span class="line">  .type = BPF_MAP_TYPE_ARRAY,</span><br><span class="line">	.key_size = <span class="keyword">sizeof</span>(<span class="keyword">int</span>),</span><br><span class="line">	.value_size = <span class="keyword">sizeof</span>(<span class="keyword">int</span>), </span><br><span class="line">  .max_entries = <span class="number">256</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>该映射是使用<code>bpf_map_def</code>结构定义的，它将被命名为<code>countmap</code>以供程序中引用。</p>
+<p>此时，我们可以编写一些代码来实际计算数据包。<code>BPF_PROG_TYPE_SOCKET_FILTER</code>类型的程序是我们的选择之一，因为通过使用这样的程序，我们可以看到所有流经接口的数据包。因此我们使用<code>SEC(&quot;socket&quot;)</code>将程序附加到正确的头部：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">SEC(<span class="string">"socket"</span>)</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket_prog</span><span class="params">(struct __sk_buff *skb)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> proto = load_byte(skb, ETH_HLEN + offsetof(struct iphdr, protocol)); 		<span class="keyword">int</span> one=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> *el = bpf_map_lookup_elem(&amp;countmap, &amp;proto);</span><br><span class="line">	<span class="keyword">if</span> (el) &#123;</span><br><span class="line">		(*el)++; </span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		el = &amp;one; </span><br><span class="line">  &#125;</span><br><span class="line">  bpf_map_update_elem(&amp;countmap, &amp;proto, el, BPF_ANY);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在ELF头附加之后，我们可以使用<code>load_byte</code>函数从<code>sk_buff</code>结构中提取协议部分。然后使用协议ID作为键来执行<code>bpf_map_lookup_elem</code>操作以从计数映射中提取当前计数器值，以便我们可以将其递增，如果它是第一个数据包，我们可以将其设置为1。现在我们可以使用 <code>bpf_map_update_elem</code>用增加的值更新映射。</p>
+<p>完整的<code>bpf_program.c</code>程序如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/bpf.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/if_ether.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/if_packet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/ip.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/tcp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/udp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> offsetof</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> offsetof(TYPE, MEMBER) ((size_t) &amp; ((TYPE *)0)-&gt;MEMBER)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SEC(NAME) __attribute__((section(NAME), used)) </span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">bpf_map_def</span> &#123;</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> type;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> key_size;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> value_size;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> max_entries;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> map_flags;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="title">int</span> <span class="params">(*bpf_map_update_elem)</span><span class="params">(struct bpf_map_def *<span class="built_in">map</span>, <span class="keyword">void</span> *key,</span></span></span><br><span class="line"><span class="function"><span class="params">                                  <span class="keyword">void</span> *value, __u64 flags)</span> </span>= (<span class="keyword">void</span> *)</span><br><span class="line">    BPF_FUNC_map_update_elem;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *(*bpf_map_lookup_elem)(struct bpf_map_def *<span class="built_in">map</span>, <span class="keyword">void</span> *key) =</span><br><span class="line">    (<span class="keyword">void</span> *)BPF_FUNC_map_lookup_elem;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="title">load_byte</span><span class="params">(<span class="keyword">void</span> *skb,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> off)</span> <span class="title">asm</span><span class="params">(<span class="string">"llvm.bpf.load.byte"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">struct bpf_map_def <span class="title">SEC</span><span class="params">(<span class="string">"maps"</span>)</span> countmap </span>= &#123;</span><br><span class="line">    .type = BPF_MAP_TYPE_ARRAY,</span><br><span class="line">    .key_size = <span class="keyword">sizeof</span>(<span class="keyword">int</span>),</span><br><span class="line">    .value_size = <span class="keyword">sizeof</span>(<span class="keyword">int</span>),</span><br><span class="line">    .max_entries = <span class="number">256</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">SEC(<span class="string">"socket"</span>)</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket_prog</span><span class="params">(struct __sk_buff *skb)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> proto = load_byte(skb, ETH_HLEN + offsetof(struct iphdr, protocol));</span><br><span class="line">  <span class="keyword">int</span> one = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> *el = bpf_map_lookup_elem(&amp;countmap, &amp;proto);</span><br><span class="line">  <span class="keyword">if</span> (el) &#123;</span><br><span class="line">    (*el)++;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    el = &amp;one;</span><br><span class="line">  &#125;</span><br><span class="line">  bpf_map_update_elem(&amp;countmap, &amp;proto, el, BPF_ANY);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> _license[] SEC(<span class="string">"license"</span>) = <span class="string">"GPL"</span>;</span><br></pre></td></tr></table></figure>
+<p>编译如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# clang -O2 -target bpf -c bpf_program.c -o bpf_program.o</span><br></pre></td></tr></table></figure>
+<p>报错如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# clang -O2 -target bpf -c bpf_program.c -o bpf_program.o</span><br><span class="line">In file included from bpf_program.c:6:</span><br><span class="line">In file included from /usr/include/linux/string.h:7:</span><br><span class="line">In file included from /usr/include/string.h:26:</span><br><span class="line">In file included from /usr/include/bits/libc-header-start.h:33:</span><br><span class="line">In file included from /usr/include/features.h:452:</span><br><span class="line">/usr/include/gnu/stubs.h:7:11: fatal error: 'gnu/stubs-32.h' file not found</span><br><span class="line"><span class="meta">#</span> include &lt;gnu/stubs-32.h&gt;</span><br><span class="line">          ^~~~~~~~~~~~~~~~</span><br><span class="line">1 error generated.</span><br></pre></td></tr></table></figure>
+<p>解决办法如下</p>
+<p><a href="https://github.com/cilium/cilium/issues/368" target="_blank" rel="noopener">https://github.com/cilium/cilium/issues/368</a></p>
+<p>重新编译</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# clang -O2 -target bpf -c bpf_program.c -o bpf_program.o</span><br></pre></td></tr></table></figure>
+<h5 id="加载并附加到网络接口"><a href="#加载并附加到网络接口" class="headerlink" title="加载并附加到网络接口"></a>加载并附加到网络接口</h5><p>加载程序是实际打开我们编译的BPF ELF二进制文件<code>bpf_program.o</code>的程序，并将定义的BPF程序及其映射附加到一个套接字，该套接字是针对所观察的接口创建的，在我们的例子中是环回接口。</p>
+<p>loader最重要的部分是ELF文件的加载：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (load_bpf_file(filename)) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>, bpf_log_buf);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  sock = open_raw_sock(<span class="string">"lo"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (setsockopt(sock, SOL_SOCKET, SO_ATTACH_BPF, prog_fd,</span><br><span class="line">                 <span class="keyword">sizeof</span>(prog_fd[<span class="number">0</span>]))) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"setsockopt %s\n"</span>, strerror(errno));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这将通过添加一个元素来填充<code>prog_fd</code>数组，该元素是我们加载的程序的文件描述符，我们现在可以将其附加到使用<code>open_raw_sock</code>打开的环回接口的套接字描述符上。</p>
+<p>通过将选项<code>SO_ATTACH_BPF</code>设置为为接口打开的原始套接字来完成附加。</p>
+<p>此时，我们的用户空间加载器能够在内核发送映射元素时查找它们：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    key = IPPROTO_TCP;</span><br><span class="line">    assert(bpf_map_lookup_elem(map_fd[<span class="number">0</span>], &amp;key, &amp;tcp_cnt) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    key = IPPROTO_UDP;</span><br><span class="line">    assert(bpf_map_lookup_elem(map_fd[<span class="number">0</span>], &amp;key, &amp;udp_cnt) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    key = IPPROTO_ICMP;</span><br><span class="line">    assert(bpf_map_lookup_elem(map_fd[<span class="number">0</span>], &amp;key, &amp;icmp_cnt) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"TCP %d UDP %d ICMP %d packets\n"</span>, tcp_cnt, udp_cnt, icmp_cnt);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>为了进行查找，我们使用for循环和<code>bpf_map_look_elem</code>附加到数组映射，以便我们可以分别读取和打印TCP、UDP和ICMP数据包计数器的值</p>
+<p><code>loader.c</code>程序完整代码如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bpf/bpf.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bpf/bpf_load.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bpf/sock_example.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/bpf.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/if_ether.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stddef.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> bpf_log_buf[BPF_LOG_BUF_SIZE];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> sock = <span class="number">-1</span>, i, key;</span><br><span class="line">  <span class="keyword">int</span> tcp_cnt, udp_cnt, icmp_cnt;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">char</span> filename[<span class="number">256</span>];</span><br><span class="line">  <span class="built_in">snprintf</span>(filename, <span class="keyword">sizeof</span>(filename), <span class="string">"%s"</span>, argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (load_bpf_file(filename)) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>, bpf_log_buf);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  sock = open_raw_sock(<span class="string">"lo"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (setsockopt(sock, SOL_SOCKET, SO_ATTACH_BPF, prog_fd,</span><br><span class="line">                 <span class="keyword">sizeof</span>(prog_fd[<span class="number">0</span>]))) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"setsockopt %s\n"</span>, strerror(errno));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    key = IPPROTO_TCP;</span><br><span class="line">    assert(bpf_map_lookup_elem(map_fd[<span class="number">0</span>], &amp;key, &amp;tcp_cnt) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    key = IPPROTO_UDP;</span><br><span class="line">    assert(bpf_map_lookup_elem(map_fd[<span class="number">0</span>], &amp;key, &amp;udp_cnt) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    key = IPPROTO_ICMP;</span><br><span class="line">    assert(bpf_map_lookup_elem(map_fd[<span class="number">0</span>], &amp;key, &amp;icmp_cnt) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"TCP %d UDP %d ICMP %d packets\n"</span>, tcp_cnt, udp_cnt, icmp_cnt);</span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为这个程序使用的是<code>libbpf</code>，所以我们需要在下载的源码中编译它：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos bpf]# pwd</span><br><span class="line">/root/linux-5.4/tools/lib/bpf</span><br><span class="line">[root@VM-16-14-centos bpf]# make</span><br><span class="line">Auto-detecting system features:</span><br><span class="line">...                        libelf: [ on  ]</span><br><span class="line">...                           bpf: [ on  ]</span><br><span class="line"></span><br><span class="line">  HOSTCC   fixdep.o</span><br><span class="line">  HOSTLD   fixdep-in.o</span><br><span class="line">  LINK     fixdep</span><br><span class="line">  MKDIR    staticobjs/</span><br></pre></td></tr></table></figure>
+<p>接着我们可以使用如下脚本编译加载器：</p>
+<p><code>build-loader.sh</code>代码如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">KERNEL_SRCTREE=$1</span><br><span class="line">LIBBPF=$&#123;KERNEL_SRCTREE&#125;/tools/lib/bpf/libbpf.a</span><br><span class="line">clang -o loader-bin -I$&#123;KERNEL_SRCTREE&#125;/tools/lib/bpf/ \</span><br><span class="line"><span class="meta">  -I$</span>&#123;KERNEL_SRCTREE&#125;/tools/lib -I$&#123;KERNEL_SRCTREE&#125;/tools/include \</span><br><span class="line"><span class="meta">  -I$</span>&#123;KERNEL_SRCTREE&#125;/tools/perf -I$&#123;KERNEL_SRCTREE&#125;/samples \</span><br><span class="line"><span class="meta">  $</span>&#123;KERNEL_SRCTREE&#125;/samples/bpf/bpf_load.c \</span><br><span class="line">  loader.c "$&#123;LIBBPF&#125;" -lelf</span><br></pre></td></tr></table></figure>
+<p>该脚本包含一堆头文件和内核本身的<code>libbpf</code>库，因此它必须知道在哪里可以找到内核源码。 为此可以在其中替换<code>$KERNEL_SRCTREE</code>或将该脚本写入文件并使用它：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# ./build-loader.sh /root/linux-5.4</span><br></pre></td></tr></table></figure>
+<p>报错如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/tmp/loader-19267c.o:(.bss+0x0): multiple definition of `bpf_log_buf&apos;</span><br><span class="line">/tmp/bpf_load-33a95f.o:(.bss+0x1000): first defined here</span><br><span class="line">clang-12: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+<p>解决方法如下</p>
+<p><a href="https://stackoverflow.com/questions/12511044/bss0x0-multiple-definition-of-proxies" target="_blank" rel="noopener">https://stackoverflow.com/questions/12511044/bss0x0-multiple-definition-of-proxies</a></p>
+<p>即在全局变量前声明<code>extern</code>，这里我们在<code>char bpf_log_buf[BPF_LOG_BUF_SIZE]</code>处声明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> bpf_log_buf[BPF_LOG_BUF_SIZE];</span><br></pre></td></tr></table></figure>
+<p>之后重新编译会创建一个<code>loader-bin</code>文件，最终可以启动BPF程序的ELF文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# ./loader-bin bpf_program.o</span><br></pre></td></tr></table></figure>
+<p>程序加载并启动后，将执行10次转储，每秒一次显示三个协议中的每一个的数据包计数。因为程序连接到环回设备<code>lo</code>，所以你可以与加载程序一起运行ping并看到ICMP计数器增加。</p>
+<p>运行ping来生成到<code>localhost</code>的ICMP流量：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# ping -c 100 127.0.0.1</span><br></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.100 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.107 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.093 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=4 ttl=64 time=0.102 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=5 ttl=64 time=0.105 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=6 ttl=64 time=0.093 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=7 ttl=64 time=0.104 ms</span><br><span class="line"> 64 bytes from 127.0.0.1: icmp_seq=8 ttl=64 time=0.142 ms</span><br></pre></td></tr></table></figure>
+<p>在另一个终端中运行我们的BPF程序：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# ./loader-bin bpf_program.o</span><br><span class="line"> 		TCP 0 UDP 0 ICMP 0 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 4 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 8 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 12 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 16 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 20 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 24 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 28 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 32 packets</span><br><span class="line">    TCP 0 UDP 0 ICMP 36 packets</span><br></pre></td></tr></table></figure>
+<h3 id="基于BPF的流量控制分类器"><a href="#基于BPF的流量控制分类器" class="headerlink" title="基于BPF的流量控制分类器"></a>基于BPF的流量控制分类器</h3><p>流量控制是内核数据包调度子系统架构。由决定数据包如何流动以及如何被接受的机制和排队系统组成。流量控制的一些用例包括但不限于以下内容：</p>
+<ul>
+<li>优先处理某些类型的数据包</li>
+<li>丢弃特定类型的数据包</li>
+<li>带宽分配</li>
+</ul>
+<p>一般来说，当你需要重新分配系统中的网络资源时，流量控制是一种可行的方法，为了充分利用它，应该根据你想要运行的应用程序类型部署特定的流量控制配置。流量控制提供了一个可编程的分类器，称为<code>cls_bpf</code>，让钩子进入不同级别的调度操作，它们可以读取和更新套接字缓冲区和数据包元数据，以执行流量整形、跟踪、预处理等操作。</p>
+<p><code>cls_bpf</code>中对eBPF的支持是在内核4.1中实现的，这意味着这种程序可以访问eBPF映射，支持尾调用，可以访问<code>IPv4/IPv6</code>隧道元数据，并且通常使用eBPF附带的帮助程序和实用程序。</p>
+<p>用于与流量控制相关的网络配置进行交互的工具是<code>iproute2</code>套件的一部分，其中包含ip和tc，它们分别用于操作网络接口和流量控制配置。</p>
+<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><p>如前所述，<code>Traffic Control</code>和BPF程序之间存在交互点，因此你需要了解一些<code>Traffic Control</code>概念。 如果你已经掌握相关术语，请直接进入示例。</p>
+<h5 id="Queueing-disciplines"><a href="#Queueing-disciplines" class="headerlink" title="Queueing disciplines"></a>Queueing disciplines</h5><p>排队规则(qdisc)定义了调度对象，通过更改发送方式对进入接口的数据包排队；这些对象可以是无类的或有类的。</p>
+<p>默认的<code>qdisc</code>是<code>pfifo_fast</code>，它是无类的，将数据包入队到三个FIFO（先进先出）队列中，这些队列根据它们的优先级出队；此<code>qdisc</code>不用于虚拟设备，例如使用<code>noqueue</code>的环回(lo)或虚拟以太网设备(veth)。除了作为其调度算法的默认值外，<code>pfifo_fast</code>也不需要任何配置即可工作。</p>
+<p>通过访问<code>/sys</code>伪文件系统，可以将虚拟接口与物理接口（设备）区分开来：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# ls -la /sys/class/net/</span><br><span class="line">total 0</span><br><span class="line">drwxr-xr-x  2 root root 0 May 16 20:00 .</span><br><span class="line">drwxr-xr-x 66 root root 0 May 16 20:00 ..</span><br><span class="line">lrwxrwxrwx  1 root root 0 May 16 20:00 eth0 -&gt; ../../devices/pci0000:00/0000:00:05.0/virtio0/net/eth0</span><br><span class="line">lrwxrwxrwx  1 root root 0 May 16 20:00 lo -&gt; ../../devices/virtual/net/lo</span><br></pre></td></tr></table></figure>
+<p>如果你从未听说过<code>qdiscs</code>，可以使用<code>ip a</code>命令显示当前系统中配置的网络接口列表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000</span><br><span class="line">    link/ether 52:54:00:18:26:89 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 10.0.16.14/22 brd 10.0.19.255 scope global noprefixroute eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::5054:ff:fe18:2689/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<p>从上述结果我们可以看到</p>
+<ul>
+<li>在我们的系统中有两个网络接口：<code>lo和eth0</code></li>
+<li><code>lo</code>接口是一个虚拟接口，所以它是<code>qdisc noqueue</code></li>
+<li><code>eth0</code>是一个物理接口。 这里的<code>qdisc</code>是<code>fq_codel</code>（公平队列控制延迟）默认不应该是 <code>pfifo_fast</code>吗？ 事实证明，我们正在测试命令的系统正在运行<code>Systemd</code>，它使用内核参数<code>net.core.default_qdisc</code>以不同的方式设置默认<code>qdisc</code>。</li>
+</ul>
+<p><code>noqueue qdisc</code>没有类、调度程序或分类器。它的作用是尝试立即发送数据包。如前所述，虚拟设备默认使用<code>noqueue</code>，但当你删除其当前关联的<code>qdisc</code>时，它也是对任何接口生效的。</p>
+<p><code>fq_codel</code>是一个无类别的<code>qdisc</code>，它使用随机模型对传入的数据包进行分类，以便能够以公平的方式对流量进行排队。</p>
+<p>我们使用ip命令来查找有关<code>qdiscs</code>的信息，但事实证明，在<code>iproute2</code>工具中还有一个名为tc的工具，它具有<code>qdiscs</code>的特定子命令，查看方式如下所示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt6]# tc qdisc ls</span><br><span class="line">qdisc noqueue 0: dev lo root refcnt 2 </span><br><span class="line">qdisc fq_codel 0: dev eth0 root refcnt 2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64</span><br></pre></td></tr></table></figure>
+<p>对于<code>lo</code>，我们基本上看到与<code>ip a</code>相同的信息，但对于<code>eth0</code>，它具有以下信息：</p>
+<ul>
+<li>它有能够处理10240个传入数据包的限制。</li>
+<li>如前所述，<code>fq_codel</code>使用的随机模型希望将流量排队到不同的流中，此输出包含有关我们拥有多少个流的信息，即1024。</li>
+</ul>
+<p>在下一节中我们可以仔细研究有类和无类<code>qdiscs</code>以了解它们的区别以及哪些适合BPF程序。</p>
+<h5 id="Classful-qdiscs-filters-and-classes"><a href="#Classful-qdiscs-filters-and-classes" class="headerlink" title="Classful qdiscs, filters, and classes"></a>Classful qdiscs, filters, and classes</h5><p><code>Classful qdiscs</code>允许为不同类型的流量定义类，以便对它们应用不同的规则。拥有一个 <code>qdisc</code>的类意味着它可以包含更多的<code>qdisc</code>。有了这种层次结构，我们可以使用过滤器（分类器）通过确定数据包应该入队的下一个类别来对流量进行分类。</p>
+<p>过滤器用于根据数据包的类型将数据包分配给特定的类。 过滤器在一个有类的<code>qdiscs</code>中用于确定数据包应该在哪个类中排队，并且两个或多个过滤器可以映射到同一个类，如下图所示。 每个过滤器都使用分类器根据数据包的信息对数据包进行分类。</p>
+<p><img src="/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/2.png" alt="2"></p>
+<p>如前所述，<code>cls_bpf</code>是我们想用来为流量控制编写BPF程序的分类器——下一节中有一个具体的例子来说明如何使用它。</p>
+<p><code>Classes</code>是只能存在于有类<code>qdisc</code>中的对象；<code>Classes</code>在交通控制中用于创建层次结构。一个类可以附加过滤器，这样就可以实现复杂的层次结构，然后可以将其用作另一个<code>class</code>或<code>qdisc</code>的入口点。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Notes/" rel="tag"># Notes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/05/27/使用BPF的Linux可观测性-上篇-翻译/" rel="next" title="使用BPF的Linux可观测性(上篇)-翻译">
+                <i class="fa fa-chevron-left"></i> 使用BPF的Linux可观测性(上篇)-翻译
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author1.png" alt="elssm">
+            
+              <p class="site-author-name" itemprop="name">elssm</p>
+              <p class="site-description motion-element" itemprop="description">web安全 对抗攻击 go/python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://leetcode.cn/u/elssm/" target="_blank" title="Leetcode">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Leetcode</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章节"><span class="nav-number">1.</span> <span class="nav-text">第五章节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BPF实用程序"><span class="nav-number">1.1.</span> <span class="nav-text">BPF实用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BPFTool"><span class="nav-number">1.1.1.</span> <span class="nav-text">BPFTool</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#功能展示"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">功能展示</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检查BPF程序"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">检查BPF程序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检查BPF映射"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">检查BPF映射</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检查附着到特定接口的程序"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">检查附着到特定接口的程序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在批处理模式下加载命令"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">在批处理模式下加载命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示BTF信息"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">显示BTF信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BPFTrace"><span class="nav-number">1.1.2.</span> <span class="nav-text">BPFTrace</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#过滤"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">过滤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态映射"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">动态映射</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kubectl-trace"><span class="nav-number">1.1.3.</span> <span class="nav-text">kubectl-trace</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-1"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检查k8s节点"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">检查k8s节点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eBPF-Exporter"><span class="nav-number">1.1.4.</span> <span class="nav-text">eBPF Exporter</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-2"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#从BPF导出指标"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">从BPF导出指标</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">1.2.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第六章节"><span class="nav-number">2.</span> <span class="nav-text">第六章节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux网络和BPF"><span class="nav-number">2.1.</span> <span class="nav-text">Linux网络和BPF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BPF和包过滤"><span class="nav-number">2.2.</span> <span class="nav-text">BPF和包过滤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tcpdump和BPF表达式"><span class="nav-number">2.2.1.</span> <span class="nav-text">tcpdump和BPF表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原始套接字的数据包过滤"><span class="nav-number">2.2.2.</span> <span class="nav-text">原始套接字的数据包过滤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BPF程序"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">BPF程序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#加载并附加到网络接口"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">加载并附加到网络接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于BPF的流量控制分类器"><span class="nav-number">2.3.</span> <span class="nav-text">基于BPF的流量控制分类器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#术语"><span class="nav-number">2.3.1.</span> <span class="nav-text">术语</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Queueing-disciplines"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">Queueing disciplines</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Classful-qdiscs-filters-and-classes"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">Classful qdiscs, filters, and classes</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
