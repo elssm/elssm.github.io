@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言就目前而言，tcpdump是捕获生产中流量最常见的解决方案之一。但是缺点是它不允许应用程序级别的过滤(L7过滤)，因此每当捕获相关的HTTP会话时，最终需要存储数百兆字节的流量通过。另一种解决方案是在源代码中添加一个算法来查找相关的HTTP会话，但这需要在生产中进行代码检测，并且无法达到非侵入式可观测性。 eBPF应运而生。eBPF是Linux应用程序在Linux内核空间执行代码的一种机制。使">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eBPF流量捕获实践">
+<meta property="og:url" content="elssm.github.io/2022/10/05/eBPF流量捕获实践/index.html">
+<meta property="og:site_name" content="ELSSM&#39;s Blog">
+<meta property="og:description" content="前言就目前而言，tcpdump是捕获生产中流量最常见的解决方案之一。但是缺点是它不允许应用程序级别的过滤(L7过滤)，因此每当捕获相关的HTTP会话时，最终需要存储数百兆字节的流量通过。另一种解决方案是在源代码中添加一个算法来查找相关的HTTP会话，但这需要在生产中进行代码检测，并且无法达到非侵入式可观测性。 eBPF应运而生。eBPF是Linux应用程序在Linux内核空间执行代码的一种机制。使">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-10-05T03:24:10.737Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="eBPF流量捕获实践">
+<meta name="twitter:description" content="前言就目前而言，tcpdump是捕获生产中流量最常见的解决方案之一。但是缺点是它不允许应用程序级别的过滤(L7过滤)，因此每当捕获相关的HTTP会话时，最终需要存储数百兆字节的流量通过。另一种解决方案是在源代码中添加一个算法来查找相关的HTTP会话，但这需要在生产中进行代码检测，并且无法达到非侵入式可观测性。 eBPF应运而生。eBPF是Linux应用程序在Linux内核空间执行代码的一种机制。使">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2022/10/05/eBPF流量捕获实践/">
+
+
+
+
+
+  <title>eBPF流量捕获实践 | ELSSM's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/10/05/eBPF流量捕获实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author2.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">eBPF流量捕获实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-10-05T11:23:09+08:00">
+                2022-10-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>就目前而言，tcpdump是捕获生产中流量最常见的解决方案之一。但是缺点是它不允许应用程序级别的过滤(L7过滤)，因此每当捕获相关的HTTP会话时，最终需要存储数百兆字节的流量通过。另一种解决方案是在源代码中添加一个算法来查找相关的HTTP会话，但这需要在生产中进行代码检测，并且无法达到非侵入式可观测性。</p>
+<p>eBPF应运而生。eBPF是Linux应用程序在Linux内核空间执行代码的一种机制。使用eBPF实现流量捕获远远超出一些标准的解决方案(WireShark、Fiddler和tcpdump)</p>
+<p>eBPF允许添加多个过滤层并直接从内核捕获流量，从而显著减少相关数据的输出量，并确保可以高吞吐量的处理应用程序流量。</p>
+<h4 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h4><ul>
+<li>Ubuntu20.04</li>
+<li>BCC v0.21.0 </li>
+<li>GO v1.19</li>
+</ul>
+<h4 id="请求流程分析"><a href="#请求流程分析" class="headerlink" title="请求流程分析"></a>请求流程分析</h4><p>首先通过GO的Gin框架搭建一个简单的HTTP服务器。源码如下</p>
+<p><code>server.go</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"math/rand"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/gin-gonic/gin"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	defaultPort    = <span class="string">"8080"</span></span><br><span class="line">	maxPayloadSize = <span class="number">10</span> * <span class="number">1024</span> * <span class="number">1024</span> <span class="comment">// 10 MB</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	<span class="comment">// source is a static, global rand object.</span></span><br><span class="line">	source      *rand.Rand</span><br><span class="line">	letterBytes = <span class="string">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~!@#$"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">randStringBytes</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	b := <span class="built_in">make</span>([]<span class="keyword">byte</span>, n)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> b &#123;</span><br><span class="line">		b[i] = letterBytes[source.Intn(<span class="built_in">len</span>(letterBytes))]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">string</span>(b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	source = rand.New(rand.NewSource(time.Now().UnixNano()))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// customResponse holds the requested size for the response payload.</span></span><br><span class="line"><span class="keyword">type</span> customResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">	Size <span class="keyword">int</span> <span class="string">`json:"size"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">postCustomResponse</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> customResp customResponse</span><br><span class="line">	<span class="keyword">if</span> err := context.BindJSON(&amp;customResp); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		_ = context.AbortWithError(http.StatusBadRequest, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> customResp.Size &gt; maxPayloadSize &#123;</span><br><span class="line">		_ = context.AbortWithError(http.StatusBadRequest, fmt.Errorf(<span class="string">"requested size %d is bigger than max allowed %d"</span>, customResp, maxPayloadSize))</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	context.JSON(http.StatusOK, <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;<span class="string">"answer"</span>: randStringBytes(customResp.Size)&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	engine := gin.New()</span><br><span class="line"></span><br><span class="line">	engine.Use(gin.Recovery())</span><br><span class="line">	engine.POST(<span class="string">"/customResponse"</span>, postCustomResponse)</span><br><span class="line"></span><br><span class="line">	port := os.Getenv(<span class="string">"PORT"</span>)</span><br><span class="line">	<span class="keyword">if</span> port == <span class="string">""</span> &#123;</span><br><span class="line">		port = defaultPort</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(<span class="string">"listening on 0.0.0.0:%s\n"</span>, port)</span><br><span class="line">	<span class="keyword">if</span> err := engine.Run(fmt.Sprintf(<span class="string">"0.0.0.0:%s"</span>, port)); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan/eBPF-Sniffer# go run server.go</span><br><span class="line">server.go:11:2: no required module provides package github.com/gin-gonic/gin; to add it:</span><br><span class="line">	go get github.com/gin-gonic/gin</span><br></pre></td></tr></table></figure>
+<p>如上因为没有安装gin框架，因此我们先安装gin框架。修改代理后使用<code>go get</code>命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOPROXY="https://goproxy.cn"</span><br><span class="line">go mod init xx</span><br><span class="line">go mod tidy</span><br></pre></td></tr></table></figure>
+<p>下载完成后运行server服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan/eBPF-Sniffer# go run server.go</span><br><span class="line">[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] POST   /customResponse           --&gt; main.postCustomResponse (2 handlers)</span><br><span class="line">listening on 0.0.0.0:8080</span><br><span class="line">[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.</span><br><span class="line">Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.</span><br><span class="line">[GIN-debug] Listening and serving HTTP on 0.0.0.0:8080</span><br></pre></td></tr></table></figure>
+<p>本地发送POST请求，服务器接收到POST请求后会响应随机生成的Payload。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan# curl -X POST http://localhost:8080/customResponse -d '&#123;"size": 100&#125;'</span><br><span class="line">&#123;"answer":"Gs#UjI7u2kiOmSyJDkw7JAi3Y~Z4fauPaeThxct14qoweIUdiwDsB#9PUuvPgayVGfXQcc$E9itK1tlo5twE$cuGRvge4S~H2cS6"&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们需要通过eBPF去捕获完整的HTTP请求，第一步需要了解到本次请求使用了哪些系统调用，因此我们可以使用<code>strace</code>工具进行查看。</p>
+<p>通过如下命令运行server服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo strace -f -o syscalls_dump.txt go run server.go</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>-f</code>：从服务器的线程中捕获系统调用</li>
+<li><code>-o</code>：将结果写入到文件中</li>
+</ul>
+<p>接着再次运行上述POST请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan# curl -X POST http://localhost:8080/customResponse -d '&#123;"size": 100&#125;'</span><br><span class="line">&#123;"answer":"Gs#UjI7u2kiOmSyJDkw7JAi3Y~Z4fauPaeThxct14qoweIUdiwDsB#9PUuvPgayVGfXQcc$E9itK1tlo5twE$cuGRvge4S~H2cS6"&#125;</span><br></pre></td></tr></table></figure>
+<p>查看<code>syscalls_dump.txt</code>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">2507558 accept4(3,  &lt;unfinished ...&gt;</span><br><span class="line">2507562 epoll_pwait(4,  &lt;unfinished ...&gt;</span><br><span class="line">2507559 nanosleep(&#123;tv_sec=0, tv_nsec=20000&#125;,  &lt;unfinished ...&gt;</span><br><span class="line">2507558 &lt;... accept4 resumed&gt; 0xc00031fa28, [112], SOCK_CLOEXEC|SOCK_NONBLOCK) = -1 EAGAIN (Resource temporarily unavailable)</span><br><span class="line">2507562 &lt;... epoll_pwait resumed&gt; [&#123;EPOLLIN|EPOLLOUT, &#123;u32=3021211368, u64=140633135384296&#125;&#125;], 128, 0, NULL, 0) = 1</span><br><span class="line">2507562 epoll_pwait(4,  &lt;unfinished ...&gt;</span><br><span class="line">2507559 &lt;... nanosleep resumed&gt; NULL)   = 0</span><br><span class="line">2507559 nanosleep(&#123;tv_sec=0, tv_nsec=20000&#125;,  &lt;unfinished ...&gt;</span><br><span class="line">2507558 read(7, "POST /customResponse HTTP/1.1\r\nH"..., 4096) = 175</span><br><span class="line">2507558 write(7, "HTTP/1.1 200 OK\r\nContent-Type: a"..., 237 &lt;unfinished ...&gt;</span><br><span class="line">2507559 &lt;... nanosleep resumed&gt; NULL)   = 0</span><br><span class="line">2507559 nanosleep(&#123;tv_sec=0, tv_nsec=20000&#125;, NULL) = 0</span><br><span class="line">2507558 futex(0xc000080148, FUTEX_WAKE_PRIVATE, 1 &lt;unfinished ...&gt;</span><br><span class="line">2507559 nanosleep(&#123;tv_sec=0, tv_nsec=20000&#125;,  &lt;unfinished ...&gt;</span><br><span class="line">2507558 &lt;... futex resumed&gt; )           = 1</span><br><span class="line">2507561 &lt;... futex resumed&gt; )           = 0</span><br><span class="line">2507559 &lt;... nanosleep resumed&gt; NULL)   = 0</span><br><span class="line">2507561 nanosleep(&#123;tv_sec=0, tv_nsec=3000&#125;,  &lt;unfinished ...&gt;</span><br><span class="line">2507559 nanosleep(&#123;tv_sec=0, tv_nsec=20000&#125;,  &lt;unfinished ...&gt;</span><br><span class="line">2507561 &lt;... nanosleep resumed&gt; NULL)   = 0</span><br><span class="line">2507559 &lt;... nanosleep resumed&gt; NULL)   = 0</span><br><span class="line">....</span><br><span class="line">2507558 close(7 &lt;unfinished ...&gt;</span><br></pre></td></tr></table></figure>
+<p>通过上述文件可以看到。服务器首先使用<code>accept4</code>系统调用来接受一个新的连接。整个请求服务器的调用流程如下：</p>
+<ul>
+<li><code>accept4</code>：使用系统调用接受新连接</li>
+<li><code>read</code>：使用套接字文件描述符(fd)上的系统调用从套接字读取内容</li>
+<li><code>write</code>：使用套接字文件描述符(fd)上的系统调用将响应写入套接字</li>
+<li><code>close</code>：使用系统调用关闭文件描述符</li>
+</ul>
+<h4 id="内核代理eBPF实现"><a href="#内核代理eBPF实现" class="headerlink" title="内核代理eBPF实现"></a>内核代理eBPF实现</h4><p>我们需要通过eBPF hook 8个钩子，分别是<code>accept4、read、write、close</code>的进入和退出钩子。程序通过C语言编写，我们会通过所有的钩子组合来执行完整的捕获过程。</p>
+<p>在大多数情况下，eBPF程序由执行hook的内核代理和处理从内核发送的事件的用户代理组成。在一些其他用例中，可能只有内核代理（如阻止恶意流量的防火墙）</p>
+<p>首先我们需要挂载<code>accept4</code>系统调用。在eBPF程序中，我们可以在每个系统调用的进入和退出放置钩子。这对于获取系统调用的输入参数很有用。</p>
+<p>在如下代码片段中，我们声明结构体以将系统调用的输入参数保存在系统调用的入口中，并在<code>accept4</code>系统调用的出口处使用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 保存系统调用的addr参数结构</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">accept_args_t</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>* <span class="title">addr</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// map映射，在入口和返回钩子之间缓存接受系统调用的输入参数</span></span><br><span class="line">BPF_HASH(active_accept_args_map, <span class="keyword">uint64_t</span>, struct <span class="keyword">accept_args_t</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Hooking the entry of accept4</span></span><br><span class="line"><span class="comment">// the signature of the syscall is int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">syscall__probe_entry_accept4</span><span class="params">(struct pt_regs* ctx, <span class="keyword">int</span> sockfd, struct sockaddr* addr, <span class="keyword">socklen_t</span>* addrlen)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取相关pid中线程唯一id，这样可以链接同一线程的不同调用。</span></span><br><span class="line">    <span class="keyword">uint64_t</span> id = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将addr保存在map中，方便accept4退出时使用</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">accept_args_t</span> <span class="title">accept_args</span> = &#123;</span>&#125;;</span><br><span class="line">    accept_args.addr = (struct sockaddr_in *)addr;</span><br><span class="line">    active_accept_args_map.update(&amp;id, &amp;accept_args);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Hooking the exit of accept4</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">syscall__probe_ret_accept4</span><span class="params">(struct pt_regs* ctx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint64_t</span> id = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从map中获取addr</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">accept_args_t</span>* <span class="title">accept_args</span> = <span class="title">active_accept_args_map</span>.<span class="title">lookup</span>(&amp;<span class="title">id</span>);</span></span><br><span class="line">    <span class="comment">// 如果map映射中存在 id，我们将获得一个非空指针，该指针保存来自系统调用条目的输入地址参数。</span></span><br><span class="line">    <span class="keyword">if</span> (accept_args != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        process_syscall_accept(ctx, id, accept_args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 最后清理map</span></span><br><span class="line">    active_accept_args_map.<span class="keyword">delete</span>(&amp;id);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于在系统调用进入期间我们无法知道系统调用是否会成功，并且在系统调用退出期间我们无法访问输入参数，因此我们需要存储参数。这里我们使用的逻辑是<code>process_syscall_accept</code>，该函数会检查系统调用是否成功完成，然后我们会将链接信息保存在全局map中，以便后续的系统调用(read、write、close)使用。</p>
+<p>在下面的代码中，我们创建了<code>accept4</code>hook使用的函数。并在我们自己的map映射中注册到服务器上的任何新的连接。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个结构体，表示由 pid、fd和结构体timestamp组成的唯一ID。</span></span><br><span class="line"><span class="comment">// descriptor and the creation time of the struct.</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">conn_id_t</span> &#123;</span></span><br><span class="line">    <span class="comment">// 进程ID</span></span><br><span class="line">    <span class="keyword">uint32_t</span> pid;</span><br><span class="line">    <span class="comment">// 打开的网络连接的fd</span></span><br><span class="line">    <span class="keyword">int32_t</span> fd;</span><br><span class="line">    <span class="comment">// 结构体初始化时的时间戳</span></span><br><span class="line">    <span class="keyword">uint64_t</span> tsid;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 该结构包含建立连接时通过accept4() 系统调用收集的信息。</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">conn_info_t</span> &#123;</span></span><br><span class="line">    <span class="comment">// 连接标识符</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_id_t</span> <span class="title">conn_id</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在此连接上写入/读取的字节数</span></span><br><span class="line">    <span class="keyword">int64_t</span> wr_bytes;</span><br><span class="line">    <span class="keyword">int64_t</span> rd_bytes;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指示我们将连接识别为HTTP的标志</span></span><br><span class="line">    <span class="keyword">bool</span> is_http;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送到用户代理的事件结构</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">socket_open_event_t</span> &#123;</span></span><br><span class="line">    <span class="comment">// 事件发生的事件</span></span><br><span class="line">    <span class="keyword">uint64_t</span> timestamp_ns;</span><br><span class="line">    <span class="comment">// 连接的唯一ID</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_id_t</span> <span class="title">conn_id</span>;</span></span><br><span class="line">    <span class="comment">// 客户端地址</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">addr</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 活动连接的映射。map名字是conn_info_map</span></span><br><span class="line">BPF_HASH(conn_info_map, <span class="keyword">uint64_t</span>, struct <span class="keyword">conn_info_t</span>, <span class="number">131072</span>);</span><br><span class="line"><span class="comment">// 一个性能缓冲区，允许我们将事件从内核发送到用户模式</span></span><br><span class="line"><span class="comment">// 该性能缓冲区专用于特殊类型的事件-打开事件</span></span><br><span class="line">BPF_PERF_OUTPUT(socket_open_events);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查系统调用是否成功完成以及是否将新连接保存在专用连接映射中的帮助函数</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> __inline <span class="keyword">void</span> <span class="title">process_syscall_accept</span><span class="params">(struct pt_regs* ctx, <span class="keyword">uint64_t</span> id, <span class="keyword">const</span> struct <span class="keyword">accept_args_t</span>* args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 提取返回码，检查是否失败，如果是，直接终止。</span></span><br><span class="line">    <span class="keyword">int</span> ret_fd = PT_REGS_RC(ctx);</span><br><span class="line">    <span class="keyword">if</span> (ret_fd &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_info_t</span> <span class="title">conn_info</span> = &#123;</span>&#125;;</span><br><span class="line">    <span class="keyword">uint32_t</span> pid = id &gt;&gt; <span class="number">32</span>;</span><br><span class="line">    conn_info.conn_id.pid = pid;</span><br><span class="line">    conn_info.conn_id.fd = ret_fd;</span><br><span class="line">    conn_info.conn_id.tsid = bpf_ktime_get_ns();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint64_t</span> pid_fd = ((<span class="keyword">uint64_t</span>)pid &lt;&lt; <span class="number">32</span>) | (<span class="keyword">uint32_t</span>)ret_fd;</span><br><span class="line">    <span class="comment">// 将连接信息保存在全局map中，因此在其他系统调用（read、write和close）中，我们将能够知道已经看到了连接</span></span><br><span class="line">    conn_info_map.update(&amp;pid_fd, &amp;conn_info);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向用户模式发送一个打开事件，让用户模式知道我们已经识别了一个新的连接。</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">socket_open_event_t</span> <span class="title">open_event</span> = &#123;</span>&#125;;</span><br><span class="line">    open_event.timestamp_ns = bpf_ktime_get_ns();</span><br><span class="line">    open_event.conn_id = conn_info.conn_id;</span><br><span class="line">	bpf_probe_read(&amp;open_event.addr, <span class="keyword">sizeof</span>(open_event.addr), args-&gt;addr);</span><br><span class="line"></span><br><span class="line">    socket_open_events.perf_submit(ctx, &amp;open_event, <span class="keyword">sizeof</span>(struct <span class="keyword">socket_open_event_t</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到此，我们能够在内核侧识别新的连接并将信息发送至用户代理。接下来，我们将hook read系统调用</p>
+<p>在下面的代码中，我们将hook read系统调用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个辅助结构，用于缓存入口钩子和出口钩子之间读/写系统调用的输入参数。</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">data_args_t</span> &#123;</span></span><br><span class="line">    <span class="keyword">int32_t</span> fd;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* buf;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// map 存储入口和出口挂钩之间的读取系统调用参数。</span></span><br><span class="line">BPF_HASH(active_read_args_map, <span class="keyword">uint64_t</span>, struct <span class="keyword">data_args_t</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// original signature: ssize_t read(int fd, void *buf, size_t count);</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">syscall__probe_entry_read</span><span class="params">(struct pt_regs* ctx, <span class="keyword">int</span> fd, <span class="keyword">char</span>* buf, <span class="keyword">size_t</span> count)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint64_t</span> id = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 存储参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">data_args_t</span> <span class="title">read_args</span> = &#123;</span>&#125;;</span><br><span class="line">    read_args.fd = fd;</span><br><span class="line">    read_args.buf = buf;</span><br><span class="line">    active_read_args_map.update(&amp;id, &amp;read_args);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">syscall__probe_ret_read</span><span class="params">(struct pt_regs* ctx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">uint64_t</span> id = bpf_get_current_pid_tgid();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 系统调用的返回码也是读取的字节数。</span></span><br><span class="line">    <span class="keyword">ssize_t</span> bytes_count = PT_REGS_RC(ctx); </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">data_args_t</span>* <span class="title">read_args</span> = <span class="title">active_read_args_map</span>.<span class="title">lookup</span>(&amp;<span class="title">id</span>);</span></span><br><span class="line">    <span class="keyword">if</span> (read_args != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="comment">// kIngress 是一个枚举值，让 process_data函数知道输入缓冲区是传入还是传出。</span></span><br><span class="line">        process_data(ctx, id, kIngress, read_args, bytes_count);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 最后清理map</span></span><br><span class="line">    active_read_args_map.<span class="keyword">delete</span>(&amp;id);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在下面的代码中，我们创建了辅助函数来处理<code>read</code>和<code>write</code>系统调用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数据缓冲区消息大小，BPF最多可以将这个数量的数据提交到perf缓冲区。</span></span><br><span class="line"><span class="comment">//内核大小限制为32kb</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_MSG_SIZE 30720  <span class="comment">// 30KiB</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">socket_data_event_t</span> &#123;</span></span><br><span class="line">  </span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">attr_t</span> &#123;</span></span><br><span class="line">    <span class="comment">// 系统调用完成时的时间戳</span></span><br><span class="line">    <span class="keyword">uint64_t</span> timestamp_ns;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接标识符 (PID, FD, etc.).</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_id_t</span> <span class="title">conn_id</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// msg 字段编码的实际数据的类型，调用者使用它来确定如何解释数据。</span></span><br><span class="line">    <span class="keyword">enum</span> <span class="keyword">traffic_direction_t</span> direction;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 原始消息的大小。我们使用它来截断 msg 字段以最小化正在传输的数据量。</span></span><br><span class="line">    <span class="keyword">uint32_t</span> msg_size;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接上此事件的从 0 开始的位置编号，以字节位置表示。</span></span><br><span class="line">    <span class="comment">// 该位置是该消息的第一个字节。</span></span><br><span class="line">    <span class="keyword">uint64_t</span> pos;</span><br><span class="line">  &#125; attr;</span><br><span class="line">  <span class="keyword">char</span> msg[MAX_MSG_SIZE];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perf缓冲区向用户模式代理发送数据事件</span></span><br><span class="line">BPF_PERF_OUTPUT(socket_data_events);</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理读/写系统调用的辅助函数</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">inline</span> __attribute__((__always_inline__)) <span class="function"><span class="keyword">void</span> <span class="title">process_data</span><span class="params">(struct pt_regs* ctx, <span class="keyword">uint64_t</span> id,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                                   <span class="keyword">enum</span> <span class="keyword">traffic_direction_t</span> direction,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                                   <span class="keyword">const</span> struct <span class="keyword">data_args_t</span>* args, <span class="keyword">ssize_t</span> bytes_count)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 在访问指针之前始终检查对指针的访问</span></span><br><span class="line">    <span class="keyword">if</span> (args-&gt;buf == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对于 read 和 write 系统调用，返回码是写入或读取的字节数，因此零表示没有写入或读取任何内容，负数表示系统调用失败。</span></span><br><span class="line">    <span class="keyword">if</span> (bytes_count &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint32_t</span> pid = id &gt;&gt; <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">uint64_t</span> pid_fd = ((<span class="keyword">uint64_t</span>)pid &lt;&lt; <span class="number">32</span>) | (<span class="keyword">uint32_t</span>)args-&gt;fd;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_info_t</span>* <span class="title">conn_info</span> = <span class="title">conn_info_map</span>.<span class="title">lookup</span>(&amp;<span class="title">pid_fd</span>);</span></span><br><span class="line">    <span class="keyword">if</span> (conn_info == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="comment">// 正在读/写的fd不代表IPV4套接字fd</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查连接是否已经是HTTP或者检查是否是新连接，如果是HTTP，则返回true</span></span><br><span class="line">    <span class="keyword">if</span> (is_http_connection(conn_info, args-&gt;buf, bytes_count)) &#123;</span><br><span class="line">        <span class="comment">// 分配新事件</span></span><br><span class="line">        <span class="keyword">uint32_t</span> kZero = <span class="number">0</span>;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">socket_data_event_t</span>* <span class="title">event</span> = <span class="title">socket_data_event_buffer_heap</span>.<span class="title">lookup</span>(&amp;<span class="title">kZero</span>);</span></span><br><span class="line">        <span class="keyword">if</span> (event == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 填充数据事件的元数据</span></span><br><span class="line">        event-&gt;attr.timestamp_ns = bpf_ktime_get_ns();</span><br><span class="line">        event-&gt;attr.direction = direction;</span><br><span class="line">        event-&gt;attr.conn_id = conn_info-&gt;conn_id;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 另一个辅助函数，如果给定缓冲区大小，则将其拆分为块</span></span><br><span class="line">        perf_submit_wrapper(ctx, direction, args-&gt;buf, bytes_count, conn_info, event);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 更新conn_info总写入/读取的字节数</span></span><br><span class="line">	<span class="keyword">switch</span> (direction) &#123;</span><br><span class="line">        <span class="keyword">case</span> kEgress:</span><br><span class="line">            conn_info-&gt;wr_bytes += bytes_count;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> kIngress:</span><br><span class="line">            conn_info-&gt;rd_bytes += bytes_count;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由此可以看到，我们的辅助函数会检查<code>read</code>或者<code>write</code>系统调用是否成功完成。通过检查 读取（写入）字节，检查正在读取（或写入）的数据是否为HTTP。如果是，则发送它到用户模式代理并作为一个事件。</p>
+<p>然后会快速转到write系统调用。</p>
+<p>最后代码处理close事件。在下面的代码中，我们创建了辅助函数来处理close系统调用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//发送到用户模式代理的关闭事件的结构</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">socket_close_event_t</span> &#123;</span></span><br><span class="line">    <span class="comment">// close系统调用的时间戳</span></span><br><span class="line">    <span class="keyword">uint64_t</span> timestamp_ns;</span><br><span class="line">    <span class="comment">// 连接的唯一id</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_id_t</span> <span class="title">conn_id</span>;</span></span><br><span class="line">    <span class="comment">// 在该连接上写入的总字节数</span></span><br><span class="line">    <span class="keyword">int64_t</span> wr_bytes;</span><br><span class="line">    <span class="comment">// 在该连接上读取的总字节数</span></span><br><span class="line">    <span class="keyword">int64_t</span> rd_bytes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Perf缓冲区向用户模式代理发送close事件</span></span><br><span class="line">BPF_PERF_OUTPUT(socket_close_events);</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">inline</span> __attribute__((__always_inline__)) <span class="function"><span class="keyword">void</span> <span class="title">process_syscall_close</span><span class="params">(struct pt_regs* ctx, <span class="keyword">uint64_t</span> id,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                                            <span class="keyword">const</span> struct <span class="keyword">close_args_t</span>* close_args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret_val = PT_REGS_RC(ctx);</span><br><span class="line">    <span class="comment">// 如果系统调用失败，直接return</span></span><br><span class="line">    <span class="keyword">if</span> (ret_val &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint32_t</span> pid = id &gt;&gt; <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">uint64_t</span> pid_fd = ((<span class="keyword">uint64_t</span>)pid &lt;&lt; <span class="number">32</span>) | (<span class="keyword">uint32_t</span>)close_args-&gt;fd;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">conn_info_t</span>* <span class="title">conn_info</span> = <span class="title">conn_info_map</span>.<span class="title">lookup</span>(&amp;<span class="title">pid_fd</span>);</span></span><br><span class="line">    <span class="keyword">if</span> (conn_info == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="comment">// 正在关闭的fd，并不代表IPV4套接字fd</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向用户模式代理发送一个指示连接已关闭的事件</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">socket_close_event_t</span> <span class="title">close_event</span> = &#123;</span>&#125;;</span><br><span class="line">    close_event.timestamp_ns = bpf_ktime_get_ns();</span><br><span class="line">    close_event.conn_id = conn_info-&gt;conn_id;</span><br><span class="line">    close_event.rd_bytes = conn_info-&gt;rd_bytes;</span><br><span class="line">    close_event.wr_bytes = conn_info-&gt;wr_bytes;</span><br><span class="line"></span><br><span class="line">    socket_close_events.perf_submit(ctx, &amp;close_event, <span class="keyword">sizeof</span>(struct <span class="keyword">socket_close_event_t</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从映射中删除连接</span></span><br><span class="line">    conn_info_map.<span class="keyword">delete</span>(&amp;pid_fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="用户代理Go实现"><a href="#用户代理Go实现" class="headerlink" title="用户代理Go实现"></a>用户代理Go实现</h4><p>用户模式代理使用gobpf库编写。第一步是编译代码。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bpfModule := bcc.NewModule(<span class="keyword">string</span>(bpfSourceCodeContent), <span class="literal">nil</span>)</span><br><span class="line"><span class="keyword">defer</span> bpfModule.Close()</span><br></pre></td></tr></table></figure>
+<p>然后创建一个连接工厂，负责保存所有连接实例并打印就绪连接并删除不活动或格式错误的连接。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建连接工厂并将 1分钟设置为不活动阈值，这意味着在最后一分钟内未收到任何事件的连接将被关闭。</span></span><br><span class="line">connectionFactory := connections.NewFactory(time.Minute)</span><br><span class="line"><span class="comment">// 启动一个goroutine。每 10 秒运行一次并打印就绪连接并删除非活动或格式错误的连接。</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		connectionFactory.HandleReadyConnections()</span><br><span class="line">		time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+<p>加载 perf 缓冲区处理程序</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := bpfwrapper.LaunchPerfBufferConsumers(bpfModule, connectionFactory); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Panic(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是关于单用户模式perf缓冲区处理程序的说明。</p>
+<p>每个处理程序通过管道(inputChan)获取事件，并且每个事件的类型为字节数组([]byte)，对于每个事件，我们需要将其转换为go的数据结构表示。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ConnID is a conversion of the following C-Struct into GO.</span></span><br><span class="line"><span class="comment">// struct conn_id_t &#123;</span></span><br><span class="line"><span class="comment">//    uint32_t pid;</span></span><br><span class="line"><span class="comment">//    int32_t fd;</span></span><br><span class="line"><span class="comment">//    uint64_t tsid;</span></span><br><span class="line"><span class="comment">// &#125;;.</span></span><br><span class="line"><span class="keyword">type</span> ConnID <span class="keyword">struct</span> &#123;</span><br><span class="line">	PID <span class="keyword">uint32</span></span><br><span class="line">	FD   <span class="keyword">int32</span></span><br><span class="line">	TsID <span class="keyword">uint64</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时我们修复了事件的时间戳，因为内核模式返回单调时钟而不是实时时钟，最后，我们使用新事件更新连接对象字段。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">socketCloseEventCallback</span><span class="params">(inputChan <span class="keyword">chan</span> []<span class="keyword">byte</span>, connectionFactory *connections.Factory)</span></span> &#123;</span><br><span class="line">   <span class="keyword">for</span> data := <span class="keyword">range</span> inputChan &#123;</span><br><span class="line">      <span class="keyword">if</span> data == <span class="literal">nil</span> &#123;</span><br><span class="line">         <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> event structs.SocketCloseEvent</span><br><span class="line">      <span class="keyword">if</span> err := binary.Read(bytes.NewReader(data), bpf.GetHostByteOrder(), &amp;event); err != <span class="literal">nil</span> &#123;</span><br><span class="line">         log.Printf(<span class="string">"Failed to decode received data: %+v"</span>, err)</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line">      &#125;</span><br><span class="line">      event.TimestampNano += settings.GetRealTimeOffset()</span><br><span class="line">      connectionFactory.GetOrCreate(event.ConnID).AddCloseEvent(event)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后一步是attach到钩子上。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := bpfwrapper.AttachKprobes(bpfModule); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Panic(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h4><h5 id="非docker环境"><a href="#非docker环境" class="headerlink" title="非docker环境"></a>非docker环境</h5><p>bcc工具安装</p>
+<h2 id="Ubuntu-Source"><a href="#Ubuntu-Source" class="headerlink" title="Ubuntu - Source"></a>Ubuntu - Source</h2><p>To build the toolchain from source, one needs:</p>
+<ul>
+<li>LLVM 3.7.1 or newer, compiled with BPF support (default=on)</li>
+<li>Clang, built from the same tree as LLVM</li>
+<li>cmake (&gt;=3.1), gcc (&gt;=4.7), flex, bison</li>
+<li>LuaJIT, if you want Lua support</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="function">For <span class="title">Focal</span> <span class="params">(<span class="number">20.04</span><span class="number">.1</span> LTS)</span></span></span><br><span class="line">sudo apt install -y bison build-essential cmake flex git libedit-dev \</span><br><span class="line">  libllvm12 llvm<span class="number">-12</span>-dev libclang<span class="number">-12</span>-dev python zlib1g-dev libelf-dev libfl-dev python3-distutils</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/iovisor/bcc.git</span><br><span class="line">mkdir bcc/build; cd bcc/build</span><br><span class="line">cmake ..</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">cmake -DPYTHON_CMD=python3 .. # build python3 binding</span><br><span class="line">pushd src/python/</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
+<p>执行报错</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan/ebpf-training/workshop1/capture-traffic# go run main.go ./sourcecode.c</span><br><span class="line"><span class="meta">#</span> github.com/iovisor/gobpf/bcc</span><br><span class="line">/root/go/pkg/mod/github.com/iovisor/gobpf@v0.2.0/bcc/module.go:230:132: not enough arguments in call to (_C2func_bcc_func_load)</span><br><span class="line">	have (unsafe.Pointer, _Ctype_int, *_Ctype_char, *_Ctype_struct_bpf_insn, _Ctype_int, *_Ctype_char, _Ctype_uint, _Ctype_int, *_Ctype_char, _Ctype_uint, nil)</span><br><span class="line">	want (unsafe.Pointer, _Ctype_int, *_Ctype_char, *_Ctype_struct_bpf_insn, _Ctype_int, *_Ctype_char, _Ctype_uint, _Ctype_int, *_Ctype_char, _Ctype_uint, *_Ctype_char, _Ctype_int)</span><br></pre></td></tr></table></figure>
+<p>最后发现是bcc版本的问题</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -c http.proxy="http://192.168.19.16:17890" -b v0.21.0 https://github.com/iovisor/bcc.git</span><br></pre></td></tr></table></figure>
+<p>启动ebpf sniffer</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan/ebpf-training/workshop1/capture-traffic# go run main.go ./sourcecode.c</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_entry_accept" for "accept" as 0</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_ret_accept" for "accept" as 1</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_entry_accept4" for "accept4" as 0</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_ret_accept4" for "accept4" as 1</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_entry_write" for "write" as 0</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_ret_write" for "write" as 1</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_entry_read" for "read" as 0</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_ret_read" for "read" as 1</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_entry_close" for "close" as 0</span><br><span class="line">2022/09/29 08:19:13 Loading "syscall__probe_ret_close" for "close" as 1</span><br><span class="line">2022/09/29 08:19:13 Sniffer is ready</span><br></pre></td></tr></table></figure>
+<p>启动服务端程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@ubuntu:/home/caoyifan/ebpf-training/workshop1/demo-server# go run main.go</span><br><span class="line">[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.</span><br><span class="line"> - using env:	export GIN_MODE=release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] POST   /customResponse           --&gt; main.postCustomResponse (2 handlers)</span><br><span class="line">listening on 0.0.0.0:8080</span><br><span class="line">[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.</span><br><span class="line">Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.</span><br><span class="line">[GIN-debug] Listening and serving HTTP on 0.0.0.0:8080</span><br></pre></td></tr></table></figure>
+<p>本地发送post请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">caoyifan@MacBookPro [16:19:17] [~]</span><br><span class="line"><span class="meta">-&gt;</span> % curl -X POST http://192.168.19.198:8080/customResponse -d '&#123;"size": 100&#125;'</span><br><span class="line">&#123;"answer":"9O6aa~!NL1@U66AIh8XLtUWgVynzcXER3hyu6dKFz@LXvQ#n2WkYrn40i5ee2$4@eu$fSwvV1Y4Hkg0zgrtM07BXEMopdzcmUna7"&#125;%</span><br></pre></td></tr></table></figure>
+<p>sniffer查看获取到的信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">========================&gt;</span><br><span class="line">Found HTTP payload</span><br><span class="line"><span class="meta">Request-&gt;</span></span><br><span class="line">POST /customResponse HTTP/1.1</span><br><span class="line">Host: 192.168.19.198:8080</span><br><span class="line">User-Agent: curl/7.77.0</span><br><span class="line">Accept: */*</span><br><span class="line">Content-Length: 13</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line"></span><br><span class="line">&#123;"size": 100&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">Response-&gt;</span></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: application/json; charset=utf-8</span><br><span class="line">Date: Thu, 29 Sep 2022 08:19:21 GMT</span><br><span class="line">Content-Length: 113</span><br><span class="line"></span><br><span class="line">&#123;"answer":"9O6aa~!NL1@U66AIh8XLtUWgVynzcXER3hyu6dKFz@LXvQ#n2WkYrn40i5ee2$4@eu$fSwvV1Y4Hkg0zgrtM07BXEMopdzcmUna7"&#125;</span><br><span class="line"></span><br><span class="line">&lt;========================</span><br></pre></td></tr></table></figure>
+<h5 id="docker环境"><a href="#docker环境" class="headerlink" title="docker环境"></a>docker环境</h5><p>docker镜像打包，<code>Dockfile</code>如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:1.16-bullseye as builder</span><br><span class="line"></span><br><span class="line">RUN apt-get update</span><br><span class="line"></span><br><span class="line"># According to https://packages.debian.org/source/sid/bpfcc,</span><br><span class="line"># BCC build dependencies:</span><br><span class="line">RUN apt-get install -y arping bison clang-format cmake dh-python \</span><br><span class="line">  dpkg-dev pkg-kde-tools ethtool flex inetutils-ping iperf \</span><br><span class="line">  libbpf-dev libclang-dev libclang-cpp-dev libedit-dev libelf-dev \</span><br><span class="line">  libfl-dev libzip-dev linux-libc-dev llvm-dev libluajit-5.1-dev \</span><br><span class="line">  luajit python3-netaddr python3-pyroute2 python3-distutils python3 git</span><br><span class="line">ENV http_proxy http://192.168.19.16:17890</span><br><span class="line">ENV https_proxy http://192.168.19.16:17890</span><br><span class="line"># Install and compile BCC</span><br><span class="line">RUN git clone https://github.com/iovisor/bcc.git</span><br><span class="line">ENV http_proxy &apos;&apos;</span><br><span class="line">ENV https_proxy &apos;&apos;</span><br><span class="line">RUN mkdir bcc/build</span><br><span class="line">WORKDIR bcc/build</span><br><span class="line">RUN cmake ..</span><br><span class="line">RUN make</span><br><span class="line">RUN make install</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t sniffer:v1</span><br></pre></td></tr></table></figure>
+<p>docker启动，<code>setup_docker.sh</code>如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>! /bin/bash</span><br><span class="line"></span><br><span class="line">ROOT_DIR=$(dirname $(dirname $(realpath "$&#123;0&#125;")))</span><br><span class="line">docker run --privileged --net=host -v $&#123;ROOT_DIR&#125;:/src -w /src/workshop1/capture-traffic \</span><br><span class="line">  -v /sys:/sys -v /lib:/lib -v /usr/src:/usr/src -it --rm sniffer:v1</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/05/29/使用BPF的Linux可观测性-下篇-翻译/" rel="next" title="使用BPF的Linux可观测性(下篇)-翻译">
+                <i class="fa fa-chevron-left"></i> 使用BPF的Linux可观测性(下篇)-翻译
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author2.png" alt="Elssm">
+            
+              <p class="site-author-name" itemprop="name">Elssm</p>
+              <p class="site-description motion-element" itemprop="description">Web/Cloud/ML Security  Adversarial Training</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://leetcode.cn/u/elssm/" target="_blank" title="Leetcode">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Leetcode</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验环境"><span class="nav-number">2.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求流程分析"><span class="nav-number">3.</span> <span class="nav-text">请求流程分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核代理eBPF实现"><span class="nav-number">4.</span> <span class="nav-text">内核代理eBPF实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户代理Go实现"><span class="nav-number">5.</span> <span class="nav-text">用户代理Go实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验"><span class="nav-number">6.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#非docker环境"><span class="nav-number">6.1.</span> <span class="nav-text">非docker环境</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu-Source"><span class="nav-number"></span> <span class="nav-text">Ubuntu - Source</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker环境"><span class="nav-number">0.1.</span> <span class="nav-text">docker环境</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
