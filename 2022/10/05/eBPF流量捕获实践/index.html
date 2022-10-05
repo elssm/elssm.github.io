@@ -131,7 +131,7 @@
 <meta property="og:site_name" content="ELSSM&#39;s Blog">
 <meta property="og:description" content="前言就目前而言，tcpdump是捕获生产中流量最常见的解决方案之一。但是缺点是它不允许应用程序级别的过滤(L7过滤)，因此每当捕获相关的HTTP会话时，最终需要存储数百兆字节的流量通过。另一种解决方案是在源代码中添加一个算法来查找相关的HTTP会话，但这需要在生产中进行代码检测，并且无法达到非侵入式可观测性。 eBPF应运而生。eBPF是Linux应用程序在Linux内核空间执行代码的一种机制。使">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-10-05T03:24:10.737Z">
+<meta property="og:updated_time" content="2022-10-05T03:27:48.155Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="eBPF流量捕获实践">
 <meta name="twitter:description" content="前言就目前而言，tcpdump是捕获生产中流量最常见的解决方案之一。但是缺点是它不允许应用程序级别的过滤(L7过滤)，因此每当捕获相关的HTTP会话时，最终需要存储数百兆字节的流量通过。另一种解决方案是在源代码中添加一个算法来查找相关的HTTP会话，但这需要在生产中进行代码检测，并且无法达到非侵入式可观测性。 eBPF应运而生。eBPF是Linux应用程序在Linux内核空间执行代码的一种机制。使">
@@ -432,7 +432,8 @@
 <p>最后一步是attach到钩子上。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := bpfwrapper.AttachKprobes(bpfModule); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Panic(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h4><h5 id="非docker环境"><a href="#非docker环境" class="headerlink" title="非docker环境"></a>非docker环境</h5><p>bcc工具安装</p>
-<h2 id="Ubuntu-Source"><a href="#Ubuntu-Source" class="headerlink" title="Ubuntu - Source"></a>Ubuntu - Source</h2><p>To build the toolchain from source, one needs:</p>
+<p>Ubuntu - Source</p>
+<p>To build the toolchain from source, one needs:</p>
 <ul>
 <li>LLVM 3.7.1 or newer, compiled with BPF support (default=on)</li>
 <li>Clang, built from the same tree as LLVM</li>
@@ -637,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验环境"><span class="nav-number">2.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求流程分析"><span class="nav-number">3.</span> <span class="nav-text">请求流程分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核代理eBPF实现"><span class="nav-number">4.</span> <span class="nav-text">内核代理eBPF实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户代理Go实现"><span class="nav-number">5.</span> <span class="nav-text">用户代理Go实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验"><span class="nav-number">6.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#非docker环境"><span class="nav-number">6.1.</span> <span class="nav-text">非docker环境</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu-Source"><span class="nav-number"></span> <span class="nav-text">Ubuntu - Source</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#docker环境"><span class="nav-number">0.1.</span> <span class="nav-text">docker环境</span></a></li></ol></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验环境"><span class="nav-number">2.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求流程分析"><span class="nav-number">3.</span> <span class="nav-text">请求流程分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内核代理eBPF实现"><span class="nav-number">4.</span> <span class="nav-text">内核代理eBPF实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户代理Go实现"><span class="nav-number">5.</span> <span class="nav-text">用户代理Go实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实验"><span class="nav-number">6.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#非docker环境"><span class="nav-number">6.1.</span> <span class="nav-text">非docker环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#docker环境"><span class="nav-number">6.2.</span> <span class="nav-text">docker环境</span></a></li></ol></li></ol></div>
             
 
           </div>
