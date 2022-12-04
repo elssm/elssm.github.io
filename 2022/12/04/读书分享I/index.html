@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="随笔,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言研三上学期我的时间几乎每天被分成了几大块。睡觉吃饭、健身、读书、毕设、吉他，目的是让学生时代最后过的有意义些。健身时间我基本上固定到了每天中午的11:40到13:00，一周大概4天或者5天。读书我一般固定在周内的中午和晚上睡觉前，周末时间就不固定了。目前这种状态大概持续了3个月。正好做一个简单的阅读分享。 书籍 网络是怎样连接的（户根勤）   身为计算机专业的学生，经常被问到如下一个关于网络的">
+<meta name="keywords" content="随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读书分享I">
+<meta property="og:url" content="elssm.github.io/2022/12/04/读书分享I/index.html">
+<meta property="og:site_name" content="ELSSM&#39;s Blog">
+<meta property="og:description" content="前言研三上学期我的时间几乎每天被分成了几大块。睡觉吃饭、健身、读书、毕设、吉他，目的是让学生时代最后过的有意义些。健身时间我基本上固定到了每天中午的11:40到13:00，一周大概4天或者5天。读书我一般固定在周内的中午和晚上睡觉前，周末时间就不固定了。目前这种状态大概持续了3个月。正好做一个简单的阅读分享。 书籍 网络是怎样连接的（户根勤）   身为计算机专业的学生，经常被问到如下一个关于网络的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2022/12/04/读书分享I/1.png">
+<meta property="og:image" content="/2022/12/04/读书分享I/2.png">
+<meta property="og:image" content="/2022/12/04/读书分享I/3.png">
+<meta property="og:image" content="/2022/12/04/读书分享I/4.png">
+<meta property="og:image" content="/2022/12/04/读书分享I/5.png">
+<meta property="og:image" content="/2022/12/04/读书分享I/6.jpeg">
+<meta property="og:image" content="/2022/12/04/读书分享I/7.jpeg">
+<meta property="og:image" content="/2022/12/04/读书分享I/8.png">
+<meta property="og:updated_time" content="2022-12-04T07:28:32.441Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读书分享I">
+<meta name="twitter:description" content="前言研三上学期我的时间几乎每天被分成了几大块。睡觉吃饭、健身、读书、毕设、吉他，目的是让学生时代最后过的有意义些。健身时间我基本上固定到了每天中午的11:40到13:00，一周大概4天或者5天。读书我一般固定在周内的中午和晚上睡觉前，周末时间就不固定了。目前这种状态大概持续了3个月。正好做一个简单的阅读分享。 书籍 网络是怎样连接的（户根勤）   身为计算机专业的学生，经常被问到如下一个关于网络的">
+<meta name="twitter:image" content="/2022/12/04/读书分享I/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2022/12/04/读书分享I/">
+
+
+
+
+
+  <title>读书分享I | ELSSM's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/12/04/读书分享I/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author2.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">读书分享I</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-12-04T14:22:48+08:00">
+                2022-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>研三上学期我的时间几乎每天被分成了几大块。睡觉吃饭、健身、读书、毕设、吉他，目的是让学生时代最后过的有意义些。健身时间我基本上固定到了每天中午的11:40到13:00，一周大概4天或者5天。读书我一般固定在周内的中午和晚上睡觉前，周末时间就不固定了。目前这种状态大概持续了3个月。正好做一个简单的阅读分享。</p>
+<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><ul>
+<li>网络是怎样连接的（户根勤）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/1.png" alt="1" style="zoom:50%;"></p>
+<p>身为计算机专业的学生，经常被问到如下一个关于网络的问题。</p>
+<p>面试官：我现在在浏览器里输入一个地址，请你简述一下从回车之后到响应发生的大概流程。</p>
+<p>该书完美解答了这个问题，读完这本书，我相信对于面试官的这个问题至少可以回答40分钟。书中的配图也很详细很直观。</p>
+<ul>
+<li>1984（乔治奥威尔）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/2.png" alt="2" style="zoom:50%;"></p>
+<p><strong>战争即和平、自由即奴役、无知即力量。</strong></p>
+<p>《1984》是一部杰出的政治寓言小说，也是一部幻想小说。作品刻画了人类在极权主义社会的生存状态，有若一个永不褪色的警示标签，警醒世人提防这种预想中的黑暗成为现实。历经几十年，其生命力益显强大，被誉为20世纪影响最为深远的文学经典之一。</p>
+<p>如果生活像1984这样，那人生还有什么意义。温斯顿这样的人物，最终都被强制“驯化”了。这本书读到一半的时候我还以为奥伯良是个好人，没想到太坏了。我有理由相信奥伯良或许之前也是很温斯顿一样的想法，只不过奥伯良受到的“洗脑”更严重，从而导致他完成了从痛恨老大哥到崇拜老大哥的转变。真是细思极恐！</p>
+<ul>
+<li>局外人（加缪）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/3.png" alt="3" style="zoom:50%;"></p>
+<p><strong>人生在世，永远也不该演戏作假。</strong></p>
+<p>《局外人》是法国作家加缪的成名作，同时也是存在主义文学的杰出作品之一，该书以一种客观记录式的“零度风格”，粗线条地描述了主人公默尔索在荒谬的世界中经历的种种荒谬的事，以及自身的荒诞体验。从参加母亲的葬礼到偶然成了杀人犯，再到被判处死刑，默尔索似乎对一切都无动于衷，他像一个象征性的符号，代表了一种普遍的存在，又像是一个血红色的灯塔，具有高度的警示性。然而，局外人现象的产生无疑是由这个世界本身所孕育的，默尔索的存在有其深刻的外部原因。</p>
+<p>看完局外人后，我很欣赏默尔索这个人物，特立独行，不悲不喜。然而就是这样的一个性格，最后竟然成为了在法庭上被审判的点，我相信世界上像默尔索这样的人寥寥无几。对于他的遭遇我也感到惋惜。</p>
+<ul>
+<li>刀锋（毛姆）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/4.png" alt="4" style="zoom:50%;"></p>
+<p><strong>剃刀边缘无比锋利，欲通过者无不艰辛。是故智者常言，救赎之道难行。</strong></p>
+<p>《刀锋》写一个参加第一次世界大战的美国青年飞行员拉里·达雷尔。在军队里，拉里结识了一个爱尔兰好友：这人平时是那样一个生龙活虎般的置生死于度外的飞行员，但在一次遭遇战中，因去救拉里而中弹牺牲。拉里因此对人生感到迷惘，弄不懂世界上为什么有恶和不幸，拉里开始了他令人匪夷所思的转变。</p>
+<p>这本书中的人物刻画非常鲜明，例如艾略特舅舅、伊莎贝尔、布雷德利太太、拉里、格雷、苏菲、苏珊等。其实除了主人公拉里意外，其他人物都写的很好。艾略特，一辈子喜欢交际、喜欢人情世故。但是有一颗善良的心。刚开始看的时候我觉得这样的人活着属实有些累，但是看到最后，我逐渐理解了艾略特。伊莎贝尔，曾经是拉里的未婚妻，说实话书的前面我很欣赏伊莎贝尔，感觉这种女的真是不可多得。一般人都不能理解拉里，但是她却能够一直陪伴拉里。好家伙没想到后面反转了，陷害苏菲(当然苏菲也有自身原因)，之后我就不喜欢这个人物了。苏珊，我觉得活的很真实，也很清楚自己想要什么，当然苏珊的日子最后也过的很舒服。随遇而安就是最好的！</p>
+<ul>
+<li>人生（路遥）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/5.png" alt="5" style="zoom:50%;"></p>
+<p><strong>人生的道路虽然漫长，但紧要处常常只有几步，特别是当人年轻的时候。</strong></p>
+<p>《人生》是路遥的一部中篇小说，发表于1982年，它以改革时期陕北高原的城乡生活为时空背景，叙述了高中毕业生高加林回到土地又离开土地，再回到土地这样人生的变化过程。高加林同农村姑娘刘巧珍、城市姑娘黄亚萍之间的感情纠葛构成了故事发展的矛盾，也正是体现那种艰难选择的悲剧。</p>
+<p>对于高加林的遭遇我很共情，当一家三口得知高加林教师职位被撤去之后，我想到了自己当时得知自己考研复试被刷后的情形。吃不下去饭，看不进去书，听不进去话。浑浑噩噩过了两周，当时都想过二战，但是又没有足够的勇气与毅力，最终还是选择了调剂。对于高加林的意志我感到佩服，在农村那样的环境下，能够一直坚持，没有颓废下去。</p>
+<p>但是我觉得高加林的欲望太大了。巧珍多好的姑娘，现在打灯笼都找不着！你高加林失落的时候是谁在陪你，你高加林锄地受伤的时候是谁给你抹的药，你高加林馒头卖不出去的时候是谁帮的你。你高加林倒好，为了自己的未来直接抛弃巧珍要和黄亚萍在一起。太年轻了，too young too simple！亚萍也是急，被爱情冲昏了头脑，我看人张克南就不错嘛。</p>
+<ul>
+<li>我的阿勒泰（李娟）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/6.jpeg" alt="6" style="zoom:50%;"></p>
+<p><strong>最安静与最孤独的成长，也是能使人踏实、自信、强大、善良的。大不了，吐吐舌头而已。</strong></p>
+<p>李娟的散文成名作和代表作之一。原生态记录了作者在疆北阿勒泰地区生活的点点滴滴，包括人与事的记忆和感悟。全书文字明净，质地纯粹，原生态地再现了疆北风物人情，充满了朴野清新的气息。十年前，作者在到处收集来的纸片上用密密麻麻的文字写下她的生活和感悟，投稿到新疆的文艺期刊。一些资深的编辑认为一个二十岁左右的女孩不可能写出如此清新而有才华的作品。但新疆著名作家刘亮程将她挖掘出来，她的*部作品以《九篇雪》为名结集出版，人们才开始知道有个新疆女孩叫李娟。此后，她的散文在《南方周末》、《文汇报》陆续刊登，完全是天才的笔触，引起了文坛的震惊。人们很难想象：一个没有受过完整高等教育、阅读范围主要限于金庸、琼瑶、一直生活在疆北荒野之地的女孩，能够写出如此清新、活泼、充满灵性和生命力的文字。</p>
+<p>书中讲述了一个一个的小故事，很善良很温馨。</p>
+<ul>
+<li>我与地坛（史铁生）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/7.jpeg" alt="7" style="zoom:50%;"></p>
+<p><strong>只要还能哭就还有救，只要还能哭就有哭够的时候。</strong></p>
+<p>《我与地坛》由中国当代著名作家史铁生著。是史铁生文学作品中，充满哲思又极为人性化的代表作之一。其前第一段和第二段被纳入人民教育出版社的高一教材中。前两部分注重讲地坛和他与母亲的后悔，对于中学生来说，这是一篇令人反思的优秀文章。</p>
+<ul>
+<li>都柏林人（詹姆斯乔伊斯）</li>
+</ul>
+<p><img src="/2022/12/04/读书分享I/8.png" alt="8" style="zoom:50%;"></p>
+<p>《都柏林人》是詹姆斯·乔伊斯久负盛名的短篇小说集，称得上20世纪整个西方最著名的短篇小说集了。1914年出版，置景于二三十年代的都柏林，截取中下层人民生活的横断面，一个片刻一群人，十五个故事汇集起来，宛若一幅印象主义的绘画，笔触简练，错落成篇，浮现出苍凉世态，遥远、清冷，然而精致，是上上之品。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/10/10/DPDK初探/" rel="next" title="DPDK初探">
+                <i class="fa fa-chevron-left"></i> DPDK初探
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author2.png" alt="Elssm">
+            
+              <p class="site-author-name" itemprop="name">Elssm</p>
+              <p class="site-description motion-element" itemprop="description">Web/Cloud/ML Security  Adversarial Training</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://leetcode.cn/u/elssm/" target="_blank" title="Leetcode">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Leetcode</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#书籍"><span class="nav-number">2.</span> <span class="nav-text">书籍</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

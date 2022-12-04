@@ -146,7 +146,7 @@
 <meta property="og:image" content="/2021/04/01/AdvGAN学习/14.png">
 <meta property="og:image" content="/2021/04/01/AdvGAN学习/15.png">
 <meta property="og:image" content="/2021/04/01/AdvGAN学习/16.png">
-<meta property="og:updated_time" content="2021-12-13T09:42:28.478Z">
+<meta property="og:updated_time" content="2022-11-25T02:54:05.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AdvGAN学习">
 <meta name="twitter:description" content="Generating Adversarial Examples with Adversarial Networks论文链接：https://arxiv.org/abs/1801.02610代码链接：https://github.com/mathcbc/advGAN_pytorch 简介为了更有效地生成感知真实的对抗性样本，本文提出一种基于GAN的方式来产生对抗样本。 1.训练一个产生扰动的前馈网络">
@@ -420,7 +420,7 @@
 <p><img src="/2021/04/01/AdvGAN学习/7.png" alt="7"></p>
 <p>1.对于给定的蒸馏网络$f_{i-1}$更新$G_i$：根据白盒攻击的算法步骤，利用前一个蒸馏网络$f_{i-1}$去训练生成器和判别器，初始化$G_i$的权重为$G_{i-1}$的权重，$G_i,D_i=arg\underset{G}{min}\underset{D}{max}L^{f_{i-1}}_{adv}+\alpha L_{GAN}+\beta L_{hinge}$</p>
 <p>2.对于给定的生成器$G_{i-1}$更新$f_i$：首先我们使用$f_{i-1}$的权重初始化$f_i$的权重，然后对于给定的从$G_i$生成的对抗样本x+G(x)，蒸馏模型$f_i$会根据最新的在黑盒模型上对抗样本的查询结果和原始数据进行参数更新。$f_i=arg\underset{f}{min}E_xH(f(x),b(x))+E_xH(f(x+G_i(x)),b(x+G_i(x)))$这里我们使用原始图像x和生成的对抗样本x+$sG_i(x)$去更新蒸馏网络。</p>
-<h4 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h4><p>这一章节，我们首先评估AdvGAN在半白盒和黑盒情景下对于MNIST和CIFAR-10的效果。我们也在ImageNet上进行的半白盒攻击的测试。接着我们应用AdvGAN在不同的目标模型上生成对抗样本和在目前最好的防御方法下测试其攻击成功率，结果显示我们的方法与其他目前存在的方法相比能实现更高的攻击成功率。为了保证比较的公平性，我们利用各种攻击方法生成的对抗样本都是在相同的无穷范式的约束下（在MNIST是0.3，在CIFAR-10是8）。大致来看，AdvGAN对比其他白盒攻击和黑盒攻击的方法体现出了几点优势。</p>
+<h4 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h4><p>这一章节，我们首先评估AdvGAN在半白盒和黑盒情景下对于MNIST和CIFAR-10的效果。我们也在ImageNet上进行的半白盒攻击的测试。接着我们应用AdvGAN在不同的目标模型上生成对抗样本和在目前最好的防御方法下测试其攻击成功率，结果显示我们的方法与其他目前存在的方法相比能实现更高的攻击成功率。为了保证比较的公平性，我们利用各种攻击方法生成的对抗样本都是在相同的无穷范式的约束下（在MNIST是0.3，在CIFAR-10是8/255）。大致来看，AdvGAN对比其他白盒攻击和黑盒攻击的方法体现出了几点优势。</p>
 <p><img src="/2021/04/01/AdvGAN学习/8.png" alt="8"></p>
 <p>就计算效率来讲，AdvGAN执行速度更快甚至比高效的FGSM方法快，即使AdvGAN需要额外的训练时间去训练生成器。我们这里对比的所有攻击策略除了基于迁移性攻击策略，其他都可以进行目标攻击。除此之外，FGSM和基于优化的方法只能进行白盒攻击，但是AdvGAN可以在半白盒的情景下进行攻击。</p>
 <h5 id="实验细节"><a href="#实验细节" class="headerlink" title="实验细节"></a>实验细节</h5><p>采用与image-to-image转换文献类似的生成器和鉴别器结构，采用C&amp;W方法中提出的损失函数作为损失函数。在黑盒攻击的情景下表示蒸馏网络。我们设置信度为0，优化方法使用Adam，批大小为128，学习率为0.001。对于生成式对抗网络的学习，我们使用最小平方目标函数，因为它有更好更稳定的结果。</p>
@@ -565,7 +565,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -578,7 +578,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
