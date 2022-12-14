@@ -154,7 +154,12 @@
 <meta property="og:image" content="/2022/12/13/CTF-Misc/21.png">
 <meta property="og:image" content="/2022/12/13/CTF-Misc/22.png">
 <meta property="og:image" content="/2022/12/13/CTF-Misc/23.png">
-<meta property="og:updated_time" content="2022-12-14T05:53:25.578Z">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/24.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/25.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/26.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/27.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/28.png">
+<meta property="og:updated_time" content="2022-12-14T16:49:37.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTF Misc">
 <meta name="twitter:description" content="金三胖zip下载后有一张gif，直接拖入到StegSolve中分帧查看，得到flag     二维码下载之后是一个png图片，使用hex fiend打开之后发现里面有一个number.txt文件  接着使用foremost分离文件 123456-&amp;gt; % foremost QR_code.pngforemost: /usr/local/etc/foremost.conf: No such fi">
@@ -456,6 +461,19 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % fcrackzip -b -c '1' -l 4 -u output/zip/00000075.zip</span><br><span class="line">PASSWORD FOUND!!!!: pw == 8368</span><br></pre></td></tr></table></figure>
 <h4 id="easycap"><a href="#easycap" class="headerlink" title="easycap"></a>easycap</h4><p>追踪tcp数据流获取flag</p>
 <p><img src="/2022/12/13/CTF-Misc/23.png" alt="23"></p>
+<h4 id="FLAG"><a href="#FLAG" class="headerlink" title="FLAG"></a>FLAG</h4><p>图片下载下来binwalk查看发现存在压缩文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % binwalk 42011487927629132.png</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             PNG image, 664 x 586, 8-bit/color RGB, non-interlaced</span><br><span class="line">41            0x29            Zlib compressed data, default compression</span><br></pre></td></tr></table></figure>
+<p>stegsolve最低位分析，根据标识头发现是zip文件</p>
+<p><img src="/2022/12/13/CTF-Misc/24.png" alt="24"></p>
+<p>修改下载下来的图片后缀为zip并解压，发现里面存在一个1的文件，查看文件属性发现是可执行文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % file 1</span><br><span class="line">1: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.24, BuildID[sha1]=8df45089fa39fec83423ec37a944e81065d16bee, not stripped</span><br></pre></td></tr></table></figure>
+<p><code>Ghidra</code>打开反编译后看到<code>flag</code></p>
+<p><img src="/2022/12/13/CTF-Misc/25.png" alt="25"></p>
+<h4 id="数据包中的线索"><a href="#数据包中的线索" class="headerlink" title="数据包中的线索"></a>数据包中的线索</h4><p>下载图片后追踪http流，发现有一串base64编码数据，以<code>/9j/</code>开头，属于图片格式，直接base64转图片，看到flag</p>
+<p><img src="/2022/12/13/CTF-Misc/26.png" alt="26"></p>
+<p><img src="/2022/12/13/CTF-Misc/27.png" alt="27"></p>
+<h4 id="来首歌吧"><a href="#来首歌吧" class="headerlink" title="来首歌吧"></a>来首歌吧</h4><p>Audacity打开发现存在摩斯电码，解密得到flag</p>
+<p><img src="/2022/12/13/CTF-Misc/28.png" alt="28"></p>
 
       
     </div>
@@ -635,7 +653,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#金三胖"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码"><span class="nav-number">2.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#你竟然赶我走"><span class="nav-number">3.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大白"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N种方法解决"><span class="nav-number">5.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乌镇峰会种图"><span class="nav-number">6.</span> <span class="nav-text">乌镇峰会种图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark"><span class="nav-number">7.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSB"><span class="nav-number">8.</span> <span class="nav-text">LSB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip伪加密"><span class="nav-number">9.</span> <span class="nav-text">zip伪加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#被嗅探的流量"><span class="nav-number">10.</span> <span class="nav-text">被嗅探的流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜子里面的世界"><span class="nav-number">11.</span> <span class="nav-text">镜子里面的世界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ningen"><span class="nav-number">12.</span> <span class="nav-text">ningen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#easycap"><span class="nav-number">13.</span> <span class="nav-text">easycap</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#金三胖"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码"><span class="nav-number">2.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#你竟然赶我走"><span class="nav-number">3.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大白"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N种方法解决"><span class="nav-number">5.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乌镇峰会种图"><span class="nav-number">6.</span> <span class="nav-text">乌镇峰会种图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark"><span class="nav-number">7.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSB"><span class="nav-number">8.</span> <span class="nav-text">LSB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip伪加密"><span class="nav-number">9.</span> <span class="nav-text">zip伪加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#被嗅探的流量"><span class="nav-number">10.</span> <span class="nav-text">被嗅探的流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜子里面的世界"><span class="nav-number">11.</span> <span class="nav-text">镜子里面的世界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ningen"><span class="nav-number">12.</span> <span class="nav-text">ningen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#easycap"><span class="nav-number">13.</span> <span class="nav-text">easycap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FLAG"><span class="nav-number">14.</span> <span class="nav-text">FLAG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据包中的线索"><span class="nav-number">15.</span> <span class="nav-text">数据包中的线索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#来首歌吧"><span class="nav-number">16.</span> <span class="nav-text">来首歌吧</span></a></li></ol></div>
             
 
           </div>
