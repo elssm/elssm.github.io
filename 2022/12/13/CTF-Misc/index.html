@@ -143,7 +143,18 @@
 <meta property="og:image" content="/2022/12/13/CTF-Misc/10.png">
 <meta property="og:image" content="/2022/12/13/CTF-Misc/11.png">
 <meta property="og:image" content="/2022/12/13/CTF-Misc/12.png">
-<meta property="og:updated_time" content="2022-12-13T04:20:46.353Z">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/13.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/14.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/15.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/16.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/17.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/18.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/19.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/20.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/21.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/22.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/23.png">
+<meta property="og:updated_time" content="2022-12-14T05:53:25.578Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTF Misc">
 <meta name="twitter:description" content="金三胖zip下载后有一张gif，直接拖入到StegSolve中分帧查看，得到flag     二维码下载之后是一个png图片，使用hex fiend打开之后发现里面有一个number.txt文件  接着使用foremost分离文件 123456-&amp;gt; % foremost QR_code.pngforemost: /usr/local/etc/foremost.conf: No such fi">
@@ -390,7 +401,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % tree output</span><br><span class="line">output</span><br><span class="line">├── audit.txt</span><br><span class="line">├── png</span><br><span class="line">│   └── 00000000.png</span><br><span class="line">└── zip</span><br><span class="line">    └── 00000000.zip</span><br><span class="line"></span><br><span class="line">2 directories, 3 files</span><br></pre></td></tr></table></figure>
 <p>使用<code>fcrackzip</code>开始破解密码</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % fcrackzip -b -c '1' -l 4 -u 00000000.zip</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PASSWORD FOUND!!!!: pw == 7639</span><br></pre></td></tr></table></figure>
-<p>输入密码获取<code>flag</code>为<code>CTF{vjpw_wnoei}</code></p>
 <h4 id="你竟然赶我走"><a href="#你竟然赶我走" class="headerlink" title="你竟然赶我走"></a>你竟然赶我走</h4><p>zip解压后是一张图片，丢到StegSolve中进行文件格式分析。直接获取到<code>flag</code></p>
 <p><img src="/2022/12/13/CTF-Misc/6.png" alt="6"></p>
 <h4 id="大白"><a href="#大白" class="headerlink" title="大白"></a>大白</h4><p>zip下载后发现打不开图片，<code>StegSolve</code>打开后发现图片少了一半。</p>
@@ -411,6 +421,41 @@
 <p><img src="/2022/12/13/CTF-Misc/11.png" alt="11"></p>
 <h4 id="乌镇峰会种图"><a href="#乌镇峰会种图" class="headerlink" title="乌镇峰会种图"></a>乌镇峰会种图</h4><p><code>hex fiend</code>打开图片拖到最后面看到<code>flag</code></p>
 <p><img src="/2022/12/13/CTF-Misc/12.png" alt="12"></p>
+<h4 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h4><p>wireshark打开下载到的<code>pcap</code>文件，根据题目提示登录密码即为<code>flag</code>，过滤<code>POST</code>请求获取<code>flag</code>。</p>
+<p><img src="/2022/12/13/CTF-Misc/13.png" alt="13"></p>
+<h4 id="LSB"><a href="#LSB" class="headerlink" title="LSB"></a>LSB</h4><p><code>StegSolve</code>打开图片，在不同通道中切换查看图片，发现<code>blue0,green0,red0</code>和原始图片不一样</p>
+<p><img src="/2022/12/13/CTF-Misc/14.png" alt="14"></p>
+<p><img src="/2022/12/13/CTF-Misc/15.png" alt="15"></p>
+<p><img src="/2022/12/13/CTF-Misc/16.png" alt="16"></p>
+<p><img src="/2022/12/13/CTF-Misc/17.png" alt="17"></p>
+<p>使用<code>Data Extract</code>功能进行提取，保存成图片，发现是二维码，扫描后获取到<code>flag</code></p>
+<p><img src="/2022/12/13/CTF-Misc/18.png" alt="18"></p>
+<h4 id="zip伪加密"><a href="#zip伪加密" class="headerlink" title="zip伪加密"></a>zip伪加密</h4><p>下载后发现文件加密，看到题目提示是zip伪加密，因此不需要使用<code>fcrack</code>爆破。首先了解一下zip文件。</p>
+<p>一个zip文件由三部分组成</p>
+<ul>
+<li>压缩源文件数据区</li>
+<li>压缩源文件目录区</li>
+<li>压缩源文件目录结束标志</li>
+</ul>
+<p>具体组成如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">压缩源文件数据区： </span><br><span class="line">    50 4B 03 04：这是头文件标记（0x04034b50） </span><br><span class="line">    14 00：解压文件所需 pkware 版本 </span><br><span class="line">    00 00：全局方式位标记（有无加密） </span><br><span class="line">    08 00：压缩方式 </span><br><span class="line">    5A 7E：最后修改文件时间 </span><br><span class="line">    F7 46：最后修改文件日期 </span><br><span class="line">    16 B5 80 14：CRC-32校验（1480B516） </span><br><span class="line">    19 00 00 00：压缩后尺寸（25） </span><br><span class="line">    17 00 00 00：未压缩尺寸（23） </span><br><span class="line">    07 00：文件名长度 </span><br><span class="line">    00 00：扩展记录长度 </span><br><span class="line"></span><br><span class="line">压缩源文件目录区： </span><br><span class="line">    50 4B 01 02：目录中文件文件头标记(0x02014b50) </span><br><span class="line">    3F 00：压缩使用的 pkware 版本 </span><br><span class="line">    14 00：解压文件所需 pkware 版本 </span><br><span class="line">    00 00：全局方式位标记</span><br><span class="line">    08 00：压缩方式 </span><br><span class="line">    5A 7E：最后修改文件时间 </span><br><span class="line">    F7 46：最后修改文件日期 </span><br><span class="line">    16 B5 80 14：CRC-32校验（1480B516） </span><br><span class="line">    19 00 00 00：压缩后尺寸（25） </span><br><span class="line">    17 00 00 00：未压缩尺寸（23） </span><br><span class="line">    07 00：文件名长度 </span><br><span class="line">    24 00：扩展字段长度 </span><br><span class="line">    00 00：文件注释长度 </span><br><span class="line">    00 00：磁盘开始号 </span><br><span class="line">    00 00：内部文件属性 </span><br><span class="line">    20 00 00 00：外部文件属性 </span><br><span class="line">    00 00 00 00：局部头部偏移量 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">压缩源文件目录结束标志： </span><br><span class="line">    50 4B 05 06：目录结束标记 </span><br><span class="line">    00 00：当前磁盘编号 </span><br><span class="line">    00 00：目录区开始磁盘编号 </span><br><span class="line">    01 00：本磁盘上纪录总数 </span><br><span class="line">    01 00：目录区中纪录总数 </span><br><span class="line">    59 00 00 00：目录区尺寸大小 </span><br><span class="line">    3E 00 00 00：目录区对第一张磁盘的偏移量 </span><br><span class="line">    00 00：ZIP 文件注释长度</span><br></pre></td></tr></table></figure>
+<p>因此我们通过<code>hex fiend</code>打开zip文件可以发现。压缩源文件数据区的全局方式位标记为<code>0900</code>,压缩源文件目录区的全局方式位标记为<code>0900</code>，而对于<code>zip</code>伪加密文件，我们只需要将<strong>压缩源文件数据区和压缩源文件目录区</strong>的全局方式位标记从<code>0900</code>或者<code>0100</code>修改为<code>0000</code>就可以移除密码，反之则可以添加密码。</p>
+<p><img src="/2022/12/13/CTF-Misc/19.png" alt="19"></p>
+<h4 id="被嗅探的流量"><a href="#被嗅探的流量" class="headerlink" title="被嗅探的流量"></a>被嗅探的流量</h4><p>wireshark打开过滤post请求，发现有一个jepg格式的照片，打开查看。</p>
+<p><img src="/2022/12/13/CTF-Misc/20.png" alt="20"></p>
+<p>获取到<code>flag</code></p>
+<p><img src="/2022/12/13/CTF-Misc/21.png" alt="21"></p>
+<h4 id="镜子里面的世界"><a href="#镜子里面的世界" class="headerlink" title="镜子里面的世界"></a>镜子里面的世界</h4><p><code>StegSolve</code>打开图片，在不同通道中切换查看图片，发现<code>blue0,green0,red0</code>和原始图片不一样</p>
+<p><code>data extract</code>获取<code>flag</code></p>
+<p><img src="/2022/12/13/CTF-Misc/22.png" alt="22"></p>
+<h4 id="ningen"><a href="#ningen" class="headerlink" title="ningen"></a>ningen</h4><p><code>binwalk</code>分析</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % binwalk 9e3ec8c2-38c7-41cf-b5d7-abe7872de4c3.jpg</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             JPEG image data, JFIF standard 1.01</span><br><span class="line">38689         0x9721          Zip archive data, encrypted at least v2.0 to extract, compressed size: 50, uncompressed size: 38, name: ningen.txt</span><br><span class="line">38871         0x97D7          End of Zip archive, footer length: 22</span><br></pre></td></tr></table></figure>
+<p>发现存在zip文件。foremost分离</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % foremost 9e3ec8c2-38c7-41cf-b5d7-abe7872de4c3.jpg</span><br><span class="line">foremost: /usr/local/etc/foremost.conf: No such file or directory</span><br><span class="line">Processing: 9e3ec8c2-38c7-41cf-b5d7-abe7872de4c3.jpg</span><br><span class="line">|foundat=ningen.txt|���B��W��u���:)�ם[Rk�3�_��W�i�&#125;Ćne%�3�]��BPK?</span><br><span class="line">*|</span><br></pre></td></tr></table></figure>
+<p>zip下有一个<code>ningen.txt</code>文件，但是被加密了，由题目可知是四位数密码，fcrack爆破获取<code>flag</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % fcrackzip -b -c '1' -l 4 -u output/zip/00000075.zip</span><br><span class="line">PASSWORD FOUND!!!!: pw == 8368</span><br></pre></td></tr></table></figure>
+<h4 id="easycap"><a href="#easycap" class="headerlink" title="easycap"></a>easycap</h4><p>追踪tcp数据流获取flag</p>
+<p><img src="/2022/12/13/CTF-Misc/23.png" alt="23"></p>
 
       
     </div>
@@ -590,7 +635,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#金三胖"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码"><span class="nav-number">2.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#你竟然赶我走"><span class="nav-number">3.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大白"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N种方法解决"><span class="nav-number">5.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乌镇峰会种图"><span class="nav-number">6.</span> <span class="nav-text">乌镇峰会种图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#金三胖"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码"><span class="nav-number">2.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#你竟然赶我走"><span class="nav-number">3.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大白"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N种方法解决"><span class="nav-number">5.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乌镇峰会种图"><span class="nav-number">6.</span> <span class="nav-text">乌镇峰会种图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark"><span class="nav-number">7.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSB"><span class="nav-number">8.</span> <span class="nav-text">LSB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip伪加密"><span class="nav-number">9.</span> <span class="nav-text">zip伪加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#被嗅探的流量"><span class="nav-number">10.</span> <span class="nav-text">被嗅探的流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜子里面的世界"><span class="nav-number">11.</span> <span class="nav-text">镜子里面的世界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ningen"><span class="nav-number">12.</span> <span class="nav-text">ningen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#easycap"><span class="nav-number">13.</span> <span class="nav-text">easycap</span></a></li></ol></div>
             
 
           </div>
