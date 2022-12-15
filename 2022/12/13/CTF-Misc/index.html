@@ -159,7 +159,16 @@
 <meta property="og:image" content="/2022/12/13/CTF-Misc/26.png">
 <meta property="og:image" content="/2022/12/13/CTF-Misc/27.png">
 <meta property="og:image" content="/2022/12/13/CTF-Misc/28.png">
-<meta property="og:updated_time" content="2022-12-14T16:49:37.102Z">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/29.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/30.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/31.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/32.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/33.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/34.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/36.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/37.png">
+<meta property="og:image" content="/2022/12/13/CTF-Misc/35.png">
+<meta property="og:updated_time" content="2022-12-15T08:22:51.640Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CTF Misc">
 <meta name="twitter:description" content="金三胖zip下载后有一张gif，直接拖入到StegSolve中分帧查看，得到flag     二维码下载之后是一个png图片，使用hex fiend打开之后发现里面有一个number.txt文件  接着使用foremost分离文件 123456-&amp;gt; % foremost QR_code.pngforemost: /usr/local/etc/foremost.conf: No such fi">
@@ -474,6 +483,42 @@
 <p><img src="/2022/12/13/CTF-Misc/27.png" alt="27"></p>
 <h4 id="来首歌吧"><a href="#来首歌吧" class="headerlink" title="来首歌吧"></a>来首歌吧</h4><p>Audacity打开发现存在摩斯电码，解密得到flag</p>
 <p><img src="/2022/12/13/CTF-Misc/28.png" alt="28"></p>
+<h4 id="snake"><a href="#snake" class="headerlink" title="snake"></a>snake</h4><p>下载图片后<code>binwalk</code>分析</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % binwalk snake.jpg</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">0             0x0             JPEG image data, JFIF standard 1.01</span><br><span class="line">30            0x1E            TIFF image data, big-endian, offset of first image directory: 8</span><br><span class="line">2925          0xB6D           Copyright string: "Copyright Apple Inc., 2015"</span><br><span class="line">278260        0x43EF4         Zip archive data, at least v1.0 to extract, compressed size: 82, uncompressed size: 82, name: key</span><br><span class="line">278375        0x43F67         Zip archive data, at least v1.0 to extract, compressed size: 48, uncompressed size: 48, name: cipher</span><br><span class="line">278632        0x44068         End of Zip archive, footer length: 22</span><br></pre></td></tr></table></figure>
+<p>修改后缀后解压</p>
+<p>发现有俩文件一个<code>cipher</code>一个<code>key</code>，将<code>key</code>用<code>hex fiend</code>打开发现一串<code>base64</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">V2hhdCBpcyBOaWNraSBNaW5haidzIGZhdm9yaXRlIHNvbmcgdGhhdCByZWZlcnMgdG8gc25ha2VzPwo=</span><br></pre></td></tr></table></figure>
+<p>解码结果为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">What is Nicki Minaj's favorite song that refers to snakes?</span><br></pre></td></tr></table></figure>
+<p><code>google</code>搜索这个人和蛇有关的歌曲，名为<code>anaconda</code></p>
+<p><img src="/2022/12/13/CTF-Misc/29.png" alt="29"></p>
+<p>加密算法是什么呢？百思不得其解，网上查了后发现蛇还有个英文名叫<code>Serpent</code>正好也对应一个加密算法。。。</p>
+<p><code>serpent</code>在线加解密：<a href="http://serpent.online-domain-tools.com/" target="_blank" rel="noopener">http://serpent.online-domain-tools.com/</a></p>
+<p>得到<code>flag</code></p>
+<p><img src="/2022/12/13/CTF-Misc/30.png" alt="30"></p>
+<h4 id="佛系青年"><a href="#佛系青年" class="headerlink" title="佛系青年"></a>佛系青年</h4><p>下载后发现zip是伪加密，直接修改后打开，里面一张照片一个文件，文件内容如下</p>
+<p><img src="/2022/12/13/CTF-Misc/31.png" alt="31"></p>
+<p>没看明白啥意思，图片我<code>binwalk hexfiend stegsolve</code>都无果</p>
+<p>看了writeup后知道了一个网站。。。。</p>
+<p>与佛论禅：<a href="https://www.keyfc.net/bbs/tools/tudoucode.aspx" target="_blank" rel="noopener">https://www.keyfc.net/bbs/tools/tudoucode.aspx</a></p>
+<p>得到<code>flag</code></p>
+<p><img src="/2022/12/13/CTF-Misc/32.png" alt="32"></p>
+<h4 id="菜刀666"><a href="#菜刀666" class="headerlink" title="菜刀666"></a>菜刀666</h4><p>下载文件后直接wireshark打开，根据题目应该是POST请求，直接过滤post请求</p>
+<p><img src="/2022/12/13/CTF-Misc/33.png" alt="33"></p>
+<p>过滤之后追踪http请求流，发现了两段可以的请求</p>
+<p>第一段post参数有<code>z1</code>和<code>z2</code></p>
+<p><img src="/2022/12/13/CTF-Misc/34.png" alt="34"></p>
+<p>将<code>z1 base64</code>解码得到一个图片地址</p>
+<p><img src="/2022/12/13/CTF-Misc/36.png" alt="36"></p>
+<p><code>z2</code>是很长的一段16进制hex码，以<code>FFD8</code>开头以<code>FFD9</code>结尾，可以判断出是<code>jpeg</code>图片格式的开头和结尾，于是找一个在线网站直接转换</p>
+<p>hexadecimal-&gt;image:<a href="https://codepen.io/abdhass/full/jdRNdj" target="_blank" rel="noopener">https://codepen.io/abdhass/full/jdRNdj</a></p>
+<p><img src="/2022/12/13/CTF-Misc/37.png" alt="37"></p>
+<p>第二段post请求中存在其他文件</p>
+<p><img src="/2022/12/13/CTF-Misc/35.png" alt="35"></p>
+<p><code>foremost</code>分离</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % foremost 666666.pcapng</span><br><span class="line">foremost: /usr/local/etc/foremost.conf: No such file or directory</span><br><span class="line">Processing: 666666.pcapng</span><br><span class="line">|foundat=flag.txtC����cS�J��Ea�v�</span><br><span class="line">                                 ��&amp;e$K��2%�$��,�=�J��1p��p46PK?</span><br><span class="line">*|</span><br></pre></td></tr></table></figure>
+<p>输入上面图片中的密码，拿到<code>flag</code></p>
+<h4 id="鸡你太美"><a href="#鸡你太美" class="headerlink" title="鸡你太美"></a>鸡你太美</h4><p>两张gif图，第二张副本图片损毁了，<code>hex fiend</code>打开后发现缺少<code>gif</code>头，标识为<code>47 49 46 38</code>，添加<code>gif</code>头后可以正常打开，看到<code>flag</code></p>
 
       
     </div>
@@ -653,7 +698,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#金三胖"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码"><span class="nav-number">2.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#你竟然赶我走"><span class="nav-number">3.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大白"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N种方法解决"><span class="nav-number">5.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乌镇峰会种图"><span class="nav-number">6.</span> <span class="nav-text">乌镇峰会种图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark"><span class="nav-number">7.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSB"><span class="nav-number">8.</span> <span class="nav-text">LSB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip伪加密"><span class="nav-number">9.</span> <span class="nav-text">zip伪加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#被嗅探的流量"><span class="nav-number">10.</span> <span class="nav-text">被嗅探的流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜子里面的世界"><span class="nav-number">11.</span> <span class="nav-text">镜子里面的世界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ningen"><span class="nav-number">12.</span> <span class="nav-text">ningen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#easycap"><span class="nav-number">13.</span> <span class="nav-text">easycap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FLAG"><span class="nav-number">14.</span> <span class="nav-text">FLAG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据包中的线索"><span class="nav-number">15.</span> <span class="nav-text">数据包中的线索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#来首歌吧"><span class="nav-number">16.</span> <span class="nav-text">来首歌吧</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#金三胖"><span class="nav-number">1.</span> <span class="nav-text">金三胖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维码"><span class="nav-number">2.</span> <span class="nav-text">二维码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#你竟然赶我走"><span class="nav-number">3.</span> <span class="nav-text">你竟然赶我走</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大白"><span class="nav-number">4.</span> <span class="nav-text">大白</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#N种方法解决"><span class="nav-number">5.</span> <span class="nav-text">N种方法解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乌镇峰会种图"><span class="nav-number">6.</span> <span class="nav-text">乌镇峰会种图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wireshark"><span class="nav-number">7.</span> <span class="nav-text">wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LSB"><span class="nav-number">8.</span> <span class="nav-text">LSB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip伪加密"><span class="nav-number">9.</span> <span class="nav-text">zip伪加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#被嗅探的流量"><span class="nav-number">10.</span> <span class="nav-text">被嗅探的流量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#镜子里面的世界"><span class="nav-number">11.</span> <span class="nav-text">镜子里面的世界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ningen"><span class="nav-number">12.</span> <span class="nav-text">ningen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#easycap"><span class="nav-number">13.</span> <span class="nav-text">easycap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FLAG"><span class="nav-number">14.</span> <span class="nav-text">FLAG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据包中的线索"><span class="nav-number">15.</span> <span class="nav-text">数据包中的线索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#来首歌吧"><span class="nav-number">16.</span> <span class="nav-text">来首歌吧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#snake"><span class="nav-number">17.</span> <span class="nav-text">snake</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#佛系青年"><span class="nav-number">18.</span> <span class="nav-text">佛系青年</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#菜刀666"><span class="nav-number">19.</span> <span class="nav-text">菜刀666</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#鸡你太美"><span class="nav-number">20.</span> <span class="nav-text">鸡你太美</span></a></li></ol></div>
             
 
           </div>
