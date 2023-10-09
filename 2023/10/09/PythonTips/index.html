@@ -123,18 +123,18 @@
 
 
 
-<meta name="description" content="[TOC] 前言在python cookbook中学到的很多python技巧，基本都是工作中做python开发遇到的实际问题，实用性很强，故记录于此。 数据结构序列分解123456789101112131415161718&amp;gt;&amp;gt;&amp;gt; p = (4,5)&amp;gt;&amp;gt;&amp;gt; a,b = p&amp;gt;&amp;gt;&amp;gt; a4&amp;gt;&amp;gt;&amp;gt; b5&amp;gt;&amp;gt;&amp;gt; s =">
+<meta name="description" content="前言在python cookbook中学到的很多python技巧，基本都是工作中做python开发遇到的实际问题，实用性很强，故记录于此。 数据结构序列分解123456789101112131415161718&amp;gt;&amp;gt;&amp;gt; p = (4,5)&amp;gt;&amp;gt;&amp;gt; a,b = p&amp;gt;&amp;gt;&amp;gt; a4&amp;gt;&amp;gt;&amp;gt; b5&amp;gt;&amp;gt;&amp;gt; s = &apos;elssm">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PythonTips">
 <meta property="og:url" content="elssm.github.io/2023/10/09/PythonTips/index.html">
 <meta property="og:site_name" content="ELSSM&#39;s Blog">
-<meta property="og:description" content="[TOC] 前言在python cookbook中学到的很多python技巧，基本都是工作中做python开发遇到的实际问题，实用性很强，故记录于此。 数据结构序列分解123456789101112131415161718&amp;gt;&amp;gt;&amp;gt; p = (4,5)&amp;gt;&amp;gt;&amp;gt; a,b = p&amp;gt;&amp;gt;&amp;gt; a4&amp;gt;&amp;gt;&amp;gt; b5&amp;gt;&amp;gt;&amp;gt; s =">
+<meta property="og:description" content="前言在python cookbook中学到的很多python技巧，基本都是工作中做python开发遇到的实际问题，实用性很强，故记录于此。 数据结构序列分解123456789101112131415161718&amp;gt;&amp;gt;&amp;gt; p = (4,5)&amp;gt;&amp;gt;&amp;gt; a,b = p&amp;gt;&amp;gt;&amp;gt; a4&amp;gt;&amp;gt;&amp;gt; b5&amp;gt;&amp;gt;&amp;gt; s = &apos;elssm">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2023-10-09T11:08:26.784Z">
+<meta property="og:updated_time" content="2023-10-09T11:13:28.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PythonTips">
-<meta name="twitter:description" content="[TOC] 前言在python cookbook中学到的很多python技巧，基本都是工作中做python开发遇到的实际问题，实用性很强，故记录于此。 数据结构序列分解123456789101112131415161718&amp;gt;&amp;gt;&amp;gt; p = (4,5)&amp;gt;&amp;gt;&amp;gt; a,b = p&amp;gt;&amp;gt;&amp;gt; a4&amp;gt;&amp;gt;&amp;gt; b5&amp;gt;&amp;gt;&amp;gt; s =">
+<meta name="twitter:description" content="前言在python cookbook中学到的很多python技巧，基本都是工作中做python开发遇到的实际问题，实用性很强，故记录于此。 数据结构序列分解123456789101112131415161718&amp;gt;&amp;gt;&amp;gt; p = (4,5)&amp;gt;&amp;gt;&amp;gt; a,b = p&amp;gt;&amp;gt;&amp;gt; a4&amp;gt;&amp;gt;&amp;gt; b5&amp;gt;&amp;gt;&amp;gt; s = &apos;elssm">
 
 
 
@@ -364,8 +364,7 @@
       
 
       
-        <p>[TOC]</p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在<code>python cookbook</code>中学到的很多<code>python</code>技巧，基本都是工作中做<code>python</code>开发遇到的实际问题，实用性很强，故记录于此。</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在<code>python cookbook</code>中学到的很多<code>python</code>技巧，基本都是工作中做<code>python</code>开发遇到的实际问题，实用性很强，故记录于此。</p>
 <h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><h4 id="序列分解"><a href="#序列分解" class="headerlink" title="序列分解"></a>序列分解</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = (<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a,b = p</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">'elssm'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a,b,c,d,e = s</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="string">'e'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">'l'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c</span><br><span class="line"><span class="string">'s'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d</span><br><span class="line"><span class="string">'s'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>e</span><br><span class="line"><span class="string">'m'</span></span><br></pre></td></tr></table></figure>
 <h4 id="解压可迭代对象赋值给多个变量"><a href="#解压可迭代对象赋值给多个变量" class="headerlink" title="解压可迭代对象赋值给多个变量"></a>解压可迭代对象赋值给多个变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>record = (<span class="string">'elssm'</span>,<span class="string">'test@qq.com'</span>,<span class="string">'13888888888'</span>,<span class="string">'15888888888'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name,email,*phones = record</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name</span><br><span class="line"><span class="string">'elssm'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>email</span><br><span class="line"><span class="string">'test@qq.com'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>phones</span><br><span class="line">[<span class="string">'13888888888'</span>, <span class="string">'15888888888'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>*front,end = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>front</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>end</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
 <h3 id="保留有限历史记录"><a href="#保留有限历史记录" class="headerlink" title="保留有限历史记录"></a>保留有限历史记录</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q = deque(maxlen=<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q.append(<span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q.append(<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q.append(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q.append(<span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q</span><br><span class="line">deque([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], maxlen=<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q.append(<span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>q</span><br><span class="line">deque([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], maxlen=<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
@@ -532,8 +531,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/02/27/读书分享III/" rel="next" title="读书分享III">
-                <i class="fa fa-chevron-left"></i> 读书分享III
+              <a href="/2023/08/27/读书分享V/" rel="next" title="读书分享V">
+                <i class="fa fa-chevron-left"></i> 读书分享V
               </a>
             
           </div>
@@ -619,7 +618,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
