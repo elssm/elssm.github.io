@@ -765,7 +765,7 @@
 <p>在展示如何将BPF程序附着到用户定义的跟踪点之前，我们需要先谈谈可发现性。因为这些跟踪点是在可执行文件中以二进制格式定义的，所以我们需要一种方法来列出程序定义的探针，而无需深入研究源代码。提取此信息的一种方法是直接读取ELF二进制文件。首先，我们将编译我们之前的Hello World USDT示例； 我们可以为此使用 GCC：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o hello_usdt hello_usdt.c</span><br></pre></td></tr></table></figure>
 <p>编译报错如下</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hello_usdt.c:1:10: fatal error: sys/sdt.h: No such file or directory</span><br><span class="line"><span class="meta"> #</span><span class="bash">include &lt;sys/sdt.h&gt;</span></span><br><span class="line">          ^~~~~~~~~~~</span><br><span class="line">compilation terminated.</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hello_usdt.c:1:10: fatal error: sys/sdt.h: No such file or directory</span><br><span class="line"><span class="meta"> #</span>include &lt;sys/sdt.h&gt;</span><br><span class="line">          ^~~~~~~~~~~</span><br><span class="line">compilation terminated.</span><br></pre></td></tr></table></figure>
 <p>报错解决如下</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-16-14-centos cpt3]# yum install systemtap-sdt-devel</span><br></pre></td></tr></table></figure>
 <p>上述<code>gcc</code>命令将生成一个名为<code>hello_usdt</code>的二进制文件，我们可以使用该文件开始使用多个工具来发现它定义的跟踪点。 Linux提供了一个名为<code>readelf</code>的实用程序来显示有关ELF文件的信息。 你可以将它与我们编译的示例一起使用，<code>readelf</code>可以提供有关二进制文件的大量信息</p>
@@ -985,7 +985,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">89</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
